@@ -1,8 +1,9 @@
 "use client";
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/types/database.types";
 
-let cachedClient: SupabaseClient | null = null;
+let cachedClient: SupabaseClient<Database> | null = null;
 
 export function getSupabaseEnv(): { url: string; anonKey: string } | null {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -15,7 +16,7 @@ export function isSupabasePersistenceEnabled(): boolean {
   return process.env.NEXT_PUBLIC_PERSISTENCE_MODE === "supabase" && getSupabaseEnv() !== null;
 }
 
-export function getSupabaseClient(): SupabaseClient {
+export function getSupabaseClient(): SupabaseClient<Database> {
   if (cachedClient) return cachedClient;
   const env = getSupabaseEnv();
   if (!env) {
@@ -23,19 +24,15 @@ export function getSupabaseClient(): SupabaseClient {
       "Supabase persistence requested but NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY are not set."
     );
   }
-  cachedClient = createClient(env.url, env.anonKey, {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-    },
+  cachedClient = createClient<Database>(env.url, env.anonKey, {
+    auth: { persistSession: true, autoRefreshToken: true },
   });
   return cachedClient;
 }
 
 /**
  * Returns the signed-in user's id. Accounts are required (AuthGate enforces
- * sign-in before the learning app renders), so this throws if no session
- * exists rather than silently creating an anonymous one.
+ * sign-in before the learning app renders), so this throws if no session exists.
  */
 export async function ensureSupabaseSession(): Promise<string> {
   const supabase = getSupabaseClient();

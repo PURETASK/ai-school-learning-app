@@ -128,6 +128,36 @@ for (const required of ["usePersistentLearningState", "PersistenceStatusPanel", 
 
 const outDir = path.join(root, "reports");
 fs.mkdirSync(outDir, { recursive: true });
+
+// ---- V8 Supabase persistence checks ----
+for (const file of [
+  "src/lib/supabase/client.ts",
+  "src/types/database.types.ts",
+  "src/features/persistence/learningPersistenceAdapter.ts",
+  "src/features/persistence/supabaseLearningPersistence.ts",
+  "src/features/persistence/learningPersistenceProvider.ts",
+  "src/features/persistence/migrateLocalToSupabase.ts",
+  "src/features/auth/AuthGate.tsx",
+  "docs/85_SUPABASE_SCHEMA_AND_RLS.md",
+  "docs/86_SUPABASE_PERSISTENCE_ADAPTER.md",
+  "docs/87_LOCAL_TO_SUPABASE_MIGRATION.md",
+  "docs/88_SUPABASE_QA_AND_SECURITY_CHECKLIST.md",
+  "reports/V8_SUPABASE_PERSISTENCE_BUILD_REPORT.md",
+  "reports/V8_CHANGELOG.md",
+  "supabase/migrations/0005_v8_full_normalized_schema.sql",
+]) add("v8-supabase-persistence", file, exists(file) ? "pass" : "fail", exists(file) ? "present" : "missing");
+
+const v8Adapter = read("src/features/persistence/supabaseLearningPersistence.ts");
+for (const required of [
+  "saveLessonProgress", "saveQuizAttempt", "saveMasteryRecord", "saveMemoryVaultItems",
+  "saveMemoryVaultReviewSession", "saveMistakeJournalEntry", "saveReteachPlan", "saveChallengePlan",
+  "saveProblemSolvingLabEntry", "saveEvidenceRoomEntry", "saveInterpretationLensEntry",
+  "saveDiscussionArenaEntry", "saveLearningPlannerEntry", "saveSystemsMapperEntry", "savePortfolioEvidenceItem",
+]) add("v8-adapter-methods", required, v8Adapter.includes(required) ? "pass" : "fail", v8Adapter.includes(required) ? "implemented" : "missing");
+
+const v8Client = read("src/lib/supabase/client.ts");
+add("v8-security", "no service role key in client", v8Client.includes("SERVICE_ROLE") ? "fail" : "pass", v8Client.includes("SERVICE_ROLE") ? "EXPOSED" : "clean");
+
 const csv = ["category,check,status,detail", ...checks.map((row) => [row.category, row.check, row.status, row.detail].map((value) => `"${String(value).replaceAll('"','""')}"`).join(","))].join("\n");
 fs.writeFileSync(path.join(outDir, "BUILD_GUIDE_COMPLIANCE_MATRIX_V7.csv"), csv);
 const failCount = checks.filter((row) => row.status === "fail").length;

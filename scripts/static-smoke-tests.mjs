@@ -181,3 +181,25 @@ for (const required of ["usePersistentLearningState", "PersistenceStatusPanel", 
 const parentDashboardV7 = read("src/features/dashboards/parent/ParentDashboard.tsx");
 assert.ok(parentDashboardV7.includes("Persisted Learning Evidence"), "Parent dashboard should expose persisted learning evidence");
 console.log("V7 persistence layer checked.");
+
+// ---- V8 Supabase persistence smoke checks ----
+const requiredV8Files = [
+  "src/lib/supabase/client.ts",
+  "src/types/database.types.ts",
+  "src/features/persistence/learningPersistenceAdapter.ts",
+  "src/features/persistence/supabaseLearningPersistence.ts",
+  "src/features/persistence/learningPersistenceProvider.ts",
+  "src/features/persistence/migrateLocalToSupabase.ts",
+];
+for (const file of requiredV8Files) {
+  assert.ok(fs.existsSync(path.join(root, file)), `V8 persistence required file missing: ${file}`);
+}
+const v8Provider = read("src/features/persistence/learningPersistenceProvider.ts");
+for (const required of ["getPersistenceMode", "localLearningPersistenceAdapter", "getLearningPersistenceAdapter"]) {
+  assert.ok(v8Provider.includes(required), `V8 provider missing ${required}`);
+}
+const v8Migration = read("src/features/persistence/migrateLocalToSupabase.ts");
+assert.ok(v8Migration.includes("consentConfirmed"), "V8 migration must be consent-gated");
+const v8ClientFile = read("src/lib/supabase/client.ts");
+assert.ok(!v8ClientFile.includes("SERVICE_ROLE"), "V8 client must not reference the service role key");
+console.log("V8 Supabase persistence layer checked.");

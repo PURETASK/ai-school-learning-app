@@ -1,0 +1,13 @@
+-- 0005: V8 full normalized schema (applied 2026-06-10 as
+-- v8_full_normalized_schema_part1_tables + part2_rls via Supabase MCP).
+-- Replaces the 0004 minimal model. 21 tables: identity (profiles,
+-- student_profiles, guardian_student_links), snapshot
+-- (student_learning_state_snapshots), learning data (lesson_progress,
+-- quiz_attempts, quiz_answers, mastery_records, memory_vault_items,
+-- memory_vault_review_sessions, memory_vault_review_answers,
+-- mistake_journal_entries, reteach_plans, challenge_plans), thinking systems
+-- (problem_solving_lab_entries, evidence_room_entries,
+-- interpretation_lens_entries, discussion_arena_entries,
+-- learning_planner_entries, systems_mapper_entries, portfolio_evidence_items).
+-- Full SQL: see Supabase Dashboard > Database > Migrations, or docs/85.
+-- Deviations from the draft proposal are documented in docs/85.

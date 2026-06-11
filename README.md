@@ -1,5 +1,14 @@
 # K–12 Learning App Master Foundation
 
+## V8 — Supabase Persistence
+
+- Accounts: email/password sign-up via AuthGate (Supabase Auth).
+- Persistence modes (`NEXT_PUBLIC_PERSISTENCE_MODE`): `local` (V7 localStorage, default) or `supabase` (server-backed, per-account).
+- Setup: copy `.env.example` to `.env.local`, fill `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY`, set mode to `supabase`.
+- Schema/RLS: docs/85. Adapter: docs/86. Local→account migration: docs/87. Security checklist: docs/88.
+- Never put the service role key in any NEXT_PUBLIC_ variable.
+
+
 This archive merges the project foundation into one repo-ready package.
 
 It includes:
