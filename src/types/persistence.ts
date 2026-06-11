@@ -4,7 +4,7 @@ import type { MistakeJournalEntry, PortfolioEvidenceItem, LearningPlannerTask } 
 
 export const LEARNING_PERSISTENCE_SCHEMA_VERSION = 1;
 
-export type PersistenceStorageMode = "local-storage" | "database-ready-adapter";
+export type PersistenceStorageMode = "local-storage" | "database-ready-adapter" | "supabase";
 
 export type QuizAttemptRecord = {
   id: string;
