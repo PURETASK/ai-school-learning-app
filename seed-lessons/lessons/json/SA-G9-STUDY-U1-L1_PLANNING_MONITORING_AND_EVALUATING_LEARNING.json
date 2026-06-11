@@ -1,0 +1,533 @@
+{
+  "schemaVersion": "2.0",
+  "id": "SA-G9-STUDY-U1-L1",
+  "title": "Planning, Monitoring, and Evaluating Learning",
+  "academy": "scholar",
+  "academyName": "Scholar Academy",
+  "gradeLevel": "9",
+  "subject": "Study Skills",
+  "course": "Grade 9 Study Skills",
+  "unit": "Unit 1: Learning How to Learn",
+  "lessonType": [
+    "metacognition lesson",
+    "study skills lesson",
+    "reflection lesson"
+  ],
+  "estimatedMinutes": "30 minutes",
+  "developmentNotes": "High school students need explicit self-management systems for longer courses and independent work.",
+  "learningObjective": "Students will use metacognition to plan, monitor, and evaluate a learning task.",
+  "essentialQuestion": "How do strong learners know what to do before, during, and after learning?",
+  "standardsTags": [
+    "SEL.G9.SELF_MANAGEMENT.METACOGNITION",
+    "COLLEGE_READY.G9.STUDY_SKILLS.PLANNING"
+  ],
+  "thinkingSkillTags": [
+    "metacognition",
+    "learning planner",
+    "evidence-based reasoning",
+    "retrieval practice"
+  ],
+  "vocabularyTerms": [
+    {
+      "term": "metacognition",
+      "definition": "Thinking about your thinking."
+    },
+    {
+      "term": "monitor",
+      "definition": "To check progress while working."
+    },
+    {
+      "term": "evaluate",
+      "definition": "To judge what worked after finishing."
+    },
+    {
+      "term": "strategy",
+      "definition": "A planned way to approach a task."
+    }
+  ],
+  "prerequisites": [
+    "Can describe a school task",
+    "Can reflect on what was easy or hard"
+  ],
+  "lessonFlow": {
+    "hook": {
+      "time": "3-6 min",
+      "content": "A student studies for two hours but still fails the quiz because they reread notes without checking understanding.",
+      "studentAction": "Diagnose what went wrong in the study plan.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Identifies weak monitoring or passive study."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "learningGoal": {
+      "time": "3-6 min",
+      "content": "I can plan, monitor, and evaluate my learning so I know what to do next.",
+      "studentAction": "Define plan, monitor, evaluate.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Explains each metacognitive step."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "miniTeach": {
+      "time": "3-6 min",
+      "content": "Metacognition means thinking about your thinking. Strong learners plan before work, monitor during work, and evaluate after work.",
+      "studentAction": "Match each phase to a student action.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Matches plan/monitor/evaluate correctly."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "firstPrinciplesBreakdown": {
+      "time": "3-6 min",
+      "content": "Break learning down: What is the task? What do I already know? What strategy will I use? How will I know if it worked?",
+      "studentAction": "Complete a planning checklist.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Builds a specific learning plan."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "workedExample": {
+      "time": "3-6 min",
+      "content": "Before biology review: I need cell organelles. I know nucleus and membrane. I will use retrieval cards. I will test myself without looking.",
+      "studentAction": "Identify plan, monitor, evaluate in the example.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Labels the three metacognitive phases."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "guidedPractice": {
+      "time": "3-6 min",
+      "content": "Create a study plan for an upcoming algebra quiz.",
+      "studentAction": "Choose goal, strategy, check point, and after-action review.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Creates a realistic study plan."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "criticalThinkingCheckpoint": {
+      "time": "3-6 min",
+      "content": "Which is stronger: rereading for 30 minutes or self-testing for 15 minutes? Defend your answer.",
+      "studentAction": "Compare strategies using retention evidence.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Explains why retrieval is stronger than passive rereading."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "evidenceBasedReasoningTask": {
+      "time": "3-6 min",
+      "content": "Claim: My strategy worked. Evidence: I answered 8/10 without notes. Reasoning: Accurate recall shows I can retrieve the information.",
+      "studentAction": "Write claim/evidence/reasoning about study success.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Uses evidence, not feelings alone."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "interpretationOrDiscussionTask": {
+      "time": "3-6 min",
+      "content": "Discussion frame: 'I used to think studying meant ___. Now I think it means ___ because ___.'",
+      "studentAction": "Reflect on a change in understanding.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Explains a learning shift."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "activePractice": {
+      "time": "3-6 min",
+      "content": "Use the Learning Planner to plan one real school task.",
+      "studentAction": "Fill in task, first step, strategy, obstacle, finish signal.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Completes all planning fields."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "retrievalCheck": {
+      "time": "3-6 min",
+      "content": "Without looking, name the three metacognition moves.",
+      "studentAction": "Recall plan, monitor, evaluate.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Recalls all three."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "feedback": {
+      "time": "3-6 min",
+      "content": "Feedback checks whether the plan has a specific task, active strategy, monitoring check, and evaluation step.",
+      "studentAction": "Revise a weak study plan.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Adds a measurable check for understanding."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "reflection": {
+      "time": "3-6 min",
+      "content": "What strategy will you use the next time you feel stuck?",
+      "studentAction": "Write a next-time learning rule.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Names a transferable strategy."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    }
+  },
+  "quiz": [
+    {
+      "id": "SA-G9-STUDY-U1-L1-Q1",
+      "type": "mc",
+      "question": "What is metacognition?",
+      "choices": [
+        "Thinking about your thinking",
+        "Memorizing without checking",
+        "Skipping hard tasks",
+        "Only reading notes"
+      ],
+      "correctAnswer": "Thinking about your thinking",
+      "explanation": "Metacognition helps students manage and improve learning.",
+      "skillTag": "metacognition.core",
+      "difficulty": "medium",
+      "misconceptionTarget": "Forgot vocabulary"
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-Q2",
+      "type": "mc",
+      "question": "Which action is planning?",
+      "choices": [
+        "Choosing a strategy before starting",
+        "Checking if confused during work",
+        "Scoring a quiz after finishing",
+        "Ignoring the directions"
+      ],
+      "correctAnswer": "Choosing a strategy before starting",
+      "explanation": "Planning happens before the task begins.",
+      "skillTag": "metacognition.plan",
+      "difficulty": "medium",
+      "misconceptionTarget": "Misunderstood concept"
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-Q3",
+      "type": "mc",
+      "question": "Which action is monitoring?",
+      "choices": [
+        "Asking 'Do I understand this?' while working",
+        "Throwing away notes",
+        "Celebrating only",
+        "Never using hints"
+      ],
+      "correctAnswer": "Asking 'Do I understand this?' while working",
+      "explanation": "Monitoring is checking progress during learning.",
+      "skillTag": "metacognition.monitor",
+      "difficulty": "medium",
+      "misconceptionTarget": "Misunderstood concept"
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-Q4",
+      "type": "mc",
+      "question": "Which action is evaluating?",
+      "choices": [
+        "Deciding what worked after finishing",
+        "Choosing a pencil",
+        "Starting without a goal",
+        "Guessing quickly"
+      ],
+      "correctAnswer": "Deciding what worked after finishing",
+      "explanation": "Evaluation happens after learning evidence appears.",
+      "skillTag": "metacognition.evaluate",
+      "difficulty": "medium",
+      "misconceptionTarget": "Misunderstood concept"
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-Q5",
+      "type": "mc",
+      "question": "Which study strategy gives stronger evidence of learning?",
+      "choices": [
+        "Answering from memory",
+        "Rereading only",
+        "Highlighting every sentence",
+        "Looking at answers first"
+      ],
+      "correctAnswer": "Answering from memory",
+      "explanation": "Retrieval practice shows what the student can remember.",
+      "skillTag": "retention.retrieval",
+      "difficulty": "medium",
+      "misconceptionTarget": "Weak evidence"
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-Q6",
+      "type": "mc",
+      "question": "What should a good learning plan include?",
+      "choices": [
+        "Task, strategy, checkpoint, finish signal",
+        "Only a time limit",
+        "Only a reward",
+        "No goal"
+      ],
+      "correctAnswer": "Task, strategy, checkpoint, finish signal",
+      "explanation": "A useful plan tells the student what to do and how to check it.",
+      "skillTag": "metacognition.plan",
+      "difficulty": "medium",
+      "misconceptionTarget": "Skipped a step"
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-Q7",
+      "type": "short_answer",
+      "question": "Write a plan-monitor-evaluate routine for studying vocabulary.",
+      "correctAnswer": "Plan: choose 10 words and cover definitions. Monitor: check which words I miss. Evaluate: retest missed words tomorrow.",
+      "explanation": "A strong routine includes before, during, and after actions.",
+      "skillTag": "metacognition.core",
+      "difficulty": "medium",
+      "scoringNotes": "Award full credit for accurate reasoning with relevant evidence; partial credit for incomplete but coherent thinking.",
+      "misconceptionTarget": "Weak explanation"
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-Q8",
+      "type": "explain",
+      "question": "Explain why 'I studied a long time' is weaker evidence than 'I recalled 8/10 terms.'",
+      "correctAnswer": "Time spent does not prove learning; recall accuracy shows what I can retrieve.",
+      "explanation": "Learning evidence should measure understanding or recall.",
+      "skillTag": "evidence.reasoning",
+      "difficulty": "medium",
+      "scoringNotes": "Award full credit for accurate reasoning with relevant evidence; partial credit for incomplete but coherent thinking.",
+      "misconceptionTarget": "Weak evidence"
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-Q9",
+      "type": "cer",
+      "question": "Use CER: Claim that self-testing helped you learn.",
+      "correctAnswer": "Claim: Self-testing helped me learn. Evidence: I remembered more terms without notes. Reasoning: Remembering without notes shows retrieval strength.",
+      "explanation": "This uses evidence to evaluate learning.",
+      "skillTag": "evidence.cer",
+      "difficulty": "medium",
+      "scoringNotes": "Award full credit for accurate reasoning with relevant evidence; partial credit for incomplete but coherent thinking.",
+      "misconceptionTarget": "Weak explanation"
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-Q10",
+      "type": "short_answer",
+      "question": "Name one obstacle that can hurt a study plan and how to handle it.",
+      "correctAnswer": "A phone can distract me, so I can put it away for 15 minutes while I self-test.",
+      "explanation": "Good plans anticipate barriers.",
+      "skillTag": "learningPlanner.obstacles",
+      "difficulty": "medium",
+      "scoringNotes": "Award full credit for accurate reasoning with relevant evidence; partial credit for incomplete but coherent thinking.",
+      "misconceptionTarget": "Weak explanation"
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-Q11",
+      "type": "explain",
+      "question": "Explain one important idea from planning, monitoring, and evaluating learning using your own words.",
+      "correctAnswer": "A strong answer accurately explains planning, monitoring, and evaluating learning and includes a reason or example.",
+      "explanation": "This checks whether the student can explain planning, monitoring, and evaluating learning, not just recognize it.",
+      "skillTag": "metacognition.monitor",
+      "difficulty": "medium",
+      "scoringNotes": "Look for accurate concept, reasoning, and a relevant example.",
+      "misconceptionTarget": "Weak explanation"
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-Q12",
+      "type": "explain",
+      "question": "Explain one important idea from planning, monitoring, and evaluating learning using your own words.",
+      "correctAnswer": "A strong answer accurately explains planning, monitoring, and evaluating learning and includes a reason or example.",
+      "explanation": "This checks whether the student can explain planning, monitoring, and evaluating learning, not just recognize it.",
+      "skillTag": "metacognition.evaluate",
+      "difficulty": "medium",
+      "scoringNotes": "Look for accurate concept, reasoning, and a relevant example.",
+      "misconceptionTarget": "Weak explanation"
+    }
+  ],
+  "retrievalCheck": [
+    {
+      "id": "SA-G9-STUDY-U1-L1-R1",
+      "prompt": "Name the three metacognition moves.",
+      "expectedAnswer": "Plan, monitor, evaluate.",
+      "feedbackIfMissed": "Review the Think Check."
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-R2",
+      "prompt": "What is stronger than rereading for checking memory?",
+      "expectedAnswer": "Retrieval/self-testing.",
+      "feedbackIfMissed": "Review the retention strategy card."
+    }
+  ],
+  "memoryVaultItems": [
+    {
+      "id": "SA-G9-STUDY-U1-L1-MV1",
+      "type": "vocabulary",
+      "prompt": "What does metacognition mean?",
+      "expectedAnswer": "Thinking about your thinking.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "metacognition.core",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-MV2",
+      "type": "concept",
+      "prompt": "What are the three metacognition moves?",
+      "expectedAnswer": "Plan, monitor, evaluate.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "metacognition.core",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-MV3",
+      "type": "application",
+      "prompt": "Is rereading or self-testing stronger for checking memory?",
+      "expectedAnswer": "Self-testing.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "retention.retrieval",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-MV4",
+      "type": "explain",
+      "prompt": "Why should a learning plan include a checkpoint?",
+      "expectedAnswer": "To know whether the strategy is working before it is too late.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "metacognition.monitor",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-MV5",
+      "type": "application",
+      "prompt": "What should you do after finishing a task?",
+      "expectedAnswer": "Evaluate what worked, what failed, and what to do next.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "metacognition.evaluate",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "SA-G9-STUDY-U1-L1-MV6",
+      "type": "concept",
+      "prompt": "What is a finish signal?",
+      "expectedAnswer": "A clear sign that the task is complete or ready to submit.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "learningPlanner.completion",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    }
+  ],
+  "reteachPath": {
+    "misconception": "Student thinks studying is only spending time, not checking learning evidence.",
+    "simpleExplanation": "Studying is not just time. Studying works when you can prove what you remember or understand.",
+    "steps": [
+      "Name the task",
+      "Choose active strategy",
+      "Check understanding midway",
+      "Retest without notes",
+      "Decide next step"
+    ],
+    "practice": [
+      "Rewrite a weak study plan",
+      "Choose active vs passive strategies",
+      "Complete a Think Check for one task"
+    ],
+    "exitCriteria": "Student creates a plan with a strategy, monitoring checkpoint, and evaluation step."
+  },
+  "challengePath": {
+    "tasks": [
+      "Design a 7-day study plan using Memory Vault review days.",
+      "Compare two study strategies and defend the stronger one with evidence.",
+      "Create a personal Learning Planner template."
+    ],
+    "extensionRule": "Unlock when student scores Advanced or writes a strong metacognitive reflection."
+  },
+  "mastery": {
+    "bands": {
+      "0-39": "Needs Intervention",
+      "40-64": "Needs Reteach",
+      "65-79": "Almost Mastered",
+      "80-89": "Mastered",
+      "90-100": "Advanced"
+    },
+    "weights": {
+      "quiz": 0.55,
+      "retrievalCheck": 0.2,
+      "thinkingTask": 0.15,
+      "reflection": 0.1
+    },
+    "masteryThreshold": 80,
+    "advancedThreshold": 90,
+    "minimumEvidence": [
+      "complete lesson flow",
+      "attempt retrieval check",
+      "submit quiz",
+      "complete reflection"
+    ]
+  },
+  "parentTeacherNotes": "Ask the student what evidence would prove they learned, not just how long they studied.",
+  "accessibilityNotes": [
+    "Provide checklist format",
+    "Support keyboard entry",
+    "Use clear headings for before/during/after"
+  ],
+  "safetyNotes": [
+    "Do not collect private emotional disclosures",
+    "Frame struggle as strategy data, not personal failure"
+  ],
+  "implementationNotes": [
+    "Use this lesson to test Learning Planner, Mistake Journal, and retention strategy prompts."
+  ],
+  "reviewStatus": {
+    "contentStatus": "v5-added",
+    "qaStatus": "ready for MVP seed testing",
+    "lastReviewed": "2026-06-08",
+    "reviewNotes": "Added to expand MVP seed set from 12 to 16 and exercise thinking-system modules."
+  }
+}

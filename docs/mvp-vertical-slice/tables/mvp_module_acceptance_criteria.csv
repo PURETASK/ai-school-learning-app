@@ -1,0 +1,40 @@
+module,criterion
+Student Dashboard,A student can see one recommended lesson immediately
+Student Dashboard,A student can select any of the 12 seed lessons
+Student Dashboard,The dashboard shows completed/total lessons
+Student Dashboard,The dashboard shows Memory Vault due count
+Student Dashboard,The dashboard displays academy and grade context
+Student Dashboard,The dashboard never exposes other students' data
+Lesson Player,All 13 lesson-flow sections render from JSON
+Lesson Player,Student can move forward and backward
+Lesson Player,Progress percentage updates
+Lesson Player,The final lesson section routes to quiz
+Lesson Player,Missing optional fields do not crash the player
+Lesson Player,The lesson preserves the universal flow order
+Quiz Engine,Multiple-choice questions can be selected
+Quiz Engine,Open responses can be entered
+Quiz Engine,Quiz can generate StudentAnswer records
+Quiz Engine,Score is calculated for auto-scored items
+Quiz Engine,Quiz result preserves per-question feedback
+Quiz Engine,Open responses are marked for rubric/manual scoring later
+Feedback Engine,Every graded answer has feedback
+Feedback Engine,"Incorrect answers say Not yet, not failure language"
+Feedback Engine,Band summary matches mastery score
+Feedback Engine,Feedback recommends a concrete next action
+Feedback Engine,Feedback is safe and grade-appropriate
+Mastery Engine,0–39 returns Needs Intervention
+Mastery Engine,40–64 returns Needs Reteach
+Mastery Engine,65–79 returns Almost Mastered
+Mastery Engine,80–89 returns Mastered
+Mastery Engine,90–100 returns Advanced
+Mastery Engine,Each band returns a concrete action
+Memory Vault,Each lesson Memory Vault item creates scheduled reviews
+Memory Vault,"Default schedule is Day 1, 3, 7, 14, 30"
+Memory Vault,Scheduled items keep lessonId and studentId
+Memory Vault,Parent dashboard can show review items
+Memory Vault,Duplicate scheduling is avoided for the same student/item/day
+Parent Dashboard,Parent can see completed lessons
+Parent Dashboard,Parent can see latest mastery band
+Parent Dashboard,Parent can see weak skill signals from missed questions
+Parent Dashboard,Parent can see due Memory Vault items
+Parent Dashboard,Parent dashboard does not expose other students' data

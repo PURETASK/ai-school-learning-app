@@ -1,0 +1,7 @@
+
+> k12-learning-app-suite@0.1.0 audit
+> node scripts/audit-foundation.mjs
+
+Audit checks: 85
+Failures: 0
+Report: reports/BUILD_GUIDE_COMPLIANCE_MATRIX_V7.csv

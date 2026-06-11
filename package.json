@@ -1,0 +1,32 @@
+{
+  "name": "k12-learning-app-suite",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "validate:lessons": "node scripts/validate-lessons.mjs",
+    "audit": "node scripts/audit-foundation.mjs",
+    "test": "node scripts/static-smoke-tests.mjs",
+    "check": "npm run validate:lessons && npm run audit && npm run test"
+  },
+  "dependencies": {
+    "@next/font": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "autoprefixer": "latest",
+    "eslint": "latest",
+    "eslint-config-next": "latest",
+    "postcss": "latest",
+    "tailwindcss": "latest",
+    "typescript": "latest"
+  }
+}

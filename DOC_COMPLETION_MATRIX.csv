@@ -1,0 +1,61 @@
+doc,title,v2_improvement_items,line_count,status,next_review
+docs/01_PRODUCT_BIBLE.md,01 — Product Bible,6,340,Expanded v2,Content owner review before implementation
+docs/02_CORE_PILLARS.md,02 — Core Pillars,6,505,Expanded v2,Content owner review before implementation
+docs/03_LEARNING_SCIENCE_CORE.md,03 — Learning Science Core,6,342,Expanded v2,Content owner review before implementation
+docs/04_THINKING_SKILLS_FRAMEWORK.md,04 — Thinking Skills Framework,6,372,Expanded v2,Content owner review before implementation
+docs/05_PRIVACY_AND_CHILD_SAFETY.md,05 — Privacy and Child Safety,6,291,Expanded v2,Content owner review before implementation
+docs/06_ACCESSIBILITY_PLAN.md,06 — Accessibility Plan,6,244,Expanded v2,Content owner review before implementation
+docs/07_STANDARDS_MAP.md,07 — Standards Map,6,268,Expanded v2,Content owner review before implementation
+docs/08_CURRICULUM_ARCHITECTURE.md,08 — Curriculum Architecture,6,346,Expanded v2,Content owner review before implementation
+docs/09_LESSON_TEMPLATE_SPEC.md,09 — Lesson Template Specification,6,296,Expanded v2,Content owner review before implementation
+docs/10_ASSESSMENT_AND_MASTERY_MODEL.md,10 — Assessment and Mastery Model,6,236,Expanded v2,Content owner review before implementation
+docs/11_RETENTION_ENGINE_SPEC.md,11 — Retention Engine Specification,6,250,Expanded v2,Content owner review before implementation
+docs/12_ADAPTIVE_LEARNING_RULES.md,12 — Adaptive Learning Rules,6,245,Expanded v2,Content owner review before implementation
+docs/13_GAMIFICATION_AND_MOTIVATION.md,13 — Gamification and Motivation,6,280,Expanded v2,Content owner review before implementation
+docs/14_FEATURE_MAP.md,14 — Feature Map,6,294,Expanded v2,Content owner review before implementation
+docs/15_MVP_SCOPE.md,15 — MVP Scope,6,211,Expanded v2,Content owner review before implementation
+docs/16_DATA_MODEL_SPEC.md,16 — Data Model Specification,6,391,Expanded v2,Content owner review before implementation
+docs/17_CONTENT_AUTHORING_GUIDE.md,17 — Content Authoring Guide,6,281,Expanded v2,Content owner review before implementation
+docs/18_AI_TUTOR_POLICY.md,18 — AI Tutor Policy,6,244,Expanded v2,Content owner review before implementation
+docs/19_TECH_STACK_DECISION.md,19 — Tech Stack Decision,6,214,Expanded v2,Content owner review before implementation
+docs/20_ROLES_AND_PERMISSIONS.md,20 — Roles and Permissions,6,254,Expanded v2,Content owner review before implementation
+docs/21_BUILD_SEQUENCE.md,21 — Build Sequence,6,252,Expanded v2,Content owner review before implementation
+docs/22_DESIGN_SYSTEM_AND_UI_GUIDELINES.md,Design System and UI Guidelines,6,196,Expanded v2,Content owner review before implementation
+docs/23_INFORMATION_ARCHITECTURE_AND_NAVIGATION.md,Information Architecture and Navigation,6,206,Expanded v2,Content owner review before implementation
+docs/24_USER_ONBOARDING_AND_PLACEMENT.md,User Onboarding and Placement,6,171,Expanded v2,Content owner review before implementation
+docs/25_STUDENT_DASHBOARD_SPEC.md,Student Dashboard Specification,6,167,Expanded v2,Content owner review before implementation
+docs/26_PARENT_DASHBOARD_SPEC.md,Parent Dashboard Specification,6,162,Expanded v2,Content owner review before implementation
+docs/27_TEACHER_DASHBOARD_SPEC.md,Teacher Dashboard Specification,6,149,Expanded v2,Content owner review before implementation
+docs/28_CONTENT_QA_AND_REVIEW_WORKFLOW.md,Content QA and Review Workflow,6,156,Expanded v2,Content owner review before implementation
+docs/29_CURRICULUM_PRODUCTION_PIPELINE.md,Curriculum Production Pipeline,6,155,Expanded v2,Content owner review before implementation
+docs/30_SAMPLE_CONTENT_SEED_PLAN.md,Sample Content Seed Plan,6,163,Expanded v2,Content owner review before implementation
+docs/31_LEARNING_ANALYTICS_AND_REPORTING.md,Learning Analytics and Reporting,6,164,Expanded v2,Content owner review before implementation
+docs/32_ERROR_HANDLING_EMPTY_STATES.md,Error Handling and Empty States,6,154,Expanded v2,Content owner review before implementation
+docs/33_SECURITY_ARCHITECTURE.md,Security Architecture,6,145,Expanded v2,Content owner review before implementation
+docs/34_TESTING_AND_QA_PLAN.md,Testing and QA Plan,6,155,Expanded v2,Content owner review before implementation
+docs/35_DEPLOYMENT_AND_ENVIRONMENTS.md,Deployment and Environments,6,154,Expanded v2,Content owner review before implementation
+docs/36_API_AND_SERVICE_BOUNDARIES.md,API and Service Boundaries,6,147,Expanded v2,Content owner review before implementation
+docs/37_DATABASE_MIGRATION_AND_SEEDING.md,Database Migration and Seeding,6,142,Expanded v2,Content owner review before implementation
+docs/38_PERFORMANCE_AND_SCALABILITY.md,Performance and Scalability,6,143,Expanded v2,Content owner review before implementation
+docs/39_MONITORING_LOGGING_INCIDENT_RESPONSE.md,"Monitoring, Logging, and Incident Response",6,152,Expanded v2,Content owner review before implementation
+docs/40_RELEASE_ROADMAP_AND_MILESTONES.md,Release Roadmap and Milestones,6,160,Expanded v2,Content owner review before implementation
+docs/41_BRAND_NAMING_AND_POSITIONING.md,Brand Naming and Positioning,6,145,Expanded v2,Content owner review before implementation
+docs/42_COPYWRITING_AND_TONE_GUIDE.md,Copywriting and Tone Guide,6,160,Expanded v2,Content owner review before implementation
+docs/43_AGE_APPROPRIATE_UX_GUIDELINES.md,Age-Appropriate UX Guidelines,6,148,Expanded v2,Content owner review before implementation
+docs/44_PARENT_CONSENT_AND_ACCOUNT_FLOW.md,Parent Consent and Account Flow,6,147,Expanded v2,Content owner review before implementation
+docs/45_DATA_RETENTION_AND_DELETION_POLICY.md,Data Retention and Deletion Policy,6,143,Expanded v2,Content owner review before implementation
+docs/46_STANDARDS_TAGGING_GUIDE.md,Standards Tagging Guide,6,142,Expanded v2,Content owner review before implementation
+docs/47_RUBRIC_LIBRARY.md,Rubric Library,6,151,Expanded v2,Content owner review before implementation
+docs/48_QUESTION_BANK_SPEC.md,Question Bank Specification,6,157,Expanded v2,Content owner review before implementation
+docs/49_PROJECT_AND_CAPSTONE_LIBRARY.md,Project and Capstone Library,6,160,Expanded v2,Content owner review before implementation
+docs/50_AI_EVALUATION_AND_GUARDRAILS.md,AI Evaluation and Guardrails,6,145,Expanded v2,Content owner review before implementation
+docs/51_PRODUCT_REQUIREMENTS_DOCUMENT.md,51 — Product Requirements Document,6,117,Expanded v2,Content owner review before implementation
+docs/52_USER_STORIES_AND_ACCEPTANCE_CRITERIA.md,52 — User Stories and Acceptance Criteria,6,113,Expanded v2,Content owner review before implementation
+docs/53_K12_SCOPE_AND_SEQUENCE.md,53 — K–12 Scope and Sequence,6,108,Expanded v2,Content owner review before implementation
+docs/54_LESSON_JSON_SCHEMA_AND_VALIDATION.md,54 — Lesson JSON Schema and Validation,6,129,Expanded v2,Content owner review before implementation
+docs/55_MVP_BACKLOG_AND_TASK_BREAKDOWN.md,55 — MVP Backlog and Task Breakdown,6,106,Expanded v2,Content owner review before implementation
+docs/56_ERD_AND_DATABASE_RELATIONSHIPS.md,56 — ERD and Database Relationships,6,105,Expanded v2,Content owner review before implementation
+docs/57_API_SERVICE_CONTRACTS.md,57 — API Service Contracts,6,114,Expanded v2,Content owner review before implementation
+docs/58_SECURITY_THREAT_MODEL.md,58 — Security Threat Model,6,102,Expanded v2,Content owner review before implementation
+docs/59_QA_TEST_MATRIX.md,59 — QA Test Matrix,6,107,Expanded v2,Content owner review before implementation
+docs/60_ANALYTICS_EVENT_TAXONOMY.md,60 — Analytics Event Taxonomy,6,116,Expanded v2,Content owner review before implementation

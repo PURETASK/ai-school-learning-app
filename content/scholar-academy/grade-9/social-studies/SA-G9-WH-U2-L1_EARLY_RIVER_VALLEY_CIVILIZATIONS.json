@@ -1,0 +1,646 @@
+{
+  "schemaVersion": "2.0",
+  "id": "SA-G9-WH-U2-L1",
+  "title": "Early River Valley Civilizations",
+  "academy": "scholar",
+  "academyName": "Scholar Academy",
+  "gradeLevel": "9",
+  "subject": "Social Studies",
+  "course": "World History I",
+  "unit": "Unit 2: Early Civilizations",
+  "lessonType": [
+    "concept lesson",
+    "skill lesson",
+    "thinking lesson",
+    "retrieval lesson"
+  ],
+  "estimatedMinutes": "45–50",
+  "developmentNotes": "High-school history should emphasize multi-causal explanation, source/map evidence, geographic constraints, institutions, and comparative reasoning.",
+  "learningObjective": "Students will analyze why early river valley civilizations developed, compare geographic advantages and constraints, and support historical claims with evidence.",
+  "essentialQuestion": "Why did complex societies emerge in river valleys, and what else besides geography mattered?",
+  "standardsTags": [
+    "SS.WH.EARLY_CIVILIZATIONS.RIVER_VALLEYS",
+    "SS.WH.GEOGRAPHY.HUMAN_ENVIRONMENT",
+    "SS.WH.EVIDENCE.SOURCES",
+    "SS.WH.CAUSATION.COMPLEXITY"
+  ],
+  "thinkingSkillTags": [
+    "evidence-based reasoning",
+    "critical thinking",
+    "interpretation",
+    "systems thinking",
+    "discussion"
+  ],
+  "vocabularyTerms": [
+    {
+      "term": "river valley civilization",
+      "definition": "an early complex society that developed near a major river system"
+    },
+    {
+      "term": "agricultural surplus",
+      "definition": "extra food produced through farming"
+    },
+    {
+      "term": "specialization",
+      "definition": "people doing different jobs because not everyone must farm"
+    },
+    {
+      "term": "state formation",
+      "definition": "development of organized government and authority"
+    },
+    {
+      "term": "infrastructure",
+      "definition": "built systems such as canals, roads, walls, or storage facilities"
+    },
+    {
+      "term": "primary source",
+      "definition": "evidence created during the time being studied"
+    }
+  ],
+  "prerequisites": [
+    "Basic geography terms",
+    "Understand agriculture and settlement",
+    "Use claim-evidence-reasoning"
+  ],
+  "lessonFlow": {
+    "hook": {
+      "time": "3–5 min",
+      "content": "Students compare the Nile, Tigris-Euphrates, Indus, and Yellow River regions on a map. They identify patterns and ask why similar environments produced complex but different societies.",
+      "studentAction": "Predict, notice, or explain initial thinking before direct instruction.",
+      "teacherOrAppAction": "Capture initial response as non-graded diagnostic evidence."
+    },
+    "learningGoal": {
+      "time": "1 min",
+      "content": "I can students will analyze why early river valley civilizations developed, compare geographic advantages and constraints, and support historical claims with evidence.",
+      "successCriteria": [
+        "I can explain the core concept in my own words.",
+        "I can show evidence or reasoning, not only an answer.",
+        "I can correct a common mistake."
+      ]
+    },
+    "miniTeach": {
+      "time": "6–8 min",
+      "content": "River valleys supported agriculture through water and fertile soil, but civilizations required more than rivers. Agricultural surplus, labor organization, technology, infrastructure, trade, belief systems, conflict, and political authority all contributed to complex societies.",
+      "cognitiveLoadNotes": "Use short chunks, one example at a time, and reveal labels only after students observe the model."
+    },
+    "firstPrinciplesBreakdown": {
+      "coreConcept": "Civilization emergence is multi-causal: environment creates conditions, but human systems transform those conditions into complex society.",
+      "parts": [
+        "river ecology",
+        "fertile soil",
+        "surplus",
+        "population density",
+        "labor organization",
+        "technology",
+        "government",
+        "trade",
+        "belief systems",
+        "conflict and defense"
+      ],
+      "known": [
+        "River valleys can support productive agriculture.",
+        "Surplus can support specialization.",
+        "Large populations require coordination.",
+        "Infrastructure requires labor and authority."
+      ],
+      "unknown": [
+        "Which cause mattered most in each region and time period."
+      ],
+      "rules": [
+        "Historical claims require evidence.",
+        "Causes interact rather than operate alone.",
+        "Comparison should consider similarities and differences.",
+        "Geographic advantage can also create risk, such as flooding."
+      ],
+      "avoid": [
+        "Do not claim rivers automatically created civilization.",
+        "Do not ignore social, political, and technological factors.",
+        "Do not treat all civilizations as identical.",
+        "Do not use modern assumptions without source support."
+      ],
+      "steps": [
+        "Identify environmental conditions.",
+        "Connect them to agriculture/surplus.",
+        "Connect surplus to specialization and institutions.",
+        "Add political, technological, and cultural factors.",
+        "Use map/source evidence.",
+        "Compare regions and acknowledge complexity."
+      ],
+      "check": "A strong answer includes at least two causes and explains how they interact."
+    },
+    "workedExample": {
+      "time": "5–7 min",
+      "content": "Claim: River valleys made large settlements more likely, but they did not guarantee civilization. Evidence: Maps show early cities near major rivers; irrigation and flood management required organized labor. Reasoning: Rivers provided agricultural potential, while human organization turned that potential into surplus, infrastructure, and political systems.",
+      "teacherOrAppAction": "Highlight each reasoning step and connect it to the first-principles breakdown."
+    },
+    "guidedPractice": {
+      "time": "8–10 min",
+      "items": [
+        "Annotate a map for water, floodplain, trade routes, and barriers.",
+        "Sort causes into environmental, economic, political, and cultural categories.",
+        "Build a causal chain from river water to surplus to specialization to government.",
+        "Evaluate a one-cause explanation and revise it."
+      ],
+      "scaffolding": "Start with high support, then remove hints. Require explanation on the final item."
+    },
+    "criticalThinkingCheckpoint": {
+      "time": "3–5 min",
+      "prompt": "Why is “the river caused civilization” too simple for a high-school historical explanation?",
+      "lookFor": "Student identifies assumption, evaluates reasoning, and explains why one answer or model is stronger."
+    },
+    "evidenceBasedReasoningTask": {
+      "time": "5–7 min",
+      "prompt": "Claim: Surplus contributed to specialization. Use an economic example and a political example as evidence.",
+      "requiredStructure": "Claim → Evidence → Reasoning",
+      "rubric": "Evidence and reasoning rubric, 1–4 scale."
+    },
+    "interpretationOrDiscussionTask": {
+      "time": "5–7 min",
+      "prompt": "Interpret map patterns: what similarities appear across river valley civilizations, and what differences might matter?",
+      "safety": "Use private response or moderated classroom mode only. No unrestricted student chat."
+    },
+    "activePractice": {
+      "time": "8–10 min",
+      "content": "Students create a causal systems map with at least six nodes and explain two feedback loops or interactions.",
+      "dataCaptured": [
+        "completion",
+        "attempts",
+        "hint usage",
+        "mistake type",
+        "confidence"
+      ]
+    },
+    "retrievalCheck": {
+      "time": "5 min",
+      "items": [
+        {
+          "id": "SA-G9-WH-U2-L1-R01",
+          "prompt": "Name two reasons river valleys supported early farming.",
+          "expectedAnswer": "Water and fertile soil.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "SA-G9-WH-U2-L1-R02",
+          "prompt": "What is agricultural surplus?",
+          "expectedAnswer": "Extra food beyond immediate need.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "SA-G9-WH-U2-L1-R03",
+          "prompt": "How can surplus support specialization?",
+          "expectedAnswer": "Some people can do jobs other than farming.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "SA-G9-WH-U2-L1-R04",
+          "prompt": "Why is multi-causal reasoning important in history?",
+          "expectedAnswer": "Events and societies develop from interacting causes.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "SA-G9-WH-U2-L1-R05",
+          "prompt": "What evidence can support claims about settlement patterns?",
+          "expectedAnswer": "Maps, artifacts, written records, archaeological evidence.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        }
+      ],
+      "rule": "Closed-note if appropriate; if missed, show feedback after response, not before."
+    },
+    "feedback": {
+      "time": "embedded",
+      "rules": [
+        "Correct: explain why it works, not only mark correct.",
+        "Incorrect: identify misconception, show one hint, then give a similar retry.",
+        "Explain/CER answers: score using rubric and return one specific revision target.",
+        "Do not shame guessing; redirect to strategy and evidence."
+      ]
+    },
+    "reflection": {
+      "time": "2–3 min",
+      "prompt": "What strategy helped you most, what mistake should you watch for, and when will you review this skill again?"
+    }
+  },
+  "quiz": [
+    {
+      "id": "SA-G9-WH-U2-L1-Q01",
+      "type": "mc",
+      "question": "Which factor most directly supports agricultural surplus?",
+      "choices": [
+        "predictable water and fertile soil",
+        "alphabet alone",
+        "coin money only",
+        "modern factories"
+      ],
+      "correctAnswer": "predictable water and fertile soil",
+      "explanation": "Agriculture depends on water and soil.",
+      "skillTag": "WH.GEOGRAPHY.AGRICULTURE",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-Q02",
+      "type": "short",
+      "question": "Define specialization in early civilizations.",
+      "choices": null,
+      "correctAnswer": "People doing different jobs because not everyone had to farm.",
+      "explanation": "Surplus supports specialization.",
+      "skillTag": "WH.VOCAB",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-Q03",
+      "type": "explain",
+      "question": "Why were rivers helpful but not sufficient by themselves?",
+      "choices": null,
+      "correctAnswer": "Rivers provided resources, but people needed technology, labor organization, government, and culture to build complex societies.",
+      "explanation": "Multi-causal reasoning.",
+      "skillTag": "CRITICAL.CAUSATION",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-Q04",
+      "type": "mc",
+      "question": "Which is infrastructure?",
+      "choices": [
+        "canal",
+        "oral story only",
+        "family name",
+        "wild grass"
+      ],
+      "correctAnswer": "canal",
+      "explanation": "Canals are built systems supporting water movement/agriculture.",
+      "skillTag": "WH.INFRASTRUCTURE",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-Q05",
+      "type": "evidence",
+      "question": "Support: “Surplus helped create social complexity.”",
+      "choices": null,
+      "correctAnswer": "Surplus allowed non-farmers such as builders, priests, scribes, rulers, or artisans, creating specialized roles.",
+      "explanation": "Evidence chain required.",
+      "skillTag": "EVIDENCE.CAUSAL_CHAIN",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-Q06",
+      "type": "error",
+      "question": "A student says all river valley civilizations developed the same way. Fix the error.",
+      "choices": null,
+      "correctAnswer": "They shared patterns but differed by geography, culture, politics, technology, and historical context.",
+      "explanation": "Avoid overgeneralization.",
+      "skillTag": "MISTAKE.OVERGENERALIZATION",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-Q07",
+      "type": "mc",
+      "question": "Which evidence best supports settlement near rivers?",
+      "choices": [
+        "map of early cities along rivers",
+        "modern tourist brochure",
+        "fictional myth only",
+        "list of unrelated rulers"
+      ],
+      "correctAnswer": "map of early cities along rivers",
+      "explanation": "Map evidence supports location pattern.",
+      "skillTag": "EVIDENCE.MAP",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-Q08",
+      "type": "apply",
+      "question": "Build a causal chain from irrigation to government.",
+      "choices": null,
+      "correctAnswer": "Irrigation requires organized labor; organization may require leaders/rules; this supports government/state formation.",
+      "explanation": "Causal reasoning.",
+      "skillTag": "WH.CAUSAL_CHAIN",
+      "difficulty": "hard",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-Q09",
+      "type": "short",
+      "question": "What is state formation?",
+      "choices": null,
+      "correctAnswer": "The development of organized government and authority.",
+      "explanation": "Definition may vary.",
+      "skillTag": "WH.VOCAB",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-Q10",
+      "type": "discussion",
+      "question": "Use frame: “Geography mattered because ___, but it was not enough because ___.”",
+      "choices": null,
+      "correctAnswer": null,
+      "explanation": "Must include geographic and non-geographic factor.",
+      "skillTag": "DISCUSSION.COMPLEXITY",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-Q11",
+      "type": "mc",
+      "question": "Which is the most complete explanation?",
+      "choices": [
+        "Rivers caused civilization.",
+        "People liked rivers.",
+        "Rivers supported farming, surplus supported specialization, and organization helped build institutions.",
+        "Civilization happened randomly."
+      ],
+      "correctAnswer": "Rivers supported farming, surplus supported specialization, and organization helped build institutions.",
+      "explanation": "It gives connected causes.",
+      "skillTag": "CRITICAL.BEST_EXPLANATION",
+      "difficulty": "hard",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-Q12",
+      "type": "challenge",
+      "question": "Compare the Nile and Mesopotamian river environments and predict one possible difference in political development.",
+      "choices": null,
+      "correctAnswer": null,
+      "explanation": "Answer should use comparative environmental reasoning and acknowledge uncertainty.",
+      "skillTag": "WH.COMPARISON",
+      "difficulty": "hard",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    }
+  ],
+  "retrievalCheck": [
+    {
+      "id": "SA-G9-WH-U2-L1-R01",
+      "prompt": "Name two reasons river valleys supported early farming.",
+      "expectedAnswer": "Water and fertile soil.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-R02",
+      "prompt": "What is agricultural surplus?",
+      "expectedAnswer": "Extra food beyond immediate need.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-R03",
+      "prompt": "How can surplus support specialization?",
+      "expectedAnswer": "Some people can do jobs other than farming.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-R04",
+      "prompt": "Why is multi-causal reasoning important in history?",
+      "expectedAnswer": "Events and societies develop from interacting causes.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-R05",
+      "prompt": "What evidence can support claims about settlement patterns?",
+      "expectedAnswer": "Maps, artifacts, written records, archaeological evidence.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    }
+  ],
+  "memoryVaultItems": [
+    {
+      "id": "SA-G9-WH-U2-L1-MV01",
+      "type": "concept",
+      "prompt": "Why did river valleys support early civilizations?",
+      "expectedAnswer": "Water, fertile soil, farming, transportation, and surplus.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SS.WH.EARLY_CIVILIZATIONS.RIVER_VALLEYS",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-MV02",
+      "type": "vocab",
+      "prompt": "What is surplus?",
+      "expectedAnswer": "Extra food beyond immediate need.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SS.WH.GEOGRAPHY.HUMAN_ENVIRONMENT",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-MV03",
+      "type": "concept",
+      "prompt": "What is specialization?",
+      "expectedAnswer": "Different people doing different jobs.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SS.WH.EVIDENCE.SOURCES",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-MV04",
+      "type": "mistake",
+      "prompt": "Why is one-cause history weak?",
+      "expectedAnswer": "Historical causes interact and require evidence.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SS.WH.CAUSATION.COMPLEXITY",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-MV05",
+      "type": "evidence",
+      "prompt": "What evidence supports settlement patterns?",
+      "expectedAnswer": "Maps, archaeology, sources.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SS.WH.CAUSATION.COMPLEXITY",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "SA-G9-WH-U2-L1-MV06",
+      "type": "apply",
+      "prompt": "Connect surplus to government.",
+      "expectedAnswer": "Surplus supports larger populations and organization, which can require rules/leaders.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SS.WH.CAUSATION.COMPLEXITY",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    }
+  ],
+  "reteachPath": {
+    "misconception": "Student uses single-cause explanations or treats all civilizations as identical.",
+    "simpleExplanation": "River valleys created opportunities, but human organization, technology, and institutions shaped outcomes.",
+    "steps": [
+      "Name the environmental factor.",
+      "Explain what opportunity or challenge it created.",
+      "Add a human response.",
+      "Connect to surplus/specialization/institutions.",
+      "Support with evidence."
+    ],
+    "practice": [
+      {
+        "prompt": "Water + fertile soil support what?",
+        "answer": "Agriculture"
+      },
+      {
+        "prompt": "Extra food = ?",
+        "answer": "Surplus"
+      },
+      {
+        "prompt": "Surplus enables what?",
+        "answer": "Specialization/larger populations"
+      },
+      {
+        "prompt": "Built water system = ?",
+        "answer": "Irrigation/canal/infrastructure"
+      },
+      {
+        "prompt": "Fix: rivers caused everything",
+        "answer": "Rivers influenced development along with human organization and technology."
+      }
+    ],
+    "exitCriteria": "Student completes at least 4 of 5 reteach items and explains the corrected misconception."
+  },
+  "challengePath": {
+    "tasks": [
+      "Write a comparative CER paragraph on two river valley civilizations.",
+      "Create a systems map with environmental and political causes.",
+      "Evaluate whether geography or institutions mattered more using evidence."
+    ],
+    "extensionRule": "Unlock at 90+ mastery or teacher/parent assignment; still schedule Memory Vault review."
+  },
+  "mastery": {
+    "bands": [
+      {
+        "range": "0-39",
+        "label": "Needs Intervention",
+        "action": "Assign intervention path, parent/teacher alert if repeated twice."
+      },
+      {
+        "range": "40-64",
+        "label": "Needs Reteach",
+        "action": "Assign reteach path and review tomorrow."
+      },
+      {
+        "range": "65-79",
+        "label": "Almost Mastered",
+        "action": "Assign guided practice and schedule review in 1 day."
+      },
+      {
+        "range": "80-89",
+        "label": "Mastered",
+        "action": "Schedule Memory Vault review on Day 1, 3, 7, 14, 30."
+      },
+      {
+        "range": "90-100",
+        "label": "Advanced",
+        "action": "Unlock challenge task and still schedule spaced review."
+      }
+    ],
+    "weights": {
+      "retrievalCheck": 0.2,
+      "quizAccuracy": 0.3,
+      "firstPrinciplesProcess": 0.15,
+      "evidenceOrReasoningQuality": 0.15,
+      "activePracticeCompletion": 0.1,
+      "reflectionQuality": 0.1
+    },
+    "masteryThreshold": 80,
+    "advancedThreshold": 90,
+    "minimumEvidence": [
+      "retrieval check completed",
+      "quiz completed",
+      "one reasoning/explanation artifact saved",
+      "Memory Vault items generated"
+    ]
+  },
+  "parentTeacherNotes": "When discussing history, ask: “What are at least two causes? What evidence supports each one?”",
+  "accessibilityNotes": [
+    "Use plain, grade-appropriate language and define academic vocabulary before using it in prompts.",
+    "Provide alt text or text-equivalent descriptions for every image, diagram, array, chart, map, or model.",
+    "Make all interactive elements keyboard accessible with visible focus states and screen-reader labels.",
+    "Never rely only on color to communicate correct/incorrect, categories, or importance.",
+    "Provide read-aloud support for Foundation Academy and optional read-aloud for all grade bands.",
+    "Chunk instructions into short steps and provide examples before independent work."
+  ],
+  "safetyNotes": [
+    "No public student posting, random direct messages, or unrestricted discussion.",
+    "Discussion prompts must use sentence frames and moderation/teacher controls when implemented.",
+    "Student-generated work should be visible only to the student and authorized parent/teacher roles unless explicitly assigned in a safe classroom workflow.",
+    "Do not collect unnecessary personal information in lesson responses."
+  ],
+  "implementationNotes": [
+    "Render lessonFlow sections in order with progress state.",
+    "Persist quiz attempts and item-level skill tags.",
+    "Generate Memory Vault records after lesson completion.",
+    "Use mastery bands to branch to reteach, guided practice, review, or challenge.",
+    "Store open responses privately with role-based access.",
+    "Use answer keys and rubrics for review; do not expose hidden answer keys in student mode."
+  ],
+  "reviewStatus": {
+    "contentStatus": "v2 polished",
+    "reviewedAgainst": [
+      "curriculum inventory v2",
+      "universal lesson flow",
+      "Memory Vault requirements",
+      "mastery model",
+      "child safety and accessibility rules"
+    ],
+    "knownLimitations": "Standards tags are platform-internal placeholders until state-specific mappings are added."
+  }
+}

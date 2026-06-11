@@ -1,0 +1,640 @@
+{
+  "schemaVersion": "2.0",
+  "id": "FA-G3-SS-U1-L1",
+  "title": "Communities and Roles",
+  "academy": "foundation",
+  "academyName": "Foundation Academy",
+  "gradeLevel": "3",
+  "subject": "Social Studies",
+  "course": "Grade 3 Social Studies",
+  "unit": "Unit 1: Communities, Citizenship, and Geography",
+  "lessonType": [
+    "concept lesson",
+    "skill lesson",
+    "thinking lesson",
+    "retrieval lesson"
+  ],
+  "estimatedMinutes": "30–35",
+  "developmentNotes": "Grade 3 students understand concrete community roles but need support connecting roles, needs, responsibilities, and cooperation.",
+  "learningObjective": "Students will identify community roles, explain how roles help meet community needs, and support claims with examples.",
+  "essentialQuestion": "How do different people help a community work?",
+  "standardsTags": [
+    "SS.G3.CIVICS.COMMUNITY_ROLES",
+    "SS.G3.ECON.NEEDS_SERVICES",
+    "SS.G3.GEOGRAPHY.LOCAL_COMMUNITY",
+    "SS.G3.EVIDENCE.EXAMPLES"
+  ],
+  "thinkingSkillTags": [
+    "systems thinking",
+    "evidence-based reasoning",
+    "discussion",
+    "interpretation",
+    "critical thinking"
+  ],
+  "vocabularyTerms": [
+    {
+      "term": "community",
+      "definition": "a group of people who live, work, or learn together"
+    },
+    {
+      "term": "role",
+      "definition": "a job or responsibility someone has"
+    },
+    {
+      "term": "service",
+      "definition": "work that helps people"
+    },
+    {
+      "term": "responsibility",
+      "definition": "something a person should do"
+    },
+    {
+      "term": "need",
+      "definition": "something people must have to live or be safe"
+    }
+  ],
+  "prerequisites": [
+    "Know examples of local places and workers",
+    "Understand basic needs like food, safety, and learning",
+    "Use examples to explain ideas"
+  ],
+  "lessonFlow": {
+    "hook": {
+      "time": "3–5 min",
+      "content": "Students see a community map with a school, fire station, library, clinic, grocery store, and park. They choose one place and explain who helps there.",
+      "studentAction": "Predict, notice, or explain initial thinking before direct instruction.",
+      "teacherOrAppAction": "Capture initial response as non-graded diagnostic evidence."
+    },
+    "learningGoal": {
+      "time": "1 min",
+      "content": "I can students will identify community roles, explain how roles help meet community needs, and support claims with examples.",
+      "successCriteria": [
+        "I can explain the core concept in my own words.",
+        "I can show evidence or reasoning, not only an answer.",
+        "I can correct a common mistake."
+      ]
+    },
+    "miniTeach": {
+      "time": "6–8 min",
+      "content": "A community works because people have roles. Roles help meet needs. Teachers help people learn. Firefighters help with safety. Librarians help people find information. Community members also have responsibilities, like following rules and caring for shared spaces.",
+      "cognitiveLoadNotes": "Use short chunks, one example at a time, and reveal labels only after students observe the model."
+    },
+    "firstPrinciplesBreakdown": {
+      "coreConcept": "Communities are systems of people, places, needs, and responsibilities.",
+      "parts": [
+        "people",
+        "places",
+        "roles",
+        "needs",
+        "services",
+        "rules",
+        "responsibilities"
+      ],
+      "known": [
+        "People in a community need safety, learning, food, health, and shared spaces.",
+        "Different people have different roles.",
+        "Roles often connect to services."
+      ],
+      "unknown": [
+        "Which role best meets a specific need."
+      ],
+      "rules": [
+        "A role should connect to a need or service.",
+        "Communities work better when people cooperate.",
+        "Citizens have responsibilities even if they do not have a paid job."
+      ],
+      "avoid": [
+        "Do not assume only paid workers help a community.",
+        "Do not confuse a place with a role.",
+        "Do not ignore responsibilities of ordinary community members."
+      ],
+      "steps": [
+        "Name the community need.",
+        "Identify who or what helps meet that need.",
+        "Explain the role.",
+        "Give evidence/example.",
+        "Describe how cooperation helps the whole community."
+      ],
+      "check": "If removing a role causes a community need to go unmet, that role is important."
+    },
+    "workedExample": {
+      "time": "5–7 min",
+      "content": "Need: people need to learn. Role: teacher. Evidence: teachers explain lessons, answer questions, and help students practice. Reasoning: this helps the community because educated people can solve problems and help others.",
+      "teacherOrAppAction": "Highlight each reasoning step and connect it to the first-principles breakdown."
+    },
+    "guidedPractice": {
+      "time": "8–10 min",
+      "items": [
+        "Match community needs to roles: safety/firefighter, learning/teacher, health/nurse.",
+        "Sort cards into place, role, and responsibility.",
+        "Explain how a library helps a community.",
+        "Discuss one responsibility students have in a classroom community."
+      ],
+      "scaffolding": "Start with high support, then remove hints. Require explanation on the final item."
+    },
+    "criticalThinkingCheckpoint": {
+      "time": "3–5 min",
+      "prompt": "A student says only firefighters and doctors help communities. What is missing from this thinking?",
+      "lookFor": "Student identifies assumption, evaluates reasoning, and explains why one answer or model is stronger."
+    },
+    "evidenceBasedReasoningTask": {
+      "time": "5–7 min",
+      "prompt": "Claim: A library helps a community. Use two examples as evidence and explain why they matter.",
+      "requiredStructure": "Claim → Evidence → Reasoning",
+      "rubric": "Evidence and reasoning rubric, 1–4 scale."
+    },
+    "interpretationOrDiscussionTask": {
+      "time": "5–7 min",
+      "prompt": "Interpret the community map: Which places are connected to safety, learning, health, and recreation?",
+      "safety": "Use private response or moderated classroom mode only. No unrestricted student chat."
+    },
+    "activePractice": {
+      "time": "8–10 min",
+      "content": "Students build a mini community map and place role cards where they meet needs. The app asks them to explain one connection.",
+      "dataCaptured": [
+        "completion",
+        "attempts",
+        "hint usage",
+        "mistake type",
+        "confidence"
+      ]
+    },
+    "retrievalCheck": {
+      "time": "5 min",
+      "items": [
+        {
+          "id": "FA-G3-SS-U1-L1-R01",
+          "prompt": "What is a community?",
+          "expectedAnswer": "A group of people who live, work, or learn together.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "FA-G3-SS-U1-L1-R02",
+          "prompt": "What is a role?",
+          "expectedAnswer": "A job or responsibility someone has.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "FA-G3-SS-U1-L1-R03",
+          "prompt": "Name one role that helps with safety.",
+          "expectedAnswer": "Firefighter, police officer, crossing guard, etc.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "FA-G3-SS-U1-L1-R04",
+          "prompt": "How do community members help without a job title?",
+          "expectedAnswer": "They follow rules, help others, and care for shared spaces.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "FA-G3-SS-U1-L1-R05",
+          "prompt": "What evidence can show a role is important?",
+          "expectedAnswer": "An example of the need or service it supports.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        }
+      ],
+      "rule": "Closed-note if appropriate; if missed, show feedback after response, not before."
+    },
+    "feedback": {
+      "time": "embedded",
+      "rules": [
+        "Correct: explain why it works, not only mark correct.",
+        "Incorrect: identify misconception, show one hint, then give a similar retry.",
+        "Explain/CER answers: score using rubric and return one specific revision target.",
+        "Do not shame guessing; redirect to strategy and evidence."
+      ]
+    },
+    "reflection": {
+      "time": "2–3 min",
+      "prompt": "What strategy helped you most, what mistake should you watch for, and when will you review this skill again?"
+    }
+  },
+  "quiz": [
+    {
+      "id": "FA-G3-SS-U1-L1-Q01",
+      "type": "mc",
+      "question": "Which is a role in a community?",
+      "choices": [
+        "library",
+        "teacher",
+        "park",
+        "street"
+      ],
+      "correctAnswer": "teacher",
+      "explanation": "Teacher is a role; library and park are places.",
+      "skillTag": "SS.ROLE",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-Q02",
+      "type": "mc",
+      "question": "Which role helps meet the need for safety?",
+      "choices": [
+        "firefighter",
+        "artist",
+        "cashier",
+        "musician"
+      ],
+      "correctAnswer": "firefighter",
+      "explanation": "Firefighters help protect people and respond to emergencies.",
+      "skillTag": "SS.NEEDS",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-Q03",
+      "type": "short",
+      "question": "Name one responsibility of a student in a classroom community.",
+      "choices": null,
+      "correctAnswer": "Follow rules, help classmates, listen, clean up, etc.",
+      "explanation": "Responsibilities help the group work.",
+      "skillTag": "CIVICS.RESPONSIBILITY",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-Q04",
+      "type": "mc",
+      "question": "Which is a service?",
+      "choices": [
+        "helping someone find a book",
+        "a building wall",
+        "the color blue",
+        "a tree leaf"
+      ],
+      "correctAnswer": "helping someone find a book",
+      "explanation": "A service is work that helps people.",
+      "skillTag": "SS.SERVICE",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-Q05",
+      "type": "explain",
+      "question": "How does a grocery store help a community?",
+      "choices": null,
+      "correctAnswer": "It helps people get food and supplies they need.",
+      "explanation": "Connect role/place to need.",
+      "skillTag": "EVIDENCE.REASONING",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-Q06",
+      "type": "error",
+      "question": "A student says, “A hospital is a role.” Find and fix the mistake.",
+      "choices": null,
+      "correctAnswer": "Hospital is a place; doctor, nurse, and paramedic are roles.",
+      "explanation": "Place versus role misconception.",
+      "skillTag": "MISTAKE.PLACE_ROLE",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-Q07",
+      "type": "mc",
+      "question": "Which pair makes the most sense?",
+      "choices": [
+        "school—learning",
+        "park—medicine",
+        "library—fire safety",
+        "clinic—sports games"
+      ],
+      "correctAnswer": "school—learning",
+      "explanation": "Schools help meet the need for learning.",
+      "skillTag": "SS.MATCH",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-Q08",
+      "type": "apply",
+      "question": "A town has no crossing guards near a busy school. What community need might be affected?",
+      "choices": null,
+      "correctAnswer": "Safety for students crossing streets.",
+      "explanation": "Connect missing role to need.",
+      "skillTag": "SYSTEMS.CAUSE_EFFECT",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-Q09",
+      "type": "short",
+      "question": "Give evidence for this claim: “Students help their classroom community.”",
+      "choices": null,
+      "correctAnswer": "Students can follow rules, share, help clean, or help classmates.",
+      "explanation": "Use a specific example.",
+      "skillTag": "EVIDENCE.CIVICS",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-Q10",
+      "type": "mc",
+      "question": "Why do communities need different roles?",
+      "choices": [
+        "One person can do everything",
+        "Different needs require different kinds of help",
+        "Rules do not matter",
+        "Places are all the same"
+      ],
+      "correctAnswer": "Different needs require different kinds of help",
+      "explanation": "Communities are systems with many needs.",
+      "skillTag": "SYSTEMS.COMMUNITY",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-Q11",
+      "type": "discussion",
+      "question": "Use this sentence frame: “I think ___ is an important community role because ___.”",
+      "choices": null,
+      "correctAnswer": "Any valid role plus reason.",
+      "explanation": "Measures structured discussion.",
+      "skillTag": "DISCUSSION.FRAME",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-Q12",
+      "type": "challenge",
+      "question": "Choose one community problem and name two roles that could help solve it.",
+      "choices": null,
+      "correctAnswer": "Example: litter in park—students and park workers can clean, city leaders can add bins.",
+      "explanation": "Multiple-role reasoning required.",
+      "skillTag": "CRITICAL.COMMUNITY_PROBLEM",
+      "difficulty": "hard",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    }
+  ],
+  "retrievalCheck": [
+    {
+      "id": "FA-G3-SS-U1-L1-R01",
+      "prompt": "What is a community?",
+      "expectedAnswer": "A group of people who live, work, or learn together.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-R02",
+      "prompt": "What is a role?",
+      "expectedAnswer": "A job or responsibility someone has.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-R03",
+      "prompt": "Name one role that helps with safety.",
+      "expectedAnswer": "Firefighter, police officer, crossing guard, etc.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-R04",
+      "prompt": "How do community members help without a job title?",
+      "expectedAnswer": "They follow rules, help others, and care for shared spaces.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-R05",
+      "prompt": "What evidence can show a role is important?",
+      "expectedAnswer": "An example of the need or service it supports.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    }
+  ],
+  "memoryVaultItems": [
+    {
+      "id": "FA-G3-SS-U1-L1-MV01",
+      "type": "concept",
+      "prompt": "What is a community?",
+      "expectedAnswer": "People who live, work, or learn together.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SS.G3.CIVICS.COMMUNITY_ROLES",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-MV02",
+      "type": "vocab",
+      "prompt": "What is a role?",
+      "expectedAnswer": "A job or responsibility someone has.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SS.G3.ECON.NEEDS_SERVICES",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-MV03",
+      "type": "contrast",
+      "prompt": "Place or role: library?",
+      "expectedAnswer": "Place.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SS.G3.GEOGRAPHY.LOCAL_COMMUNITY",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-MV04",
+      "type": "apply",
+      "prompt": "Name a role that helps with health.",
+      "expectedAnswer": "Doctor, nurse, dentist, paramedic, etc.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SS.G3.EVIDENCE.EXAMPLES",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-MV05",
+      "type": "evidence",
+      "prompt": "How can you prove a role helps a community?",
+      "expectedAnswer": "Give an example of the need it meets.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SS.G3.EVIDENCE.EXAMPLES",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "FA-G3-SS-U1-L1-MV06",
+      "type": "systems",
+      "prompt": "Why do communities need cooperation?",
+      "expectedAnswer": "Different people help meet different needs.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SS.G3.EVIDENCE.EXAMPLES",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    }
+  ],
+  "reteachPath": {
+    "misconception": "Student confuses places with roles or thinks only paid workers help communities.",
+    "simpleExplanation": "A place is where something happens. A role is what someone does to help.",
+    "steps": [
+      "Name the need.",
+      "Separate place cards from role cards.",
+      "Match roles to needs.",
+      "Explain one example with because.",
+      "Add citizen responsibilities."
+    ],
+    "practice": [
+      {
+        "prompt": "Place or role: school",
+        "answer": "Place"
+      },
+      {
+        "prompt": "Place or role: teacher",
+        "answer": "Role"
+      },
+      {
+        "prompt": "Need met by doctor?",
+        "answer": "Health"
+      },
+      {
+        "prompt": "One student responsibility",
+        "answer": "Follow rules/help others"
+      },
+      {
+        "prompt": "Fix: “Library is a role.”",
+        "answer": "Library is a place; librarian is a role."
+      }
+    ],
+    "exitCriteria": "Student completes at least 4 of 5 reteach items and explains the corrected misconception."
+  },
+  "challengePath": {
+    "tasks": [
+      "Design a community map that includes at least six roles and explain how each meets a need.",
+      "Choose a community problem and propose a solution using three roles.",
+      "Compare a classroom community to a town community."
+    ],
+    "extensionRule": "Unlock at 90+ mastery or teacher/parent assignment; still schedule Memory Vault review."
+  },
+  "mastery": {
+    "bands": [
+      {
+        "range": "0-39",
+        "label": "Needs Intervention",
+        "action": "Assign intervention path, parent/teacher alert if repeated twice."
+      },
+      {
+        "range": "40-64",
+        "label": "Needs Reteach",
+        "action": "Assign reteach path and review tomorrow."
+      },
+      {
+        "range": "65-79",
+        "label": "Almost Mastered",
+        "action": "Assign guided practice and schedule review in 1 day."
+      },
+      {
+        "range": "80-89",
+        "label": "Mastered",
+        "action": "Schedule Memory Vault review on Day 1, 3, 7, 14, 30."
+      },
+      {
+        "range": "90-100",
+        "label": "Advanced",
+        "action": "Unlock challenge task and still schedule spaced review."
+      }
+    ],
+    "weights": {
+      "retrievalCheck": 0.2,
+      "quizAccuracy": 0.3,
+      "firstPrinciplesProcess": 0.15,
+      "evidenceOrReasoningQuality": 0.15,
+      "activePracticeCompletion": 0.1,
+      "reflectionQuality": 0.1
+    },
+    "masteryThreshold": 80,
+    "advancedThreshold": 90,
+    "minimumEvidence": [
+      "retrieval check completed",
+      "quiz completed",
+      "one reasoning/explanation artifact saved",
+      "Memory Vault items generated"
+    ]
+  },
+  "parentTeacherNotes": "When visiting a store, park, school, or library, ask: “Who helps here? What need do they help meet?”",
+  "accessibilityNotes": [
+    "Use plain, grade-appropriate language and define academic vocabulary before using it in prompts.",
+    "Provide alt text or text-equivalent descriptions for every image, diagram, array, chart, map, or model.",
+    "Make all interactive elements keyboard accessible with visible focus states and screen-reader labels.",
+    "Never rely only on color to communicate correct/incorrect, categories, or importance.",
+    "Provide read-aloud support for Foundation Academy and optional read-aloud for all grade bands.",
+    "Chunk instructions into short steps and provide examples before independent work."
+  ],
+  "safetyNotes": [
+    "No public student posting, random direct messages, or unrestricted discussion.",
+    "Discussion prompts must use sentence frames and moderation/teacher controls when implemented.",
+    "Student-generated work should be visible only to the student and authorized parent/teacher roles unless explicitly assigned in a safe classroom workflow.",
+    "Do not collect unnecessary personal information in lesson responses."
+  ],
+  "implementationNotes": [
+    "Render lessonFlow sections in order with progress state.",
+    "Persist quiz attempts and item-level skill tags.",
+    "Generate Memory Vault records after lesson completion.",
+    "Use mastery bands to branch to reteach, guided practice, review, or challenge.",
+    "Store open responses privately with role-based access.",
+    "Use answer keys and rubrics for review; do not expose hidden answer keys in student mode."
+  ],
+  "reviewStatus": {
+    "contentStatus": "v2 polished",
+    "reviewedAgainst": [
+      "curriculum inventory v2",
+      "universal lesson flow",
+      "Memory Vault requirements",
+      "mastery model",
+      "child safety and accessibility rules"
+    ],
+    "knownLimitations": "Standards tags are platform-internal placeholders until state-specific mappings are added."
+  }
+}

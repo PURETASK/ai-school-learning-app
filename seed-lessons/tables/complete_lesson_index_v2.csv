@@ -1,0 +1,13 @@
+lesson_id,title,academy,grade,subject,course,unit,estimated_minutes,quiz_items,memory_items,reteach_items,challenge_items,status
+FA-G3-MATH-U1-L1,Multiplication as Equal Groups,Foundation Academy,3,Math,Grade 3 Math,Unit 1: Multiplication Foundations,30–35,12,6,5,3,v2 polished
+FA-G3-ELA-U2-L1,Finding the Main Idea,Foundation Academy,3,ELA,Grade 3 ELA / Reading,Unit 2: Reading for Meaning,30–35,12,6,5,3,v2 polished
+FA-G3-SCI-U1-L1,Plant Life Cycles,Foundation Academy,3,Science,Grade 3 Science,Unit 1: Life Cycles and Traits,30–35,12,6,5,3,v2 polished
+FA-G3-SS-U1-L1,Communities and Roles,Foundation Academy,3,Social Studies,Grade 3 Social Studies,"Unit 1: Communities, Citizenship, and Geography",30–35,12,6,5,3,v2 polished
+BA-G6-MATH-U1-L1,Understanding Ratios,Bridge Academy,6,Math,Grade 6 Math,Unit 1: Ratios and Rates,40–45,12,6,5,3,v2 polished
+BA-G6-ELA-U2-L1,Theme and Text Evidence,Bridge Academy,6,ELA,Grade 6 ELA,"Unit 2: Literature, Theme, and Evidence",40–45,12,6,5,3,v2 polished
+BA-G6-SCI-U2-L1,Water Cycle Systems,Bridge Academy,6,Science,Grade 6 Science,Unit 2: Earth Systems and Water,40–45,12,6,5,3,v2 polished
+BA-G6-SS-U2-L1,Ancient Civilizations and Geography,Bridge Academy,6,Social Studies,Grade 6 Social Studies,Unit 2: Ancient Civilizations,40–45,12,6,5,3,v2 polished
+SA-G9-ALG-U1-L1,Variables and Expressions,Scholar Academy,9,Math,Algebra I,"Unit 1: Expressions, Variables, and Structure",45–50,12,6,5,3,v2 polished
+SA-G9-ENG-U3-L1,"Claim, Evidence, and Reasoning",Scholar Academy,9,ELA,English 9,Unit 3: Argument and Evidence,45–50,12,6,5,3,v2 polished
+SA-G9-BIO-U2-L1,Cells as Systems,Scholar Academy,9,Science,Biology,Unit 2: Cells and Systems,45–50,12,6,5,3,v2 polished
+SA-G9-WH-U2-L1,Early River Valley Civilizations,Scholar Academy,9,Social Studies,World History I,Unit 2: Early Civilizations,45–50,12,6,5,3,v2 polished

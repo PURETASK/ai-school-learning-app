@@ -1,0 +1,3 @@
+Static smoke tests passed.
+Lessons checked: 12
+Lesson sections checked: 16

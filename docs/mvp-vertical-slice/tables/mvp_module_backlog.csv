@@ -1,0 +1,36 @@
+module,task_id,task,priority,status
+Student Dashboard,01-01,Add empty/error states,P1,Planned
+Student Dashboard,01-02,Add richer status cards,P1,Planned
+Student Dashboard,01-03,Add accessibility labels/focus audit,P2,Planned
+Student Dashboard,01-04,Add unit/component test plan,P2,Planned
+Student Dashboard,01-05,Wire output to next module,P2,Planned
+Lesson Player,02-01,Add empty/error states,P1,Planned
+Lesson Player,02-02,Add richer status cards,P1,Planned
+Lesson Player,02-03,Add accessibility labels/focus audit,P2,Planned
+Lesson Player,02-04,Add unit/component test plan,P2,Planned
+Lesson Player,02-05,Wire output to next module,P2,Planned
+Quiz Engine,03-01,Add empty/error states,P1,Planned
+Quiz Engine,03-02,Add richer status cards,P1,Planned
+Quiz Engine,03-03,Add accessibility labels/focus audit,P2,Planned
+Quiz Engine,03-04,Add unit/component test plan,P2,Planned
+Quiz Engine,03-05,Wire output to next module,P2,Planned
+Feedback Engine,04-01,Add empty/error states,P1,Planned
+Feedback Engine,04-02,Add richer status cards,P1,Planned
+Feedback Engine,04-03,Add accessibility labels/focus audit,P2,Planned
+Feedback Engine,04-04,Add unit/component test plan,P2,Planned
+Feedback Engine,04-05,Wire output to next module,P2,Planned
+Mastery Engine,05-01,Add empty/error states,P1,Planned
+Mastery Engine,05-02,Add richer status cards,P1,Planned
+Mastery Engine,05-03,Add accessibility labels/focus audit,P2,Planned
+Mastery Engine,05-04,Add unit/component test plan,P2,Planned
+Mastery Engine,05-05,Wire output to next module,P2,Planned
+Memory Vault,06-01,Add empty/error states,P1,Planned
+Memory Vault,06-02,Add richer status cards,P1,Planned
+Memory Vault,06-03,Add accessibility labels/focus audit,P2,Planned
+Memory Vault,06-04,Add unit/component test plan,P2,Planned
+Memory Vault,06-05,Wire output to next module,P2,Planned
+Parent Dashboard,07-01,Add empty/error states,P1,Planned
+Parent Dashboard,07-02,Add richer status cards,P1,Planned
+Parent Dashboard,07-03,Add accessibility labels/focus audit,P2,Planned
+Parent Dashboard,07-04,Add unit/component test plan,P2,Planned
+Parent Dashboard,07-05,Wire output to next module,P2,Planned

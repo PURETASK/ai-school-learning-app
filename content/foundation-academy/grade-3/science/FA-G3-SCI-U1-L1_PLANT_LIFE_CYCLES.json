@@ -1,0 +1,644 @@
+{
+  "schemaVersion": "2.0",
+  "id": "FA-G3-SCI-U1-L1",
+  "title": "Plant Life Cycles",
+  "academy": "foundation",
+  "academyName": "Foundation Academy",
+  "gradeLevel": "3",
+  "subject": "Science",
+  "course": "Grade 3 Science",
+  "unit": "Unit 1: Life Cycles and Traits",
+  "lessonType": [
+    "concept lesson",
+    "skill lesson",
+    "thinking lesson",
+    "retrieval lesson"
+  ],
+  "estimatedMinutes": "30–35",
+  "developmentNotes": "Third graders benefit from diagrams, sequencing cards, and concrete examples. Emphasize cycle as repeating stages, not a one-time line.",
+  "learningObjective": "Students will sequence the major stages of a flowering plant life cycle and explain how each stage helps the plant survive and reproduce.",
+  "essentialQuestion": "How does a plant change as it grows, and why do the stages repeat?",
+  "standardsTags": [
+    "SCI.G3.LIFE_CYCLES.PLANTS",
+    "SCI.G3.PATTERNS.CYCLES",
+    "SCI.G3.OBSERVATION.SEQUENCE",
+    "SCI.G3.EVIDENCE.EXPLANATION"
+  ],
+  "thinkingSkillTags": [
+    "systems thinking",
+    "interpretation",
+    "evidence-based reasoning",
+    "inquiry",
+    "retrieval practice"
+  ],
+  "vocabularyTerms": [
+    {
+      "term": "life cycle",
+      "definition": "the stages a living thing goes through as it grows and reproduces"
+    },
+    {
+      "term": "seed",
+      "definition": "the starting structure that can grow into a new plant"
+    },
+    {
+      "term": "germination",
+      "definition": "when a seed begins to grow"
+    },
+    {
+      "term": "seedling",
+      "definition": "a young plant"
+    },
+    {
+      "term": "pollination",
+      "definition": "when pollen moves to help make seeds"
+    },
+    {
+      "term": "reproduce",
+      "definition": "to make more living things of the same kind"
+    }
+  ],
+  "prerequisites": [
+    "Know plants are living things",
+    "Recognize roots, stems, leaves, and flowers",
+    "Sequence events using first/next/then/finally"
+  ],
+  "lessonFlow": {
+    "hook": {
+      "time": "3–5 min",
+      "content": "Students see scrambled cards: flower, seed, seedling, sprout. They arrange them and explain why a cycle might not have a true ending.",
+      "studentAction": "Predict, notice, or explain initial thinking before direct instruction.",
+      "teacherOrAppAction": "Capture initial response as non-graded diagnostic evidence."
+    },
+    "learningGoal": {
+      "time": "1 min",
+      "content": "I can students will sequence the major stages of a flowering plant life cycle and explain how each stage helps the plant survive and reproduce.",
+      "successCriteria": [
+        "I can explain the core concept in my own words.",
+        "I can show evidence or reasoning, not only an answer.",
+        "I can correct a common mistake."
+      ]
+    },
+    "miniTeach": {
+      "time": "6–8 min",
+      "content": "A plant life cycle shows how a plant grows and makes new plants. Many flowering plants begin as seeds, germinate, grow into seedlings, become mature plants, make flowers, form seeds, and begin the cycle again.",
+      "cognitiveLoadNotes": "Use short chunks, one example at a time, and reveal labels only after students observe the model."
+    },
+    "firstPrinciplesBreakdown": {
+      "coreConcept": "A life cycle is a repeating pattern of growth and reproduction.",
+      "parts": [
+        "seed",
+        "germination",
+        "seedling",
+        "mature plant",
+        "flower",
+        "new seeds",
+        "environmental needs"
+      ],
+      "known": [
+        "Seeds can grow into plants.",
+        "Plants need water, light, air, and space.",
+        "Mature plants can make new seeds."
+      ],
+      "unknown": [
+        "Which stage comes next in a specific example."
+      ],
+      "rules": [
+        "Stages happen in an order.",
+        "Cycles repeat when new seeds grow.",
+        "Each stage has a function."
+      ],
+      "avoid": [
+        "Do not treat the cycle as only a straight line.",
+        "Do not skip the seed-making stage.",
+        "Do not assume all plants look exactly the same at every stage."
+      ],
+      "steps": [
+        "Identify the current stage.",
+        "Describe what the plant is doing in that stage.",
+        "Name what comes next.",
+        "Explain how the stage helps survival or reproduction.",
+        "Connect the last stage back to seeds."
+      ],
+      "check": "If the final stage creates seeds, the cycle can start again."
+    },
+    "workedExample": {
+      "time": "5–7 min",
+      "content": "A bean seed gets water and warmth. It germinates, sends out a root, grows a stem and leaves, becomes a mature plant, makes flowers, and forms new seeds. The new seeds can grow into new bean plants.",
+      "teacherOrAppAction": "Highlight each reasoning step and connect it to the first-principles breakdown."
+    },
+    "guidedPractice": {
+      "time": "8–10 min",
+      "items": [
+        "Put seed, germination, seedling, mature plant, flower, seed in order.",
+        "Match each stage to its job.",
+        "Explain why a mature plant is important to the cycle.",
+        "Use evidence from a diagram to decide which stage is shown."
+      ],
+      "scaffolding": "Start with high support, then remove hints. Require explanation on the final item."
+    },
+    "criticalThinkingCheckpoint": {
+      "time": "3–5 min",
+      "prompt": "If a diagram stops at the flower stage, what important part of the cycle is missing? Why does that matter?",
+      "lookFor": "Student identifies assumption, evaluates reasoning, and explains why one answer or model is stronger."
+    },
+    "evidenceBasedReasoningTask": {
+      "time": "5–7 min",
+      "prompt": "Claim: A plant life cycle repeats. Use the seed stage and seed-making stage as evidence.",
+      "requiredStructure": "Claim → Evidence → Reasoning",
+      "rubric": "Evidence and reasoning rubric, 1–4 scale."
+    },
+    "interpretationOrDiscussionTask": {
+      "time": "5–7 min",
+      "prompt": "Interpret a diagram that uses arrows in a circle. What do the arrows mean?",
+      "safety": "Use private response or moderated classroom mode only. No unrestricted student chat."
+    },
+    "activePractice": {
+      "time": "8–10 min",
+      "content": "Students drag life-cycle cards into a circular model, then click each stage to choose its function.",
+      "dataCaptured": [
+        "completion",
+        "attempts",
+        "hint usage",
+        "mistake type",
+        "confidence"
+      ]
+    },
+    "retrievalCheck": {
+      "time": "5 min",
+      "items": [
+        {
+          "id": "FA-G3-SCI-U1-L1-R01",
+          "prompt": "What is a life cycle?",
+          "expectedAnswer": "The stages a living thing goes through as it grows and reproduces.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "FA-G3-SCI-U1-L1-R02",
+          "prompt": "What happens during germination?",
+          "expectedAnswer": "A seed begins to grow.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "FA-G3-SCI-U1-L1-R03",
+          "prompt": "What is a seedling?",
+          "expectedAnswer": "A young plant.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "FA-G3-SCI-U1-L1-R04",
+          "prompt": "Why do mature plants matter?",
+          "expectedAnswer": "They can make flowers/seeds and continue the cycle.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "FA-G3-SCI-U1-L1-R05",
+          "prompt": "Why is the model a cycle?",
+          "expectedAnswer": "New seeds can grow into new plants again.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        }
+      ],
+      "rule": "Closed-note if appropriate; if missed, show feedback after response, not before."
+    },
+    "feedback": {
+      "time": "embedded",
+      "rules": [
+        "Correct: explain why it works, not only mark correct.",
+        "Incorrect: identify misconception, show one hint, then give a similar retry.",
+        "Explain/CER answers: score using rubric and return one specific revision target.",
+        "Do not shame guessing; redirect to strategy and evidence."
+      ]
+    },
+    "reflection": {
+      "time": "2–3 min",
+      "prompt": "What strategy helped you most, what mistake should you watch for, and when will you review this skill again?"
+    }
+  },
+  "quiz": [
+    {
+      "id": "FA-G3-SCI-U1-L1-Q01",
+      "type": "mc",
+      "question": "Which stage usually comes first in a flowering plant life cycle?",
+      "choices": [
+        "flower",
+        "seed",
+        "mature plant",
+        "fruit"
+      ],
+      "correctAnswer": "seed",
+      "explanation": "Many flowering plants begin as seeds.",
+      "skillTag": "SCI.SEQUENCE",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-Q02",
+      "type": "mc",
+      "question": "What is germination?",
+      "choices": [
+        "a plant making fruit",
+        "a seed beginning to grow",
+        "a flower losing petals",
+        "a leaf changing color"
+      ],
+      "correctAnswer": "a seed beginning to grow",
+      "explanation": "Germination is the start of growth from a seed.",
+      "skillTag": "SCI.VOCAB",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-Q03",
+      "type": "short",
+      "question": "Name two things many seeds need to germinate.",
+      "choices": null,
+      "correctAnswer": "water and warmth, or water and air depending context",
+      "explanation": "Seeds need proper conditions to begin growing.",
+      "skillTag": "SCI.NEEDS",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-Q04",
+      "type": "mc",
+      "question": "Why is a life cycle shown as a circle?",
+      "choices": [
+        "Plants are round",
+        "The stages can repeat",
+        "The plant never changes",
+        "The seed is a circle"
+      ],
+      "correctAnswer": "The stages can repeat",
+      "explanation": "New seeds can start the cycle again.",
+      "skillTag": "SYSTEMS.CYCLE",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-Q05",
+      "type": "error",
+      "question": "A student orders the stages: seed → flower → seedling. What is wrong?",
+      "choices": null,
+      "correctAnswer": "A seedling grows before the mature plant makes flowers.",
+      "explanation": "The sequence is incorrect.",
+      "skillTag": "MISTAKE.SEQUENCE",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-Q06",
+      "type": "explain",
+      "question": "How does the flower stage help the plant life cycle continue?",
+      "choices": null,
+      "correctAnswer": "Flowers can help produce seeds through pollination/reproduction.",
+      "explanation": "Look for seed-making connection.",
+      "skillTag": "EVIDENCE.REASONING",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-Q07",
+      "type": "mc",
+      "question": "Which is a young plant?",
+      "choices": [
+        "seed",
+        "seedling",
+        "pollen",
+        "soil"
+      ],
+      "correctAnswer": "seedling",
+      "explanation": "A seedling is a young plant.",
+      "skillTag": "SCI.VOCAB",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-Q08",
+      "type": "apply",
+      "question": "A plant has roots, stem, leaves, and flowers. What stage is it likely in?",
+      "choices": null,
+      "correctAnswer": "Mature plant/flowering stage.",
+      "explanation": "The presence of flowers suggests maturity.",
+      "skillTag": "SCI.INTERPRET_MODEL",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-Q09",
+      "type": "mc",
+      "question": "Which detail is evidence that a plant is reproducing?",
+      "choices": [
+        "It has green leaves",
+        "It is making new seeds",
+        "It is in soil",
+        "It is near sunlight"
+      ],
+      "correctAnswer": "It is making new seeds",
+      "explanation": "Reproduction makes new plants possible.",
+      "skillTag": "EVIDENCE.SCIENCE",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-Q10",
+      "type": "short",
+      "question": "What stage comes after a seed begins to sprout?",
+      "choices": null,
+      "correctAnswer": "seedling",
+      "explanation": "After germination, it becomes a young plant.",
+      "skillTag": "SCI.SEQUENCE",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-Q11",
+      "type": "explain",
+      "question": "Why would a plant without water have trouble completing its life cycle?",
+      "choices": null,
+      "correctAnswer": "It may not germinate or grow, so it cannot mature and make seeds.",
+      "explanation": "Connect needs to stages.",
+      "skillTag": "SYSTEMS.CAUSE_EFFECT",
+      "difficulty": "hard",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-Q12",
+      "type": "apply",
+      "question": "Draw or describe a circular plant life-cycle model.",
+      "choices": null,
+      "correctAnswer": "Seed → germination → seedling → mature plant/flower → seeds → seed.",
+      "explanation": "Must include repeating cycle.",
+      "skillTag": "CREATE.MODEL",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    }
+  ],
+  "retrievalCheck": [
+    {
+      "id": "FA-G3-SCI-U1-L1-R01",
+      "prompt": "What is a life cycle?",
+      "expectedAnswer": "The stages a living thing goes through as it grows and reproduces.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-R02",
+      "prompt": "What happens during germination?",
+      "expectedAnswer": "A seed begins to grow.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-R03",
+      "prompt": "What is a seedling?",
+      "expectedAnswer": "A young plant.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-R04",
+      "prompt": "Why do mature plants matter?",
+      "expectedAnswer": "They can make flowers/seeds and continue the cycle.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-R05",
+      "prompt": "Why is the model a cycle?",
+      "expectedAnswer": "New seeds can grow into new plants again.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    }
+  ],
+  "memoryVaultItems": [
+    {
+      "id": "FA-G3-SCI-U1-L1-MV01",
+      "type": "concept",
+      "prompt": "What is a life cycle?",
+      "expectedAnswer": "Stages of growth and reproduction.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SCI.G3.LIFE_CYCLES.PLANTS",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-MV02",
+      "type": "vocab",
+      "prompt": "What is germination?",
+      "expectedAnswer": "When a seed begins to grow.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SCI.G3.PATTERNS.CYCLES",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-MV03",
+      "type": "sequence",
+      "prompt": "What comes after seedling?",
+      "expectedAnswer": "A mature plant.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SCI.G3.OBSERVATION.SEQUENCE",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-MV04",
+      "type": "systems",
+      "prompt": "Why is the plant life cycle a cycle?",
+      "expectedAnswer": "New seeds can begin again.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SCI.G3.EVIDENCE.EXPLANATION",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-MV05",
+      "type": "evidence",
+      "prompt": "What evidence shows a plant can reproduce?",
+      "expectedAnswer": "It makes flowers/seeds/fruit.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SCI.G3.EVIDENCE.EXPLANATION",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1-MV06",
+      "type": "apply",
+      "prompt": "Name the stage: a young plant with small leaves.",
+      "expectedAnswer": "Seedling.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "SCI.G3.EVIDENCE.EXPLANATION",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    }
+  ],
+  "reteachPath": {
+    "misconception": "Student treats the life cycle as a straight line and skips reproduction/new seeds.",
+    "simpleExplanation": "A cycle repeats. New seeds are what let the pattern begin again.",
+    "steps": [
+      "Lay out stage cards in order.",
+      "Add arrows from one stage to the next.",
+      "Circle back from new seeds to seed.",
+      "Say the job of each stage.",
+      "Explain what would happen if one stage were missing."
+    ],
+    "practice": [
+      {
+        "prompt": "First stage?",
+        "answer": "Seed"
+      },
+      {
+        "prompt": "Seed begins to grow = ?",
+        "answer": "Germination"
+      },
+      {
+        "prompt": "Young plant = ?",
+        "answer": "Seedling"
+      },
+      {
+        "prompt": "What lets the cycle repeat?",
+        "answer": "New seeds"
+      },
+      {
+        "prompt": "Fix: seed → flower → seedling",
+        "answer": "seed → germination → seedling → mature plant/flower"
+      }
+    ],
+    "exitCriteria": "Student completes at least 4 of 5 reteach items and explains the corrected misconception."
+  },
+  "challengePath": {
+    "tasks": [
+      "Compare a plant life cycle to an animal life cycle. What is similar and different?",
+      "Design an investigation to observe seed germination over one week.",
+      "Explain how a missing pollinator could affect seed production."
+    ],
+    "extensionRule": "Unlock at 90+ mastery or teacher/parent assignment; still schedule Memory Vault review."
+  },
+  "mastery": {
+    "bands": [
+      {
+        "range": "0-39",
+        "label": "Needs Intervention",
+        "action": "Assign intervention path, parent/teacher alert if repeated twice."
+      },
+      {
+        "range": "40-64",
+        "label": "Needs Reteach",
+        "action": "Assign reteach path and review tomorrow."
+      },
+      {
+        "range": "65-79",
+        "label": "Almost Mastered",
+        "action": "Assign guided practice and schedule review in 1 day."
+      },
+      {
+        "range": "80-89",
+        "label": "Mastered",
+        "action": "Schedule Memory Vault review on Day 1, 3, 7, 14, 30."
+      },
+      {
+        "range": "90-100",
+        "label": "Advanced",
+        "action": "Unlock challenge task and still schedule spaced review."
+      }
+    ],
+    "weights": {
+      "retrievalCheck": 0.2,
+      "quizAccuracy": 0.3,
+      "firstPrinciplesProcess": 0.15,
+      "evidenceOrReasoningQuality": 0.15,
+      "activePracticeCompletion": 0.1,
+      "reflectionQuality": 0.1
+    },
+    "masteryThreshold": 80,
+    "advancedThreshold": 90,
+    "minimumEvidence": [
+      "retrieval check completed",
+      "quiz completed",
+      "one reasoning/explanation artifact saved",
+      "Memory Vault items generated"
+    ]
+  },
+  "parentTeacherNotes": "Plant a bean seed in a cup or observe a plant outside. Ask the student to identify the current stage and predict what comes next.",
+  "accessibilityNotes": [
+    "Use plain, grade-appropriate language and define academic vocabulary before using it in prompts.",
+    "Provide alt text or text-equivalent descriptions for every image, diagram, array, chart, map, or model.",
+    "Make all interactive elements keyboard accessible with visible focus states and screen-reader labels.",
+    "Never rely only on color to communicate correct/incorrect, categories, or importance.",
+    "Provide read-aloud support for Foundation Academy and optional read-aloud for all grade bands.",
+    "Chunk instructions into short steps and provide examples before independent work."
+  ],
+  "safetyNotes": [
+    "No public student posting, random direct messages, or unrestricted discussion.",
+    "Discussion prompts must use sentence frames and moderation/teacher controls when implemented.",
+    "Student-generated work should be visible only to the student and authorized parent/teacher roles unless explicitly assigned in a safe classroom workflow.",
+    "Do not collect unnecessary personal information in lesson responses."
+  ],
+  "implementationNotes": [
+    "Render lessonFlow sections in order with progress state.",
+    "Persist quiz attempts and item-level skill tags.",
+    "Generate Memory Vault records after lesson completion.",
+    "Use mastery bands to branch to reteach, guided practice, review, or challenge.",
+    "Store open responses privately with role-based access.",
+    "Use answer keys and rubrics for review; do not expose hidden answer keys in student mode."
+  ],
+  "reviewStatus": {
+    "contentStatus": "v2 polished",
+    "reviewedAgainst": [
+      "curriculum inventory v2",
+      "universal lesson flow",
+      "Memory Vault requirements",
+      "mastery model",
+      "child safety and accessibility rules"
+    ],
+    "knownLimitations": "Standards tags are platform-internal placeholders until state-specific mappings are added."
+  }
+}

@@ -1,0 +1,43 @@
+# Manifest — K–12 Seed Lessons Complete v2
+
+- `LESSON_JSON_SCHEMA_V2.json`
+- `LESSON_REVIEW_AND_POLISH_REPORT_V2.md`
+- `README.md`
+- `answer-keys/MASTER_ANSWER_KEY_V2.md`
+- `answer-keys/answer_key_master_v2.csv`
+- `lessons/json/BA-G6-ELA-U2-L1_THEME_AND_TEXT_EVIDENCE.json`
+- `lessons/json/BA-G6-MATH-U1-L1_UNDERSTANDING_RATIOS.json`
+- `lessons/json/BA-G6-SCI-U2-L1_WATER_CYCLE_SYSTEMS.json`
+- `lessons/json/BA-G6-SS-U2-L1_ANCIENT_CIVILIZATIONS_AND_GEOGRAPHY.json`
+- `lessons/json/FA-G3-ELA-U2-L1_FINDING_THE_MAIN_IDEA.json`
+- `lessons/json/FA-G3-MATH-U1-L1_MULTIPLICATION_AS_EQUAL_GROUPS.json`
+- `lessons/json/FA-G3-SCI-U1-L1_PLANT_LIFE_CYCLES.json`
+- `lessons/json/FA-G3-SS-U1-L1_COMMUNITIES_AND_ROLES.json`
+- `lessons/json/SA-G9-ALG-U1-L1_VARIABLES_AND_EXPRESSIONS.json`
+- `lessons/json/SA-G9-BIO-U2-L1_CELLS_AS_SYSTEMS.json`
+- `lessons/json/SA-G9-ENG-U3-L1_CLAIM_EVIDENCE_AND_REASONING.json`
+- `lessons/json/SA-G9-WH-U2-L1_EARLY_RIVER_VALLEY_CIVILIZATIONS.json`
+- `lessons/markdown/BA-G6-ELA-U2-L1_THEME_AND_TEXT_EVIDENCE.md`
+- `lessons/markdown/BA-G6-MATH-U1-L1_UNDERSTANDING_RATIOS.md`
+- `lessons/markdown/BA-G6-SCI-U2-L1_WATER_CYCLE_SYSTEMS.md`
+- `lessons/markdown/BA-G6-SS-U2-L1_ANCIENT_CIVILIZATIONS_AND_GEOGRAPHY.md`
+- `lessons/markdown/FA-G3-ELA-U2-L1_FINDING_THE_MAIN_IDEA.md`
+- `lessons/markdown/FA-G3-MATH-U1-L1_MULTIPLICATION_AS_EQUAL_GROUPS.md`
+- `lessons/markdown/FA-G3-SCI-U1-L1_PLANT_LIFE_CYCLES.md`
+- `lessons/markdown/FA-G3-SS-U1-L1_COMMUNITIES_AND_ROLES.md`
+- `lessons/markdown/SA-G9-ALG-U1-L1_VARIABLES_AND_EXPRESSIONS.md`
+- `lessons/markdown/SA-G9-BIO-U2-L1_CELLS_AS_SYSTEMS.md`
+- `lessons/markdown/SA-G9-ENG-U3-L1_CLAIM_EVIDENCE_AND_REASONING.md`
+- `lessons/markdown/SA-G9-WH-U2-L1_EARLY_RIVER_VALLEY_CIVILIZATIONS.md`
+- `memory-vault/MASTER_MEMORY_VAULT_ITEMS_V2.md`
+- `memory-vault/memory_vault_items_v2.csv`
+- `review-rubrics/LESSON_QA_RUBRIC_V2.md`
+- `tables/challenge_paths_v2.csv`
+- `tables/complete_lesson_index_v2.csv`
+- `tables/lesson_audit_matrix_v2.csv`
+- `tables/quiz_bank_v2.csv`
+- `tables/reteach_paths_v2.csv`
+
+## V5 Additions
+- Added 4 complete seed lessons to expand MVP content from 12 to 16.
+- Added thinking/adaptation systems scaffold: Mistake Journal, Reteach Engine, Challenge Engine, Problem-Solving Lab, Evidence Room, Interpretation Lens, Discussion Arena, Learning Planner, Systems Mapper, Portfolio Evidence System.

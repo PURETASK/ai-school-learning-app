@@ -1,0 +1,145 @@
+lesson_id,question_id,correct_answer,explanation,skill_tag,difficulty
+FA-G3-MATH-U1-L1,FA-G3-MATH-U1-L1-Q01,4 × 6,There are four equal groups of 6.,MATH.G3.OA.EQUAL_GROUPS,easy
+FA-G3-MATH-U1-L1,FA-G3-MATH-U1-L1-Q02,3 groups of 8,Multiplication describes groups of equal size.,MATH.G3.OA.EQUAL_GROUPS,easy
+FA-G3-MATH-U1-L1,FA-G3-MATH-U1-L1-Q03,5 × 4 = 20,There are 5 equal groups of 4.,MATH.G3.WORD_PROBLEM,medium
+FA-G3-MATH-U1-L1,FA-G3-MATH-U1-L1-Q04,7 + 7,2 groups of 7 means add 7 twice.,MATH.G3.REPEATED_ADDITION,easy
+FA-G3-MATH-U1-L1,FA-G3-MATH-U1-L1-Q05,"2, 2, 2, 2",All groups have the same number.,MATH.G3.MODELS,easy
+FA-G3-MATH-U1-L1,FA-G3-MATH-U1-L1-Q06,4 × 3 means 4 groups of 3; 4 + 3 joins 4 and 3 one time.,Look for group-based reasoning.,THINK.EXPLAIN,medium
+FA-G3-MATH-U1-L1,FA-G3-MATH-U1-L1-Q07,"They added the factors. Correct: 5 + 5 + 5 = 15, so 3 × 5 = 15.",This targets the common misconception.,MISTAKE.ADD_FACTORS,medium
+FA-G3-MATH-U1-L1,FA-G3-MATH-U1-L1-Q08,24 cars,4 groups of 6 = 24.,MATH.G3.ARRAYS,medium
+FA-G3-MATH-U1-L1,FA-G3-MATH-U1-L1-Q09,3 boxes with 4 pencils in each,It describes 3 equal groups of 4.,MATH.G3.CONTEXT,medium
+FA-G3-MATH-U1-L1,FA-G3-MATH-U1-L1-Q10,Example: 2 plates with 9 cookies on each plate.,Any story with 2 equal groups of 9 is valid.,CREATE.CONTEXT,medium
+FA-G3-MATH-U1-L1,FA-G3-MATH-U1-L1-Q11,Notice the groups are not equal,Multiplication needs equal groups.,CRITICAL.CHECK_MODEL,hard
+FA-G3-MATH-U1-L1,FA-G3-MATH-U1-L1-Q12,"It shows equal rows and columns, so you can count or skip-count the total.",Arrays make the group structure visible.,EVIDENCE.MODEL,medium
+FA-G3-ELA-U2-L1,FA-G3-ELA-U2-L1-Q01,Butterflies,"A topic is the subject, not the full important point.",ELA.TOPIC_VS_MAIN_IDEA,easy
+FA-G3-ELA-U2-L1,FA-G3-ELA-U2-L1-Q02,Plants have parts that help them live.,It covers all the key details.,ELA.MAIN_IDEA,easy
+FA-G3-ELA-U2-L1,FA-G3-ELA-U2-L1-Q03,Exercise helps the body in many ways.,The answer should cover all listed details.,ELA.SUMMARY,medium
+FA-G3-ELA-U2-L1,FA-G3-ELA-U2-L1-Q04,Some dogs guide people who cannot see.,It directly proves dogs can help.,EVIDENCE.RELEVANCE,medium
+FA-G3-ELA-U2-L1,FA-G3-ELA-U2-L1-Q05,"“Trees” is probably only a topic or detail, not a complete main idea about habitats.",Main ideas are complete points.,MISTAKE.TOPIC_AS_MAIN_IDEA,medium
+FA-G3-ELA-U2-L1,FA-G3-ELA-U2-L1-Q06,most important details,Main ideas are supported by key details.,ELA.MAIN_IDEA_CHECK,easy
+FA-G3-ELA-U2-L1,FA-G3-ELA-U2-L1-Q07,Evidence proves the main idea is supported by the text.,Students should name proof/details.,EVIDENCE.REASONING,medium
+FA-G3-ELA-U2-L1,FA-G3-ELA-U2-L1-Q08,"A storm is beginning, or weather changes before rain.",Accept a sentence covering all details.,INTERPRET.DETAILS,medium
+FA-G3-ELA-U2-L1,FA-G3-ELA-U2-L1-Q09,Some libraries have blue chairs.,It is not central to how libraries help readers.,CRITICAL.RELEVANCE,medium
+FA-G3-ELA-U2-L1,FA-G3-ELA-U2-L1-Q10,Example: Volcanoes can change the land when they erupt.,A complete sentence about volcanoes is required.,CREATE.MAIN_IDEA,medium
+FA-G3-ELA-U2-L1,FA-G3-ELA-U2-L1-Q11,Find key details,Details are the evidence.,PROCESS.READING,easy
+FA-G3-ELA-U2-L1,FA-G3-ELA-U2-L1-Q12,They show related evidence that points to the same important message.,Look for connection language.,EVIDENCE.SYNTHESIS,hard
+FA-G3-SCI-U1-L1,FA-G3-SCI-U1-L1-Q01,seed,Many flowering plants begin as seeds.,SCI.SEQUENCE,easy
+FA-G3-SCI-U1-L1,FA-G3-SCI-U1-L1-Q02,a seed beginning to grow,Germination is the start of growth from a seed.,SCI.VOCAB,easy
+FA-G3-SCI-U1-L1,FA-G3-SCI-U1-L1-Q03,"water and warmth, or water and air depending context",Seeds need proper conditions to begin growing.,SCI.NEEDS,medium
+FA-G3-SCI-U1-L1,FA-G3-SCI-U1-L1-Q04,The stages can repeat,New seeds can start the cycle again.,SYSTEMS.CYCLE,easy
+FA-G3-SCI-U1-L1,FA-G3-SCI-U1-L1-Q05,A seedling grows before the mature plant makes flowers.,The sequence is incorrect.,MISTAKE.SEQUENCE,medium
+FA-G3-SCI-U1-L1,FA-G3-SCI-U1-L1-Q06,Flowers can help produce seeds through pollination/reproduction.,Look for seed-making connection.,EVIDENCE.REASONING,medium
+FA-G3-SCI-U1-L1,FA-G3-SCI-U1-L1-Q07,seedling,A seedling is a young plant.,SCI.VOCAB,easy
+FA-G3-SCI-U1-L1,FA-G3-SCI-U1-L1-Q08,Mature plant/flowering stage.,The presence of flowers suggests maturity.,SCI.INTERPRET_MODEL,medium
+FA-G3-SCI-U1-L1,FA-G3-SCI-U1-L1-Q09,It is making new seeds,Reproduction makes new plants possible.,EVIDENCE.SCIENCE,medium
+FA-G3-SCI-U1-L1,FA-G3-SCI-U1-L1-Q10,seedling,"After germination, it becomes a young plant.",SCI.SEQUENCE,easy
+FA-G3-SCI-U1-L1,FA-G3-SCI-U1-L1-Q11,"It may not germinate or grow, so it cannot mature and make seeds.",Connect needs to stages.,SYSTEMS.CAUSE_EFFECT,hard
+FA-G3-SCI-U1-L1,FA-G3-SCI-U1-L1-Q12,Seed → germination → seedling → mature plant/flower → seeds → seed.,Must include repeating cycle.,CREATE.MODEL,medium
+FA-G3-SS-U1-L1,FA-G3-SS-U1-L1-Q01,teacher,Teacher is a role; library and park are places.,SS.ROLE,easy
+FA-G3-SS-U1-L1,FA-G3-SS-U1-L1-Q02,firefighter,Firefighters help protect people and respond to emergencies.,SS.NEEDS,easy
+FA-G3-SS-U1-L1,FA-G3-SS-U1-L1-Q03,"Follow rules, help classmates, listen, clean up, etc.",Responsibilities help the group work.,CIVICS.RESPONSIBILITY,easy
+FA-G3-SS-U1-L1,FA-G3-SS-U1-L1-Q04,helping someone find a book,A service is work that helps people.,SS.SERVICE,medium
+FA-G3-SS-U1-L1,FA-G3-SS-U1-L1-Q05,It helps people get food and supplies they need.,Connect role/place to need.,EVIDENCE.REASONING,medium
+FA-G3-SS-U1-L1,FA-G3-SS-U1-L1-Q06,"Hospital is a place; doctor, nurse, and paramedic are roles.",Place versus role misconception.,MISTAKE.PLACE_ROLE,medium
+FA-G3-SS-U1-L1,FA-G3-SS-U1-L1-Q07,school—learning,Schools help meet the need for learning.,SS.MATCH,easy
+FA-G3-SS-U1-L1,FA-G3-SS-U1-L1-Q08,Safety for students crossing streets.,Connect missing role to need.,SYSTEMS.CAUSE_EFFECT,medium
+FA-G3-SS-U1-L1,FA-G3-SS-U1-L1-Q09,"Students can follow rules, share, help clean, or help classmates.",Use a specific example.,EVIDENCE.CIVICS,medium
+FA-G3-SS-U1-L1,FA-G3-SS-U1-L1-Q10,Different needs require different kinds of help,Communities are systems with many needs.,SYSTEMS.COMMUNITY,medium
+FA-G3-SS-U1-L1,FA-G3-SS-U1-L1-Q11,Any valid role plus reason.,Measures structured discussion.,DISCUSSION.FRAME,medium
+FA-G3-SS-U1-L1,FA-G3-SS-U1-L1-Q12,"Example: litter in park—students and park workers can clean, city leaders can add bins.",Multiple-role reasoning required.,CRITICAL.COMMUNITY_PROBLEM,hard
+BA-G6-MATH-U1-L1,BA-G6-MATH-U1-L1-Q01,5:8,"The order is apples first, oranges second.",MATH.RATIO_LANGUAGE,easy
+BA-G6-MATH-U1-L1,BA-G6-MATH-U1-L1-Q02,8:28,Multiply both parts by 4.,MATH.EQUIVALENT_RATIO,medium
+BA-G6-MATH-U1-L1,BA-G6-MATH-U1-L1-Q03,6:10,Both parts were multiplied by 2.,MATH.EQUIVALENT_RATIO,medium
+BA-G6-MATH-U1-L1,BA-G6-MATH-U1-L1-Q04,"Equivalent ratios require multiplying/dividing both parts by the same factor, not adding the same number.",Targets additive reasoning.,MISTAKE.ADDITIVE_RATIO,medium
+BA-G6-MATH-U1-L1,BA-G6-MATH-U1-L1-Q05,The order reverses which quantity is first and changes the relationship in context.,Order carries meaning.,CRITICAL.ORDER,medium
+BA-G6-MATH-U1-L1,BA-G6-MATH-U1-L1-Q06,8 cups water,Scale 1:2 by 4.,MATH.RATIO_CONTEXT,medium
+BA-G6-MATH-U1-L1,BA-G6-MATH-U1-L1-Q07,5:7,It asks part-to-part.,MATH.PART_TO_PART,easy
+BA-G6-MATH-U1-L1,BA-G6-MATH-U1-L1-Q08,5:12,It asks part-to-whole.,MATH.PART_TO_WHOLE,medium
+BA-G6-MATH-U1-L1,BA-G6-MATH-U1-L1-Q09,2:3,Divide both parts by 5.,MATH.SIMPLIFY,medium
+BA-G6-MATH-U1-L1,BA-G6-MATH-U1-L1-Q10,"Divide both 12 and 18 by 6, or multiply 2:3 by 6.",Requires evidence.,EVIDENCE.RATIO,medium
+BA-G6-MATH-U1-L1,BA-G6-MATH-U1-L1-Q11,6:8,"6:8 simplifies to 3:4, not 2:3.",MATH.DISTRACTOR,hard
+BA-G6-MATH-U1-L1,BA-G6-MATH-U1-L1-Q12,8 scoops powder,"Scale 5 cups water to 20 by multiplying by 4, so 2 scoops becomes 8.",MATH.MULTISTEP,hard
+BA-G6-ELA-U2-L1,BA-G6-ELA-U2-L1-Q01,Hard work can help people overcome obstacles.,It is a full message about life.,ELA.THEME,easy
+BA-G6-ELA-U2-L1,BA-G6-ELA-U2-L1-Q02,Lena practiced every day after failing the first test.,It shows continuing despite difficulty.,EVIDENCE.RELEVANCE,easy
+BA-G6-ELA-U2-L1,BA-G6-ELA-U2-L1-Q03,"Example: Honesty can be difficult, but it helps rebuild trust.",Must be a full message about life.,CREATE.THEME,medium
+BA-G6-ELA-U2-L1,BA-G6-ELA-U2-L1-Q04,"That is a plot event, not a life message.",Theme is deeper than plot summary.,MISTAKE.PLOT_THEME,medium
+BA-G6-ELA-U2-L1,BA-G6-ELA-U2-L1-Q05,Evidence proves the theme is supported by the story instead of guessed.,Claim must be justified.,EVIDENCE.REASONING,medium
+BA-G6-ELA-U2-L1,BA-G6-ELA-U2-L1-Q06,main character choice,Character choices reveal meaning.,INTERPRET.PATTERN,easy
+BA-G6-ELA-U2-L1,BA-G6-ELA-U2-L1-Q07,Evidence where a character acts responsibly or repairs harm and others trust them again.,Assess relevance and reasoning.,CER.EVIDENCE,medium
+BA-G6-ELA-U2-L1,BA-G6-ELA-U2-L1-Q08,Valid theme plus evidence-based reason.,Structured academic dialogue.,DISCUSSION.FRAME,medium
+BA-G6-ELA-U2-L1,BA-G6-ELA-U2-L1-Q09,A character buys a red notebook.,It does not show sacrifice.,CRITICAL.EVIDENCE_QUALITY,medium
+BA-G6-ELA-U2-L1,BA-G6-ELA-U2-L1-Q10,Perseverance and learning from failure can lead to success.,Theme should generalize from the evidence.,INTERPRET.THEME,medium
+BA-G6-ELA-U2-L1,BA-G6-ELA-U2-L1-Q11,,The explanation of how the evidence supports the claim.,CER.REASONING,easy
+BA-G6-ELA-U2-L1,BA-G6-ELA-U2-L1-Q12,A valid alternate theme plus necessary supporting evidence.,Advanced interpretation.,CRITICAL.COUNTERARGUMENT,hard
+BA-G6-SCI-U2-L1,BA-G6-SCI-U2-L1-Q01,evaporation,Evaporation changes liquid to gas.,SCI.WATER_CYCLE.VOCAB,easy
+BA-G6-SCI-U2-L1,BA-G6-SCI-U2-L1-Q02,condensation,Water vapor cools into droplets.,SCI.WATER_CYCLE.PROCESS,easy
+BA-G6-SCI-U2-L1,BA-G6-SCI-U2-L1-Q03,"Examples: ocean, lake, river, atmosphere, ice, groundwater, soil, plants.",Reservoirs store water.,SCI.SYSTEMS.RESERVOIR,easy
+BA-G6-SCI-U2-L1,BA-G6-SCI-U2-L1-Q04,It provides energy for evaporation and helps drive movement of water into the atmosphere.,Energy reasoning required.,EVIDENCE.ENERGY,medium
+BA-G6-SCI-U2-L1,BA-G6-SCI-U2-L1-Q05,It is not gone; it changed into water vapor in the atmosphere.,Matter changes form/location.,MISTAKE.MATTER_CONSERVATION,medium
+BA-G6-SCI-U2-L1,BA-G6-SCI-U2-L1-Q06,gravity,Gravity pulls water downward.,SCI.FORCES.GRAVITY,easy
+BA-G6-SCI-U2-L1,BA-G6-SCI-U2-L1-Q07,Evaporation.,Heat energy causes liquid water to become vapor.,SCI.APPLY,medium
+BA-G6-SCI-U2-L1,BA-G6-SCI-U2-L1-Q08,groundwater,Groundwater is often omitted in simple diagrams but is important.,SYSTEMS.COMPLEXITY,medium
+BA-G6-SCI-U2-L1,BA-G6-SCI-U2-L1-Q09,Water vapor released by plants.,Plants are part of the water cycle.,SCI.VOCAB,medium
+BA-G6-SCI-U2-L1,BA-G6-SCI-U2-L1-Q10,"It has connected parts such as reservoirs, processes, energy, and gravity that affect one another.",Must name connected parts.,SYSTEMS.EVIDENCE,hard
+BA-G6-SCI-U2-L1,BA-G6-SCI-U2-L1-Q11,evaporation → condensation → precipitation,This follows common water-cycle processes.,SCI.SEQUENCE,medium
+BA-G6-SCI-U2-L1,BA-G6-SCI-U2-L1-Q12,"Example: precipitation infiltrates soil, enters groundwater, flows to stream, returns to ocean.",Complex systems path.,SYSTEMS.MODEL,hard
+BA-G6-SS-U2-L1,BA-G6-SS-U2-L1-Q01,river water and fertile soil,Farming needs water and fertile soil.,SS.GEOGRAPHY.FARMING,easy
+BA-G6-SS-U2-L1,BA-G6-SS-U2-L1-Q02,extra food or goods,Surplus means more than immediate need.,SS.VOCAB,easy
+BA-G6-SS-U2-L1,BA-G6-SS-U2-L1-Q03,Rivers could be used for transportation and exchange of goods.,Connect river to movement/trade.,SS.CAUSE_EFFECT,medium
+BA-G6-SS-U2-L1,BA-G6-SS-U2-L1-Q04,"Human choices, technology, cooperation, government, and adaptation also mattered.",Avoid geographic determinism.,CRITICAL.COMPLEXITY,hard
+BA-G6-SS-U2-L1,BA-G6-SS-U2-L1-Q05,Map shows cities along river valleys,Map evidence directly supports settlement patterns.,EVIDENCE.MAP,medium
+BA-G6-SS-U2-L1,BA-G6-SS-U2-L1-Q06,"It could bring water to crops, increase food production, support surplus, and help larger settlements.",Requires cause/effect chain.,SS.IRRIGATION,medium
+BA-G6-SS-U2-L1,BA-G6-SS-U2-L1-Q07,protection and isolation,Mountains can protect but make movement harder.,GEOGRAPHY.TRADEOFF,medium
+BA-G6-SS-U2-L1,BA-G6-SS-U2-L1-Q08,"Near river, because water and fertile soil support farming and settlement.",Must cite geographic evidence.,APPLY.SETTLEMENT,medium
+BA-G6-SS-U2-L1,BA-G6-SS-U2-L1-Q09,"A complex society with cities, government, specialized jobs, culture, and record keeping.",Definition may vary but needs complexity.,SS.VOCAB,medium
+BA-G6-SS-U2-L1,BA-G6-SS-U2-L1-Q10,Map shows water source/fertile land/transport route; these meet needs.,Evidence and reasoning required.,EVIDENCE.REASONING,medium
+BA-G6-SS-U2-L1,BA-G6-SS-U2-L1-Q11,,A feature plus evidence-based reason.,DISCUSSION.FRAME,medium
+BA-G6-SS-U2-L1,BA-G6-SS-U2-L1-Q12,Benefit: water/farming/trade. Problem: flooding/conflict/limited land.,Tradeoff reasoning.,CRITICAL.TRADEOFF,hard
+SA-G9-ALG-U1-L1,SA-G9-ALG-U1-L1-Q01,3x + 7,An expression has no equals or inequality sign.,ALG.EXPRESSION,easy
+SA-G9-ALG-U1-L1,SA-G9-ALG-U1-L1-Q02,2n + 9,Twice a number is 2n; 9 more adds 9.,ALG.WRITE,medium
+SA-G9-ALG-U1-L1,SA-G9-ALG-U1-L1-Q03,5,The coefficient multiplies the variable.,ALG.VOCAB,easy
+SA-G9-ALG-U1-L1,SA-G9-ALG-U1-L1-Q04,14,3(6) - 4 = 18 - 4 = 14.,ALG.EVALUATE,medium
+SA-G9-ALG-U1-L1,SA-G9-ALG-U1-L1-Q05,"4x means 4 multiplied by x, or four groups of x.",Juxtaposition means multiplication.,MISTAKE.COEFFICIENT,medium
+SA-G9-ALG-U1-L1,SA-G9-ALG-U1-L1-Q06,8 is fixed; 3m changes based on the number of movies.,Connect structure to context.,STRUCTURE.REASONING,medium
+SA-G9-ALG-U1-L1,SA-G9-ALG-U1-L1-Q07,5t,$5 for each ticket means 5 times t.,ALG.CONTEXT,easy
+SA-G9-ALG-U1-L1,SA-G9-ALG-U1-L1-Q08,20 + 15m,Fixed fee plus monthly fee.,ALG.MODEL,medium
+SA-G9-ALG-U1-L1,SA-G9-ALG-U1-L1-Q09,20,"If m=0, the monthly term is 0, leaving the fixed fee.",ALG.CHECK,medium
+SA-G9-ALG-U1-L1,SA-G9-ALG-U1-L1-Q10,4x and 7,Terms are separated by addition/subtraction.,ALG.STRUCTURE,easy
+SA-G9-ALG-U1-L1,SA-G9-ALG-U1-L1-Q11,2n means twice n; +5 means 5 more.,Requires structure explanation.,EVIDENCE.EXPRESSION,medium
+SA-G9-ALG-U1-L1,SA-G9-ALG-U1-L1-Q12,Two valid contexts with interpreted terms.,Transfer understanding.,ALG.TRANSFER,hard
+SA-G9-ENG-U3-L1,SA-G9-ENG-U3-L1-Q01,The narrator is unreliable.,It is an arguable interpretation needing support.,CER.CLAIM,easy
+SA-G9-ENG-U3-L1,SA-G9-ENG-U3-L1-Q02,"She taps her foot and whispers, “What if I fail?”",It directly shows nervous behavior and words.,CER.EVIDENCE,easy
+SA-G9-ENG-U3-L1,SA-G9-ENG-U3-L1-Q03,Returning the wallet shows honesty because he chose to give back something that was not his.,Reasoning connects action to trait.,CER.REASONING,medium
+SA-G9-ENG-U3-L1,SA-G9-ENG-U3-L1-Q04,Reasoning/explanation of how the quote supports the claim.,Quote dropping misconception.,MISTAKE.QUOTE_DROP,medium
+SA-G9-ENG-U3-L1,SA-G9-ENG-U3-L1-Q05,The school mascot is a tiger.,It does not support the sleep claim.,EVIDENCE.RELEVANCE,easy
+SA-G9-ENG-U3-L1,SA-G9-ENG-U3-L1-Q06,"Complex evidence may need several sentences to explain meaning, context, and connection to the claim.",Deep explanation.,WRITING.ANALYSIS,medium
+SA-G9-ENG-U3-L1,SA-G9-ENG-U3-L1-Q07,Example: The character is selfless/brave because they risk safety to help others.,Claim should be arguable and specific.,CREATE.CLAIM,medium
+SA-G9-ENG-U3-L1,SA-G9-ENG-U3-L1-Q08,Present an opposing idea fairly,Counterclaims show awareness of complexity.,ARGUMENT.COUNTERCLAIM,medium
+SA-G9-ENG-U3-L1,SA-G9-ENG-U3-L1-Q09,"Answer should choose stronger, more direct evidence and justify relevance.",Evidence evaluation.,CRITICAL.RANK_EVIDENCE,hard
+SA-G9-ENG-U3-L1,SA-G9-ENG-U3-L1-Q10,Claim plus specific evidence and reasoning.,Must contain all CER parts.,CER.PARAGRAPH,hard
+SA-G9-ENG-U3-L1,SA-G9-ENG-U3-L1-Q11,How directly evidence connects to the claim,Relevance is connection to claim.,VOCAB.RELEVANCE,easy
+SA-G9-ENG-U3-L1,SA-G9-ENG-U3-L1-Q12,Whether the evidence directly supports the claim and whether stronger proof exists.,Metacognitive revision.,METACOG.REVISE,medium
+SA-G9-BIO-U2-L1,SA-G9-BIO-U2-L1-Q01,Interacting parts that support life functions,Systems involve interacting parts.,BIO.SYSTEMS,easy
+SA-G9-BIO-U2-L1,SA-G9-BIO-U2-L1-Q02,cell membrane,The membrane regulates exchange.,BIO.MEMBRANE,easy
+SA-G9-BIO-U2-L1,SA-G9-BIO-U2-L1-Q03,Proteins.,Ribosomes are protein-building structures.,BIO.RIBOSOME,easy
+SA-G9-BIO-U2-L1,SA-G9-BIO-U2-L1-Q04,"Materials may enter/leave improperly, disrupting balance and cell survival.",Connect part failure to system.,SYSTEMS.CAUSE_EFFECT,medium
+SA-G9-BIO-U2-L1,SA-G9-BIO-U2-L1-Q05,"Organelles interact; for example, DNA instructions guide protein building and energy is needed for cell processes.",Systems misconception.,MISTAKE.ISOLATED_PARTS,medium
+SA-G9-BIO-U2-L1,SA-G9-BIO-U2-L1-Q06,The membrane’s boundary structure helps control exchange.,It links structure to function.,BIO.STRUCTURE_FUNCTION,medium
+SA-G9-BIO-U2-L1,SA-G9-BIO-U2-L1-Q07,"Protein production would decrease, affecting many cell functions.",System consequence.,BIO.PREDICT,medium
+SA-G9-BIO-U2-L1,SA-G9-BIO-U2-L1-Q08,DNA/instructions,The nucleus stores genetic information.,BIO.NUCLEUS,easy
+SA-G9-BIO-U2-L1,SA-G9-BIO-U2-L1-Q09,It shows parts/relationships but simplifies chemical complexity and scale.,Model critique required.,SCI.MODELS,hard
+SA-G9-BIO-U2-L1,SA-G9-BIO-U2-L1-Q10,Inputs: nutrients/oxygen/water; outputs: waste/proteins/carbon dioxide.,Accept reasonable biological examples.,BIO.INPUT_OUTPUT,medium
+SA-G9-BIO-U2-L1,SA-G9-BIO-U2-L1-Q11,,Valid organelle failure consequence.,DISCUSSION.SYSTEMS,medium
+SA-G9-BIO-U2-L1,SA-G9-BIO-U2-L1-Q12,,"Map should include interactions, not isolated labels.",SYSTEMS.MAP,hard
+SA-G9-WH-U2-L1,SA-G9-WH-U2-L1-Q01,predictable water and fertile soil,Agriculture depends on water and soil.,WH.GEOGRAPHY.AGRICULTURE,easy
+SA-G9-WH-U2-L1,SA-G9-WH-U2-L1-Q02,People doing different jobs because not everyone had to farm.,Surplus supports specialization.,WH.VOCAB,easy
+SA-G9-WH-U2-L1,SA-G9-WH-U2-L1-Q03,"Rivers provided resources, but people needed technology, labor organization, government, and culture to build complex societies.",Multi-causal reasoning.,CRITICAL.CAUSATION,medium
+SA-G9-WH-U2-L1,SA-G9-WH-U2-L1-Q04,canal,Canals are built systems supporting water movement/agriculture.,WH.INFRASTRUCTURE,easy
+SA-G9-WH-U2-L1,SA-G9-WH-U2-L1-Q05,"Surplus allowed non-farmers such as builders, priests, scribes, rulers, or artisans, creating specialized roles.",Evidence chain required.,EVIDENCE.CAUSAL_CHAIN,medium
+SA-G9-WH-U2-L1,SA-G9-WH-U2-L1-Q06,"They shared patterns but differed by geography, culture, politics, technology, and historical context.",Avoid overgeneralization.,MISTAKE.OVERGENERALIZATION,medium
+SA-G9-WH-U2-L1,SA-G9-WH-U2-L1-Q07,map of early cities along rivers,Map evidence supports location pattern.,EVIDENCE.MAP,easy
+SA-G9-WH-U2-L1,SA-G9-WH-U2-L1-Q08,Irrigation requires organized labor; organization may require leaders/rules; this supports government/state formation.,Causal reasoning.,WH.CAUSAL_CHAIN,hard
+SA-G9-WH-U2-L1,SA-G9-WH-U2-L1-Q09,The development of organized government and authority.,Definition may vary.,WH.VOCAB,medium
+SA-G9-WH-U2-L1,SA-G9-WH-U2-L1-Q10,,Must include geographic and non-geographic factor.,DISCUSSION.COMPLEXITY,medium
+SA-G9-WH-U2-L1,SA-G9-WH-U2-L1-Q11,"Rivers supported farming, surplus supported specialization, and organization helped build institutions.",It gives connected causes.,CRITICAL.BEST_EXPLANATION,hard
+SA-G9-WH-U2-L1,SA-G9-WH-U2-L1-Q12,,Answer should use comparative environmental reasoning and acknowledge uncertainty.,WH.COMPARISON,hard

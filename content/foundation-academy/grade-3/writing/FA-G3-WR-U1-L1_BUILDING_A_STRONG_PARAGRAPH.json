@@ -1,0 +1,533 @@
+{
+  "schemaVersion": "2.0",
+  "id": "FA-G3-WR-U1-L1",
+  "title": "Building a Strong Paragraph",
+  "academy": "foundation",
+  "academyName": "Foundation Academy",
+  "gradeLevel": "3",
+  "subject": "Writing",
+  "course": "Grade 3 Writing",
+  "unit": "Unit 1: Paragraph Foundations",
+  "lessonType": [
+    "writing lesson",
+    "evidence lesson",
+    "thinking lesson"
+  ],
+  "estimatedMinutes": "25 minutes",
+  "developmentNotes": "Grade 3 students need concrete paragraph parts and sentence frames before open writing.",
+  "learningObjective": "Students will write a focused paragraph with a topic sentence, supporting details, and a closing sentence.",
+  "essentialQuestion": "How do writers build a paragraph that makes sense to a reader?",
+  "standardsTags": [
+    "WR.G3.PARAGRAPH.STRUCTURE",
+    "ELA.G3.EVIDENCE.SUPPORT"
+  ],
+  "thinkingSkillTags": [
+    "evidence-based reasoning",
+    "critical thinking",
+    "metacognition"
+  ],
+  "vocabularyTerms": [
+    {
+      "term": "topic sentence",
+      "definition": "The sentence that tells the main idea."
+    },
+    {
+      "term": "supporting detail",
+      "definition": "A sentence that explains or proves the main idea."
+    },
+    {
+      "term": "closing sentence",
+      "definition": "A sentence that wraps up the paragraph."
+    },
+    {
+      "term": "revise",
+      "definition": "To improve writing."
+    }
+  ],
+  "prerequisites": [
+    "Can write complete sentences",
+    "Can identify a main idea"
+  ],
+  "lessonFlow": {
+    "hook": {
+      "time": "3-6 min",
+      "content": "A messy paragraph has good ideas but no clear main idea, weak details, and missing closing sentence. The student becomes a paragraph builder.",
+      "studentAction": "Notice what feels confusing and name what the paragraph needs.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Identifies that paragraphs need one main idea and supporting details."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "learningGoal": {
+      "time": "3-6 min",
+      "content": "I can write a strong paragraph with a topic sentence, supporting details, and a closing sentence.",
+      "studentAction": "Read the goal aloud and predict the three paragraph parts.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Names topic sentence, details, and closing sentence."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "miniTeach": {
+      "time": "3-6 min",
+      "content": "A paragraph is a group of sentences about one idea. The topic sentence tells the idea, details prove or explain it, and the closing sentence wraps it up.",
+      "studentAction": "Match each paragraph part to its job.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Correctly matches all three paragraph parts."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work.",
+      "model": "Topic sentence \u2192 detail 1 \u2192 detail 2 \u2192 detail 3 \u2192 closing sentence"
+    },
+    "firstPrinciplesBreakdown": {
+      "time": "3-6 min",
+      "content": "Break writing down: What is my one idea? What facts or examples support it? What sentence helps the reader feel finished?",
+      "studentAction": "Fill in one idea, three supports, and one ending.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Separates idea from evidence/details."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "workedExample": {
+      "time": "3-6 min",
+      "content": "Topic: Dogs can be helpful pets. Details: they warn families, guide people, and give companionship. Closing: That is why dogs can be more than just pets.",
+      "studentAction": "Point to the topic sentence, details, and closing sentence.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Labels each sentence function correctly."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "guidedPractice": {
+      "time": "3-6 min",
+      "content": "Build a paragraph about a favorite school subject using sentence frames.",
+      "studentAction": "Complete frames: My topic is ___. One reason is ___. Another detail is ___. This shows ___.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Creates a coherent paragraph using frames."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "criticalThinkingCheckpoint": {
+      "time": "3-6 min",
+      "content": "Which detail best supports the topic sentence: 'Reading helps people learn new things'?",
+      "studentAction": "Compare strong, weak, and unrelated details.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Explains why one detail is strongest."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "evidenceBasedReasoningTask": {
+      "time": "3-6 min",
+      "content": "Use Answer \u2192 Proof \u2192 Explanation: Answer what your paragraph is about, choose details that prove it, explain how they fit.",
+      "studentAction": "Sort details into strong support, weak support, and not related.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Chooses details that directly support the topic."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "interpretationOrDiscussionTask": {
+      "time": "3-6 min",
+      "content": "Discussion frame: 'I think this detail belongs because ___. I would remove ___ because ___.'",
+      "studentAction": "Use sentence frames to discuss paragraph choices.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Explains a revision choice respectfully."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "activePractice": {
+      "time": "3-6 min",
+      "content": "Write a five-sentence paragraph about why playgrounds are important.",
+      "studentAction": "Draft topic sentence, three details, and closing sentence.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Includes all paragraph parts."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "retrievalCheck": {
+      "time": "3-6 min",
+      "content": "Without looking, name the three main parts of a strong paragraph.",
+      "studentAction": "Recall topic sentence, details, closing sentence.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Recalls all three parts."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "feedback": {
+      "time": "3-6 min",
+      "content": "Feedback checks structure first, then evidence quality, then sentence clarity.",
+      "studentAction": "Revise one sentence based on feedback.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Improves the paragraph after feedback."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "reflection": {
+      "time": "3-6 min",
+      "content": "What part of the paragraph was easiest? What part needs more practice?",
+      "studentAction": "Choose one writing goal for next time.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Names one specific writing improvement target."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    }
+  },
+  "quiz": [
+    {
+      "id": "FA-G3-WR-U1-L1-Q1",
+      "type": "mc",
+      "question": "What is the job of a topic sentence?",
+      "choices": [
+        "To tell the paragraph's main idea",
+        "To add a random fact",
+        "To end the paragraph",
+        "To list every word"
+      ],
+      "correctAnswer": "To tell the paragraph's main idea",
+      "explanation": "The topic sentence tells the reader what the paragraph is mostly about.",
+      "skillTag": "writing.structure",
+      "difficulty": "medium",
+      "misconceptionTarget": "Misunderstood concept"
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-Q2",
+      "type": "mc",
+      "question": "Which detail best supports 'Plants need care to grow'?",
+      "choices": [
+        "Plants can be green",
+        "Water and sunlight help plants stay healthy",
+        "My backpack is blue",
+        "Some pencils are sharp"
+      ],
+      "correctAnswer": "Water and sunlight help plants stay healthy",
+      "explanation": "This detail directly supports the claim about plant care.",
+      "skillTag": "evidence.support",
+      "difficulty": "medium",
+      "misconceptionTarget": "Weak evidence"
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-Q3",
+      "type": "mc",
+      "question": "What should a closing sentence do?",
+      "choices": [
+        "Introduce a new topic",
+        "Wrap up the paragraph",
+        "Repeat every detail exactly",
+        "Ask an unrelated question"
+      ],
+      "correctAnswer": "Wrap up the paragraph",
+      "explanation": "A closing sentence gives the paragraph a finished feeling.",
+      "skillTag": "writing.structure",
+      "difficulty": "medium",
+      "misconceptionTarget": "Forgot vocabulary"
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-Q4",
+      "type": "mc",
+      "question": "Which sentence does NOT belong in a paragraph about healthy snacks?",
+      "choices": [
+        "Apples can be a healthy snack",
+        "Carrots give the body nutrients",
+        "A video game can be exciting",
+        "Yogurt can have protein"
+      ],
+      "correctAnswer": "A video game can be exciting",
+      "explanation": "That detail is unrelated to healthy snacks.",
+      "skillTag": "evidence.support",
+      "difficulty": "medium",
+      "misconceptionTarget": "Weak evidence"
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-Q5",
+      "type": "mc",
+      "question": "Which order is strongest?",
+      "choices": [
+        "Details, closing, topic",
+        "Topic, details, closing",
+        "Closing, topic, details",
+        "Random facts only"
+      ],
+      "correctAnswer": "Topic, details, closing",
+      "explanation": "A clear paragraph starts with the main idea, supports it, then wraps up.",
+      "skillTag": "writing.structure",
+      "difficulty": "medium",
+      "misconceptionTarget": "Skipped a step"
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-Q6",
+      "type": "mc",
+      "question": "A paragraph should mostly be about how many main ideas?",
+      "choices": [
+        "One",
+        "Two unrelated ideas",
+        "Ten",
+        "None"
+      ],
+      "correctAnswer": "One",
+      "explanation": "A focused paragraph develops one main idea.",
+      "skillTag": "writing.focus",
+      "difficulty": "medium",
+      "misconceptionTarget": "Misunderstood concept"
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-Q7",
+      "type": "short_answer",
+      "question": "Write a topic sentence for a paragraph about why books are useful.",
+      "correctAnswer": "Books are useful because they help people learn, imagine, and understand new ideas.",
+      "explanation": "A strong topic sentence states the main idea clearly.",
+      "skillTag": "writing.structure",
+      "difficulty": "medium",
+      "scoringNotes": "Award full credit for accurate reasoning with relevant evidence; partial credit for incomplete but coherent thinking.",
+      "misconceptionTarget": "Weak explanation"
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-Q8",
+      "type": "explain",
+      "question": "Explain why details must match the topic sentence.",
+      "correctAnswer": "Details must match because they prove or explain the main idea for the reader.",
+      "explanation": "Details are evidence for the topic; unrelated details confuse the reader.",
+      "skillTag": "evidence.support",
+      "difficulty": "medium",
+      "scoringNotes": "Award full credit for accurate reasoning with relevant evidence; partial credit for incomplete but coherent thinking.",
+      "misconceptionTarget": "Weak evidence"
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-Q9",
+      "type": "cer",
+      "question": "Use Claim \u2192 Evidence \u2192 Reasoning for this claim: Parks help communities.",
+      "correctAnswer": "Claim: Parks help communities. Evidence: People can play, exercise, and meet safely. Reasoning: These activities help people connect and stay healthy.",
+      "explanation": "The answer should include a claim, evidence, and reasoning.",
+      "skillTag": "evidence.cer",
+      "difficulty": "medium",
+      "scoringNotes": "Award full credit for accurate reasoning with relevant evidence; partial credit for incomplete but coherent thinking.",
+      "misconceptionTarget": "Weak explanation"
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-Q10",
+      "type": "short_answer",
+      "question": "Revise this weak closing: 'That is it.'",
+      "correctAnswer": "That is why playgrounds are important places for kids and families.",
+      "explanation": "A stronger closing connects back to the paragraph's main idea.",
+      "skillTag": "sentence.clarity",
+      "difficulty": "medium",
+      "scoringNotes": "Award full credit for accurate reasoning with relevant evidence; partial credit for incomplete but coherent thinking.",
+      "misconceptionTarget": "Weak explanation"
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-Q11",
+      "type": "explain",
+      "question": "Explain one important idea from building a strong paragraph using your own words.",
+      "correctAnswer": "A strong answer accurately explains building a strong paragraph and includes a reason or example.",
+      "explanation": "This checks whether the student can explain building a strong paragraph, not just recognize it.",
+      "skillTag": "evidence.support",
+      "difficulty": "medium",
+      "scoringNotes": "Look for accurate concept, reasoning, and a relevant example.",
+      "misconceptionTarget": "Weak explanation"
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-Q12",
+      "type": "explain",
+      "question": "Explain one important idea from building a strong paragraph using your own words.",
+      "correctAnswer": "A strong answer accurately explains building a strong paragraph and includes a reason or example.",
+      "explanation": "This checks whether the student can explain building a strong paragraph, not just recognize it.",
+      "skillTag": "sentence.clarity",
+      "difficulty": "medium",
+      "scoringNotes": "Look for accurate concept, reasoning, and a relevant example.",
+      "misconceptionTarget": "Weak explanation"
+    }
+  ],
+  "retrievalCheck": [
+    {
+      "id": "FA-G3-WR-U1-L1-R1",
+      "prompt": "Name three parts of a paragraph.",
+      "expectedAnswer": "Topic sentence, details, closing sentence.",
+      "feedbackIfMissed": "Review the paragraph structure model."
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-R2",
+      "prompt": "What makes evidence strong?",
+      "expectedAnswer": "It clearly supports the main idea.",
+      "feedbackIfMissed": "Compare strong and weak details again."
+    }
+  ],
+  "memoryVaultItems": [
+    {
+      "id": "FA-G3-WR-U1-L1-MV1",
+      "type": "concept",
+      "prompt": "What are the three main parts of a strong paragraph?",
+      "expectedAnswer": "Topic sentence, supporting details, and closing sentence.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "writing.structure",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-MV2",
+      "type": "vocabulary",
+      "prompt": "What does topic sentence mean?",
+      "expectedAnswer": "A sentence that tells the main idea of a paragraph.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "vocabulary.topicSentence",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-MV3",
+      "type": "application",
+      "prompt": "Choose the stronger detail for 'Exercise is healthy': 'Running strengthens the body' or 'Shoes have laces.'",
+      "expectedAnswer": "Running strengthens the body.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "evidence.support",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-MV4",
+      "type": "explain",
+      "prompt": "Why should details match the topic?",
+      "expectedAnswer": "Because details explain or prove the main idea.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "evidence.reasoning",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-MV5",
+      "type": "concept",
+      "prompt": "What does a closing sentence do?",
+      "expectedAnswer": "It wraps up the paragraph and connects back to the main idea.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "writing.structure",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "FA-G3-WR-U1-L1-MV6",
+      "type": "application",
+      "prompt": "What should you do if a detail is interesting but unrelated?",
+      "expectedAnswer": "Remove it or save it for a different paragraph.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "writing.focus",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    }
+  ],
+  "reteachPath": {
+    "misconception": "Student lists sentences but does not organize them around one main idea.",
+    "simpleExplanation": "A paragraph is like a small team. Every sentence must help the same main idea.",
+    "steps": [
+      "Choose one topic",
+      "Write one topic sentence",
+      "Add three matching details",
+      "Add a closing sentence",
+      "Remove details that do not belong"
+    ],
+    "practice": [
+      "Sort five details into belongs/does not belong",
+      "Complete a paragraph frame",
+      "Revise one weak closing sentence"
+    ],
+    "exitCriteria": "Student writes a paragraph with one clear topic, at least two matching details, and a closing sentence."
+  },
+  "challengePath": {
+    "tasks": [
+      "Write a paragraph with a topic sentence, three details, and one example of evidence.",
+      "Revise a partner-style sample paragraph by removing weak details.",
+      "Turn the paragraph into a short oral explanation for a parent."
+    ],
+    "extensionRule": "Unlock when quiz score is 90%+ or evidence score is strong."
+  },
+  "mastery": {
+    "bands": {
+      "0-39": "Needs Intervention",
+      "40-64": "Needs Reteach",
+      "65-79": "Almost Mastered",
+      "80-89": "Mastered",
+      "90-100": "Advanced"
+    },
+    "weights": {
+      "quiz": 0.55,
+      "retrievalCheck": 0.2,
+      "thinkingTask": 0.15,
+      "reflection": 0.1
+    },
+    "masteryThreshold": 80,
+    "advancedThreshold": 90,
+    "minimumEvidence": [
+      "complete lesson flow",
+      "attempt retrieval check",
+      "submit quiz",
+      "complete reflection"
+    ]
+  },
+  "parentTeacherNotes": "Ask the student to read the paragraph aloud and point to the topic sentence, details, and closing sentence.",
+  "accessibilityNotes": [
+    "Use sentence frames",
+    "Allow oral rehearsal before writing",
+    "Use large text and simple paragraph color-coding"
+  ],
+  "safetyNotes": [
+    "No peer posting in MVP",
+    "Parent-facing notes should avoid judgmental language"
+  ],
+  "implementationNotes": [
+    "Use this lesson to test writing response collection, Evidence Room, and parent support notes."
+  ],
+  "reviewStatus": {
+    "contentStatus": "v5-added",
+    "qaStatus": "ready for MVP seed testing",
+    "lastReviewed": "2026-06-08",
+    "reviewNotes": "Added to expand MVP seed set from 12 to 16 and exercise thinking-system modules."
+  }
+}

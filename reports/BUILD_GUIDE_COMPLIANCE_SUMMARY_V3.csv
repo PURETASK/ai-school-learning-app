@@ -1,0 +1,15 @@
+Area,Build Guide Requirement,Current Status,Compliance,Improvement Made in V3,Remaining Work
+Source of Truth,"Single canonical source for academies, pillars, MVP, mastery bands, Memory Vault",PROJECT_SOURCE_OF_TRUTH.md present and authoritative,Pass,No change required; V3 audit revalidated it,Keep updated when scope changes
+Docs 01-60,Foundation docs plus implementation specs,Present and broadly aligned,Pass with production-hardening needed,Added V3 traceability/hardening docs 69-74,Periodically reduce duplicated/deprecated wording
+Curriculum Inventory,"20 curriculum-control docs covering syllabus, lessons, assessment, rubrics, Memory Vault",Present and improved in v2,Pass with expansion needed,Added audit references and next QA gates,Still needs full 240-lesson MVP production later
+Seed Lessons,"12 complete seed lessons with quiz, answer keys, Memory Vault, reteach/challenge","12 valid JSON lessons, 144 quiz questions, 72 Memory Vault items",Pass,Revalidated and included in static smoke tests,Need pedagogical human review before real learners
+Student Dashboard,"Show today lesson, progress, reviews, mastery, recent/weak skills",Implemented scaffold,Partial Pass,Added progress engine for formal summaries,"Needs persistence, auth, and age-specific layout variations"
+Lesson Player,Support all official universal lesson flow steps,Previously only 13 visible sections,Fixed in V3,"Expanded to 16 sections including derived Mastery Score, Spaced Review, Reteach/Challenge",Needs richer interactive activity components
+Quiz Engine,"Support MC, short answer placeholder, explain-thinking, answer key, score calculation",Implemented heuristic scoring,Partial Pass,No destructive changes; audit flags rubric review need,"Needs rubric scoring, confidence, manual review queue"
+Feedback Engine,"Return correct/wrong explanations, hints, reteach/challenge recommendations",Implemented basic plan,Partial Pass,V3 docs add stronger criteria,Needs targeted misconception-specific feedback per question
+Mastery Engine,Official mastery bands and branching,Implemented,Pass,Validated through static smoke tests,Needs persistent mastery records and skill history
+Memory Vault,Create Day 1/3/7/14/30 review items,Implemented schedule engine,Pass,Static tests enforce schedule,Needs review completion workflow and adaptive rescheduling
+Parent Dashboard,"Show completed lessons, quiz score, mastery, weak skills, reviews, suggested support",Implemented scaffold,Partial Pass,V3 docs add parent consent/safety reminders,Needs guardian auth/linking and exportable reports
+Validation,Prevent bad lesson content,Lesson validator present and passing,Pass,Added static-smoke-tests and audit-foundation scripts,Need JSON schema validation library later
+Testing,Automated tests before production,No framework tests yet,Partial Pass,Added dependency-free smoke tests and audit script,Add Vitest/Playwright after dependencies install
+Safety/Privacy,"Child-safe, role-based, no open chat",Documented but not implemented,Partial Pass,V3 report explicitly separates demo from production,"Implement auth, RBAC, parent consent, privacy logging before beta"

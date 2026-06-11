@@ -1,0 +1,638 @@
+{
+  "schemaVersion": "2.0",
+  "id": "BA-G6-MATH-U1-L1",
+  "title": "Understanding Ratios",
+  "academy": "bridge",
+  "academyName": "Bridge Academy",
+  "gradeLevel": "6",
+  "subject": "Math",
+  "course": "Grade 6 Math",
+  "unit": "Unit 1: Ratios and Rates",
+  "lessonType": [
+    "concept lesson",
+    "skill lesson",
+    "thinking lesson",
+    "retrieval lesson"
+  ],
+  "estimatedMinutes": "40–45",
+  "developmentNotes": "Grade 6 students often treat ratios as subtraction or isolated fractions. Emphasize relationship between two quantities and multiple equivalent representations.",
+  "learningObjective": "Students will describe ratios as relationships between quantities, write ratios in multiple forms, and use ratio reasoning to solve contextual problems.",
+  "essentialQuestion": "How can one relationship describe two quantities at the same time?",
+  "standardsTags": [
+    "MATH.G6.RP.RATIO_CONCEPT",
+    "MATH.G6.RP.RATIO_LANGUAGE",
+    "MATH.G6.REASONING.REPRESENTATIONS",
+    "MATH.G6.PROBLEM_SOLVING.CONTEXT"
+  ],
+  "thinkingSkillTags": [
+    "first-principles problem solving",
+    "proportional reasoning",
+    "critical thinking",
+    "evidence-based reasoning",
+    "systems thinking"
+  ],
+  "vocabularyTerms": [
+    {
+      "term": "ratio",
+      "definition": "a comparison of two quantities"
+    },
+    {
+      "term": "equivalent ratio",
+      "definition": "a ratio that describes the same relationship using different numbers"
+    },
+    {
+      "term": "part-to-part",
+      "definition": "a comparison between two parts"
+    },
+    {
+      "term": "part-to-whole",
+      "definition": "a comparison between one part and the total"
+    },
+    {
+      "term": "rate",
+      "definition": "a ratio comparing quantities with different units"
+    }
+  ],
+  "prerequisites": [
+    "Understand multiplication and division facts",
+    "Read simple fractions",
+    "Compare quantities using words and numbers"
+  ],
+  "lessonFlow": {
+    "hook": {
+      "time": "3–5 min",
+      "content": "A trail mix has 2 cups of raisins for every 3 cups of nuts. Students decide whether a batch with 4 cups raisins and 6 cups nuts tastes the same, stronger, or weaker.",
+      "studentAction": "Predict, notice, or explain initial thinking before direct instruction.",
+      "teacherOrAppAction": "Capture initial response as non-graded diagnostic evidence."
+    },
+    "learningGoal": {
+      "time": "1 min",
+      "content": "I can students will describe ratios as relationships between quantities, write ratios in multiple forms, and use ratio reasoning to solve contextual problems.",
+      "successCriteria": [
+        "I can explain the core concept in my own words.",
+        "I can show evidence or reasoning, not only an answer.",
+        "I can correct a common mistake."
+      ]
+    },
+    "miniTeach": {
+      "time": "6–8 min",
+      "content": "A ratio compares quantities. The order matters because 2 raisins to 3 nuts is not the same statement as 3 raisins to 2 nuts. Ratios can be written as 2 to 3, 2:3, or 2/3 when comparing raisins to nuts. Equivalent ratios keep the same relationship.",
+      "cognitiveLoadNotes": "Use short chunks, one example at a time, and reveal labels only after students observe the model."
+    },
+    "firstPrinciplesBreakdown": {
+      "coreConcept": "A ratio is a relationship between quantities.",
+      "parts": [
+        "first quantity",
+        "second quantity",
+        "order of comparison",
+        "units/context",
+        "multiplicative relationship"
+      ],
+      "known": [
+        "The mix has 2 cups raisins for every 3 cups nuts.",
+        "Both quantities can scale together.",
+        "The relationship matters more than the raw size of the batch."
+      ],
+      "unknown": [
+        "Whether another pair of quantities preserves the same relationship."
+      ],
+      "rules": [
+        "Multiply or divide both quantities by the same factor to make an equivalent ratio.",
+        "Ratio order must match the meaning.",
+        "Part-to-part and part-to-whole comparisons answer different questions."
+      ],
+      "avoid": [
+        "Do not subtract quantities to compare ratio relationships.",
+        "Do not reverse the ratio without changing the meaning.",
+        "Do not ignore units."
+      ],
+      "steps": [
+        "Identify the two quantities.",
+        "Decide order and comparison type.",
+        "Write the ratio.",
+        "Scale both parts by the same factor.",
+        "Check whether the relationship stayed constant."
+      ],
+      "check": "For 2:3 and 4:6, both parts doubled, so the relationship stayed the same."
+    },
+    "workedExample": {
+      "time": "5–7 min",
+      "content": "Problem: There are 6 red tiles and 9 blue tiles. Ratio red to blue is 6:9. Divide both by 3 to simplify to 2:3. Equivalent examples include 4:6 and 8:12.",
+      "teacherOrAppAction": "Highlight each reasoning step and connect it to the first-principles breakdown."
+    },
+    "guidedPractice": {
+      "time": "8–10 min",
+      "items": [
+        "Write three forms of the ratio 5 dogs to 2 cats.",
+        "Identify whether 3:4 is part-to-part or part-to-whole in a class with 3 sixth graders and 4 seventh graders.",
+        "Scale 2:5 by 3 and explain the result.",
+        "Debug: A student says 2:3 and 4:5 are equivalent because both increased by 2."
+      ],
+      "scaffolding": "Start with high support, then remove hints. Require explanation on the final item."
+    },
+    "criticalThinkingCheckpoint": {
+      "time": "3–5 min",
+      "prompt": "Why is adding the same number to both parts not a reliable way to create equivalent ratios?",
+      "lookFor": "Student identifies assumption, evaluates reasoning, and explains why one answer or model is stronger."
+    },
+    "evidenceBasedReasoningTask": {
+      "time": "5–7 min",
+      "prompt": "Claim: 6:9 is equivalent to 2:3. Use division or a ratio table as evidence.",
+      "requiredStructure": "Claim → Evidence → Reasoning",
+      "rubric": "Evidence and reasoning rubric, 1–4 scale."
+    },
+    "interpretationOrDiscussionTask": {
+      "time": "5–7 min",
+      "prompt": "Interpret a double number line showing cups of raisins and nuts. What does each matched pair mean?",
+      "safety": "Use private response or moderated classroom mode only. No unrestricted student chat."
+    },
+    "activePractice": {
+      "time": "8–10 min",
+      "content": "Students complete a ratio table for trail mix and test which batches preserve the same taste.",
+      "dataCaptured": [
+        "completion",
+        "attempts",
+        "hint usage",
+        "mistake type",
+        "confidence"
+      ]
+    },
+    "retrievalCheck": {
+      "time": "5 min",
+      "items": [
+        {
+          "id": "BA-G6-MATH-U1-L1-R01",
+          "prompt": "What is a ratio?",
+          "expectedAnswer": "A comparison of two quantities.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "BA-G6-MATH-U1-L1-R02",
+          "prompt": "Write 4 boys to 7 girls as a ratio.",
+          "expectedAnswer": "4:7 or 4 to 7.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "BA-G6-MATH-U1-L1-R03",
+          "prompt": "How do you create an equivalent ratio?",
+          "expectedAnswer": "Multiply or divide both quantities by the same factor.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "BA-G6-MATH-U1-L1-R04",
+          "prompt": "Why does order matter in a ratio?",
+          "expectedAnswer": "Because it tells which quantity is being compared first.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "BA-G6-MATH-U1-L1-R05",
+          "prompt": "Are 2:3 and 6:9 equivalent?",
+          "expectedAnswer": "Yes, multiply both parts by 3.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        }
+      ],
+      "rule": "Closed-note if appropriate; if missed, show feedback after response, not before."
+    },
+    "feedback": {
+      "time": "embedded",
+      "rules": [
+        "Correct: explain why it works, not only mark correct.",
+        "Incorrect: identify misconception, show one hint, then give a similar retry.",
+        "Explain/CER answers: score using rubric and return one specific revision target.",
+        "Do not shame guessing; redirect to strategy and evidence."
+      ]
+    },
+    "reflection": {
+      "time": "2–3 min",
+      "prompt": "What strategy helped you most, what mistake should you watch for, and when will you review this skill again?"
+    }
+  },
+  "quiz": [
+    {
+      "id": "BA-G6-MATH-U1-L1-Q01",
+      "type": "mc",
+      "question": "Which ratio means 5 apples to 8 oranges?",
+      "choices": [
+        "8:5",
+        "5:8",
+        "5+8",
+        "8-5"
+      ],
+      "correctAnswer": "5:8",
+      "explanation": "The order is apples first, oranges second.",
+      "skillTag": "MATH.RATIO_LANGUAGE",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-Q02",
+      "type": "short",
+      "question": "Scale the ratio 2:7 by 4.",
+      "choices": null,
+      "correctAnswer": "8:28",
+      "explanation": "Multiply both parts by 4.",
+      "skillTag": "MATH.EQUIVALENT_RATIO",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-Q03",
+      "type": "mc",
+      "question": "Which is equivalent to 3:5?",
+      "choices": [
+        "6:10",
+        "4:6",
+        "9:10",
+        "5:3"
+      ],
+      "correctAnswer": "6:10",
+      "explanation": "Both parts were multiplied by 2.",
+      "skillTag": "MATH.EQUIVALENT_RATIO",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-Q04",
+      "type": "error",
+      "question": "A student says 2:3 is equivalent to 4:5 because both numbers increased by 2. Find the error.",
+      "choices": null,
+      "correctAnswer": "Equivalent ratios require multiplying/dividing both parts by the same factor, not adding the same number.",
+      "explanation": "Targets additive reasoning.",
+      "skillTag": "MISTAKE.ADDITIVE_RATIO",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-Q05",
+      "type": "explain",
+      "question": "Why does 3:2 not mean the same as 2:3?",
+      "choices": null,
+      "correctAnswer": "The order reverses which quantity is first and changes the relationship in context.",
+      "explanation": "Order carries meaning.",
+      "skillTag": "CRITICAL.ORDER",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-Q06",
+      "type": "apply",
+      "question": "A recipe uses 1 cup rice for every 2 cups water. How much water for 4 cups rice?",
+      "choices": null,
+      "correctAnswer": "8 cups water",
+      "explanation": "Scale 1:2 by 4.",
+      "skillTag": "MATH.RATIO_CONTEXT",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-Q07",
+      "type": "mc",
+      "question": "A class has 12 students: 5 play soccer and 7 do not. What is the ratio soccer to not soccer?",
+      "choices": [
+        "5:7",
+        "7:5",
+        "5:12",
+        "12:5"
+      ],
+      "correctAnswer": "5:7",
+      "explanation": "It asks part-to-part.",
+      "skillTag": "MATH.PART_TO_PART",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-Q08",
+      "type": "mc",
+      "question": "Using the same class, what is the ratio soccer to total students?",
+      "choices": [
+        "5:7",
+        "7:12",
+        "5:12",
+        "12:7"
+      ],
+      "correctAnswer": "5:12",
+      "explanation": "It asks part-to-whole.",
+      "skillTag": "MATH.PART_TO_WHOLE",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-Q09",
+      "type": "short",
+      "question": "Simplify 10:15.",
+      "choices": null,
+      "correctAnswer": "2:3",
+      "explanation": "Divide both parts by 5.",
+      "skillTag": "MATH.SIMPLIFY",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-Q10",
+      "type": "evidence",
+      "question": "Prove that 12:18 and 2:3 are equivalent.",
+      "choices": null,
+      "correctAnswer": "Divide both 12 and 18 by 6, or multiply 2:3 by 6.",
+      "explanation": "Requires evidence.",
+      "skillTag": "EVIDENCE.RATIO",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-Q11",
+      "type": "mc",
+      "question": "Which pair is NOT equivalent to 4:6?",
+      "choices": [
+        "2:3",
+        "8:12",
+        "12:18",
+        "6:8"
+      ],
+      "correctAnswer": "6:8",
+      "explanation": "6:8 simplifies to 3:4, not 2:3.",
+      "skillTag": "MATH.DISTRACTOR",
+      "difficulty": "hard",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-Q12",
+      "type": "apply",
+      "question": "Design a sports drink recipe with a ratio of 2 scoops powder to 5 cups water for 20 cups water.",
+      "choices": null,
+      "correctAnswer": "8 scoops powder",
+      "explanation": "Scale 5 cups water to 20 by multiplying by 4, so 2 scoops becomes 8.",
+      "skillTag": "MATH.MULTISTEP",
+      "difficulty": "hard",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    }
+  ],
+  "retrievalCheck": [
+    {
+      "id": "BA-G6-MATH-U1-L1-R01",
+      "prompt": "What is a ratio?",
+      "expectedAnswer": "A comparison of two quantities.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-R02",
+      "prompt": "Write 4 boys to 7 girls as a ratio.",
+      "expectedAnswer": "4:7 or 4 to 7.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-R03",
+      "prompt": "How do you create an equivalent ratio?",
+      "expectedAnswer": "Multiply or divide both quantities by the same factor.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-R04",
+      "prompt": "Why does order matter in a ratio?",
+      "expectedAnswer": "Because it tells which quantity is being compared first.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-R05",
+      "prompt": "Are 2:3 and 6:9 equivalent?",
+      "expectedAnswer": "Yes, multiply both parts by 3.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    }
+  ],
+  "memoryVaultItems": [
+    {
+      "id": "BA-G6-MATH-U1-L1-MV01",
+      "type": "concept",
+      "prompt": "What does a ratio compare?",
+      "expectedAnswer": "Two quantities.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.G6.RP.RATIO_CONCEPT",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-MV02",
+      "type": "process",
+      "prompt": "How do you make an equivalent ratio?",
+      "expectedAnswer": "Multiply or divide both parts by the same factor.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.G6.RP.RATIO_LANGUAGE",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-MV03",
+      "type": "mistake",
+      "prompt": "Why is adding 2 to both parts not ratio scaling?",
+      "expectedAnswer": "Equivalent ratios are multiplicative, not additive.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.G6.REASONING.REPRESENTATIONS",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-MV04",
+      "type": "apply",
+      "prompt": "Scale 3:4 by 5.",
+      "expectedAnswer": "15:20.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.G6.PROBLEM_SOLVING.CONTEXT",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-MV05",
+      "type": "contrast",
+      "prompt": "What is part-to-whole?",
+      "expectedAnswer": "Comparing one part to the total.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.G6.PROBLEM_SOLVING.CONTEXT",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1-MV06",
+      "type": "evidence",
+      "prompt": "How can you prove 6:9 = 2:3?",
+      "expectedAnswer": "Divide both parts by 3 or multiply 2:3 by 3.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.G6.PROBLEM_SOLVING.CONTEXT",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    }
+  ],
+  "reteachPath": {
+    "misconception": "Student uses additive comparison instead of multiplicative ratio reasoning.",
+    "simpleExplanation": "Equivalent ratios keep the same relationship by multiplying or dividing both parts by the same number.",
+    "steps": [
+      "Label the two quantities.",
+      "Write the original ratio.",
+      "Choose a scale factor.",
+      "Multiply both parts by the same factor.",
+      "Check with a table or double number line."
+    ],
+    "practice": [
+      {
+        "prompt": "Scale 1:3 by 2",
+        "answer": "2:6"
+      },
+      {
+        "prompt": "Simplify 6:12",
+        "answer": "1:2"
+      },
+      {
+        "prompt": "Equivalent to 2:5: 4:10 or 4:7?",
+        "answer": "4:10"
+      },
+      {
+        "prompt": "Fix: 3:4 → 5:6 by adding 2",
+        "answer": "Not equivalent; scale by multiplication instead."
+      },
+      {
+        "prompt": "Part-to-whole in 2 red and 3 blue: red to total",
+        "answer": "2:5"
+      }
+    ],
+    "exitCriteria": "Student completes at least 4 of 5 reteach items and explains the corrected misconception."
+  },
+  "challengePath": {
+    "tasks": [
+      "Create a ratio table for 3:7 up to five rows and explain the pattern.",
+      "Compare part-to-part and part-to-whole ratios for the same scenario.",
+      "Use a double number line to solve a recipe scaling problem."
+    ],
+    "extensionRule": "Unlock at 90+ mastery or teacher/parent assignment; still schedule Memory Vault review."
+  },
+  "mastery": {
+    "bands": [
+      {
+        "range": "0-39",
+        "label": "Needs Intervention",
+        "action": "Assign intervention path, parent/teacher alert if repeated twice."
+      },
+      {
+        "range": "40-64",
+        "label": "Needs Reteach",
+        "action": "Assign reteach path and review tomorrow."
+      },
+      {
+        "range": "65-79",
+        "label": "Almost Mastered",
+        "action": "Assign guided practice and schedule review in 1 day."
+      },
+      {
+        "range": "80-89",
+        "label": "Mastered",
+        "action": "Schedule Memory Vault review on Day 1, 3, 7, 14, 30."
+      },
+      {
+        "range": "90-100",
+        "label": "Advanced",
+        "action": "Unlock challenge task and still schedule spaced review."
+      }
+    ],
+    "weights": {
+      "retrievalCheck": 0.2,
+      "quizAccuracy": 0.3,
+      "firstPrinciplesProcess": 0.15,
+      "evidenceOrReasoningQuality": 0.15,
+      "activePracticeCompletion": 0.1,
+      "reflectionQuality": 0.1
+    },
+    "masteryThreshold": 80,
+    "advancedThreshold": 90,
+    "minimumEvidence": [
+      "retrieval check completed",
+      "quiz completed",
+      "one reasoning/explanation artifact saved",
+      "Memory Vault items generated"
+    ]
+  },
+  "parentTeacherNotes": "When cooking or mixing drinks, ask the student to explain how changing one ingredient affects the ratio.",
+  "accessibilityNotes": [
+    "Use plain, grade-appropriate language and define academic vocabulary before using it in prompts.",
+    "Provide alt text or text-equivalent descriptions for every image, diagram, array, chart, map, or model.",
+    "Make all interactive elements keyboard accessible with visible focus states and screen-reader labels.",
+    "Never rely only on color to communicate correct/incorrect, categories, or importance.",
+    "Provide read-aloud support for Foundation Academy and optional read-aloud for all grade bands.",
+    "Chunk instructions into short steps and provide examples before independent work."
+  ],
+  "safetyNotes": [
+    "No public student posting, random direct messages, or unrestricted discussion.",
+    "Discussion prompts must use sentence frames and moderation/teacher controls when implemented.",
+    "Student-generated work should be visible only to the student and authorized parent/teacher roles unless explicitly assigned in a safe classroom workflow.",
+    "Do not collect unnecessary personal information in lesson responses."
+  ],
+  "implementationNotes": [
+    "Render lessonFlow sections in order with progress state.",
+    "Persist quiz attempts and item-level skill tags.",
+    "Generate Memory Vault records after lesson completion.",
+    "Use mastery bands to branch to reteach, guided practice, review, or challenge.",
+    "Store open responses privately with role-based access.",
+    "Use answer keys and rubrics for review; do not expose hidden answer keys in student mode."
+  ],
+  "reviewStatus": {
+    "contentStatus": "v2 polished",
+    "reviewedAgainst": [
+      "curriculum inventory v2",
+      "universal lesson flow",
+      "Memory Vault requirements",
+      "mastery model",
+      "child safety and accessibility rules"
+    ],
+    "knownLimitations": "Standards tags are platform-internal placeholders until state-specific mappings are added."
+  }
+}

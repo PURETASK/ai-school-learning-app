@@ -1,0 +1,641 @@
+{
+  "schemaVersion": "2.0",
+  "id": "SA-G9-ALG-U1-L1",
+  "title": "Variables and Expressions",
+  "academy": "scholar",
+  "academyName": "Scholar Academy",
+  "gradeLevel": "9",
+  "subject": "Math",
+  "course": "Algebra I",
+  "unit": "Unit 1: Expressions, Variables, and Structure",
+  "lessonType": [
+    "concept lesson",
+    "skill lesson",
+    "thinking lesson",
+    "retrieval lesson"
+  ],
+  "estimatedMinutes": "45–50",
+  "developmentNotes": "Ninth graders need algebra as structure and representation, not symbol manipulation only. Connect variables to changing quantities and constraints.",
+  "learningObjective": "Students will interpret variables, write algebraic expressions from contexts, evaluate expressions, and explain the structure of expressions.",
+  "essentialQuestion": "How can symbols represent quantities we do not know yet or quantities that change?",
+  "standardsTags": [
+    "MATH.A1.EXPRESSIONS.INTERPRET",
+    "MATH.A1.EXPRESSIONS.WRITE",
+    "MATH.A1.STRUCTURE.REASONING",
+    "MATH.A1.EVALUATE.SUBSTITUTE"
+  ],
+  "thinkingSkillTags": [
+    "first-principles problem solving",
+    "abstract reasoning",
+    "critical thinking",
+    "evidence-based reasoning",
+    "metacognition"
+  ],
+  "vocabularyTerms": [
+    {
+      "term": "variable",
+      "definition": "a symbol that represents a number or quantity"
+    },
+    {
+      "term": "expression",
+      "definition": "a mathematical phrase without an equals sign"
+    },
+    {
+      "term": "coefficient",
+      "definition": "a number multiplied by a variable"
+    },
+    {
+      "term": "constant",
+      "definition": "a fixed number"
+    },
+    {
+      "term": "evaluate",
+      "definition": "to find the value of an expression for given variable values"
+    },
+    {
+      "term": "term",
+      "definition": "a part of an expression separated by addition or subtraction"
+    }
+  ],
+  "prerequisites": [
+    "Use order of operations",
+    "Understand arithmetic operations",
+    "Read simple word problems"
+  ],
+  "lessonFlow": {
+    "hook": {
+      "time": "3–5 min",
+      "content": "A streaming service charges $8 plus $3 per movie rental. Students decide what changes, what stays fixed, and how to represent total cost for any number of movies.",
+      "studentAction": "Predict, notice, or explain initial thinking before direct instruction.",
+      "teacherOrAppAction": "Capture initial response as non-graded diagnostic evidence."
+    },
+    "learningGoal": {
+      "time": "1 min",
+      "content": "I can students will interpret variables, write algebraic expressions from contexts, evaluate expressions, and explain the structure of expressions.",
+      "successCriteria": [
+        "I can explain the core concept in my own words.",
+        "I can show evidence or reasoning, not only an answer.",
+        "I can correct a common mistake."
+      ]
+    },
+    "miniTeach": {
+      "time": "6–8 min",
+      "content": "A variable lets algebra describe many possible cases at once. In 8 + 3m, 8 is a constant starting cost, 3m means 3 dollars for each movie, and m represents the number of movies. The expression has no equals sign because it describes a quantity, not a full equation.",
+      "cognitiveLoadNotes": "Use short chunks, one example at a time, and reveal labels only after students observe the model."
+    },
+    "firstPrinciplesBreakdown": {
+      "coreConcept": "Algebraic expressions model relationships among quantities.",
+      "parts": [
+        "unknown or changing quantity",
+        "operation",
+        "coefficient",
+        "constant",
+        "terms",
+        "context units",
+        "structure"
+      ],
+      "known": [
+        "There is an $8 base charge.",
+        "Each movie costs $3.",
+        "The number of movies can change."
+      ],
+      "unknown": [
+        "Total cost for any number of movies."
+      ],
+      "rules": [
+        "Variables represent quantities, not labels.",
+        "A coefficient multiplies the variable.",
+        "Constants do not change.",
+        "Evaluate by substituting a value for the variable and following order of operations."
+      ],
+      "avoid": [
+        "Do not treat 3m as 3 + m.",
+        "Do not ignore units or context.",
+        "Do not put an equals sign unless comparing two quantities."
+      ],
+      "steps": [
+        "Identify the changing quantity.",
+        "Assign a variable.",
+        "Identify fixed and repeated amounts.",
+        "Write terms for each part.",
+        "Combine terms into an expression.",
+        "Evaluate by substitution to test meaning."
+      ],
+      "check": "Substitute a simple value, such as m = 0 or m = 1, and see if the expression matches the context."
+    },
+    "workedExample": {
+      "time": "5–7 min",
+      "content": "Context: $5 entry fee plus $2 per game. Let g = number of games. Expression: 5 + 2g. If g = 4, then 5 + 2(4) = 13 dollars.",
+      "teacherOrAppAction": "Highlight each reasoning step and connect it to the first-principles breakdown."
+    },
+    "guidedPractice": {
+      "time": "8–10 min",
+      "items": [
+        "Identify the variable in 7 + 4x and explain what it could represent.",
+        "Write an expression for 10 plus 6 times a number n.",
+        "Evaluate 2x + 5 when x = 3.",
+        "Debug: A student writes 3 + m for $3 per movie."
+      ],
+      "scaffolding": "Start with high support, then remove hints. Require explanation on the final item."
+    },
+    "criticalThinkingCheckpoint": {
+      "time": "3–5 min",
+      "prompt": "How can substituting m = 1 help test whether 8 + 3m represents the streaming-service context correctly?",
+      "lookFor": "Student identifies assumption, evaluates reasoning, and explains why one answer or model is stronger."
+    },
+    "evidenceBasedReasoningTask": {
+      "time": "5–7 min",
+      "prompt": "Claim: 8 + 3m fits the context. Use the fixed fee and per-movie fee as evidence.",
+      "requiredStructure": "Claim → Evidence → Reasoning",
+      "rubric": "Evidence and reasoning rubric, 1–4 scale."
+    },
+    "interpretationOrDiscussionTask": {
+      "time": "5–7 min",
+      "prompt": "Interpret each term in 12 + 0.5d for a taxi ride that charges $12 plus $0.50 per mile.",
+      "safety": "Use private response or moderated classroom mode only. No unrestricted student chat."
+    },
+    "activePractice": {
+      "time": "8–10 min",
+      "content": "Students build expressions from context cards by dragging fixed costs, coefficients, variables, and operations into an expression builder.",
+      "dataCaptured": [
+        "completion",
+        "attempts",
+        "hint usage",
+        "mistake type",
+        "confidence"
+      ]
+    },
+    "retrievalCheck": {
+      "time": "5 min",
+      "items": [
+        {
+          "id": "SA-G9-ALG-U1-L1-R01",
+          "prompt": "What is a variable?",
+          "expectedAnswer": "A symbol representing a number or quantity.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "SA-G9-ALG-U1-L1-R02",
+          "prompt": "What is an expression?",
+          "expectedAnswer": "A mathematical phrase without an equals sign.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "SA-G9-ALG-U1-L1-R03",
+          "prompt": "What is the coefficient in 6x + 2?",
+          "expectedAnswer": "6.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "SA-G9-ALG-U1-L1-R04",
+          "prompt": "Evaluate 4n + 1 when n = 5.",
+          "expectedAnswer": "21.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "SA-G9-ALG-U1-L1-R05",
+          "prompt": "Why test expressions with substitution?",
+          "expectedAnswer": "To check whether the expression matches the context.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        }
+      ],
+      "rule": "Closed-note if appropriate; if missed, show feedback after response, not before."
+    },
+    "feedback": {
+      "time": "embedded",
+      "rules": [
+        "Correct: explain why it works, not only mark correct.",
+        "Incorrect: identify misconception, show one hint, then give a similar retry.",
+        "Explain/CER answers: score using rubric and return one specific revision target.",
+        "Do not shame guessing; redirect to strategy and evidence."
+      ]
+    },
+    "reflection": {
+      "time": "2–3 min",
+      "prompt": "What strategy helped you most, what mistake should you watch for, and when will you review this skill again?"
+    }
+  },
+  "quiz": [
+    {
+      "id": "SA-G9-ALG-U1-L1-Q01",
+      "type": "mc",
+      "question": "Which is an expression?",
+      "choices": [
+        "3x + 7",
+        "3x + 7 = 19",
+        "x = 4",
+        "7 < x"
+      ],
+      "correctAnswer": "3x + 7",
+      "explanation": "An expression has no equals or inequality sign.",
+      "skillTag": "ALG.EXPRESSION",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-Q02",
+      "type": "short",
+      "question": "Write an expression for 9 more than twice a number n.",
+      "choices": null,
+      "correctAnswer": "2n + 9",
+      "explanation": "Twice a number is 2n; 9 more adds 9.",
+      "skillTag": "ALG.WRITE",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-Q03",
+      "type": "mc",
+      "question": "In 5x + 12, what is the coefficient?",
+      "choices": [
+        "5",
+        "x",
+        "12",
+        "17"
+      ],
+      "correctAnswer": "5",
+      "explanation": "The coefficient multiplies the variable.",
+      "skillTag": "ALG.VOCAB",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-Q04",
+      "type": "short",
+      "question": "Evaluate 3a - 4 when a = 6.",
+      "choices": null,
+      "correctAnswer": "14",
+      "explanation": "3(6) - 4 = 18 - 4 = 14.",
+      "skillTag": "ALG.EVALUATE",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-Q05",
+      "type": "error",
+      "question": "A student interprets 4x as 4 + x. Fix the misconception.",
+      "choices": null,
+      "correctAnswer": "4x means 4 multiplied by x, or four groups of x.",
+      "explanation": "Juxtaposition means multiplication.",
+      "skillTag": "MISTAKE.COEFFICIENT",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-Q06",
+      "type": "explain",
+      "question": "Why does 8 + 3m have a constant and a variable term?",
+      "choices": null,
+      "correctAnswer": "8 is fixed; 3m changes based on the number of movies.",
+      "explanation": "Connect structure to context.",
+      "skillTag": "STRUCTURE.REASONING",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-Q07",
+      "type": "mc",
+      "question": "Which expression represents 5 dollars per ticket for t tickets?",
+      "choices": [
+        "5 + t",
+        "5t",
+        "t - 5",
+        "5/t"
+      ],
+      "correctAnswer": "5t",
+      "explanation": "$5 for each ticket means 5 times t.",
+      "skillTag": "ALG.CONTEXT",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-Q08",
+      "type": "apply",
+      "question": "A gym charges $20 plus $15 per month. Write an expression for m months.",
+      "choices": null,
+      "correctAnswer": "20 + 15m",
+      "explanation": "Fixed fee plus monthly fee.",
+      "skillTag": "ALG.MODEL",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-Q09",
+      "type": "mc",
+      "question": "Which value checks 20 + 15m for zero months?",
+      "choices": [
+        "20",
+        "15",
+        "35",
+        "0"
+      ],
+      "correctAnswer": "20",
+      "explanation": "If m=0, the monthly term is 0, leaving the fixed fee.",
+      "skillTag": "ALG.CHECK",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-Q10",
+      "type": "short",
+      "question": "Name the terms in 4x + 7.",
+      "choices": null,
+      "correctAnswer": "4x and 7",
+      "explanation": "Terms are separated by addition/subtraction.",
+      "skillTag": "ALG.STRUCTURE",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-Q11",
+      "type": "evidence",
+      "question": "Prove that 2n + 5 represents “5 more than twice n.”",
+      "choices": null,
+      "correctAnswer": "2n means twice n; +5 means 5 more.",
+      "explanation": "Requires structure explanation.",
+      "skillTag": "EVIDENCE.EXPRESSION",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-Q12",
+      "type": "challenge",
+      "question": "Write two different contexts for 10 + 2x and explain what 10, 2, and x mean in each.",
+      "choices": null,
+      "correctAnswer": "Two valid contexts with interpreted terms.",
+      "explanation": "Transfer understanding.",
+      "skillTag": "ALG.TRANSFER",
+      "difficulty": "hard",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    }
+  ],
+  "retrievalCheck": [
+    {
+      "id": "SA-G9-ALG-U1-L1-R01",
+      "prompt": "What is a variable?",
+      "expectedAnswer": "A symbol representing a number or quantity.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-R02",
+      "prompt": "What is an expression?",
+      "expectedAnswer": "A mathematical phrase without an equals sign.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-R03",
+      "prompt": "What is the coefficient in 6x + 2?",
+      "expectedAnswer": "6.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-R04",
+      "prompt": "Evaluate 4n + 1 when n = 5.",
+      "expectedAnswer": "21.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-R05",
+      "prompt": "Why test expressions with substitution?",
+      "expectedAnswer": "To check whether the expression matches the context.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    }
+  ],
+  "memoryVaultItems": [
+    {
+      "id": "SA-G9-ALG-U1-L1-MV01",
+      "type": "vocab",
+      "prompt": "What is a variable?",
+      "expectedAnswer": "A symbol representing a quantity.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.A1.EXPRESSIONS.INTERPRET",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-MV02",
+      "type": "vocab",
+      "prompt": "What is a coefficient?",
+      "expectedAnswer": "A number multiplied by a variable.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.A1.EXPRESSIONS.WRITE",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-MV03",
+      "type": "concept",
+      "prompt": "Does an expression have an equals sign?",
+      "expectedAnswer": "No.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.A1.STRUCTURE.REASONING",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-MV04",
+      "type": "evaluate",
+      "prompt": "Evaluate 2x + 3 when x = 4.",
+      "expectedAnswer": "11.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.A1.EVALUATE.SUBSTITUTE",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-MV05",
+      "type": "mistake",
+      "prompt": "What does 5y mean?",
+      "expectedAnswer": "5 multiplied by y, not 5 + y.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.A1.EVALUATE.SUBSTITUTE",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1-MV06",
+      "type": "apply",
+      "prompt": "Write an expression for 4 less than n.",
+      "expectedAnswer": "n - 4.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.A1.EVALUATE.SUBSTITUTE",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    }
+  ],
+  "reteachPath": {
+    "misconception": "Student treats variable terms as addition or treats variables as labels instead of quantities.",
+    "simpleExplanation": "A variable stands for a quantity. A coefficient tells how many groups of that quantity.",
+    "steps": [
+      "Underline changing quantity.",
+      "Choose a variable.",
+      "Circle fixed amounts.",
+      "Write repeated/per-unit quantities as coefficient-variable terms.",
+      "Substitute a value to check."
+    ],
+    "practice": [
+      {
+        "prompt": "Expression or equation: 3x + 2",
+        "answer": "Expression"
+      },
+      {
+        "prompt": "Coefficient in 7p",
+        "answer": "7"
+      },
+      {
+        "prompt": "Evaluate x + 6 when x=4",
+        "answer": "10"
+      },
+      {
+        "prompt": "Write 3 times n",
+        "answer": "3n"
+      },
+      {
+        "prompt": "Fix: 4m = 4 + m",
+        "answer": "4m = 4 × m"
+      }
+    ],
+    "exitCriteria": "Student completes at least 4 of 5 reteach items and explains the corrected misconception."
+  },
+  "challengePath": {
+    "tasks": [
+      "Compare 3x + 5 and 5x + 3 in a real context.",
+      "Find two expressions that are equivalent and prove it.",
+      "Create an expression for a real subscription plan and test it with three values."
+    ],
+    "extensionRule": "Unlock at 90+ mastery or teacher/parent assignment; still schedule Memory Vault review."
+  },
+  "mastery": {
+    "bands": [
+      {
+        "range": "0-39",
+        "label": "Needs Intervention",
+        "action": "Assign intervention path, parent/teacher alert if repeated twice."
+      },
+      {
+        "range": "40-64",
+        "label": "Needs Reteach",
+        "action": "Assign reteach path and review tomorrow."
+      },
+      {
+        "range": "65-79",
+        "label": "Almost Mastered",
+        "action": "Assign guided practice and schedule review in 1 day."
+      },
+      {
+        "range": "80-89",
+        "label": "Mastered",
+        "action": "Schedule Memory Vault review on Day 1, 3, 7, 14, 30."
+      },
+      {
+        "range": "90-100",
+        "label": "Advanced",
+        "action": "Unlock challenge task and still schedule spaced review."
+      }
+    ],
+    "weights": {
+      "retrievalCheck": 0.2,
+      "quizAccuracy": 0.3,
+      "firstPrinciplesProcess": 0.15,
+      "evidenceOrReasoningQuality": 0.15,
+      "activePracticeCompletion": 0.1,
+      "reflectionQuality": 0.1
+    },
+    "masteryThreshold": 80,
+    "advancedThreshold": 90,
+    "minimumEvidence": [
+      "retrieval check completed",
+      "quiz completed",
+      "one reasoning/explanation artifact saved",
+      "Memory Vault items generated"
+    ]
+  },
+  "parentTeacherNotes": "Ask the student to write expressions for real costs: delivery fee plus price per item, game score per level, or savings per week.",
+  "accessibilityNotes": [
+    "Use plain, grade-appropriate language and define academic vocabulary before using it in prompts.",
+    "Provide alt text or text-equivalent descriptions for every image, diagram, array, chart, map, or model.",
+    "Make all interactive elements keyboard accessible with visible focus states and screen-reader labels.",
+    "Never rely only on color to communicate correct/incorrect, categories, or importance.",
+    "Provide read-aloud support for Foundation Academy and optional read-aloud for all grade bands.",
+    "Chunk instructions into short steps and provide examples before independent work."
+  ],
+  "safetyNotes": [
+    "No public student posting, random direct messages, or unrestricted discussion.",
+    "Discussion prompts must use sentence frames and moderation/teacher controls when implemented.",
+    "Student-generated work should be visible only to the student and authorized parent/teacher roles unless explicitly assigned in a safe classroom workflow.",
+    "Do not collect unnecessary personal information in lesson responses."
+  ],
+  "implementationNotes": [
+    "Render lessonFlow sections in order with progress state.",
+    "Persist quiz attempts and item-level skill tags.",
+    "Generate Memory Vault records after lesson completion.",
+    "Use mastery bands to branch to reteach, guided practice, review, or challenge.",
+    "Store open responses privately with role-based access.",
+    "Use answer keys and rubrics for review; do not expose hidden answer keys in student mode."
+  ],
+  "reviewStatus": {
+    "contentStatus": "v2 polished",
+    "reviewedAgainst": [
+      "curriculum inventory v2",
+      "universal lesson flow",
+      "Memory Vault requirements",
+      "mastery model",
+      "child safety and accessibility rules"
+    ],
+    "knownLimitations": "Standards tags are platform-internal placeholders until state-specific mappings are added."
+  }
+}

@@ -1,0 +1,27 @@
+
+> k12-learning-app-suite@0.1.0 check
+> npm run validate:lessons && npm run audit && npm run test
+
+
+> k12-learning-app-suite@0.1.0 validate:lessons
+> node scripts/validate-lessons.mjs
+
+Validated 16 lesson JSON files.
+No validation errors found.
+
+> k12-learning-app-suite@0.1.0 audit
+> node scripts/audit-foundation.mjs
+
+Audit checks: 62
+Failures: 0
+Report: reports/BUILD_GUIDE_COMPLIANCE_MATRIX_V6.csv
+
+> k12-learning-app-suite@0.1.0 test
+> node scripts/static-smoke-tests.mjs
+
+Static smoke tests passed.
+Lessons checked: 16
+Lesson sections checked: 16
+Memory Vault review-session workflow checked.
+V5 thinking/adaptation systems checked.
+V6 thinking system deep-dive docs/components checked.

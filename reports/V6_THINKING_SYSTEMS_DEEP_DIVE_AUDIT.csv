@@ -1,0 +1,11 @@
+system,priority,component,deep_dive_doc,data_contract,mvp_behavior,remaining_work
+Mistake Journal,very-high,MistakeJournalPanel.tsx,01_MISTAKE_JOURNAL_DEEP_DIVE.md,MistakeJournalEntry / MistakePatternSummary,After quiz; creates pattern summary and repair prompt,Needs persistence and student-facing edit/retry flow
+Reteach and Intervention Engine,very-high,ReteachInterventionPanel.tsx,02_RETEACH_INTERVENTION_ENGINE_DEEP_DIVE.md,ReteachInterventionPlan,Low mastery or support request; creates simpler path,Needs interactive reteach practice and exit quiz
+Challenge and Enrichment Engine,high,ChallengeEnrichmentPanel.tsx,03_CHALLENGE_ENRICHMENT_ENGINE_DEEP_DIVE.md,ChallengeEnrichmentPlan,Advanced mastery; creates stretch tasks,Needs challenge submission and portfolio save
+Problem-Solving Lab,very-high,ProblemSolvingLabPanel.tsx,04_PROBLEM_SOLVING_LAB_DEEP_DIVE.md,ProblemSolvingLabTask,Always available; first-principles scaffold,Needs fillable student fields and scoring
+Evidence Room,high,EvidenceRoomPanel.tsx,05_EVIDENCE_ROOM_DEEP_DIVE.md,EvidenceRoomTask,Always available; claim/evidence/reasoning practice,Needs drag/sort interaction and evidence scoring
+Interpretation Lens,medium-high,InterpretationLensPanel.tsx,06_INTERPRETATION_LENS_DEEP_DIVE.md,InterpretationLensTask,Always available; lens chosen by subject,Needs multiple artifact types and rubric scoring
+Discussion Arena,medium,DiscussionArenaPanel.tsx,07_DISCUSSION_ARENA_DEEP_DIVE.md,DiscussionArenaPrompt,Prompt-only MVP; safe sentence frames,Needs AI/teacher-moderated mode later
+Learning Planner,high,LearningPlannerPanel.tsx,08_LEARNING_PLANNER_DEEP_DIVE.md,LearningPlannerTask,Always available; plan/monitor/evaluate,Needs saved planner entries and reminders
+Systems Mapper,medium,SystemsMapperPanel.tsx,09_SYSTEMS_MAPPER_DEEP_DIVE.md,SystemsMapperTask,On demand; nodes/links/change prompt,Needs interactive map builder
+Portfolio / Project Evidence System,medium-high,PortfolioEvidencePanel.tsx,10_PORTFOLIO_PROJECT_EVIDENCE_SYSTEM_DEEP_DIVE.md,PortfolioEvidenceItem,On project/challenge; private artifact prompt,Needs file/text storage and review workflow

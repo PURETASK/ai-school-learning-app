@@ -1,0 +1,6 @@
+
+> k12-learning-app-suite@0.1.0 validate:lessons
+> node scripts/validate-lessons.mjs
+
+Validated 16 lesson JSON files.
+No validation errors found.

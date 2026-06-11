@@ -1,0 +1,13 @@
+lesson_id,title,academy,academy_name,grade_level,subject,course,unit,json_path
+BA-G6-ELA-U2-L1,Theme and Text Evidence,bridge,Bridge Academy,6,ELA,Grade 6 ELA,"Unit 2: Literature, Theme, and Evidence",content/bridge-academy/grade-6/ela/BA-G6-ELA-U2-L1_THEME_AND_TEXT_EVIDENCE.json
+BA-G6-MATH-U1-L1,Understanding Ratios,bridge,Bridge Academy,6,Math,Grade 6 Math,Unit 1: Ratios and Rates,content/bridge-academy/grade-6/math/BA-G6-MATH-U1-L1_UNDERSTANDING_RATIOS.json
+BA-G6-SCI-U2-L1,Water Cycle Systems,bridge,Bridge Academy,6,Science,Grade 6 Science,Unit 2: Earth Systems and Water,content/bridge-academy/grade-6/science/BA-G6-SCI-U2-L1_WATER_CYCLE_SYSTEMS.json
+BA-G6-SS-U2-L1,Ancient Civilizations and Geography,bridge,Bridge Academy,6,Social Studies,Grade 6 Social Studies,Unit 2: Ancient Civilizations,content/bridge-academy/grade-6/social-studies/BA-G6-SS-U2-L1_ANCIENT_CIVILIZATIONS_AND_GEOGRAPHY.json
+FA-G3-ELA-U2-L1,Finding the Main Idea,foundation,Foundation Academy,3,ELA,Grade 3 ELA / Reading,Unit 2: Reading for Meaning,content/foundation-academy/grade-3/ela/FA-G3-ELA-U2-L1_FINDING_THE_MAIN_IDEA.json
+FA-G3-MATH-U1-L1,Multiplication as Equal Groups,foundation,Foundation Academy,3,Math,Grade 3 Math,Unit 1: Multiplication Foundations,content/foundation-academy/grade-3/math/FA-G3-MATH-U1-L1_MULTIPLICATION_AS_EQUAL_GROUPS.json
+FA-G3-SCI-U1-L1,Plant Life Cycles,foundation,Foundation Academy,3,Science,Grade 3 Science,Unit 1: Life Cycles and Traits,content/foundation-academy/grade-3/science/FA-G3-SCI-U1-L1_PLANT_LIFE_CYCLES.json
+FA-G3-SS-U1-L1,Communities and Roles,foundation,Foundation Academy,3,Social Studies,Grade 3 Social Studies,"Unit 1: Communities, Citizenship, and Geography",content/foundation-academy/grade-3/social-studies/FA-G3-SS-U1-L1_COMMUNITIES_AND_ROLES.json
+SA-G9-ALG-U1-L1,Variables and Expressions,scholar,Scholar Academy,9,Math,Algebra I,"Unit 1: Expressions, Variables, and Structure",content/scholar-academy/grade-9/math/SA-G9-ALG-U1-L1_VARIABLES_AND_EXPRESSIONS.json
+SA-G9-BIO-U2-L1,Cells as Systems,scholar,Scholar Academy,9,Science,Biology,Unit 2: Cells and Systems,content/scholar-academy/grade-9/science/SA-G9-BIO-U2-L1_CELLS_AS_SYSTEMS.json
+SA-G9-ENG-U3-L1,"Claim, Evidence, and Reasoning",scholar,Scholar Academy,9,ELA,English 9,Unit 3: Argument and Evidence,content/scholar-academy/grade-9/ela/SA-G9-ENG-U3-L1_CLAIM_EVIDENCE_AND_REASONING.json
+SA-G9-WH-U2-L1,Early River Valley Civilizations,scholar,Scholar Academy,9,Social Studies,World History I,Unit 2: Early Civilizations,content/scholar-academy/grade-9/social-studies/SA-G9-WH-U2-L1_EARLY_RIVER_VALLEY_CIVILIZATIONS.json

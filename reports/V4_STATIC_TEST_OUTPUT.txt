@@ -1,0 +1,8 @@
+
+> k12-learning-app-suite@0.1.0 test
+> node scripts/static-smoke-tests.mjs
+
+Static smoke tests passed.
+Lessons checked: 12
+Lesson sections checked: 16
+Memory Vault review-session workflow checked.

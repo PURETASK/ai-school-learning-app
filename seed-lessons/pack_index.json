@@ -1,0 +1,100 @@
+{
+  "pack": "k12_seed_lessons_complete_v2",
+  "created": "2026-06-08",
+  "lessonCount": 16,
+  "quizQuestionCount": 144,
+  "memoryVaultItemCount": 72,
+  "lessons": [
+    {
+      "id": "FA-G3-MATH-U1-L1",
+      "title": "Multiplication as Equal Groups",
+      "academy": "foundation",
+      "grade": "3",
+      "subject": "Math"
+    },
+    {
+      "id": "FA-G3-ELA-U2-L1",
+      "title": "Finding the Main Idea",
+      "academy": "foundation",
+      "grade": "3",
+      "subject": "ELA"
+    },
+    {
+      "id": "FA-G3-SCI-U1-L1",
+      "title": "Plant Life Cycles",
+      "academy": "foundation",
+      "grade": "3",
+      "subject": "Science"
+    },
+    {
+      "id": "FA-G3-SS-U1-L1",
+      "title": "Communities and Roles",
+      "academy": "foundation",
+      "grade": "3",
+      "subject": "Social Studies"
+    },
+    {
+      "id": "BA-G6-MATH-U1-L1",
+      "title": "Understanding Ratios",
+      "academy": "bridge",
+      "grade": "6",
+      "subject": "Math"
+    },
+    {
+      "id": "BA-G6-ELA-U2-L1",
+      "title": "Theme and Text Evidence",
+      "academy": "bridge",
+      "grade": "6",
+      "subject": "ELA"
+    },
+    {
+      "id": "BA-G6-SCI-U2-L1",
+      "title": "Water Cycle Systems",
+      "academy": "bridge",
+      "grade": "6",
+      "subject": "Science"
+    },
+    {
+      "id": "BA-G6-SS-U2-L1",
+      "title": "Ancient Civilizations and Geography",
+      "academy": "bridge",
+      "grade": "6",
+      "subject": "Social Studies"
+    },
+    {
+      "id": "SA-G9-ALG-U1-L1",
+      "title": "Variables and Expressions",
+      "academy": "scholar",
+      "grade": "9",
+      "subject": "Math"
+    },
+    {
+      "id": "SA-G9-ENG-U3-L1",
+      "title": "Claim, Evidence, and Reasoning",
+      "academy": "scholar",
+      "grade": "9",
+      "subject": "ELA"
+    },
+    {
+      "id": "SA-G9-BIO-U2-L1",
+      "title": "Cells as Systems",
+      "academy": "scholar",
+      "grade": "9",
+      "subject": "Science"
+    },
+    {
+      "id": "SA-G9-WH-U2-L1",
+      "title": "Early River Valley Civilizations",
+      "academy": "scholar",
+      "grade": "9",
+      "subject": "Social Studies"
+    }
+  ],
+  "updatedInV5": "Expanded from 12 to 16 seed lessons with Writing, CS, Study Skills, and Financial Literacy.",
+  "newLessonIds": [
+    "FA-G3-WR-U1-L1",
+    "BA-G6-CS-U1-L1",
+    "SA-G9-STUDY-U1-L1",
+    "SA-G9-FIN-U1-L1"
+  ]
+}

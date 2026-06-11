@@ -1,0 +1,2 @@
+Validated 12 lesson JSON files.
+No validation errors found.

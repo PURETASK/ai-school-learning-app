@@ -1,0 +1,637 @@
+{
+  "schemaVersion": "2.0",
+  "id": "FA-G3-MATH-U1-L1",
+  "title": "Multiplication as Equal Groups",
+  "academy": "foundation",
+  "academyName": "Foundation Academy",
+  "gradeLevel": "3",
+  "subject": "Math",
+  "course": "Grade 3 Math",
+  "unit": "Unit 1: Multiplication Foundations",
+  "lessonType": [
+    "concept lesson",
+    "skill lesson",
+    "thinking lesson",
+    "retrieval lesson"
+  ],
+  "estimatedMinutes": "30–35",
+  "developmentNotes": "Third graders are moving from repeated addition into multiplicative reasoning. Keep models concrete and visual before asking for equations.",
+  "learningObjective": "Students will explain multiplication as equal groups, represent multiplication with repeated addition and arrays, and solve one-step equal-group word problems.",
+  "essentialQuestion": "What does multiplication really mean before we calculate it?",
+  "standardsTags": [
+    "MATH.G3.OA.EQUAL_GROUPS",
+    "MATH.G3.OA.REPEATED_ADDITION",
+    "MATH.G3.MODEL_WITH_ARRAYS",
+    "MATH.G3.PROBLEM_SOLVING.REASONING"
+  ],
+  "thinkingSkillTags": [
+    "first-principles problem solving",
+    "critical thinking",
+    "evidence-based reasoning",
+    "retrieval practice",
+    "debugging"
+  ],
+  "vocabularyTerms": [
+    {
+      "term": "equal groups",
+      "definition": "groups that each have the same amount"
+    },
+    {
+      "term": "factor",
+      "definition": "a number being multiplied"
+    },
+    {
+      "term": "product",
+      "definition": "the answer to a multiplication problem"
+    },
+    {
+      "term": "array",
+      "definition": "objects arranged in equal rows and columns"
+    },
+    {
+      "term": "repeated addition",
+      "definition": "adding the same number again and again"
+    }
+  ],
+  "prerequisites": [
+    "Count by 2s, 5s, and 10s",
+    "Add within 100",
+    "Recognize rows, columns, and groups of objects"
+  ],
+  "lessonFlow": {
+    "hook": {
+      "time": "3–5 min",
+      "content": "A garden has 4 baskets. Each basket has 5 apples. The gardener writes 4 × 5. Students predict what each number means before finding the total.",
+      "studentAction": "Predict, notice, or explain initial thinking before direct instruction.",
+      "teacherOrAppAction": "Capture initial response as non-graded diagnostic evidence."
+    },
+    "learningGoal": {
+      "time": "1 min",
+      "content": "I can students will explain multiplication as equal groups, represent multiplication with repeated addition and arrays, and solve one-step equal-group word problems.",
+      "successCriteria": [
+        "I can explain the core concept in my own words.",
+        "I can show evidence or reasoning, not only an answer.",
+        "I can correct a common mistake."
+      ]
+    },
+    "miniTeach": {
+      "time": "6–8 min",
+      "content": "Multiplication is a way to count equal groups efficiently. In 4 × 5, there are 4 groups and each group has 5. That can be written as 5 + 5 + 5 + 5, drawn as 4 rows of 5, or solved as 20.",
+      "cognitiveLoadNotes": "Use short chunks, one example at a time, and reveal labels only after students observe the model."
+    },
+    "firstPrinciplesBreakdown": {
+      "coreConcept": "Multiplication describes equal groups.",
+      "parts": [
+        "number of groups",
+        "amount in each group",
+        "total amount",
+        "operation symbol",
+        "model or story context"
+      ],
+      "known": [
+        "There are 4 baskets.",
+        "Each basket has 5 apples.",
+        "All baskets have the same number of apples."
+      ],
+      "unknown": [
+        "Total number of apples."
+      ],
+      "rules": [
+        "Equal groups can be counted with repeated addition.",
+        "A multiplication expression can represent repeated equal groups.",
+        "If the groups are not equal, multiplication does not directly fit until the groups are adjusted or described differently."
+      ],
+      "avoid": [
+        "Do not add the two factors once, such as 4 + 5.",
+        "Do not multiply when groups are unequal without explaining the change."
+      ],
+      "steps": [
+        "Name the groups.",
+        "Name the amount in each group.",
+        "Write repeated addition.",
+        "Convert repeated addition to multiplication.",
+        "Solve and check by skip-counting or drawing."
+      ],
+      "check": "Skip-count by the amount in each group: 5, 10, 15, 20."
+    },
+    "workedExample": {
+      "time": "5–7 min",
+      "content": "Problem: 3 boxes have 6 crayons in each box. Known facts: 3 boxes, 6 crayons each. Repeated addition: 6 + 6 + 6 = 18. Multiplication: 3 × 6 = 18. Answer: 18 crayons.",
+      "teacherOrAppAction": "Highlight each reasoning step and connect it to the first-principles breakdown."
+    },
+    "guidedPractice": {
+      "time": "8–10 min",
+      "items": [
+        "Draw 2 groups of 4 stars. Write the repeated addition and multiplication expression.",
+        "Match 5 + 5 + 5 to 3 × 5. Explain why it is not 5 × 3 in this story model.",
+        "Use an array to show 4 × 3 and label rows and columns.",
+        "Debug this model: 3 groups are shown as 4, 4, and 5. Can it be represented by one multiplication fact? Why or why not?"
+      ],
+      "scaffolding": "Start with high support, then remove hints. Require explanation on the final item."
+    },
+    "criticalThinkingCheckpoint": {
+      "time": "3–5 min",
+      "prompt": "A student says 4 × 5 means 4 + 5. What is the mistake? Explain how equal groups help fix the reasoning.",
+      "lookFor": "Student identifies assumption, evaluates reasoning, and explains why one answer or model is stronger."
+    },
+    "evidenceBasedReasoningTask": {
+      "time": "5–7 min",
+      "prompt": "Claim: 3 × 4 = 12. Prove the claim using at least two kinds of evidence: repeated addition, an array, or a word story.",
+      "requiredStructure": "Claim → Evidence → Reasoning",
+      "rubric": "Evidence and reasoning rubric, 1–4 scale."
+    },
+    "interpretationOrDiscussionTask": {
+      "time": "5–7 min",
+      "prompt": "An array with 2 rows and 6 columns can be read as 2 groups of 6 or 6 columns of 2. Discuss what changes and what stays the same.",
+      "safety": "Use private response or moderated classroom mode only. No unrestricted student chat."
+    },
+    "activePractice": {
+      "time": "8–10 min",
+      "content": "Students drag objects into equal baskets. The app highlights unequal groups and asks students to debug the model before writing the equation.",
+      "dataCaptured": [
+        "completion",
+        "attempts",
+        "hint usage",
+        "mistake type",
+        "confidence"
+      ]
+    },
+    "retrievalCheck": {
+      "time": "5 min",
+      "items": [
+        {
+          "id": "FA-G3-MATH-U1-L1-R01",
+          "prompt": "What does 5 × 2 mean?",
+          "expectedAnswer": "5 groups of 2, or 2 + 2 + 2 + 2 + 2.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "FA-G3-MATH-U1-L1-R02",
+          "prompt": "Write 4 + 4 + 4 as multiplication.",
+          "expectedAnswer": "3 × 4.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "FA-G3-MATH-U1-L1-R03",
+          "prompt": "Why must groups be equal for multiplication?",
+          "expectedAnswer": "Multiplication counts the same amount in each group.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "FA-G3-MATH-U1-L1-R04",
+          "prompt": "Describe an array for 2 × 5.",
+          "expectedAnswer": "2 rows of 5 or 5 columns of 2.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        },
+        {
+          "id": "FA-G3-MATH-U1-L1-R05",
+          "prompt": "What is the product in 3 × 6 = 18?",
+          "expectedAnswer": "18.",
+          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+        }
+      ],
+      "rule": "Closed-note if appropriate; if missed, show feedback after response, not before."
+    },
+    "feedback": {
+      "time": "embedded",
+      "rules": [
+        "Correct: explain why it works, not only mark correct.",
+        "Incorrect: identify misconception, show one hint, then give a similar retry.",
+        "Explain/CER answers: score using rubric and return one specific revision target.",
+        "Do not shame guessing; redirect to strategy and evidence."
+      ]
+    },
+    "reflection": {
+      "time": "2–3 min",
+      "prompt": "What strategy helped you most, what mistake should you watch for, and when will you review this skill again?"
+    }
+  },
+  "quiz": [
+    {
+      "id": "FA-G3-MATH-U1-L1-Q01",
+      "type": "mc",
+      "question": "Which expression matches 6 + 6 + 6 + 6?",
+      "choices": [
+        "6 × 6",
+        "4 × 6",
+        "6 + 4",
+        "4 + 6"
+      ],
+      "correctAnswer": "4 × 6",
+      "explanation": "There are four equal groups of 6.",
+      "skillTag": "MATH.G3.OA.EQUAL_GROUPS",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-Q02",
+      "type": "mc",
+      "question": "What does 3 × 8 mean in this lesson model?",
+      "choices": [
+        "3 plus 8",
+        "8 minus 3",
+        "3 groups of 8",
+        "3 groups and 3 more"
+      ],
+      "correctAnswer": "3 groups of 8",
+      "explanation": "Multiplication describes groups of equal size.",
+      "skillTag": "MATH.G3.OA.EQUAL_GROUPS",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-Q03",
+      "type": "short",
+      "question": "There are 5 bags with 4 marbles in each. Write a multiplication equation.",
+      "choices": null,
+      "correctAnswer": "5 × 4 = 20",
+      "explanation": "There are 5 equal groups of 4.",
+      "skillTag": "MATH.G3.WORD_PROBLEM",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-Q04",
+      "type": "short",
+      "question": "Write repeated addition for 2 × 7.",
+      "choices": null,
+      "correctAnswer": "7 + 7",
+      "explanation": "2 groups of 7 means add 7 twice.",
+      "skillTag": "MATH.G3.REPEATED_ADDITION",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-Q05",
+      "type": "mc",
+      "question": "Which model shows equal groups?",
+      "choices": [
+        "2, 2, 2, 2",
+        "2, 3, 2, 4",
+        "1, 2, 3",
+        "5, 5, 6"
+      ],
+      "correctAnswer": "2, 2, 2, 2",
+      "explanation": "All groups have the same number.",
+      "skillTag": "MATH.G3.MODELS",
+      "difficulty": "easy",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-Q06",
+      "type": "explain",
+      "question": "Explain why 4 × 3 is not the same idea as 4 + 3.",
+      "choices": null,
+      "correctAnswer": "4 × 3 means 4 groups of 3; 4 + 3 joins 4 and 3 one time.",
+      "explanation": "Look for group-based reasoning.",
+      "skillTag": "THINK.EXPLAIN",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-Q07",
+      "type": "error",
+      "question": "A student solves 3 × 5 by doing 3 + 5 = 8. Find and fix the error.",
+      "choices": null,
+      "correctAnswer": "They added the factors. Correct: 5 + 5 + 5 = 15, so 3 × 5 = 15.",
+      "explanation": "This targets the common misconception.",
+      "skillTag": "MISTAKE.ADD_FACTORS",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-Q08",
+      "type": "apply",
+      "question": "A toy shelf has 4 rows with 6 cars in each row. How many cars?",
+      "choices": null,
+      "correctAnswer": "24 cars",
+      "explanation": "4 groups of 6 = 24.",
+      "skillTag": "MATH.G3.ARRAYS",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-Q09",
+      "type": "mc",
+      "question": "Which situation can be solved with 3 × 4?",
+      "choices": [
+        "3 pencils and 4 erasers",
+        "3 boxes with 4 pencils in each",
+        "3 pencils taken from 4 pencils",
+        "3 pencils added to 4 boxes"
+      ],
+      "correctAnswer": "3 boxes with 4 pencils in each",
+      "explanation": "It describes 3 equal groups of 4.",
+      "skillTag": "MATH.G3.CONTEXT",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-Q10",
+      "type": "short",
+      "question": "Create a different story for 2 × 9.",
+      "choices": null,
+      "correctAnswer": "Example: 2 plates with 9 cookies on each plate.",
+      "explanation": "Any story with 2 equal groups of 9 is valid.",
+      "skillTag": "CREATE.CONTEXT",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-Q11",
+      "type": "mc",
+      "question": "If groups are 4, 4, and 5, what should you do first?",
+      "choices": [
+        "Multiply 3 × 4",
+        "Multiply 3 × 5",
+        "Notice the groups are not equal",
+        "Add only 4 + 5"
+      ],
+      "correctAnswer": "Notice the groups are not equal",
+      "explanation": "Multiplication needs equal groups.",
+      "skillTag": "CRITICAL.CHECK_MODEL",
+      "difficulty": "hard",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-Q12",
+      "type": "explain",
+      "question": "How can an array help you check a multiplication answer?",
+      "choices": null,
+      "correctAnswer": "It shows equal rows and columns, so you can count or skip-count the total.",
+      "explanation": "Arrays make the group structure visible.",
+      "skillTag": "EVIDENCE.MODEL",
+      "difficulty": "medium",
+      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
+      "misconceptionTarget": "See explanation and feedback rules."
+    }
+  ],
+  "retrievalCheck": [
+    {
+      "id": "FA-G3-MATH-U1-L1-R01",
+      "prompt": "What does 5 × 2 mean?",
+      "expectedAnswer": "5 groups of 2, or 2 + 2 + 2 + 2 + 2.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-R02",
+      "prompt": "Write 4 + 4 + 4 as multiplication.",
+      "expectedAnswer": "3 × 4.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-R03",
+      "prompt": "Why must groups be equal for multiplication?",
+      "expectedAnswer": "Multiplication counts the same amount in each group.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-R04",
+      "prompt": "Describe an array for 2 × 5.",
+      "expectedAnswer": "2 rows of 5 or 5 columns of 2.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-R05",
+      "prompt": "What is the product in 3 × 6 = 18?",
+      "expectedAnswer": "18.",
+      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
+    }
+  ],
+  "memoryVaultItems": [
+    {
+      "id": "FA-G3-MATH-U1-L1-MV01",
+      "type": "concept",
+      "prompt": "What does multiplication describe?",
+      "expectedAnswer": "Equal groups.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.G3.OA.EQUAL_GROUPS",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-MV02",
+      "type": "vocab",
+      "prompt": "What is a product?",
+      "expectedAnswer": "The answer to a multiplication problem.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.G3.OA.REPEATED_ADDITION",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-MV03",
+      "type": "explain",
+      "prompt": "Explain 3 × 4 without using the word “times.”",
+      "expectedAnswer": "3 groups of 4.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.G3.MODEL_WITH_ARRAYS",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-MV04",
+      "type": "mistake",
+      "prompt": "Why is 6 × 2 not the same as 6 + 2?",
+      "expectedAnswer": "6 × 2 means 6 groups of 2, not joining 6 and 2 once.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.G3.PROBLEM_SOLVING.REASONING",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-MV05",
+      "type": "apply",
+      "prompt": "Write a real-life example for 5 × 3.",
+      "expectedAnswer": "Example: 5 plates with 3 cookies each.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.G3.PROBLEM_SOLVING.REASONING",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    },
+    {
+      "id": "FA-G3-MATH-U1-L1-MV06",
+      "type": "model",
+      "prompt": "Describe an array for 4 × 2.",
+      "expectedAnswer": "4 rows of 2, or another equal-row/column model totaling 8.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "MATH.G3.PROBLEM_SOLVING.REASONING",
+      "retentionStrengthStart": "developing",
+      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
+      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
+    }
+  ],
+  "reteachPath": {
+    "misconception": "Student adds the two factors instead of forming equal groups.",
+    "simpleExplanation": "Multiplication asks two questions: how many groups, and how many in each group?",
+    "steps": [
+      "Circle each group.",
+      "Write the same addend once for each group.",
+      "Convert repeated addition to multiplication.",
+      "Solve with skip-counting.",
+      "Check with a drawing or array."
+    ],
+    "practice": [
+      {
+        "prompt": "2 groups of 3 = ?",
+        "answer": "6"
+      },
+      {
+        "prompt": "3 + 3 + 3 + 3 as multiplication",
+        "answer": "4 × 3"
+      },
+      {
+        "prompt": "4 groups of 2 = ?",
+        "answer": "8"
+      },
+      {
+        "prompt": "Which is equal groups: 2,2,2 or 2,3,2?",
+        "answer": "2,2,2"
+      },
+      {
+        "prompt": "Fix: 5 × 3 = 8",
+        "answer": "5 × 3 = 15"
+      }
+    ],
+    "exitCriteria": "Student completes at least 4 of 5 reteach items and explains the corrected misconception."
+  },
+  "challengePath": {
+    "tasks": [
+      "Create two different arrays that both show 12. Explain why both work.",
+      "Write a word problem for 6 × 4 and solve it using repeated addition, an array, and multiplication.",
+      "Compare 3 × 4 and 4 × 3. Explain what changes in the story and what stays the same."
+    ],
+    "extensionRule": "Unlock at 90+ mastery or teacher/parent assignment; still schedule Memory Vault review."
+  },
+  "mastery": {
+    "bands": [
+      {
+        "range": "0-39",
+        "label": "Needs Intervention",
+        "action": "Assign intervention path, parent/teacher alert if repeated twice."
+      },
+      {
+        "range": "40-64",
+        "label": "Needs Reteach",
+        "action": "Assign reteach path and review tomorrow."
+      },
+      {
+        "range": "65-79",
+        "label": "Almost Mastered",
+        "action": "Assign guided practice and schedule review in 1 day."
+      },
+      {
+        "range": "80-89",
+        "label": "Mastered",
+        "action": "Schedule Memory Vault review on Day 1, 3, 7, 14, 30."
+      },
+      {
+        "range": "90-100",
+        "label": "Advanced",
+        "action": "Unlock challenge task and still schedule spaced review."
+      }
+    ],
+    "weights": {
+      "retrievalCheck": 0.2,
+      "quizAccuracy": 0.3,
+      "firstPrinciplesProcess": 0.15,
+      "evidenceOrReasoningQuality": 0.15,
+      "activePracticeCompletion": 0.1,
+      "reflectionQuality": 0.1
+    },
+    "masteryThreshold": 80,
+    "advancedThreshold": 90,
+    "minimumEvidence": [
+      "retrieval check completed",
+      "quiz completed",
+      "one reasoning/explanation artifact saved",
+      "Memory Vault items generated"
+    ]
+  },
+  "parentTeacherNotes": "Ask the student to make equal groups with coins, snacks, or toys. Require them to explain the groups before giving the answer.",
+  "accessibilityNotes": [
+    "Use plain, grade-appropriate language and define academic vocabulary before using it in prompts.",
+    "Provide alt text or text-equivalent descriptions for every image, diagram, array, chart, map, or model.",
+    "Make all interactive elements keyboard accessible with visible focus states and screen-reader labels.",
+    "Never rely only on color to communicate correct/incorrect, categories, or importance.",
+    "Provide read-aloud support for Foundation Academy and optional read-aloud for all grade bands.",
+    "Chunk instructions into short steps and provide examples before independent work."
+  ],
+  "safetyNotes": [
+    "No public student posting, random direct messages, or unrestricted discussion.",
+    "Discussion prompts must use sentence frames and moderation/teacher controls when implemented.",
+    "Student-generated work should be visible only to the student and authorized parent/teacher roles unless explicitly assigned in a safe classroom workflow.",
+    "Do not collect unnecessary personal information in lesson responses."
+  ],
+  "implementationNotes": [
+    "Render lessonFlow sections in order with progress state.",
+    "Persist quiz attempts and item-level skill tags.",
+    "Generate Memory Vault records after lesson completion.",
+    "Use mastery bands to branch to reteach, guided practice, review, or challenge.",
+    "Store open responses privately with role-based access.",
+    "Use answer keys and rubrics for review; do not expose hidden answer keys in student mode."
+  ],
+  "reviewStatus": {
+    "contentStatus": "v2 polished",
+    "reviewedAgainst": [
+      "curriculum inventory v2",
+      "universal lesson flow",
+      "Memory Vault requirements",
+      "mastery model",
+      "child safety and accessibility rules"
+    ],
+    "knownLimitations": "Standards tags are platform-internal placeholders until state-specific mappings are added."
+  }
+}

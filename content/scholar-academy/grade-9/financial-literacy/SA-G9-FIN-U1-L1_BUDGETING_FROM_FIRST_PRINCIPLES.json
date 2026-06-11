@@ -1,0 +1,539 @@
+{
+  "schemaVersion": "2.0",
+  "id": "SA-G9-FIN-U1-L1",
+  "title": "Budgeting from First Principles",
+  "academy": "scholar",
+  "academyName": "Scholar Academy",
+  "gradeLevel": "9",
+  "subject": "Financial Literacy",
+  "course": "Grade 9 Financial Literacy",
+  "unit": "Unit 1: Money Decisions and Tradeoffs",
+  "lessonType": [
+    "financial literacy lesson",
+    "first-principles lesson",
+    "life skills lesson"
+  ],
+  "estimatedMinutes": "35 minutes",
+  "developmentNotes": "Students need realistic but privacy-safe money reasoning, using fictional numbers rather than personal finances.",
+  "learningObjective": "Students will create a simple budget by reasoning from income, needs, wants, savings, and tradeoffs.",
+  "essentialQuestion": "How can first-principles thinking help people make better money decisions?",
+  "standardsTags": [
+    "FIN.G9.BUDGETING.FOUNDATIONS",
+    "MATH.G9.REASONING.NUMERICAL_MODELING"
+  ],
+  "thinkingSkillTags": [
+    "first-principles problem solving",
+    "critical thinking",
+    "evidence-based reasoning",
+    "life skills"
+  ],
+  "vocabularyTerms": [
+    {
+      "term": "income",
+      "definition": "Money coming in."
+    },
+    {
+      "term": "budget",
+      "definition": "A plan for how money will be used."
+    },
+    {
+      "term": "need",
+      "definition": "Something required for basic responsibility, safety, or health."
+    },
+    {
+      "term": "want",
+      "definition": "Something optional."
+    },
+    {
+      "term": "tradeoff",
+      "definition": "Giving up one option to choose another."
+    }
+  ],
+  "prerequisites": [
+    "Can subtract whole numbers",
+    "Can compare categories",
+    "Can explain a choice"
+  ],
+  "lessonFlow": {
+    "hook": {
+      "time": "3-6 min",
+      "content": "You have $100 for the week. Food, transportation, savings, and entertainment all compete for the same money.",
+      "studentAction": "Decide what must be paid first and explain why.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Distinguishes needs from wants."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "learningGoal": {
+      "time": "3-6 min",
+      "content": "I can build a simple budget from first principles by identifying income, needs, wants, savings, and tradeoffs.",
+      "studentAction": "Restate budget as a plan for limited money.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Defines budget and tradeoff."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "miniTeach": {
+      "time": "3-6 min",
+      "content": "A budget starts with income. Then subtract needs, choose savings, and decide how much is left for wants. Every choice has an opportunity cost.",
+      "studentAction": "Classify expenses as needs, wants, or savings.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Correctly classifies basic expenses."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "firstPrinciplesBreakdown": {
+      "time": "3-6 min",
+      "content": "Break budgeting down: How much money comes in? What must be paid? What future goal matters? What choices remain?",
+      "studentAction": "Fill in income, fixed needs, variable choices, savings goal.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Uses income minus expenses logic."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "workedExample": {
+      "time": "3-6 min",
+      "content": "Income $100. Needs: bus $20, lunch $30. Savings $10. Wants budget: $40. If entertainment costs $50, something must change.",
+      "studentAction": "Calculate remaining money and identify the tradeoff.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Calculates remaining budget accurately."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "guidedPractice": {
+      "time": "3-6 min",
+      "content": "Build a $75 weekend budget with required transportation and food costs.",
+      "studentAction": "Subtract needs, set savings, choose wants.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Creates a balanced budget that does not overspend."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "criticalThinkingCheckpoint": {
+      "time": "3-6 min",
+      "content": "Is a cheap option always the best option? Consider quality, safety, time, and goals.",
+      "studentAction": "Compare two spending choices using constraints.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Identifies at least one tradeoff beyond price."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "evidenceBasedReasoningTask": {
+      "time": "3-6 min",
+      "content": "Claim: This budget works. Evidence: total expenses are less than or equal to income. Reasoning: A budget cannot spend more than it has.",
+      "studentAction": "Use numbers as evidence to defend a budget.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Supports claim with calculation evidence."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "interpretationOrDiscussionTask": {
+      "time": "3-6 min",
+      "content": "Discussion frame: 'I would prioritize ___ because ___. The tradeoff is ___.'",
+      "studentAction": "Explain a budget priority respectfully.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Names a priority and tradeoff."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "activePractice": {
+      "time": "3-6 min",
+      "content": "Create a first-principles budget for a fictional student earning $120.",
+      "studentAction": "Classify, calculate, adjust, and justify.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Budget balances and includes a savings choice."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "retrievalCheck": {
+      "time": "3-6 min",
+      "content": "Without looking, name the four budget building blocks.",
+      "studentAction": "Recall income, needs, wants, savings/tradeoffs.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Recalls core budget parts."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "feedback": {
+      "time": "3-6 min",
+      "content": "Feedback checks arithmetic, category choices, and reasoning about tradeoffs.",
+      "studentAction": "Fix one overspending budget.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Corrects the budget and explains the tradeoff."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "reflection": {
+      "time": "3-6 min",
+      "content": "What spending choice would be hardest for you to control, and what rule could help?",
+      "studentAction": "Write one personal budgeting rule without sharing private financial data.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Creates a general rule without sensitive personal disclosure."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    }
+  },
+  "quiz": [
+    {
+      "id": "SA-G9-FIN-U1-L1-Q1",
+      "type": "mc",
+      "question": "What is income?",
+      "choices": [
+        "Money coming in",
+        "Money already spent",
+        "A random wish",
+        "Only entertainment money"
+      ],
+      "correctAnswer": "Money coming in",
+      "explanation": "A budget starts with money available.",
+      "skillTag": "finance.budget",
+      "difficulty": "medium",
+      "misconceptionTarget": "Forgot vocabulary"
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-Q2",
+      "type": "mc",
+      "question": "Which is usually a need?",
+      "choices": [
+        "Bus fare to school",
+        "A new game",
+        "Extra candy",
+        "Movie ticket"
+      ],
+      "correctAnswer": "Bus fare to school",
+      "explanation": "Needs are expenses required for basic responsibilities or safety.",
+      "skillTag": "finance.needsWants",
+      "difficulty": "medium",
+      "misconceptionTarget": "Misunderstood concept"
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-Q3",
+      "type": "mc",
+      "question": "If income is $100 and needs cost $60, how much remains before savings or wants?",
+      "choices": [
+        "$40",
+        "$60",
+        "$160",
+        "$0"
+      ],
+      "correctAnswer": "$40",
+      "explanation": "100 - 60 = 40.",
+      "skillTag": "math.calculation",
+      "difficulty": "medium",
+      "misconceptionTarget": "Calculation error"
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-Q4",
+      "type": "mc",
+      "question": "What is a tradeoff?",
+      "choices": [
+        "Giving up one option to choose another",
+        "Getting everything for free",
+        "Ignoring costs",
+        "Only buying wants"
+      ],
+      "correctAnswer": "Giving up one option to choose another",
+      "explanation": "Limited resources force choices.",
+      "skillTag": "finance.tradeoff",
+      "difficulty": "medium",
+      "misconceptionTarget": "Forgot vocabulary"
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-Q5",
+      "type": "mc",
+      "question": "A budget spends $125 with income of $100. What is wrong?",
+      "choices": [
+        "It overspends by $25",
+        "It saves too much",
+        "It has no income",
+        "Nothing is wrong"
+      ],
+      "correctAnswer": "It overspends by $25",
+      "explanation": "A balanced budget cannot spend more than income.",
+      "skillTag": "finance.budget",
+      "difficulty": "medium",
+      "misconceptionTarget": "Calculation error"
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-Q6",
+      "type": "mc",
+      "question": "Which evidence best proves a budget works?",
+      "choices": [
+        "Total expenses are less than or equal to income",
+        "It feels exciting",
+        "It has many colors",
+        "It includes only wants"
+      ],
+      "correctAnswer": "Total expenses are less than or equal to income",
+      "explanation": "Numbers provide evidence that the budget balances.",
+      "skillTag": "evidence.reasoning",
+      "difficulty": "medium",
+      "misconceptionTarget": "Weak evidence"
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-Q7",
+      "type": "short_answer",
+      "question": "Build a budget: income $80, needs $50, savings $10. How much is left for wants?",
+      "correctAnswer": "$20 is left for wants.",
+      "explanation": "80 - 50 - 10 = 20.",
+      "skillTag": "math.reasoning",
+      "difficulty": "medium",
+      "scoringNotes": "Award full credit for accurate reasoning with relevant evidence; partial credit for incomplete but coherent thinking.",
+      "misconceptionTarget": "Calculation error"
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-Q8",
+      "type": "explain",
+      "question": "Explain why savings can be treated like a planned category.",
+      "correctAnswer": "Savings supports a future goal, so it should be planned before spending all remaining money on wants.",
+      "explanation": "Savings becomes stronger when it is intentional.",
+      "skillTag": "finance.savings",
+      "difficulty": "medium",
+      "scoringNotes": "Award full credit for accurate reasoning with relevant evidence; partial credit for incomplete but coherent thinking.",
+      "misconceptionTarget": "Weak explanation"
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-Q9",
+      "type": "cer",
+      "question": "Use CER to defend a balanced budget.",
+      "correctAnswer": "Claim: The budget works. Evidence: Expenses add to the same amount or less than income. Reasoning: The plan does not overspend.",
+      "explanation": "Budget reasoning should use numerical evidence.",
+      "skillTag": "evidence.cer",
+      "difficulty": "medium",
+      "scoringNotes": "Award full credit for accurate reasoning with relevant evidence; partial credit for incomplete but coherent thinking.",
+      "misconceptionTarget": "Weak evidence"
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-Q10",
+      "type": "short_answer",
+      "question": "Name one tradeoff in choosing a cheaper option.",
+      "correctAnswer": "A cheaper option may save money but could take more time or be lower quality.",
+      "explanation": "Tradeoffs include more than price.",
+      "skillTag": "finance.tradeoff",
+      "difficulty": "medium",
+      "scoringNotes": "Award full credit for accurate reasoning with relevant evidence; partial credit for incomplete but coherent thinking.",
+      "misconceptionTarget": "Weak explanation"
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-Q11",
+      "type": "explain",
+      "question": "Explain one important idea from budgeting from first principles using your own words.",
+      "correctAnswer": "A strong answer accurately explains budgeting from first principles and includes a reason or example.",
+      "explanation": "This checks whether the student can explain budgeting from first principles, not just recognize it.",
+      "skillTag": "finance.tradeoff",
+      "difficulty": "medium",
+      "scoringNotes": "Look for accurate concept, reasoning, and a relevant example.",
+      "misconceptionTarget": "Weak explanation"
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-Q12",
+      "type": "explain",
+      "question": "Explain one important idea from budgeting from first principles using your own words.",
+      "correctAnswer": "A strong answer accurately explains budgeting from first principles and includes a reason or example.",
+      "explanation": "This checks whether the student can explain budgeting from first principles, not just recognize it.",
+      "skillTag": "math.reasoning",
+      "difficulty": "medium",
+      "scoringNotes": "Look for accurate concept, reasoning, and a relevant example.",
+      "misconceptionTarget": "Weak explanation"
+    }
+  ],
+  "retrievalCheck": [
+    {
+      "id": "SA-G9-FIN-U1-L1-R1",
+      "prompt": "Name the main budget parts.",
+      "expectedAnswer": "Income, needs, savings, wants/tradeoffs.",
+      "feedbackIfMissed": "Review the first-principles budget model."
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-R2",
+      "prompt": "What is a tradeoff?",
+      "expectedAnswer": "Giving up one option to choose another.",
+      "feedbackIfMissed": "Review vocabulary card."
+    }
+  ],
+  "memoryVaultItems": [
+    {
+      "id": "SA-G9-FIN-U1-L1-MV1",
+      "type": "vocabulary",
+      "prompt": "What is income?",
+      "expectedAnswer": "Money coming in.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "finance.budget",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-MV2",
+      "type": "vocabulary",
+      "prompt": "What is a tradeoff?",
+      "expectedAnswer": "Giving up one option to choose another.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "finance.tradeoff",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-MV3",
+      "type": "concept",
+      "prompt": "What are the main budget parts?",
+      "expectedAnswer": "Income, needs, savings, wants, and tradeoffs.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "finance.budget",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-MV4",
+      "type": "application",
+      "prompt": "Income $50, needs $30. How much remains?",
+      "expectedAnswer": "$20.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "math.calculation",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-MV5",
+      "type": "explain",
+      "prompt": "Why should a budget not spend more than income?",
+      "expectedAnswer": "Because overspending means the plan uses money that is not available.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "finance.budget",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "SA-G9-FIN-U1-L1-MV6",
+      "type": "application",
+      "prompt": "Classify rent, food, or bus fare: need or want?",
+      "expectedAnswer": "Usually need.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "finance.needsWants",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    }
+  ],
+  "reteachPath": {
+    "misconception": "Student guesses budgets without subtracting income and expenses step by step.",
+    "simpleExplanation": "A budget is math plus priorities. Start with income, subtract needs, choose savings, then decide wants.",
+    "steps": [
+      "Write income",
+      "List needs",
+      "Subtract needs",
+      "Choose savings",
+      "Limit wants to what remains",
+      "Check total"
+    ],
+    "practice": [
+      "Classify expenses",
+      "Fix an overspending budget",
+      "Explain one tradeoff"
+    ],
+    "exitCriteria": "Student builds a budget that balances and explains one tradeoff with numbers."
+  },
+  "challengePath": {
+    "tasks": [
+      "Design two budgets with different priorities and compare the tradeoffs.",
+      "Create a savings plan for a fictional $200 goal.",
+      "Analyze an overspending budget and propose three fixes."
+    ],
+    "extensionRule": "Unlock when budget calculations and tradeoff reasoning are both strong."
+  },
+  "mastery": {
+    "bands": {
+      "0-39": "Needs Intervention",
+      "40-64": "Needs Reteach",
+      "65-79": "Almost Mastered",
+      "80-89": "Mastered",
+      "90-100": "Advanced"
+    },
+    "weights": {
+      "quiz": 0.55,
+      "retrievalCheck": 0.2,
+      "thinkingTask": 0.15,
+      "reflection": 0.1
+    },
+    "masteryThreshold": 80,
+    "advancedThreshold": 90,
+    "minimumEvidence": [
+      "complete lesson flow",
+      "attempt retrieval check",
+      "submit quiz",
+      "complete reflection"
+    ]
+  },
+  "parentTeacherNotes": "Use fictional budgets only. Ask the student to explain priorities generally, not reveal family finances.",
+  "accessibilityNotes": [
+    "Use clear tables",
+    "Support calculator use if needed",
+    "Avoid requiring personal financial disclosure"
+  ],
+  "safetyNotes": [
+    "Do not ask for real family income or expenses",
+    "Keep examples fictional and age-appropriate"
+  ],
+  "implementationNotes": [
+    "Use this lesson to test Problem-Solving Lab, Systems Mapper, and Life Skills content."
+  ],
+  "reviewStatus": {
+    "contentStatus": "v5-added",
+    "qaStatus": "ready for MVP seed testing",
+    "lastReviewed": "2026-06-08",
+    "reviewNotes": "Added to expand MVP seed set from 12 to 16 and exercise thinking-system modules."
+  }
+}

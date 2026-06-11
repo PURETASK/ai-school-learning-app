@@ -1,0 +1,534 @@
+{
+  "schemaVersion": "2.0",
+  "id": "BA-G6-CS-U1-L1",
+  "title": "Debugging an Algorithm",
+  "academy": "bridge",
+  "academyName": "Bridge Academy",
+  "gradeLevel": "6",
+  "subject": "Computer Science",
+  "course": "Grade 6 Computer Science",
+  "unit": "Unit 1: Algorithms and Debugging",
+  "lessonType": [
+    "computational thinking lesson",
+    "debugging lesson",
+    "evidence lesson"
+  ],
+  "estimatedMinutes": "30 minutes",
+  "developmentNotes": "Middle school students can use concrete routines before abstract code.",
+  "learningObjective": "Students will debug an algorithm by identifying the failing step, explaining the error, fixing it, and testing the result.",
+  "essentialQuestion": "How do careful thinkers find and fix problems in a set of instructions?",
+  "standardsTags": [
+    "CS.G6.ALGORITHMS.DEBUGGING",
+    "CS.G6.PROBLEM_SOLVING.DECOMPOSITION"
+  ],
+  "thinkingSkillTags": [
+    "computational thinking",
+    "debugging",
+    "evidence-based reasoning",
+    "critical thinking"
+  ],
+  "vocabularyTerms": [
+    {
+      "term": "algorithm",
+      "definition": "A step-by-step set of instructions."
+    },
+    {
+      "term": "debug",
+      "definition": "To find and fix an error."
+    },
+    {
+      "term": "bug",
+      "definition": "An error that prevents the expected result."
+    },
+    {
+      "term": "sequence",
+      "definition": "The order of steps."
+    }
+  ],
+  "prerequisites": [
+    "Can follow ordered instructions",
+    "Can compare expected and actual results"
+  ],
+  "lessonFlow": {
+    "hook": {
+      "time": "3-6 min",
+      "content": "A robot is supposed to make a sandwich, but it puts peanut butter on the plate before opening the bread. The algorithm has a bug.",
+      "studentAction": "Identify what went wrong in the sequence.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Names a sequence error as the likely bug."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "learningGoal": {
+      "time": "3-6 min",
+      "content": "I can debug an algorithm by finding the step that breaks the intended result.",
+      "studentAction": "Restate debug as find, explain, fix, test.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Defines debugging in student-friendly language."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "miniTeach": {
+      "time": "3-6 min",
+      "content": "An algorithm is a step-by-step set of instructions. Debugging means finding and fixing errors so the steps work.",
+      "studentAction": "Order a simple set of instructions.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Explains algorithm and bug."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "firstPrinciplesBreakdown": {
+      "time": "3-6 min",
+      "content": "Break the problem down: What is the input? What should the output be? What steps transform input into output? Which step fails?",
+      "studentAction": "Fill in input, output, steps, failing step.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Separates expected output from actual output."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "workedExample": {
+      "time": "3-6 min",
+      "content": "Example: To log in, steps are enter username, enter password, click sign in. If click sign in happens first, the algorithm fails.",
+      "studentAction": "Mark the bug and fix the order.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Correctly reorders the steps."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "guidedPractice": {
+      "time": "3-6 min",
+      "content": "Debug a morning routine algorithm with one missing step.",
+      "studentAction": "Find the missing step and explain why it matters.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Explains the bug's effect."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "criticalThinkingCheckpoint": {
+      "time": "3-6 min",
+      "content": "Could an algorithm have more than one possible correct solution? Compare two valid routines.",
+      "studentAction": "Evaluate whether both algorithms reach the same output.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Recognizes that different step sets can work if constraints are met."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "evidenceBasedReasoningTask": {
+      "time": "3-6 min",
+      "content": "Claim: Step 3 is the bug. Evidence: The robot uses an item before it exists. Reasoning: Instructions must be in a logical order.",
+      "studentAction": "Write claim, evidence, reasoning for a bug.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Supports bug claim with evidence from steps."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "interpretationOrDiscussionTask": {
+      "time": "3-6 min",
+      "content": "Discussion frame: 'I think the bug is ___ because ___. I would test it by ___.'",
+      "studentAction": "Use academic dialogue to defend a debugging choice.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Uses because and test language."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "activePractice": {
+      "time": "3-6 min",
+      "content": "Debug a block-code style algorithm for moving through a maze.",
+      "studentAction": "Choose the incorrect step and replace it.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Produces a working sequence."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "retrievalCheck": {
+      "time": "3-6 min",
+      "content": "Without looking, name the four debugging moves.",
+      "studentAction": "Recall find, explain, fix, test.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Recalls the debugging cycle."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "feedback": {
+      "time": "3-6 min",
+      "content": "Feedback names whether the mistake was sequence, missing step, wrong condition, or unclear instruction.",
+      "studentAction": "Tag the mistake type and revise.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Correctly tags at least one bug type."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    },
+    "reflection": {
+      "time": "3-6 min",
+      "content": "What clue helped you find the bug? What will you check first next time?",
+      "studentAction": "Complete a debugging reflection.",
+      "teacherOrAppAction": "Guide with age-appropriate prompts, immediate feedback, and accessibility support.",
+      "successCriteria": [
+        "Names a reusable strategy."
+      ],
+      "cognitiveLoadNotes": "Keep the task focused, reduce unnecessary text, and show examples before independent work."
+    }
+  },
+  "quiz": [
+    {
+      "id": "BA-G6-CS-U1-L1-Q1",
+      "type": "mc",
+      "question": "What is an algorithm?",
+      "choices": [
+        "A step-by-step set of instructions",
+        "A random drawing",
+        "A type of lunch",
+        "A password only"
+      ],
+      "correctAnswer": "A step-by-step set of instructions",
+      "explanation": "Algorithms tell a system what steps to follow.",
+      "skillTag": "cs.algorithm",
+      "difficulty": "medium",
+      "misconceptionTarget": "Forgot vocabulary"
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-Q2",
+      "type": "mc",
+      "question": "What does debugging mean?",
+      "choices": [
+        "Finding and fixing errors",
+        "Making a bug drawing",
+        "Deleting all steps",
+        "Guessing faster"
+      ],
+      "correctAnswer": "Finding and fixing errors",
+      "explanation": "Debugging means find, explain, fix, and test.",
+      "skillTag": "cs.debugging",
+      "difficulty": "medium",
+      "misconceptionTarget": "Forgot vocabulary"
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-Q3",
+      "type": "mc",
+      "question": "Which is usually checked first when debugging a sequence?",
+      "choices": [
+        "Whether the steps are in logical order",
+        "The color of the page",
+        "The student's name",
+        "The font size"
+      ],
+      "correctAnswer": "Whether the steps are in logical order",
+      "explanation": "Sequence bugs happen when steps are missing or out of order.",
+      "skillTag": "cs.debugging",
+      "difficulty": "medium",
+      "misconceptionTarget": "Skipped a step"
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-Q4",
+      "type": "mc",
+      "question": "A robot pours cereal before getting a bowl. What kind of bug is likely?",
+      "choices": [
+        "Sequence error",
+        "Perfect algorithm",
+        "Strong evidence",
+        "Vocabulary error"
+      ],
+      "correctAnswer": "Sequence error",
+      "explanation": "The robot uses the bowl before it exists in the steps.",
+      "skillTag": "cs.algorithm",
+      "difficulty": "medium",
+      "misconceptionTarget": "Misunderstood concept"
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-Q5",
+      "type": "mc",
+      "question": "What should happen after you fix a bug?",
+      "choices": [
+        "Test the algorithm",
+        "Forget the problem",
+        "Add random steps",
+        "Stop explaining"
+      ],
+      "correctAnswer": "Test the algorithm",
+      "explanation": "Testing checks whether the fix actually works.",
+      "skillTag": "cs.debugging",
+      "difficulty": "medium",
+      "misconceptionTarget": "Skipped a step"
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-Q6",
+      "type": "mc",
+      "question": "Which evidence best proves Step 2 is a bug?",
+      "choices": [
+        "The output fails right after Step 2",
+        "Step 2 uses many words",
+        "The paper is blue",
+        "The robot is funny"
+      ],
+      "correctAnswer": "The output fails right after Step 2",
+      "explanation": "Evidence must connect the step to the failure.",
+      "skillTag": "evidence.reasoning",
+      "difficulty": "medium",
+      "misconceptionTarget": "Weak evidence"
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-Q7",
+      "type": "short_answer",
+      "question": "Explain the debugging cycle in four words or short phrases.",
+      "correctAnswer": "Find, explain, fix, test.",
+      "explanation": "These are the core moves of debugging.",
+      "skillTag": "cs.debugging",
+      "difficulty": "medium",
+      "scoringNotes": "Award full credit for accurate reasoning with relevant evidence; partial credit for incomplete but coherent thinking.",
+      "misconceptionTarget": "Weak explanation"
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-Q8",
+      "type": "cer",
+      "question": "Write a claim and evidence for this bug: Step 1 says 'click submit' before entering a name.",
+      "correctAnswer": "Claim: Step 1 is the bug. Evidence: The name has not been entered yet, so submit cannot work correctly.",
+      "explanation": "The answer should connect the failing step to the expected output.",
+      "skillTag": "evidence.cer",
+      "difficulty": "medium",
+      "scoringNotes": "Award full credit for accurate reasoning with relevant evidence; partial credit for incomplete but coherent thinking.",
+      "misconceptionTarget": "Weak evidence"
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-Q9",
+      "type": "explain",
+      "question": "Why is testing important after a fix?",
+      "correctAnswer": "Testing shows whether the new steps produce the correct output.",
+      "explanation": "A fix is not proven until it is tested.",
+      "skillTag": "cs.debugging",
+      "difficulty": "medium",
+      "scoringNotes": "Award full credit for accurate reasoning with relevant evidence; partial credit for incomplete but coherent thinking.",
+      "misconceptionTarget": "Weak explanation"
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-Q10",
+      "type": "short_answer",
+      "question": "Give one example of an algorithm outside computers.",
+      "correctAnswer": "A recipe, morning routine, or directions to a place.",
+      "explanation": "Algorithms are step-by-step instructions in many contexts.",
+      "skillTag": "cs.algorithm",
+      "difficulty": "medium",
+      "scoringNotes": "Award full credit for accurate reasoning with relevant evidence; partial credit for incomplete but coherent thinking.",
+      "misconceptionTarget": "Misunderstood concept"
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-Q11",
+      "type": "explain",
+      "question": "Explain one important idea from debugging an algorithm using your own words.",
+      "correctAnswer": "A strong answer accurately explains debugging an algorithm and includes a reason or example.",
+      "explanation": "This checks whether the student can explain debugging an algorithm, not just recognize it.",
+      "skillTag": "cs.debugging",
+      "difficulty": "medium",
+      "scoringNotes": "Look for accurate concept, reasoning, and a relevant example.",
+      "misconceptionTarget": "Weak explanation"
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-Q12",
+      "type": "explain",
+      "question": "Explain one important idea from debugging an algorithm using your own words.",
+      "correctAnswer": "A strong answer accurately explains debugging an algorithm and includes a reason or example.",
+      "explanation": "This checks whether the student can explain debugging an algorithm, not just recognize it.",
+      "skillTag": "evidence.reasoning",
+      "difficulty": "medium",
+      "scoringNotes": "Look for accurate concept, reasoning, and a relevant example.",
+      "misconceptionTarget": "Weak explanation"
+    }
+  ],
+  "retrievalCheck": [
+    {
+      "id": "BA-G6-CS-U1-L1-R1",
+      "prompt": "Name the four debugging moves.",
+      "expectedAnswer": "Find, explain, fix, test.",
+      "feedbackIfMissed": "Review the debugging cycle."
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-R2",
+      "prompt": "What is an algorithm?",
+      "expectedAnswer": "A step-by-step set of instructions.",
+      "feedbackIfMissed": "Review the vocabulary card."
+    }
+  ],
+  "memoryVaultItems": [
+    {
+      "id": "BA-G6-CS-U1-L1-MV1",
+      "type": "vocabulary",
+      "prompt": "What is an algorithm?",
+      "expectedAnswer": "A step-by-step set of instructions.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "cs.algorithm",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-MV2",
+      "type": "vocabulary",
+      "prompt": "What is debugging?",
+      "expectedAnswer": "Finding and fixing errors in steps or logic.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "cs.debugging",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-MV3",
+      "type": "concept",
+      "prompt": "What are the four debugging moves?",
+      "expectedAnswer": "Find, explain, fix, test.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "cs.debugging",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-MV4",
+      "type": "application",
+      "prompt": "A recipe says bake before mixing ingredients. What bug type is this?",
+      "expectedAnswer": "A sequence error.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "cs.algorithm",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-MV5",
+      "type": "explain",
+      "prompt": "Why should you test after fixing a bug?",
+      "expectedAnswer": "To confirm the algorithm works after the change.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "cs.debugging",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    },
+    {
+      "id": "BA-G6-CS-U1-L1-MV6",
+      "type": "application",
+      "prompt": "What evidence helps prove a bug?",
+      "expectedAnswer": "A step that causes the output to fail or not match the goal.",
+      "scheduleDays": [
+        1,
+        3,
+        7,
+        14,
+        30
+      ],
+      "skillTag": "evidence.reasoning",
+      "retentionStrengthStart": "weak",
+      "failureAction": "Show reteach support, ask for a shorter explanation, and schedule a next-day retry.",
+      "successAction": "Increase confidence and keep the next spaced review on schedule."
+    }
+  ],
+  "reteachPath": {
+    "misconception": "Student changes steps randomly without identifying the failure point.",
+    "simpleExplanation": "Debugging is not guessing. First find where the steps stop matching the goal.",
+    "steps": [
+      "State the goal",
+      "List the steps",
+      "Find the first failing step",
+      "Explain why it fails",
+      "Fix one thing",
+      "Test again"
+    ],
+    "practice": [
+      "Debug a three-step routine",
+      "Sort bug types",
+      "Explain one fix with evidence"
+    ],
+    "exitCriteria": "Student identifies a bug, explains why it fails, and tests the corrected sequence."
+  },
+  "challengePath": {
+    "tasks": [
+      "Design a maze algorithm with one hidden bug and write an answer key.",
+      "Compare two working algorithms and decide which is clearer.",
+      "Debug a real-life routine such as packing a backpack."
+    ],
+    "extensionRule": "Unlock when debugging score reaches Advanced or student explains a bug using evidence."
+  },
+  "mastery": {
+    "bands": {
+      "0-39": "Needs Intervention",
+      "40-64": "Needs Reteach",
+      "65-79": "Almost Mastered",
+      "80-89": "Mastered",
+      "90-100": "Advanced"
+    },
+    "weights": {
+      "quiz": 0.55,
+      "retrievalCheck": 0.2,
+      "thinkingTask": 0.15,
+      "reflection": 0.1
+    },
+    "masteryThreshold": 80,
+    "advancedThreshold": 90,
+    "minimumEvidence": [
+      "complete lesson flow",
+      "attempt retrieval check",
+      "submit quiz",
+      "complete reflection"
+    ]
+  },
+  "parentTeacherNotes": "Ask the student to explain the bug before fixing it; this builds reasoning rather than random trial-and-error.",
+  "accessibilityNotes": [
+    "Use numbered steps",
+    "Allow students to act out algorithms",
+    "Keep code-like examples short"
+  ],
+  "safetyNotes": [
+    "No open sharing of student code in MVP",
+    "Avoid using student personal routines as required examples"
+  ],
+  "implementationNotes": [
+    "Use this lesson to test Debugging Arena, Mistake Journal, and Problem-Solving Lab."
+  ],
+  "reviewStatus": {
+    "contentStatus": "v5-added",
+    "qaStatus": "ready for MVP seed testing",
+    "lastReviewed": "2026-06-08",
+    "reviewNotes": "Added to expand MVP seed set from 12 to 16 and exercise thinking-system modules."
+  }
+}

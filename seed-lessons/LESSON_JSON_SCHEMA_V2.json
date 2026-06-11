@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "K12 Seed Lesson Schema V2",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "title",
+    "academy",
+    "gradeLevel",
+    "subject",
+    "course",
+    "unit",
+    "learningObjective",
+    "essentialQuestion",
+    "standardsTags",
+    "thinkingSkillTags",
+    "lessonFlow",
+    "quiz",
+    "retrievalCheck",
+    "memoryVaultItems",
+    "reteachPath",
+    "challengePath",
+    "mastery"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "2.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "academy": {
+      "enum": [
+        "foundation",
+        "bridge",
+        "scholar"
+      ]
+    },
+    "standardsTags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "thinkingSkillTags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lessonFlow": {
+      "type": "object",
+      "required": [
+        "hook",
+        "learningGoal",
+        "miniTeach",
+        "firstPrinciplesBreakdown",
+        "workedExample",
+        "guidedPractice",
+        "criticalThinkingCheckpoint",
+        "evidenceBasedReasoningTask",
+        "interpretationOrDiscussionTask",
+        "activePractice",
+        "retrievalCheck",
+        "feedback",
+        "reflection"
+      ]
+    },
+    "quiz": {
+      "type": "array",
+      "minItems": 10
+    },
+    "memoryVaultItems": {
+      "type": "array",
+      "minItems": 5
+    },
+    "mastery": {
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+Priority,System,Gap,Why It Matters,Recommended Fix,Status After V3
+P0,Lesson Player,Universal flow mismatch: 13 displayed sections instead of 16,Core lesson doctrine must be visible in app,"Add derived Mastery Score, Spaced Review Scheduling, Reteach/Challenge Path sections",Fixed
+P0,Validation,No automated check that Lesson Player exposes all 16 sections,Regression risk,Add static smoke test checking 16 labels,Fixed
+P0,Master Pack,No single report proving guide compliance after latest build,Codex needs clear truth state,Add comprehensive audit report and compliance matrix,Fixed
+P1,Quiz Engine,Open responses use heuristic scoring,"Could misgrade reasoning, CER, explanations",Route open responses to rubric/manual review in production,Open
+P1,Memory Vault,Scheduling exists but completion/reschedule workflow missing,Retention engine needs closed loop,Add review session UI and adaptive interval updates,Open
+P1,Dashboards,Local state only,Progress disappears on refresh and cannot support real accounts,Add persistence layer after MVP demo proves loop,Open
+P1,Safety,No real auth/RBAC/parent consent yet,Children app cannot beta without privacy controls,Implement auth and role permissions before user testing,Open
+P1,Content,12 seed lessons are not full MVP curriculum,Engine test is ready; curriculum coverage not enough,Scale to 12 courses × 4 units × 5 lessons after engine stabilizes,Open
+P2,Analytics,No event logging layer in UI yet,Need learning/product telemetry to improve app,Added event types/helpers; wire into UI later,Partially fixed
+P2,Testing,No Vitest/Playwright installed,Need robust test suite before release,Add after npm dependencies are installed locally,Open
+P2,Design System,Visual system still generic Tailwind,Product needs brand/age-band UI language,Create actual components/tokens and academy variants,Open
