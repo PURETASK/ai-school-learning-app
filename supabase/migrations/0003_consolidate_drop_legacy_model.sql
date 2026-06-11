@@ -1,0 +1,9 @@
+-- Consolidation (applied 2026-06-10 via Supabase MCP):
+-- Dropped the legacy data model left by an earlier build session.
+-- All tables were verified empty (0 rows) before dropping.
+-- Tables dropped: student_profiles, guardian_student_links, quiz_answers,
+-- mastery_records, memory_vault_review_sessions, memory_vault_review_answers,
+-- reteach_plans, challenge_plans, problem_solving_lab_entries,
+-- evidence_room_entries, interpretation_lens_entries, discussion_arena_entries,
+-- systems_mapper_entries, plus legacy helper functions, plus all v8 tables
+-- (rebuilt cleanly in 0004).

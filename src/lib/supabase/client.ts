@@ -33,18 +33,16 @@ export function getSupabaseClient(): SupabaseClient {
 }
 
 /**
- * Ensures the browser has an authenticated Supabase session.
- * MVP strategy (docs/82 Phase 2): anonymous sign-in gives every browser a
- * stable auth.uid() so Row Level Security works before a full login UI exists.
- * Replace with email/password or OAuth sign-in when the auth UI ships.
+ * Returns the signed-in user's id. Accounts are required (AuthGate enforces
+ * sign-in before the learning app renders), so this throws if no session
+ * exists rather than silently creating an anonymous one.
  */
 export async function ensureSupabaseSession(): Promise<string> {
   const supabase = getSupabaseClient();
-  const { data: sessionData } = await supabase.auth.getSession();
-  if (sessionData.session?.user?.id) return sessionData.session.user.id;
-  const { data, error } = await supabase.auth.signInAnonymously();
-  if (error || !data.user) {
-    throw new Error(`Unable to start Supabase session: ${error?.message ?? "unknown error"}`);
+  const { data } = await supabase.auth.getSession();
+  const userId = data.session?.user?.id;
+  if (!userId) {
+    throw new Error("Not signed in. Please sign in to load your learning data.");
   }
-  return data.user.id;
+  return userId;
 }
