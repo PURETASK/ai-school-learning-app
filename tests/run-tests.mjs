@@ -2974,6 +2974,16 @@ assert.equal(nativeBatchReviewItem.type, "batch", "native imported batch review 
 assert.equal(nativeBatchReviewItem.grade, "A", "native Bridge batch should reach the A quality grade after source-field adaptation");
 assert.equal(nativeBatchReviewItem.passed, true, "native Bridge batch should clear the B/80 batch gate");
 assert.equal(getManagerReviewDossier(bridgeNativeImport.state, nativeBatchReviewItem.id).found, true, "native imported batches should have a manager dossier");
+const nativeBatchProjection = getPlatformSeedProjection(bridgeNativeImport.state);
+const nativeBatchProjectionRow = nativeBatchProjection.tables.content_batch_reviews.find((row) => row.source_batch_id === bridgeNativeBatch.sourceBatchId);
+assert.ok(nativeBatchProjectionRow, "native imported batches should be represented in the normalized content batch review projection");
+assert.equal(nativeBatchProjectionRow.total_lessons, 5, "normalized native batch review should preserve the imported lesson count");
+assert.equal(nativeBatchProjectionRow.grade, "A", "normalized native batch review should use the grader-backed A quality grade");
+assert.equal(nativeBatchProjectionRow.passed, true, "normalized native batch review should preserve the batch quality gate result");
+assert.ok(
+  nativeBatchProjection.tables.agent_review_items.some((row) => row.source_type === "batch" && row.source_id === bridgeNativeBatch.sourceBatchId),
+  "normalized native batch projection should create a pending manager review item"
+);
 const approvedNativeBatch = resolveAgentReviewItem(bridgeNativeImport.state, nativeBatchReviewItem.id, "approve");
 assert.equal(approvedNativeBatch.result.accepted, true, "manager should be able to approve a native imported batch");
 assert.equal(approvedNativeBatch.result.affectedDrafts, 5, "native batch approval should update every imported draft");

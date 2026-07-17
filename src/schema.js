@@ -1,4 +1,5 @@
 import { curriculum, pilotLessons, rewardCatalog, standardsFrameworks, syllabusResearchFindings } from "./data.js";
+import { gradeLessonContent } from "./artifactGrader.js";
 
 export const productionRoles = [
   {
@@ -2575,9 +2576,11 @@ export function createProductionSeedProjection(state = {}) {
 
   const visualAssetsByBatch = groupBy(state.visualAssets || [], "sourceBatchId");
   const draftsByBatch = groupBy(state.contentDrafts || [], "sourceBatchId");
+  const publicationsByBatch = groupBy(state.contentBatchPublications || [], "sourceBatchId");
   for (const job of state.contentImportJobs || []) {
     const drafts = draftsByBatch[job.id] || [];
     const assets = visualAssetsByBatch[job.id] || [];
+    if (drafts.length || assets.length || (publicationsByBatch[job.id] || []).length) continue;
     const accepted = job.status === "imported";
     const blockers = (job.errors || []).map((error) => error.message || String(error)).filter(Boolean);
     tables.content_batch_reviews.push(
@@ -2767,6 +2770,128 @@ export function createProductionSeedProjection(state = {}) {
         blockers: bridgeBatchReviewRow.blockers,
         revision_instructions: bridgeBatchReviewRow.revision_instructions,
         review_history: bridgeBatchReviewRow.review_history
+      });
+    }
+  }
+
+  const projectedBatchIds = [
+    ...new Set([
+      ...Object.keys(draftsByBatch),
+      ...Object.keys(publicationsByBatch)
+    ])
+  ].filter((sourceBatchId) => sourceBatchId && sourceBatchId !== bridgeBatchOneId);
+
+  for (const sourceBatchId of projectedBatchIds) {
+    const drafts = draftsByBatch[sourceBatchId] || [];
+    const assets = visualAssetsByBatch[sourceBatchId] || [];
+    const publications = publicationsByBatch[sourceBatchId] || [];
+    const latestPublication = publications[0] || null;
+    const lessonReviews = drafts.map((draft) => {
+      const review = gradeLessonContent({
+        ...draft,
+        quiz: draft.quizQuestions,
+        visual: draft.visual || draft.visualSupports?.[0],
+        teachingSupport: {
+          summary: draft.studentFacing?.bigIdea || draft.studentSummary,
+          diagramCallouts: (draft.visualSupports || []).map((support) => ({
+            title: support.title,
+            body: support.description
+          })),
+          commonMisunderstandings: draft.commonMisunderstandings,
+          helperNotes: draft.helperNotes,
+          confusionPrompt: draft.studentFacing?.tutorHandoff || `Write exactly what is confusing about ${draft.title}.`
+        },
+        groupHomework: draft.groupHomework
+      });
+      return {
+        id: draft.id,
+        title: draft.title,
+        subject: draft.subject,
+        status: draft.status,
+        score: review.score,
+        grade: review.grade,
+        passed: Boolean(review.passed),
+        blockers: [...(review.criticalBlockers || []), ...(review.missingRequirements || [])]
+      };
+    });
+    const fallbackScore = lessonReviews.length ? Math.min(...lessonReviews.map((review) => review.score)) : 0;
+    const score = latestPublication?.score ?? fallbackScore;
+    const grade = latestPublication?.grade || (score >= 90 ? "A" : score >= 80 ? "B" : score >= 70 ? "C" : score >= 60 ? "D" : "F");
+    const passedLessons = latestPublication?.publishedCount ?? lessonReviews.filter((review) => review.passed).length;
+    const blockers = latestPublication
+      ? (latestPublication.results || []).filter((result) => result.status !== "published").map((result) => `${result.title}: ${result.blockedReason || "Publication blocked."}`)
+      : lessonReviews.flatMap((review) => review.blockers.map((blocker) => `${review.title}: ${blocker}`));
+    const passed = latestPublication
+      ? latestPublication.publishedCount === latestPublication.totalLessons && latestPublication.blockedCount === 0
+      : drafts.length > 0 && passedLessons === drafts.length && score >= 80 && blockers.length === 0;
+    const status = latestPublication?.status || drafts.some((draft) => draft.batchReviewStatus === "rejected")
+      ? latestPublication?.status || "rejected"
+      : drafts.some((draft) => draft.batchReviewStatus === "revision-required")
+        ? "revision-required"
+        : drafts.length > 0 && drafts.every((draft) => draft.batchReviewStatus === "approved")
+          ? "approved"
+          : "manager-review";
+    const batchReviewRow = createBatchReviewRow({
+      id: `batch-review-${sourceBatchId}`,
+      sourceBatchId,
+      academyId: drafts[0]?.academyId || "",
+      gradeBand: drafts[0]?.gradeBand || (drafts[0]?.academyId === "bridge" ? "6-8" : ""),
+      gradeLevels: [...new Set(drafts.map((draft) => draft.grade).filter(Boolean))],
+      subjects: [...new Set(drafts.map((draft) => draft.subject).filter(Boolean))],
+      status,
+      decision: ["approved", "published", "partial"].includes(status) ? "approved" : status === "rejected" ? "rejected" : "",
+      totalLessons: latestPublication?.totalLessons || drafts.length,
+      passedLessons,
+      totalArtifacts: latestPublication?.results?.length || assets.length,
+      passedArtifacts: latestPublication?.publishedCount ?? assets.filter((asset) => asset.status === "approved").length,
+      score,
+      grade,
+      threshold: 80,
+      passed,
+      publishEligible: status === "approved" && passed,
+      lessonIds: latestPublication
+        ? latestPublication.results.map((result) => result.publishedLessonId || result.draftId).filter(Boolean)
+        : drafts.map((draft) => draft.id),
+      visualAssetIds: assets.map((asset) => asset.id),
+      lessonReports: latestPublication?.results?.length ? latestPublication.results : lessonReviews,
+      artifactReports: assets.map((asset) => ({ id: asset.id, status: asset.status, assetKind: asset.assetKind, title: asset.title || asset.caption || "" })),
+      blockingLessons: blockers,
+      blockers,
+      revisionInstructions: blockers.length
+        ? blockers.slice(0, 6)
+        : [`Approve the batch to mark all ${drafts.length} lesson(s) as manager-reviewed, then publish each lesson through the individual content gate.`],
+      reviewHistory: [
+        ...publications.map((publication) => ({ action: "batch-publication", at: publication.attemptedAt, status: publication.status, publishedCount: publication.publishedCount, blockedCount: publication.blockedCount })),
+        ...drafts.flatMap((draft) => draft.batchReviewHistory || [])
+      ].slice(0, 12),
+      reviewedByUserId: ["approved", "rejected", "published", "partial"].includes(status) ? adminUserId : "",
+      reviewedAt: latestPublication?.attemptedAt || drafts.find((draft) => draft.batchReviewedAt)?.batchReviewedAt || ""
+    });
+    const existingBatchReview = tables.content_batch_reviews.find((row) => row.source_batch_id === sourceBatchId);
+    if (existingBatchReview) Object.assign(existingBatchReview, batchReviewRow);
+    else tables.content_batch_reviews.push(batchReviewRow);
+
+    if (! ["approved", "rejected", "published", "partial"].includes(status) && !tables.agent_review_items.some((item) => item.source_type === "batch" && item.source_id === sourceBatchId)) {
+      tables.agent_review_items.push({
+        id: `review-batch-${sourceBatchId}`,
+        source_type: "batch",
+        source_id: sourceBatchId,
+        owner_agent_id: "content-ops",
+        priority: passed ? "medium" : "high",
+        status: "pending",
+        decision: "",
+        reviewed_by_user_id: "",
+        reviewed_at: "",
+        artifact_type: "content_batch_review",
+        artifact_id: batchReviewRow.id,
+        score: batchReviewRow.score,
+        grade: batchReviewRow.grade,
+        threshold: batchReviewRow.threshold,
+        passed: batchReviewRow.passed,
+        critical_blockers: [],
+        blockers: batchReviewRow.blockers,
+        revision_instructions: batchReviewRow.revision_instructions,
+        review_history: batchReviewRow.review_history
       });
     }
   }
