@@ -807,15 +807,20 @@ function renderPracticeStudio(lesson) {
 }
 
 async function refreshRepositoryLearningCatalog() {
-  try {
-    repositoryLearningCatalog = await fetchLearningCatalog();
-    repositoryLearningCatalogError = null;
-  } catch (catalogError) {
-    repositoryLearningCatalog = null;
-    repositoryLearningCatalogError = catalogError?.message || String(catalogError);
+  const learnerIds = [...new Set(learnerIdsForCurrentSession())];
+  if (hasStrictLearnerScope()) {
+    repositoryLearningCatalog = repositoryBootstrap?.catalog || null;
+    repositoryLearningCatalogError = repositoryLearningCatalog ? null : "Scoped learner bootstrap is unavailable.";
+  } else {
+    try {
+      repositoryLearningCatalog = await fetchLearningCatalog();
+      repositoryLearningCatalogError = null;
+    } catch (catalogError) {
+      repositoryLearningCatalog = null;
+      repositoryLearningCatalogError = catalogError?.message || String(catalogError);
+    }
   }
 
-  const learnerIds = [...new Set(learnerIdsForCurrentSession())];
   if (!learnerIds.length) {
     repositoryLearningCatalogsByLearner = {};
     repositoryLearningCatalogErrorsByLearner = {};
