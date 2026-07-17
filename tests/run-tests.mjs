@@ -29,6 +29,7 @@ import {
   completeLessonQuiz,
   createAdaptiveTutorResponse,
   createContentDraft,
+  createPublishedLessonFromDraft,
   createAiTutorResponse,
   createInitialState,
   createSchoolClass,
@@ -2967,6 +2968,16 @@ assert.ok(
   bridgeNativeImport.state.contentDrafts.filter((draft) => draft.sourceBatchId === bridgeNativeBatch.sourceBatchId).every((draft) => draft.sourceLessonId),
   "native drafts should retain source lesson ids"
 );
+for (const draft of bridgeNativeImport.state.contentDrafts.filter((item) => item.sourceBatchId === bridgeNativeBatch.sourceBatchId)) {
+  const publishedNativeLesson = createPublishedLessonFromDraft(draft, { publishedBy: "quality-gate" });
+  const nativeLessonValidation = validateNexusLessonV3(publishedNativeLesson);
+  assert.equal(nativeLessonValidation.passed, true, `${draft.title} should remain V3-valid after draft publication projection`);
+  assert.deepEqual(
+    getRenderableNexusPhaseModules(publishedNativeLesson).map((module) => module.phase),
+    publishedNativeLesson.activePhases,
+    `${draft.title} published phase modules should follow activePhases order`
+  );
+}
 assert.ok(acceptedBatchImport.state.contentDrafts[0].visualSupports.length >= 2, "imported draft should include visual supports");
 assert.ok(acceptedBatchImport.state.contentDrafts[0].sourceCards.length >= 1, "imported draft should include source cards");
 assert.equal(getVisualAssetSummary(acceptedBatchImport.state).total, baselineVisualSummary.total + 2, "valid batch should create visual asset records");

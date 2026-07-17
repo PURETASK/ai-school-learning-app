@@ -39,6 +39,82 @@ function phaseValue(phases, ...names) {
   return "";
 }
 
+function phaseModuleText(phases, names) {
+  return phaseValue(phases, ...names);
+}
+
+function buildNativePhaseModules(rawLesson, phases, visualSupports) {
+  const definitions = [
+    ["orient", "Orient", ["hook", "learningGoal"]],
+    ["model", "Model", ["miniTeach", "workedExample"]],
+    ["deconstruct", "Break down", ["firstPrinciplesBreakdown"]],
+    ["practice", "Practice", ["guidedPractice", "activePractice"]],
+    ["reason", "Reason", ["criticalThinkingCheckpoint", "evidenceBasedReasoningTask", "interpretationOrDiscussionTask"]],
+    ["prove", "Prove", ["quiz"]],
+    ["remember", "Remember", ["retrievalCheck"]],
+    ["transfer", "Transfer", ["challengePath", "reflection"]],
+    ["adapt", "Adapt", ["feedback", "reteachPath"]]
+  ];
+  return definitions
+    .map(([phase, title, names]) => {
+      const studentAction = phase === "prove" ? `${rawLesson.quiz?.length || 0} checkpoint questions test the current skill.` : phaseModuleText(phases, names);
+      if (!studentAction) return null;
+      const visual = visualSupports.find((item) => item.placement === (phase === "model" ? "teaching-diagram" : phase === "remember" ? "ai-tutor" : "lesson-hero"));
+      return {
+        phase,
+        title,
+        studentAction,
+        successCheck: phase === "orient" ? text(rawLesson.essentialQuestion) || "I can name today's goal." : "I can explain or demonstrate the idea without copying a final answer.",
+        visualSupport: visual?.title || "Use the lesson model and labels."
+      };
+    })
+    .filter(Boolean);
+}
+
+function buildNativeV3Fields(rawLesson, phases, visualSupports, subject, objective) {
+  const phaseModules = buildNativePhaseModules(rawLesson, phases, visualSupports);
+  const activePhases = phaseModules.map((module) => module.phase);
+  const family = subject === "science" ? "inquiry_investigation" : subject === "math" ? "skill_workshop" : subject === "ela" || subject === "social-studies" ? "reasoning_lab" : "concept_launch";
+  const learningGoal = phases.learningGoal?.successCriteria;
+  const successCriteria = Array.isArray(learningGoal) ? learningGoal.map(text).filter(Boolean) : [text(learningGoal)].filter(Boolean);
+  const challengeAction = typeof rawLesson.challengePath === "string"
+    ? text(rawLesson.challengePath)
+    : text(rawLesson.challengePath?.action || rawLesson.challengePath?.prompt || rawLesson.challengePath?.description);
+  return {
+    schemaVersion: "3",
+    lessonFamily: family,
+    activePhases,
+    targetLearningStates: ["acquiring", "developing", "accurate", "secure"],
+    learningObjective: objective,
+    successCriteria: successCriteria.length ? successCriteria : ["I can explain the idea in my own words.", "I can use the idea in a new example."],
+    thinkingSkillTags: list(rawLesson.thinkingSkillTags),
+    outcomes: {
+      knowledge: [objective],
+      capability: phaseModules.filter((module) => ["practice", "prove"].includes(module.phase)).map((module) => module.studentAction),
+      reasoning: phaseModules.filter((module) => ["deconstruct", "reason"].includes(module.phase)).map((module) => module.studentAction),
+      retention: activePhases.includes("remember") ? ["Retrieve the key idea after a delay."] : [],
+      transfer: activePhases.includes("transfer") ? ["Use the idea in a changed context."] : []
+    },
+    phaseModules,
+    proofTasks: ["recall", "explain", "perform", "retain", "transfer"].map((proof) => ({
+      proof,
+      prompt: proof === "retain" ? "Complete the delayed retrieval check." : proof === "transfer" ? "Apply the idea in a new context." : "Show the reasoning without final-answer help.",
+      independentRequired: true
+    })),
+    requiredMasteryProofs: ["recall", "explain", "perform", "retain", "transfer"].filter((proof) => proof !== "retain" || activePhases.includes("remember")),
+    feedbackRules: [{
+      diagnosisCode: "source-lesson-feedback",
+      result: "Use the learner's response and exact stuck point to identify the next move.",
+      hint: "Ask whether the gap is vocabulary, model, first step, or reasoning.",
+      action: "Route to hint, alternate visual, reteach, or retry."
+    }],
+    reteachPaths: [{ id: `${text(rawLesson.id) || "lesson"}-reteach`, trigger: "The learner misses a checkpoint or cannot explain the model.", action: text(rawLesson.reteachPath?.simpleExplanation) || "Use a smaller example and a different representation." }],
+    challengePaths: [{ id: `${text(rawLesson.id) || "lesson"}-challenge`, trigger: "The learner demonstrates current-context accuracy.", action: challengeAction || "Transfer the idea to a changed context." }],
+    contentStatus: "review_required",
+    version: "3.0.0-structured-source"
+  };
+}
+
 function academyId(rawLesson) {
   const candidate = text(rawLesson?.academyId || rawLesson?.academy).toLowerCase();
   if (candidate === "foundation academy") return "foundation";
@@ -209,18 +285,22 @@ export function adaptStructuredLesson(rawLesson = {}) {
   if (!isStructuredLesson) return rawLesson;
   const phases = phaseCollection(rawLesson);
   const objective = text(rawLesson.objective || rawLesson.learningObjective);
+  const studentObjective = objective.replace(/^students?\s+will\s+/i, "");
   const title = text(rawLesson.title);
   const standards = list(rawLesson.standards || rawLesson.standardsTags);
   const subject = subjectId(rawLesson.subject);
   const visualSupports = buildVisuals(rawLesson, phases);
   const visual = visualSupports[0];
+  const nativeV3 = buildNativeV3Fields(rawLesson, phases, visualSupports, subject, objective);
   return {
     ...rawLesson,
     academyId: academyId(rawLesson),
+    academy: academyId(rawLesson),
     grade: text(rawLesson.grade || rawLesson.gradeLevel),
     subject,
     unitTitle: text(rawLesson.unitTitle || rawLesson.unit),
     objective,
+    learningObjective: objective,
     standards,
     accessibilityNotes: Array.isArray(rawLesson.accessibilityNotes)
       ? rawLesson.accessibilityNotes.join(" ")
@@ -242,7 +322,7 @@ export function adaptStructuredLesson(rawLesson = {}) {
     prerequisiteSkills: list(rawLesson.prerequisiteSkills || rawLesson.prerequisites),
     evidenceMoves: buildEvidenceMoves(rawLesson, phases, subject),
     groupHomework: buildGroupHomework(rawLesson),
-    studentSummary: text(rawLesson.studentSummary) || `You will learn to ${objective.replace(/\.$/, "")}.`,
+    studentSummary: text(rawLesson.studentSummary) || `You will learn to ${studentObjective.replace(/\.$/, "")}.`,
     whyItMatters: text(rawLesson.whyItMatters) || `This helps you use ${text(rawLesson.title) || "the idea"} in new problems, projects, and explanations.`,
     sourceCards: rawLesson.sourceCards || standards.map((standard) => ({
       sourceId: standard,
@@ -256,7 +336,8 @@ export function adaptStructuredLesson(rawLesson = {}) {
     memoryVaultItems: rawLesson.memoryVaultItems || [],
     retrievalCheck: rawLesson.retrievalCheck || null,
     reteachPath: rawLesson.reteachPath || null,
-    challengePath: rawLesson.challengePath || null
+    challengePath: rawLesson.challengePath || null,
+    ...nativeV3
   };
 }
 
