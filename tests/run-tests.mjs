@@ -208,6 +208,7 @@ import {
   aiTutorEventRepositoryTableIds,
   accountSecurityRepositoryTableIds,
   createAccountSecurityReadModel,
+  createSessionRevocationRows,
   classroomEvidenceRepositoryTableIds,
   classroomMonitorRepositoryTableIds,
   classroomStudentRepositoryTableIds,
@@ -1752,6 +1753,8 @@ const normalizedScopeSecurity = createAccountSecurityReadModel({
 assert.equal(normalizedScopeSecurity.studentGuardians.length, 1, "account security read model should preserve direct parent-child links");
 assert.equal(normalizedScopeSecurity.teacherClassAssignments.length, 1, "account security read model should preserve teacher assignments");
 assert.equal(normalizedScopeSecurity.enrollments.length, 1, "account security read model should preserve class enrollments");
+const targetedRevocation = createSessionRevocationRows({ sessionRevocations: [{ id: "revoke-1", userId: "user-1", sessionId: "session-1", reason: "test", createdAt: "2026-07-17T00:00:00.000Z" }] }, "revoke-1");
+assert.equal(targetedRevocation.rowsByTable.session_revocations[0].user_id, "user-1", "targeted revocation rows should map app claims to normalized columns");
 
 const lessonLibrarySummary = getPlatformLessonLibrarySummary();
 const lessonLibrarySamples = getPlatformLessonLibrarySamples(8);

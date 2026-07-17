@@ -543,6 +543,10 @@ export class JsonStateRepository {
   async writeAccountProvisioning(state) {
     return this.writeAccountSecurity(state);
   }
+
+  async writeSessionRevocation(state, revocationId = "") {
+    return this.writeState(state);
+  }
 }
 
 function sqlString(value) {
@@ -2369,6 +2373,27 @@ export function createAccountProvisioningRows(state = {}, accountId = "") {
   return { account, rowsByTable };
 }
 
+export function createSessionRevocationRows(state = {}, revocationId = "") {
+  const revocations = toArray(state.sessionRevocations);
+  const selected = revocationId ? revocations.find((item) => item.id === revocationId) : revocations[0];
+  if (!selected) return { rowsByTable: {}, revocation: null };
+  return {
+    revocation: selected,
+    rowsByTable: {
+      session_revocations: [
+        {
+          id: selected.id,
+          user_id: selected.userId,
+          session_id: selected.sessionId || "",
+          revoked_before: selected.revokedBefore || "",
+          reason: selected.reason || "",
+          created_at: selected.createdAt || new Date().toISOString()
+        }
+      ]
+    }
+  };
+}
+
 export function createNormalizedRowsUpsertSql(rowsByTable = {}) {
   const tableIds = Object.keys(rowsByTable);
   const statements = tableIds.map((tableId) => createUpsertStatement(tableMeta(tableId), rowsByTable[tableId] || []));
@@ -2766,6 +2791,19 @@ export class PostgresStateRepository {
       mode: this.mode,
       accountId: provisioning.account.id,
       tableIds: plan.tableIds,
+      rowCounts: plan.rowCounts
+    };
+  }
+
+  async writeSessionRevocation(state, revocationId = "") {
+    const revocation = createSessionRevocationRows(state, revocationId);
+    if (!revocation.revocation) throw new Error("Session revocation was not found for targeted persistence.");
+    const plan = createNormalizedRowsUpsertSql(revocation.rowsByTable);
+    if (plan.sql.trim()) await runPsql({ sql: plan.sql, env: this.env });
+    return {
+      mode: this.mode,
+      revocation: revocation.revocation,
+      tableIds: ["session_revocations"],
       rowCounts: plan.rowCounts
     };
   }

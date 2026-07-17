@@ -199,6 +199,17 @@ async function writeAccountProvisioning(state, accountId = "") {
   return writeAccountSecurity(state);
 }
 
+async function writeSessionRevocation(state, revocationId = "") {
+  if (typeof stateRepository.writeSessionRevocation === "function") {
+    return stateRepository.writeSessionRevocation({
+      ...createInitialState(),
+      ...state,
+      persistedAt: new Date().toISOString()
+    }, revocationId);
+  }
+  return writeAccountSecurity(state);
+}
+
 async function writeLearningEvidence(state) {
   return stateRepository.writeLearningEvidence({
     ...createInitialState(),
@@ -1070,6 +1081,19 @@ async function handleApi(request, response, pathname) {
         throw error;
       }
       await supabaseUpdatePassword({ accessToken: body.accessToken, password: body.password || body.newPassword });
+      const resetUser = await supabaseGetUser(body.accessToken);
+      const resetUserId = String(resetUser.user?.id || "");
+      let revocation = null;
+      if (resetUserId) {
+        const revoked = revokeAccountSession({ sessionRevocations: [] }, {
+          userId: resetUserId,
+          revokeAll: true,
+          reason: "password reset",
+          actorUserId: resetUserId
+        });
+        revocation = revoked.result.revocation;
+        await writeSessionRevocation(revoked.state, revocation.id);
+      }
       sendJson(response, 200, { accepted: true, provider: "supabase", message: "Password updated. Sign in again.", session: publicSessionSummary(revokedSession(session, "Password reset completed.")) });
       return true;
     }
@@ -1107,7 +1131,7 @@ async function handleApi(request, response, pathname) {
       }
       await supabaseSignOut({ accessToken });
       const revoked = await queueStateMutation(async () => {
-        const state = await ensureStateFile();
+        const state = stateRepository.status().mode === "postgres" ? { sessionRevocations: [] } : await ensureStateFile();
         const result = revokeAccountSession(state, {
           userId: targetUserId,
           sessionId: body.sessionId || session.sessionId || "",
@@ -1116,7 +1140,7 @@ async function handleApi(request, response, pathname) {
           actorUserId: session.userId || targetUserId
         });
         if (!result.result.accepted) return result;
-        return { ...result, state: await writeAccountSecurity(result.state) };
+        return { ...result, state: await writeSessionRevocation(result.state, result.result.revocation.id) };
       });
       sendJson(response, revoked.result.accepted ? 200 : 400, { accepted: revoked.result.accepted, provider: "supabase", revoked: revoked.result.accepted, result: revoked.result, session: publicSessionSummary(revokedSession(session, body.reason || "Session revoked.")) });
       return true;
