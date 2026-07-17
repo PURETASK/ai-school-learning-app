@@ -123,6 +123,7 @@ import {
   mergePersistedState,
   mergeRepositoryLearnerProfiles,
   replaceVisualAsset,
+  registerProviderAccount,
   registerLocalAccount,
   requestRewardApproval,
   recordRewardFulfillmentResult,
@@ -171,6 +172,8 @@ import {
 import {
   isSupabaseAuthConfigured,
   normalizeSupabaseAuthResponse,
+  supabaseAdminCreateUser,
+  supabaseAdminDeleteUser,
   supabaseRequestPasswordReset,
   supabaseSignIn,
   supabaseSignUp,
@@ -1523,6 +1526,21 @@ assert.equal(parentSignup.result.account.status, "pending-email-verification", "
 assert.ok(parentSignup.result.sessionClaims.sessionId, "local auth session claims should include a session id for future revocation");
 assert.equal(findLocalAccountByEmail(parentSignup.state, "PARENT@example.test").role, "parent", "local account lookup should normalize email");
 assert.equal(getAuthSecuritySummary(parentSignup.state).pendingVerificationAccounts, 1, "auth summary should count pending adult verification");
+const providerParentSignup = registerProviderAccount(state, {
+  role: "parent",
+  displayName: "Provider Parent",
+  providerUser: { id: "supabase-parent-001", email: "provider-parent@example.test", emailVerified: true }
+});
+assert.equal(providerParentSignup.result.accepted, true, "provider signup should provision an application account");
+assert.equal(providerParentSignup.result.account.authProvider, "supabase", "provider account should retain its auth provider");
+assert.equal(providerParentSignup.result.account.userId, "supabase-parent-001", "provider account should use the provider subject as user id");
+assert.ok(providerParentSignup.result.account.guardianId, "provider parent should receive a unique guardian id");
+assert.equal(providerParentSignup.result.sessionClaims.emailVerified, true, "verified provider signup should produce verified claims");
+const providerDuplicate = registerProviderAccount(providerParentSignup.state, {
+  role: "parent",
+  providerUser: { id: "supabase-parent-001", email: "provider-parent@example.test", emailVerified: true }
+});
+assert.equal(providerDuplicate.result.alreadyProvisioned, true, "provider signup should be idempotent for the same provider subject");
 const parentVerificationToken = createActionTokenRecord("verify-test");
 const parentVerificationRequest = createEmailVerificationRequest(parentSignup.state, {
   accountId: parentSignup.result.account.id,
@@ -1627,6 +1645,29 @@ assert.equal(
   false,
   "parents should not access another household's learner"
 );
+const providerChildSignup = createParentManagedChildAccount(providerParentSignup.state, {
+  parentSession: {
+    authenticated: true,
+    role: "parent",
+    guardianId: providerParentSignup.result.sessionClaims.guardianId,
+    displayName: "Provider Parent",
+    emailVerified: true
+  },
+  displayName: "Provider Child",
+  username: "provider-child",
+  email: "provider-child@students.example.edu",
+  authProvider: "supabase",
+  providerSubject: "supabase-child-001",
+  userId: "supabase-child-001",
+  grade: "6",
+  aiHelper: true,
+  emailVerified: true
+});
+assert.equal(providerChildSignup.result.accepted, true, "provider parent should provision a managed child account record");
+assert.equal(providerChildSignup.result.account.authProvider, "supabase", "managed provider child should retain provider identity");
+assert.equal(providerChildSignup.result.account.userId, "supabase-child-001", "managed provider child should use provider user id");
+assert.equal(providerChildSignup.state.localAccounts.find((account) => account.username === "provider-child").passwordHash, undefined, "provider child records must not store a local password hash");
+assert.equal(providerChildSignup.state.consentRecords["learner-provider-child"].aiHelper, true, "provider child should persist parent AI consent");
 assert.equal(
   canParentAccessLearner(managedChildSignup.state, { authenticated: true, role: "school-admin" }, "learner-managed-child"),
   true,
@@ -3748,7 +3789,8 @@ const providerTestEnv = {
   AUTH_PROVIDER: "supabase",
   SUPABASE_URL: "https://auth.example.supabase.co",
   SUPABASE_PUBLISHABLE_KEY: "publishable-test-key",
-  SUPABASE_JWKS_URL: "https://auth.example.supabase.co/auth/v1/.well-known/jwks.json"
+  SUPABASE_JWKS_URL: "https://auth.example.supabase.co/auth/v1/.well-known/jwks.json",
+  SUPABASE_SECRET_KEY: "secret-test-key"
 };
 assert.equal(isSupabaseAuthConfigured(providerTestEnv), true, "Supabase provider adapter should require URL and publishable key");
 const providerRequests = [];
@@ -3761,7 +3803,7 @@ const providerFetch = async (url, options = {}) => {
     return new Response(JSON.stringify({ user: { id: "provider-parent-1", email: "parent@example.test", email_confirmed_at: "2026-07-17T00:00:00Z" }, access_token: "provider-access-token", refresh_token: "provider-refresh-token", expires_in: 3600 }), { status: 200, headers: { "content-type": "application/json" } });
   }
   if (url.endsWith("/recover")) return new Response(JSON.stringify({}), { status: 200, headers: { "content-type": "application/json" } });
-  if (url.endsWith("/user")) return new Response(JSON.stringify({ user: { id: "provider-parent-1", email: "parent@example.test" } }), { status: 200, headers: { "content-type": "application/json" } });
+  if (url.endsWith("/user")) return new Response(JSON.stringify({ user: { id: "provider-parent-1", email: "parent@example.test", email_confirmed_at: "2026-07-17T00:00:00Z" } }), { status: 200, headers: { "content-type": "application/json" } });
   return new Response(JSON.stringify({}), { status: 200, headers: { "content-type": "application/json" } });
 };
 const providerSignup = await supabaseSignUp({ email: "parent@example.test", password: "parent-pass-123", displayName: "Provider Parent", fetchImpl: providerFetch, env: providerTestEnv });
@@ -3771,7 +3813,18 @@ const providerSignin = await supabaseSignIn({ email: "parent@example.test", pass
 assert.equal(providerSignin.access_token, "provider-access-token", "provider sign-in should return an access token");
 await supabaseRequestPasswordReset({ email: "parent@example.test", fetchImpl: providerFetch, env: providerTestEnv });
 await supabaseUpdatePassword({ accessToken: "provider-access-token", password: "new-parent-pass-123", fetchImpl: providerFetch, env: providerTestEnv });
+await supabaseAdminCreateUser({
+  email: "child@students.example.edu",
+  password: "child-pass-123",
+  userMetadata: { username: "child" },
+  appMetadata: { role: "student", scope: "own" },
+  fetchImpl: providerFetch,
+  env: providerTestEnv
+});
+await supabaseAdminDeleteUser("provider-child-1", { fetchImpl: providerFetch, env: providerTestEnv });
 assert.ok(providerRequests.some((request) => request.url.endsWith("/recover")), "provider password reset should call Supabase recover");
+assert.ok(providerRequests.some((request) => request.url.endsWith("/admin/users") && request.options.method === "POST"), "provider child creation should use the admin user endpoint");
+assert.ok(providerRequests.some((request) => request.url.endsWith("/admin/users/provider-child-1") && request.options.method === "DELETE"), "provider child rollback should delete the admin user");
 assert.equal((await getRequestSessionAsync({ headers: {} }, providerTestEnv, { fetchImpl: providerFetch })).authenticated, false, "production provider mode should require a bearer token");
 
 console.log("All K-12 Learning Academies checks passed.");

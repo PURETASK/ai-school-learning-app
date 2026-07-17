@@ -147,6 +147,7 @@ create table if not exists public."users" (
   "id" text,
   "role" text,
   "display_name" text,
+  "username" text,
   "email" text,
   "email_verified" boolean not null default false,
   "auth_provider" text,
@@ -930,6 +931,8 @@ alter table public."users" add column if not exists "id" text;
 alter table public."users" add column if not exists "role" text;
 
 alter table public."users" add column if not exists "display_name" text;
+
+alter table public."users" add column if not exists "username" text;
 
 alter table public."users" add column if not exists "email" text;
 
@@ -6567,7 +6570,7 @@ begin
     from information_schema.columns
     where table_schema = 'public'
       and table_name = 'users'
-      and column_name not in ('id', 'role', 'display_name', 'email', 'email_verified', 'auth_provider', 'provider_subject', 'status', 'created_at', 'updated_at')
+      and column_name not in ('id', 'role', 'display_name', 'username', 'email', 'email_verified', 'auth_provider', 'provider_subject', 'status', 'created_at', 'updated_at')
   loop
     if row_count = 0 then
       execute format('alter table public.%I drop column if exists %I', 'users', legacy_column.column_name);
@@ -7770,6 +7773,27 @@ begin
       alter table public."users" alter column "display_name" type text using "display_name"::text;
     else
       raise exception 'Column public.users.display_name has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'users'
+    and c.column_name = 'username';
+  if actual_type is not null and actual_type <> 'text' then
+    select count(*) into row_count from public."users";
+    if row_count = 0 then
+      alter table public."users" alter column "username" drop default;
+      alter table public."users" alter column "username" type text using "username"::text;
+    else
+      raise exception 'Column public.users.username has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
     end if;
   end if;
 end $$;

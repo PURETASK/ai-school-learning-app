@@ -2008,6 +2008,8 @@ export function findLocalAccountByLogin(state = {}, login = "") {
 }
 
 export function registerLocalAccount(state = {}, input = {}) {
+  const authProvider = String(input.authProvider || "local-preview").trim() || "local-preview";
+  const providerManaged = authProvider !== "local-preview";
   const role = normalizeAccountRole(input.role);
   const requestedUsername = normalizeAccountUsername(input.username || input.childUsername || (!String(input.email || "").includes("@") ? input.email : ""));
   const emailInput = normalizeAccountEmail(input.email);
@@ -2032,7 +2034,7 @@ export function registerLocalAccount(state = {}, input = {}) {
   if (username && (state.localAccounts || []).some((account) => account.username === username)) {
     return { state, result: { accepted: false, reason: "A child account with this username already exists." } };
   }
-  if (!input.passwordHash || !input.passwordSalt) {
+  if (!providerManaged && (!input.passwordHash || !input.passwordSalt)) {
     return { state, result: { accepted: false, reason: "Password hash is required." } };
   }
 
@@ -2098,17 +2100,19 @@ export function registerLocalAccount(state = {}, input = {}) {
 
   const account = {
     id: accountId,
-    userId: `user-${accountId}`,
+    userId: input.userId || `user-${accountId}`,
     role,
     displayName,
     email,
     ...(username ? { username } : {}),
     status: role === "student" || input.emailVerified ? "active" : "pending-email-verification",
     emailVerified: role === "student" ? true : Boolean(input.emailVerified),
-    passwordHash: input.passwordHash,
-    passwordSalt: input.passwordSalt,
-    passwordAlgorithm: input.passwordAlgorithm || "scrypt-sha256",
-    schoolId: input.schoolId || "school-demo-1",
+    ...(input.passwordHash ? { passwordHash: input.passwordHash } : {}),
+    ...(input.passwordSalt ? { passwordSalt: input.passwordSalt } : {}),
+    ...(input.passwordAlgorithm ? { passwordAlgorithm: input.passwordAlgorithm } : {}),
+    authProvider,
+    ...(input.providerSubject ? { providerSubject: input.providerSubject } : {}),
+    schoolId: input.schoolId || (providerManaged ? "" : "school-demo-1"),
     createdAt: new Date().toISOString(),
     ...accountLinks
   };
@@ -2117,7 +2121,7 @@ export function registerLocalAccount(state = {}, input = {}) {
     learners,
     consentRecords,
     parentProfile,
-    localAccounts: [account, ...(state.localAccounts || [])].slice(0, 50)
+    localAccounts: [account, ...(state.localAccounts || [])]
   };
   return {
     state: nextState,
@@ -2130,6 +2134,8 @@ export function registerLocalAccount(state = {}, input = {}) {
         displayName: account.displayName,
         email: account.email,
         username: account.username || "",
+        authProvider: account.authProvider || "",
+        providerSubject: account.providerSubject || "",
         status: account.status || "active",
         emailVerified: Boolean(account.emailVerified),
         studentId: account.studentId || "",
@@ -2140,6 +2146,89 @@ export function registerLocalAccount(state = {}, input = {}) {
       sessionClaims: createSessionClaimsForAccount(account)
     }
   };
+}
+
+export function registerProviderAccount(state = {}, input = {}) {
+  const providerUser = input.providerUser || {};
+  const providerSubject = String(providerUser.id || input.providerSubject || "").trim();
+  const email = normalizeAccountEmail(providerUser.email || input.email);
+  const role = normalizeAccountRole(input.role || "parent");
+  const displayName = String(input.displayName || providerUser.user_metadata?.display_name || email.split("@")[0] || "").trim();
+  const emailVerified = Boolean(providerUser.emailVerified ?? providerUser.email_confirmed_at ?? input.emailVerified);
+
+  if (!providerSubject) return { state, result: { accepted: false, reason: "Provider user id is required." } };
+  if (!email || !email.includes("@")) return { state, result: { accepted: false, reason: "Provider user email is required." } };
+  if (!displayName) return { state, result: { accepted: false, reason: "Display name is required." } };
+  if (!roleIdsForProvider().includes(role)) {
+    return { state, result: { accepted: false, reason: "Provider signup only supports approved adult roles." } };
+  }
+
+  const duplicate = (state.localAccounts || []).find(
+    (account) => account.providerSubject === providerSubject || account.userId === providerSubject || account.email === email
+  );
+  if (duplicate) {
+    return {
+      state,
+      result: {
+        accepted: true,
+        alreadyProvisioned: true,
+        account: publicAccount(duplicate),
+        sessionClaims: createSessionClaimsForAccount(duplicate)
+      }
+    };
+  }
+
+  const idBase = accountSlug(providerSubject);
+  const accountId = `acct-${role}-${idBase}`;
+  const account = {
+    id: accountId,
+    userId: providerSubject,
+    role,
+    displayName,
+    email,
+    status: emailVerified ? "active" : "pending-email-verification",
+    emailVerified,
+    authProvider: String(input.authProvider || "supabase"),
+    providerSubject,
+    schoolId: input.schoolId || "",
+    createdAt: input.createdAt || new Date().toISOString()
+  };
+
+  let parentProfile = state.parentProfile || {};
+  let accountLinks = {};
+  if (role === "parent") {
+    const guardianId = input.guardianId || `guardian-${idBase}`;
+    parentProfile = {
+      ...parentProfile,
+      ...(parentProfile.id && parentProfile.id !== "guardian-parent-1" ? {} : { id: guardianId }),
+      name: displayName,
+      email,
+      emailVerified
+    };
+    accountLinks = { guardianId };
+  } else {
+    accountLinks = { teacherId: input.teacherId || `teacher-${idBase}` };
+  }
+
+  const nextAccount = { ...account, ...accountLinks };
+  const nextState = {
+    ...state,
+    parentProfile,
+    localAccounts: [nextAccount, ...(state.localAccounts || [])]
+  };
+  return {
+    state: nextState,
+    result: {
+      accepted: true,
+      alreadyProvisioned: false,
+      account: publicAccount(nextAccount),
+      sessionClaims: createSessionClaimsForAccount(nextAccount)
+    }
+  };
+}
+
+function roleIdsForProvider() {
+  return ["parent", "teacher"];
 }
 
 export function createParentManagedChildAccount(state = {}, input = {}) {
@@ -2181,7 +2270,11 @@ export function createParentManagedChildAccount(state = {}, input = {}) {
     aiHelper: input.aiHelper,
     passwordHash: input.passwordHash,
     passwordSalt: input.passwordSalt,
-    passwordAlgorithm: input.passwordAlgorithm
+    passwordAlgorithm: input.passwordAlgorithm,
+    authProvider: input.authProvider,
+    providerSubject: input.providerSubject,
+    userId: input.userId,
+    emailVerified: input.emailVerified
   });
 
   if (!registered.result.accepted) {
@@ -2219,8 +2312,10 @@ function publicAccount(account = {}) {
     userId: account.userId || "",
     role: account.role || "",
     displayName: account.displayName || "",
-    email: account.email || "",
     username: account.username || "",
+    email: account.email || "",
+    authProvider: account.authProvider || "",
+    providerSubject: account.providerSubject || "",
     status: account.status || "active",
     emailVerified: Boolean(account.emailVerified),
     studentId: account.studentId || "",

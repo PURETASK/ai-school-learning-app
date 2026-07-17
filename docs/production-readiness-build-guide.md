@@ -103,6 +103,8 @@ Preferred production pattern:
 
 Direct student self-signup should be disabled unless parent verification and consent are built into the flow.
 
+For parent-created provider-backed child accounts, configure `SUPABASE_CHILD_EMAIL_DOMAIN` to a verified school-owned domain. The parent-facing username is stored on the application account, while Supabase Auth receives a managed address such as `child-username@<domain>` with `email_confirm=true`; student username login resolves that address through the scoped `users` repository record. The child password is sent only to Supabase Auth and is never stored in application state.
+
 ### Required Account Lifecycle Features
 
 - Email verification.
@@ -116,6 +118,7 @@ Direct student self-signup should be disabled unless parent verification and con
 - Parent-child link request.
 - Parent-child unlink request with audit record.
 - Teacher-class assignment and removal.
+- Parent-created child provisioning through the provider admin user endpoint, including rollback if the application account cannot be persisted.
 - Account deletion/export workflow.
 - Audit log for role changes, child links, consent changes, and revocations.
 

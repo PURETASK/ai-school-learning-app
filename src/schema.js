@@ -72,7 +72,7 @@ export const productionDataModel = [
     primaryKey: "id",
     pii: true,
     rls: true,
-    columns: ["id", "role", "display_name", "email", "email_verified", "auth_provider", "provider_subject", "status", "created_at", "updated_at"]
+    columns: ["id", "role", "display_name", "username", "email", "email_verified", "auth_provider", "provider_subject", "status", "created_at", "updated_at"]
   },
   {
     id: "students",
@@ -1278,6 +1278,7 @@ export function createProductionSeedProjection(state = {}) {
       id: account.userId || `user-${account.id}`,
       role: account.role,
       display_name: account.displayName,
+      username: account.username || "",
       email: account.email,
       email_verified: Boolean(account.emailVerified || account.status === "active"),
       auth_provider: account.authProvider || "local-preview",

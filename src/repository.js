@@ -2010,6 +2010,7 @@ export function normalizedAccountUserRow(row = {}) {
     userId: row.id || "",
     role: row.role || "",
     displayName: row.display_name || "",
+    username: row.username || "",
     email: row.email || "",
     emailVerified: Boolean(row.email_verified),
     authProvider: row.auth_provider || "",

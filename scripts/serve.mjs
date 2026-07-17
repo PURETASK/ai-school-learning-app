@@ -21,6 +21,7 @@ import {
   completeLessonQuiz,
   createEmailVerificationRequest,
   createParentManagedChildAccount,
+  registerProviderAccount,
   createSessionClaimsForAccount,
   createContentDraft,
   createInitialState,
@@ -79,6 +80,8 @@ import { loadEnvFile } from "../src/env.js";
 import {
   isSupabaseAuthConfigured,
   normalizeSupabaseAuthResponse,
+  supabaseAdminCreateUser,
+  supabaseAdminDeleteUser,
   supabaseGetUser,
   supabaseRequestPasswordReset,
   supabaseResendVerification,
@@ -139,6 +142,31 @@ async function requestAuthProviderEmailVerification(body = {}) {
     redirectTo: body.redirectTo || process.env.AUTH_EMAIL_REDIRECT_TO
   });
   return { message: "If the account exists, a verification email has been sent." };
+}
+
+function providerChildEmail(username) {
+  const normalized = String(username || "").trim().toLowerCase().replace(/[^a-z0-9._-]/g, "");
+  const domain = String(process.env.SUPABASE_CHILD_EMAIL_DOMAIN || "").trim().toLowerCase();
+  if (!normalized || !domain || !domain.includes(".")) {
+    const error = new Error("SUPABASE_CHILD_EMAIL_DOMAIN must be configured before creating provider-backed child accounts.");
+    error.status = 503;
+    throw error;
+  }
+  return `${normalized}@${domain}`;
+}
+
+async function resolveProviderLoginEmail(body = {}) {
+  const login = String(body.email || body.login || "").trim().toLowerCase();
+  if (login.includes("@")) return login;
+  if (!login) return "";
+  const security = await stateRepository.readAccountSecurity({ limit: 10000 });
+  const account = (security.accounts || []).find((item) => item.username === login && item.role === "student");
+  if (!account?.email) {
+    const error = new Error("Login or password is incorrect.");
+    error.status = 401;
+    throw error;
+  }
+  return account.email;
 }
 
 async function ensureStateFile() {
@@ -713,21 +741,48 @@ async function handleApi(request, response, pathname) {
         displayName: body.displayName || body.name,
         redirectTo: body.redirectTo || process.env.AUTH_EMAIL_REDIRECT_TO
       }));
-      if (provider.user.id && process.env.SUPABASE_SECRET_KEY) {
-        await supabaseSetAppMetadata(provider.user.id, {
+      const provisioned = await queueStateMutation(async () => {
+        const state = await ensureStateFile();
+        const registered = registerProviderAccount(state, {
+          providerUser: provider.user,
           role: body.role || "parent",
-          userId: provider.user.id,
-          scope: body.role === "teacher" ? "assigned" : "own-household"
+          displayName: body.displayName || body.name,
+          schoolId: body.schoolId || ""
         });
+        if (!registered.result.accepted) return { state, result: registered.result };
+        const claims = registered.result.sessionClaims;
+        if (provider.user.id && process.env.SUPABASE_SECRET_KEY) {
+          await supabaseSetAppMetadata(provider.user.id, {
+            role: claims.role,
+            userId: claims.userId,
+            scope: claims.scope,
+            ...(claims.guardianId ? { guardianId: claims.guardianId } : {}),
+            ...(claims.teacherId ? { teacherId: claims.teacherId } : {}),
+            ...(claims.schoolId ? { schoolId: claims.schoolId } : {})
+          });
+        }
+        return {
+          state: await writeAccountSecurity(registered.state),
+          result: registered.result
+        };
+      });
+      if (!provisioned.result.accepted) {
+        sendJson(response, 400, { accepted: false, provider: "supabase", result: provisioned.result });
+        return true;
       }
+      const claims = provisioned.result.sessionClaims;
+      const providerSession = provider.accessToken && claims.emailVerified
+        ? { authenticated: true, productionAuth: true, authProvider: "supabase", ...claims }
+        : { authenticated: false, productionAuth: true, authProvider: "supabase", role: "anonymous", scope: "none" };
       sendJson(response, 201, {
         accepted: true,
         provider: "supabase",
         requiresEmailVerification: !provider.user.emailVerified,
-        token: provider.accessToken,
-        refreshToken: provider.refreshToken,
+        token: claims.emailVerified ? provider.accessToken : "",
+        refreshToken: claims.emailVerified ? provider.refreshToken : "",
         user: provider.user,
-        session: publicSessionSummary(provider.accessToken ? { authenticated: true, productionAuth: true, authProvider: "supabase", role: body.role || "parent", scope: body.role === "teacher" ? "assigned" : "own-household", userId: provider.user.id, email: provider.user.email, emailVerified: provider.user.emailVerified } : { authenticated: false, productionAuth: true, authProvider: "supabase", role: "anonymous", scope: "none" })
+        account: provisioned.result.account,
+        session: publicSessionSummary(providerSession)
       });
       return true;
     }
@@ -775,11 +830,17 @@ async function handleApi(request, response, pathname) {
   if (request.method === "POST" && pathname === "/api/auth/signin") {
     const body = await readJsonBody(request);
     if (useProviderAuth()) {
-      const raw = await supabaseSignIn({ email: body.email || body.login, password: body.password });
+      const email = await resolveProviderLoginEmail(body);
+      const raw = await supabaseSignIn({ email, password: body.password });
       const provider = normalizeSupabaseAuthResponse(raw);
       if (!provider.accessToken) throw new Error("Supabase Auth did not return an access token.");
       const verifiedUser = await supabaseGetUser(provider.accessToken);
       const normalizedUser = normalizeSupabaseAuthResponse({ ...raw, user: verifiedUser.user || raw.user });
+      if (!normalizedUser.user.emailVerified) {
+        const error = new Error("Email verification is required before app access.");
+        error.status = 403;
+        throw error;
+      }
       sendJson(response, 200, {
         accepted: true,
         provider: "supabase",
@@ -1029,6 +1090,77 @@ async function handleApi(request, response, pathname) {
       const error = new Error("Parent email verification is required before creating child accounts.");
       error.status = 403;
       throw error;
+    }
+    if (useProviderAuth()) {
+      const childEmail = providerChildEmail(body.username || body.childUsername);
+      let providerUser = null;
+      try {
+        const created = await supabaseAdminCreateUser({
+          email: childEmail,
+          password: body.password,
+          emailConfirm: true,
+          userMetadata: {
+            display_name: body.displayName || body.childName || "",
+            username: body.username || body.childUsername || ""
+          },
+          appMetadata: {
+            role: "student",
+            scope: "own",
+            guardianId: session.guardianId || "",
+            schoolId: session.schoolId || ""
+          }
+        });
+        providerUser = normalizeSupabaseAuthResponse(created).user;
+        if (!providerUser.id) throw new Error("Supabase did not return the new child user id.");
+        const child = await queueStateMutation(async () => {
+          const state = await ensureStateFile();
+          const childAccount = createParentManagedChildAccount(state, {
+            parentSession: session,
+            displayName: body.displayName || body.childName,
+            username: body.username || body.childUsername,
+            email: childEmail,
+            grade: body.grade,
+            academyId: body.academyId,
+            accommodations: body.accommodations,
+            aiHelper: body.aiHelper,
+            authProvider: "supabase",
+            providerSubject: providerUser.id,
+            userId: providerUser.id,
+            emailVerified: true
+          });
+          if (!childAccount.result.accepted) return { state, result: childAccount.result };
+          const nextState = await writeAccountSecurity(childAccount.state);
+          const claims = childAccount.result.sessionClaims;
+          if (process.env.SUPABASE_SECRET_KEY) {
+            await supabaseSetAppMetadata(providerUser.id, {
+              role: "student",
+              userId: claims.userId,
+              studentId: claims.studentId,
+              guardianId: claims.guardianId || session.guardianId || "",
+              scope: "own",
+              ...(claims.schoolId ? { schoolId: claims.schoolId } : {})
+            });
+          }
+          return { state: nextState, result: childAccount.result };
+        });
+        if (!child.result.accepted) {
+          await supabaseAdminDeleteUser(providerUser.id).catch(() => {});
+          sendJson(response, 400, { accepted: false, provider: "supabase", result: child.result });
+          return true;
+        }
+        sendJson(response, 201, {
+          accepted: true,
+          provider: "supabase",
+          account: child.result.account,
+          childLogin: child.result.childLogin,
+          user: providerUser,
+          session: publicSessionSummary(session)
+        });
+        return true;
+      } catch (error) {
+        if (providerUser?.id) await supabaseAdminDeleteUser(providerUser.id).catch(() => {});
+        throw error;
+      }
     }
     const passwordRecord = createPasswordRecord(body.password);
     const payload = await queueStateMutation(async () => {

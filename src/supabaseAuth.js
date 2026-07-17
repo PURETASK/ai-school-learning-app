@@ -101,6 +101,27 @@ export async function supabaseSetAppMetadata(userId, appMetadata, { env = proces
   return requestAdmin(`/admin/users/${encodeURIComponent(userId)}`, { env, fetchImpl, body: { app_metadata: appMetadata || {} } });
 }
 
+export async function supabaseAdminCreateUser(
+  { email, password, emailConfirm = true, userMetadata = {}, appMetadata = {}, env = process.env, fetchImpl = defaultFetch } = {}
+) {
+  return requestAdmin("/admin/users", {
+    method: "POST",
+    env,
+    fetchImpl,
+    body: {
+      email: String(email || "").trim().toLowerCase(),
+      password: String(password || ""),
+      email_confirm: Boolean(emailConfirm),
+      user_metadata: userMetadata || {},
+      app_metadata: appMetadata || {}
+    }
+  });
+}
+
+export async function supabaseAdminDeleteUser(userId, { env = process.env, fetchImpl = defaultFetch } = {}) {
+  return requestAdmin(`/admin/users/${encodeURIComponent(userId)}`, { method: "DELETE", env, fetchImpl });
+}
+
 export async function supabaseGetUser(accessToken, { env = process.env, fetchImpl = defaultFetch } = {}) {
   return requestAuth("/user", { method: "GET", accessToken, env, fetchImpl });
 }
