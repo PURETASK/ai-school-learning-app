@@ -196,6 +196,18 @@ function buildVisuals(rawLesson, phases) {
       "A compact visual hint the tutor can reveal after asking what part feels confusing.",
       "ai-tutor",
       `Create a small tutor hint visual for ${title}. It should isolate one common stuck point and show one next step without displaying a final quiz answer.`
+    ),
+    visualSupport(
+      `${title} misconception repair`,
+      "A contrast visual that shows a tempting mistake beside the corrected reasoning.",
+      "misconception-repair",
+      `Create a side-by-side educational visual for ${title}: show one common misconception, then the corrected model. Use labels, arrows, and a short explanation without giving a graded answer.`
+    ),
+    visualSupport(
+      `${title} memory cue`,
+      "A compact retrieval cue for the Memory Vault review after the lesson.",
+      "memory-vault",
+      `Create a memorable retrieval cue for ${title}. Show the smallest set of symbols, steps, or relationships a Grade 6 learner should recall later, with accessible labels.`
     )
   ];
 }
@@ -237,6 +249,14 @@ function buildMisunderstandings(rawLesson, phases) {
       misunderstanding: text(path.misconception || path.misunderstanding) || "The learner applies a rule without connecting it to the model.",
       repair: text(path.simpleExplanation || path.repair) || "Use a simpler example and ask the learner to point to the evidence for each step.",
       signal: text(path.exitCriteria || path.lookFor)
+    }, {
+      misunderstanding: "The learner can name a term but cannot connect it to the diagram, example, or evidence.",
+      repair: "Ask the learner to point to the exact part of the model that supports the term, then explain the connection.",
+      signal: "Definition is repeated without a model or example."
+    }, {
+      misunderstanding: "The learner uses a correct procedure in the original example but cannot explain the first step in a new context.",
+      repair: "Change one feature of the example and ask the learner to choose the first move before solving.",
+      signal: "Accuracy drops when the surface story or representation changes."
     }];
   }
   const checkpoint = phaseValue(phases, "criticalThinkingCheckpoint", "feedback");
@@ -292,6 +312,9 @@ export function adaptStructuredLesson(rawLesson = {}) {
   const visualSupports = buildVisuals(rawLesson, phases);
   const visual = visualSupports[0];
   const nativeV3 = buildNativeV3Fields(rawLesson, phases, visualSupports, subject, objective);
+  const sections = buildSections(rawLesson, phases);
+  const studentSummary = text(rawLesson.studentSummary) || `You will learn to ${studentObjective.replace(/\.$/, "")}.`;
+  const tutorHandoff = `Write exactly what is confusing about ${title || "this lesson"}: the words, the visual, the first step, or the reasoning.`;
   return {
     ...rawLesson,
     academyId: academyId(rawLesson),
@@ -322,8 +345,29 @@ export function adaptStructuredLesson(rawLesson = {}) {
     prerequisiteSkills: list(rawLesson.prerequisiteSkills || rawLesson.prerequisites),
     evidenceMoves: buildEvidenceMoves(rawLesson, phases, subject),
     groupHomework: buildGroupHomework(rawLesson),
-    studentSummary: text(rawLesson.studentSummary) || `You will learn to ${studentObjective.replace(/\.$/, "")}.`,
+    studentSummary,
     whyItMatters: text(rawLesson.whyItMatters) || `This helps you use ${text(rawLesson.title) || "the idea"} in new problems, projects, and explanations.`,
+    studentFacing: {
+      mission: studentSummary,
+      bigIdea: phaseValue(phases, "miniTeach", "learningGoal") || objective,
+      whyItMatters: text(rawLesson.whyItMatters) || `This helps you use ${title || "the idea"} in a new problem.`,
+      tutorHandoff,
+      thinkingPrompt: phaseValue(phases, "criticalThinkingCheckpoint", "evidenceBasedReasoningTask") || "Explain why your answer or model makes sense.",
+      steps: sections.directInstruction ? [sections.directInstruction] : []
+    },
+    funTasks: [sections.interactiveActivity, sections.challengePath].filter(Boolean),
+    retentionChecks: [
+      { prompt: phaseValue(phases, "retrievalCheck") || `Recall the key idea from ${title || "today's lesson"}.`, schedule: "same-day" },
+      { prompt: "Return tomorrow and explain the idea without looking at the lesson.", schedule: "next-day" },
+      { prompt: "Use the idea in a changed example one week later.", schedule: "seven-day" }
+    ],
+    reward: "Earn XP for an independent explanation, a corrected misconception, and successful delayed recall.",
+    teachingSupport: {
+      summary: studentSummary,
+      diagramCallouts: visualSupports.map((support) => ({ title: support.title, body: support.description })),
+      helperNotes: buildHelperNotes(rawLesson, phases).map((note) => note.note),
+      confusionPrompt: tutorHandoff
+    },
     sourceCards: rawLesson.sourceCards || standards.map((standard) => ({
       sourceId: standard,
       title: "Standards alignment",

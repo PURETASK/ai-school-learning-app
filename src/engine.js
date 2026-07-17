@@ -1470,9 +1470,14 @@ function getContentBatchReviewState(state = {}, sourceBatchId = "") {
       quiz: draft.quizQuestions,
       visual: draft.visual || draft.visualSupports?.[0],
       teachingSupport: {
+        summary: draft.studentFacing?.bigIdea || draft.studentSummary,
+        diagramCallouts: (draft.visualSupports || []).map((support) => ({
+          title: support.title,
+          body: support.description
+        })),
         commonMisunderstandings: draft.commonMisunderstandings,
         helperNotes: draft.helperNotes,
-        confusionPrompt: draft.studentFacing?.tutorHandoff
+        confusionPrompt: draft.studentFacing?.tutorHandoff || `Write exactly what is confusing about ${draft.title}.`
       },
       groupHomework: draft.groupHomework
     });
@@ -6616,6 +6621,11 @@ function normalizeLessonImport(rawLesson = {}, index = 0) {
     ...baseLesson,
     academy: rawLesson.academy || rawLesson.academyId,
     learningObjective: rawLesson.learningObjective || objective,
+    studentFacing: rawLesson.studentFacing || {},
+    funTasks: rawLesson.funTasks || [],
+    retentionChecks: rawLesson.retentionChecks || [],
+    reward: rawLesson.reward || "",
+    teachingSupport: rawLesson.teachingSupport || {},
     schemaVersion: rawLesson.schemaVersion,
     lessonFamily: rawLesson.lessonFamily,
     activePhases: rawLesson.activePhases || [],
@@ -6757,6 +6767,8 @@ export function importLessonBatch(state, batchInput) {
   }
 
   const visualAssets = [];
+  const existingDrafts = (state.contentDrafts || []).filter((draft) => draft.sourceBatchId !== batchId);
+  const existingVisualAssets = (state.visualAssets || []).filter((asset) => asset.sourceBatchId !== batchId);
   const drafts = validation.lessons.map((lesson, index) => {
     const audit = auditEvidenceMoves(lesson.subject, lesson.evidenceMoves, lesson.id);
     const draftId = `draft-${batchId}-${index + 1}-${slug(lesson.title)}`;
@@ -6780,6 +6792,11 @@ export function importLessonBatch(state, batchInput) {
       essentialQuestion: lesson.essentialQuestion,
       studentSummary: lesson.studentSummary,
       whyItMatters: lesson.whyItMatters,
+      studentFacing: lesson.studentFacing || {},
+      funTasks: lesson.funTasks || [],
+      retentionChecks: lesson.retentionChecks || [],
+      reward: lesson.reward || "",
+      teachingSupport: lesson.teachingSupport || {},
       vocabularyTerms: lesson.vocabularyTerms,
       prerequisiteSkills: lesson.prerequisiteSkills,
       lessonSections: lesson.lessonSections,
@@ -6827,8 +6844,8 @@ export function importLessonBatch(state, batchInput) {
   return {
     state: {
       ...state,
-      contentDrafts: [...drafts, ...(state.contentDrafts || [])].slice(0, 60),
-      visualAssets: [...visualAssets, ...(state.visualAssets || [])].slice(0, 120),
+      contentDrafts: [...drafts, ...existingDrafts].slice(0, 60),
+      visualAssets: [...visualAssets, ...existingVisualAssets].slice(0, 120),
       contentImportJobs: [job, ...(state.contentImportJobs || [])].slice(0, 20)
     },
     result: {
