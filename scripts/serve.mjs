@@ -609,7 +609,11 @@ async function readRoleScopedBootstrap(session, state = {}) {
   });
   const learnerIds = profile.learners.map((learner) => learner.id).filter(Boolean);
   const catalogLearnerId = session.role === "student" ? session.studentId || "" : "";
-  const catalog = await stateRepository.readLearningCatalog({ learnerId: catalogLearnerId, limit: 10000 });
+  const catalog = await stateRepository.readLearningCatalog({
+    learnerId: catalogLearnerId,
+    includeProgress: session.role === "student",
+    limit: 10000
+  });
   const catalogsByLearner = Object.fromEntries(
     await Promise.all(
       learnerIds.map(async (learnerId) => [

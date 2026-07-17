@@ -611,17 +611,27 @@ function latestAttempt(attempts = []) {
   return [...attempts].sort((left, right) => String(right.attempted_at || "").localeCompare(String(left.attempted_at || "")))[0] || null;
 }
 
-export function createLearningCatalogReadModel(tables = {}, { learnerId = "" } = {}) {
-  const lessons = tables.lessons || [];
-  const activitiesByLesson = groupRowsBy(tables.activities || [], "lesson_id");
-  const quizzesByLesson = groupRowsBy(tables.quizzes || [], "lesson_id");
-  const questionsByQuiz = groupRowsBy(tables.quiz_questions || [], "quiz_id");
-  const standardsByLesson = groupRowsBy(tables.lesson_standards || [], "lesson_id");
-  const progressRows = filterByLearner(tables.lesson_progress || [], learnerId);
-  const masteryRows = filterByLearner(tables.mastery_records || [], learnerId);
-  const scratchpadRows = filterByLearner(tables.lesson_scratchpads || [], learnerId);
-  const interactiveRows = filterByLearner(tables.interactive_skill_evidence || [], learnerId);
-  const attemptRows = filterByLearner(tables.quiz_attempts || [], learnerId);
+export function createLearningCatalogReadModel(tables = {}, { learnerId = "", includeProgress = true } = {}) {
+  const progressTables = includeProgress
+    ? tables
+    : {
+        ...tables,
+        lesson_progress: [],
+        mastery_records: [],
+        lesson_scratchpads: [],
+        interactive_skill_evidence: [],
+        quiz_attempts: []
+      };
+  const lessons = progressTables.lessons || [];
+  const activitiesByLesson = groupRowsBy(progressTables.activities || [], "lesson_id");
+  const quizzesByLesson = groupRowsBy(progressTables.quizzes || [], "lesson_id");
+  const questionsByQuiz = groupRowsBy(progressTables.quiz_questions || [], "quiz_id");
+  const standardsByLesson = groupRowsBy(progressTables.lesson_standards || [], "lesson_id");
+  const progressRows = filterByLearner(progressTables.lesson_progress || [], learnerId);
+  const masteryRows = filterByLearner(progressTables.mastery_records || [], learnerId);
+  const scratchpadRows = filterByLearner(progressTables.lesson_scratchpads || [], learnerId);
+  const interactiveRows = filterByLearner(progressTables.interactive_skill_evidence || [], learnerId);
+  const attemptRows = filterByLearner(progressTables.quiz_attempts || [], learnerId);
   const interactiveByLesson = groupRowsBy(interactiveRows, "lesson_id");
   const attemptsByQuiz = groupRowsBy(attemptRows, "quiz_id");
 

@@ -2068,6 +2068,11 @@ assert.ok(
   repositoryLearningCatalog.lessons.some((item) => item.id === "g3-fractions-number-line" && item.progress && item.mastery),
   "learning catalog should include learner progress and mastery for the selected learner"
 );
+const metadataOnlyCatalog = await jsonRepository.readLearningCatalog({ includeProgress: false });
+assert.ok(
+  metadataOnlyCatalog.lessons.every((item) => !item.progress && !item.mastery && !item.scratchpad && !item.latestAttempt),
+  "metadata-only catalogs should omit learner progress and assessment evidence"
+);
 assert.ok(learnerProfileRepositoryTableIds.includes("student_guardians"), "learner profile read model should include guardian links");
 const repositoryStudentProfiles = await jsonRepository.readLearnerProfiles({ role: "student", studentId: "avery" });
 assert.equal(repositoryStudentProfiles.source, "normalized-repository", "learner profiles should identify the normalized repository source");
@@ -3730,6 +3735,7 @@ for (const expected of [
   "readLearnerProfiles",
   "readRepositoryLearnerScope",
   "repositoryCanAccessLearner",
+  "includeProgress: session.role === \"student\"",
   "requireLegacySnapshotAccess",
   'requireRepositoryPermission(session, "app_state_snapshots", operation, session.scope)',
   'pathname === "/api/learning/catalog"',
