@@ -290,12 +290,19 @@ function queueStateMutation(task) {
   return run;
 }
 
-function sendJson(response, status, payload) {
+function writeJsonResponse(response, status, payload) {
   response.writeHead(status, {
     "Content-Type": "application/json; charset=utf-8",
     "Cache-Control": "no-store"
   });
   response.end(JSON.stringify(payload));
+}
+
+function sanitizeScopedApiPayload(payload, session = {}) {
+  if (stateRepository.status().mode !== "postgres" || !["student", "parent", "teacher"].includes(session.role)) return payload;
+  if (!payload || typeof payload !== "object" || Array.isArray(payload) || !("state" in payload)) return payload;
+  const { state, ...scopedPayload } = payload;
+  return scopedPayload;
 }
 
 function sendCsv(response, status, csv, filename = "school-roster.csv") {
@@ -738,6 +745,8 @@ async function enrichLiveCurriculumSourceAudit(result, log) {
 
 async function handleApi(request, response, pathname) {
   let session = await getRequestSessionAsync(request, process.env);
+  const sendJson = (targetResponse, status, payload) =>
+    writeJsonResponse(targetResponse, status, sanitizeScopedApiPayload(payload, session));
   if (request.method === "GET" && pathname === "/api/runtime/health") {
     requireAuthenticated(session);
     if (!["school-admin", "platform-admin"].includes(session.role)) {
