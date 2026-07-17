@@ -38,7 +38,6 @@ import {
   getPlatformOpenAiImageReadiness,
   getRuntimeConfigurationStatus,
   getStateDependencyAudit,
-  getSchoolRosterCsv,
   getSchoolRosterImportContract,
   getTeacherClassMonitor,
   getVisualLearningOpportunity,
@@ -70,6 +69,7 @@ import {
   updateVisualAssetStatus,
   runArtifactRevisionLoop
 } from "../src/engine.js";
+import { exportRepositoryRosterCsv } from "../src/roster.js";
 import { generateOpenAiImage } from "../src/openaiImageService.js";
 import { fulfillGiftCardReward, getGiftCardFulfillmentReadiness } from "../src/rewardFulfillmentService.js";
 import { createNormalizedStateUpsertSql, createStateRepository, learnerProfileRepositoryTableIds, learningEvidenceRepositoryTableIds } from "../src/repository.js";
@@ -1560,9 +1560,9 @@ async function handleApi(request, response, pathname) {
   if (request.method === "GET" && pathname === "/api/school/roster/export") {
     requireSchoolAdmin(session, "enrollments", "read");
     requireSchoolAdmin(session, "classes", "read");
-    const state = await ensureStateFile();
-    const schoolId = session.schoolId || state.schoolProfile?.id || "school-demo-1";
-    sendCsv(response, 200, getSchoolRosterCsv(state, schoolId), `school-roster-${schoolId}.csv`);
+    const schoolId = session.schoolId || "school-demo-1";
+    const operations = await stateRepository.readSchoolOperations({ schoolId, limit: 10000 });
+    sendCsv(response, 200, exportRepositoryRosterCsv(operations), `school-roster-${schoolId}.csv`);
     return true;
   }
 

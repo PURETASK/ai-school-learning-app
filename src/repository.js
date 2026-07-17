@@ -1557,7 +1557,7 @@ export function createClassroomMonitorReadModel(tables = {}, { classSectionId = 
 
   const learners = toArray(tables.students)
     .filter((row) => classSection.studentIds.includes(row.id))
-    .map(normalizedSchoolLearnerRow)
+    .map((row) => normalizedSchoolLearnerRow(row))
     .map((learner) => {
       const artifact = artifacts.find((item) => item.learnerId === learner.id && (!mission || item.groupMissionId === mission.id)) || null;
       const intervention =
@@ -1634,7 +1634,7 @@ export function createClassroomMonitorReadModel(tables = {}, { classSectionId = 
 }
 
 export function createLearnerClassSessionReadModel(tables = {}, { learnerId = "" } = {}) {
-  const learner = toArray(tables.students).map(normalizedSchoolLearnerRow).find((item) => item.id === learnerId) || null;
+  const learner = toArray(tables.students).map((row) => normalizedSchoolLearnerRow(row)).find((item) => item.id === learnerId) || null;
   if (!learner) {
     return {
       source: "normalized-repository",
@@ -1716,7 +1716,7 @@ export function createLearnerClassSessionReadModel(tables = {}, { learnerId = ""
   });
   const classmates = toArray(tables.students)
     .filter((row) => classSection.studentIds.includes(row.id))
-    .map(normalizedSchoolLearnerRow);
+    .map((row) => normalizedSchoolLearnerRow(row));
 
   return {
     source: "normalized-repository",
@@ -1767,7 +1767,8 @@ export function normalizedSchoolTeacherRow(row = {}, userById = new Map()) {
   };
 }
 
-export function normalizedSchoolLearnerRow(row = {}) {
+export function normalizedSchoolLearnerRow(row = {}, userById = new Map()) {
+  const user = userById.get(row.user_id) || {};
   return {
     id: row.id || "",
     userId: row.user_id || "",
@@ -1775,6 +1776,8 @@ export function normalizedSchoolLearnerRow(row = {}) {
     grade: gradeFromGradeLevelId(row.grade_level_id),
     gradeLevelId: row.grade_level_id || "",
     name: row.display_name || "Learner",
+    username: user.username || "",
+    email: user.email || "",
     schedule: row.schedule || "",
     status: row.status || "active",
     createdAt: row.created_at || "",
@@ -1847,7 +1850,7 @@ export function createSchoolOperationsReadModel(rowsByTable = {}, { schoolId = "
   const learnerIds = new Set(enrollments.filter((enrollment) => classIds.has(enrollment.class_id)).map((enrollment) => enrollment.student_id));
   const learners = toArray(rowsByTable.students)
     .filter((row) => !learnerIds.size || learnerIds.has(row.id))
-    .map(normalizedSchoolLearnerRow);
+    .map((row) => normalizedSchoolLearnerRow(row, userById));
   const teachers = toArray(rowsByTable.teachers)
     .map((row) => normalizedSchoolTeacherRow(row, userById))
     .filter((teacher) => !teacherId || teacher.id === teacherId);

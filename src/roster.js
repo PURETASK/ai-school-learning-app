@@ -119,6 +119,30 @@ export function exportRosterCsv(state = {}, schoolId = "") {
   return [headers, ...rows].map((row) => row.map(csvSafeValue).join(",")).join("\r\n") + "\r\n";
 }
 
+export function exportRepositoryRosterCsv(operations = {}) {
+  const headers = ["student_id", "display_name", "grade", "class_id", "class_name", "academy_id", "status", "username", "email"];
+  const learnersById = new Map((operations.learners || []).map((learner) => [learner.id, learner]));
+  const rows = [];
+  for (const section of operations.classes || []) {
+    for (const learnerId of section.studentIds || []) {
+      const learner = learnersById.get(learnerId);
+      if (!learner) continue;
+      rows.push([
+        learner.id,
+        learner.name,
+        learner.grade,
+        section.id,
+        section.name,
+        learner.academyId,
+        learner.status || "active",
+        learner.username || "",
+        learner.email || ""
+      ]);
+    }
+  }
+  return [headers, ...rows].map((row) => row.map(csvSafeValue).join(",")).join("\r\n") + "\r\n";
+}
+
 export const rosterImportContract = {
   requiredHeaders: requiredRosterHeaders,
   optionalHeaders: ["student_id", "username", "email", "accommodations"],

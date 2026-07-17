@@ -237,6 +237,7 @@ import {
   visualAssetRepositoryTableIds,
   visualWorkflowRepositoryTableIds
 } from "../src/repository.js";
+import { exportRepositoryRosterCsv } from "../src/roster.js";
 import {
   getAccessSummary,
   getAuthorizedView,
@@ -1755,6 +1756,11 @@ assert.equal(normalizedScopeSecurity.teacherClassAssignments.length, 1, "account
 assert.equal(normalizedScopeSecurity.enrollments.length, 1, "account security read model should preserve class enrollments");
 const targetedRevocation = createSessionRevocationRows({ sessionRevocations: [{ id: "revoke-1", userId: "user-1", sessionId: "session-1", reason: "test", createdAt: "2026-07-17T00:00:00.000Z" }] }, "revoke-1");
 assert.equal(targetedRevocation.rowsByTable.session_revocations[0].user_id, "user-1", "targeted revocation rows should map app claims to normalized columns");
+const repositoryRosterCsv = exportRepositoryRosterCsv({
+  classes: [{ id: "class-1", name: "Math 6", studentIds: ["student-1"] }],
+  learners: [{ id: "student-1", name: "Learner One", grade: "6", academyId: "bridge", status: "active", username: "learner1", email: "learner@example.test" }]
+});
+assert.ok(repositoryRosterCsv.includes("class-1,Math 6,bridge,active,learner1"), "repository roster export should use normalized school operation data");
 
 const lessonLibrarySummary = getPlatformLessonLibrarySummary();
 const lessonLibrarySamples = getPlatformLessonLibrarySamples(8);
