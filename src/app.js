@@ -1588,6 +1588,11 @@ async function hydrateFromServer() {
     if (scopedRepositoryPathReady) {
       state = mergeRepositoryLearnerProfiles(state, repositoryBootstrap.learnerProfiles);
       state = mergeRepositoryLearningCatalog(state, repositoryBootstrap.catalog);
+    } else if (hasStrictLearnerScope()) {
+      // A scoped session must not fall back to the broad snapshot when a focused
+      // bootstrap is unavailable. Keep local UI state and surface the repository
+      // error instead of risking cross-learner hydration.
+      repositoryLearningCatalogError = "Scoped learner bootstrap is unavailable.";
     } else {
       const persisted = await fetchPersistedState();
       state = mergePersistedState(state, persisted);

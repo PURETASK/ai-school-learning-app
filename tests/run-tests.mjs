@@ -3724,6 +3724,7 @@ for (const expected of [
 ]) {
   assert.ok(appSource.includes(expected), `lesson player should include app-led student teaching surface: ${expected}`);
 }
+assert.ok(appSource.includes("A scoped session must not fall back to the broad snapshot"), "learner hydration should block broad snapshot fallback");
 
 const serverSource = readFileSync("scripts/serve.mjs", "utf8");
 const apiClientSource = readFileSync("src/apiClient.js", "utf8");
