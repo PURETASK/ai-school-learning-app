@@ -3046,6 +3046,40 @@ export function getTeacherClassMonitor(state = {}, classSectionId = "", options 
   };
 }
 
+export function refreshSchoolReports(state = {}, { schoolId = "" } = {}) {
+  const sections = (state.classSections || []).filter((section) => !schoolId || section.schoolId === schoolId);
+  const previousReports = new Map((state.schoolReports || []).map((report) => [report.classId, report]));
+  const reports = sections.map((section) => {
+    const monitor = getTeacherClassMonitor(state, section.id);
+    const metrics = monitor.metrics || {};
+    const sessionIds = new Set((state.classSessions || []).filter((session) => session.classSectionId === section.id).map((session) => session.id));
+    const groupMissions = (state.groupMissions || []).filter((mission) => sessionIds.has(mission.sessionId)).length;
+    const openInterventions = (state.teacherInterventions || []).filter(
+      (intervention) => sessionIds.has(intervention.classSessionId) && intervention.status !== "resolved"
+    ).length;
+    const previous = previousReports.get(section.id);
+    return {
+      id: previous?.id || `school-report-${section.id}`.replace(/[^a-z0-9_-]/gi, "-"),
+      schoolId: section.schoolId || schoolId || state.schoolProfile?.id || "",
+      classId: section.id,
+      reportType: "classroom-progress-snapshot",
+      summary: `${section.name || "Class"} has ${metrics.enrolled || 0} enrolled learner(s), ${metrics.averageMastery || 0}% average mastery, and ${metrics.needsHelp || 0} learner(s) needing support.`,
+      metrics: {
+        enrolledStudents: metrics.enrolled || 0,
+        averageMastery: metrics.averageMastery || 0,
+        activeSessions: (state.classSessions || []).filter((session) => session.classSectionId === section.id).length,
+        groupMissions,
+        submittedArtifacts: metrics.submittedArtifacts || 0,
+        openInterventions,
+        needsHelp: metrics.needsHelp || 0,
+        mastered: metrics.mastered || 0
+      },
+      createdAt: previous?.createdAt || new Date().toISOString()
+    };
+  });
+  return { ...state, schoolReports: reports };
+}
+
 const classSessionStatuses = new Set(["Ready to launch", "Live", "Paused", "Completed"]);
 
 function normalizeClassSessionStatus(status = "") {

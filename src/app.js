@@ -6622,6 +6622,19 @@ function renderSchoolAdminView() {
             ${renderMetric("Roster source", schoolOps.source === "repository" ? "Repository" : "Local", `${schoolOps.summary.pendingInvitations} pending invite(s)`)}
           </div>
           ${schoolOps.error ? `<p class="form-note">${html(`School repository read failed: ${schoolOps.error}`)}</p>` : ""}
+          ${
+            schoolOps.reports.length
+              ? `<div class="report-list" aria-label="Persisted school reports">
+                  ${schoolOps.reports.slice(0, 4).map((report) => `
+                    <article class="report-list-item">
+                      <strong>${html(report.reportType || "Class progress snapshot")}</strong>
+                      <span>${html(report.summary || "Report summary unavailable")}</span>
+                      <small>${html(`${report.metrics?.averageMastery || 0}% mastery · ${report.metrics?.needsHelp || 0} needs support`)}</small>
+                    </article>
+                  `).join("")}
+                </div>`
+              : `<p class="form-note">No persisted report snapshots yet. Complete a class session or roster action to generate the first scoped report.</p>`
+          }
         </article>
       </div>
     </section>

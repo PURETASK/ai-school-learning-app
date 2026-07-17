@@ -52,6 +52,7 @@ import {
   registerLocalAccount,
   recordInteractiveResponse,
   recordTeacherIntervention,
+  refreshSchoolReports,
   createPasswordResetRequest,
   requestRewardApproval,
   recordRewardFulfillmentResult,
@@ -251,17 +252,23 @@ async function writeContentWorkflow(state) {
 }
 
 async function writeClassroomWorkflow(state) {
-  return stateRepository.writeClassroomWorkflow({
+  const reportState = refreshSchoolReports({
     ...createInitialState(),
-    ...state,
+    ...state
+  });
+  return stateRepository.writeClassroomWorkflow({
+    ...reportState,
     persistedAt: new Date().toISOString()
   });
 }
 
 async function writeSchoolOperations(state) {
-  return stateRepository.writeSchoolOperations({
+  const reportState = refreshSchoolReports({
     ...createInitialState(),
-    ...state,
+    ...state
+  });
+  return stateRepository.writeSchoolOperations({
+    ...reportState,
     persistedAt: new Date().toISOString()
   });
 }

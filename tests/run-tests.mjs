@@ -103,6 +103,7 @@ import {
   getRuntimeConfigurationStatus,
   getStateDependencyAudit,
   getTeacherClassMonitor,
+  refreshSchoolReports,
   getTodayPlan,
   getTutorQualityDashboard,
   getTutorImprovementQueue,
@@ -3848,6 +3849,17 @@ assert.ok(stylesSource.includes(".redesign-history-card"), "styles should includ
 
 const repositorySource = readFileSync("src/repository.js", "utf8");
 assert.ok(repositorySource.includes("batchReview"), "repository review summary should count batch review items");
+const reportState = refreshSchoolReports({
+  ...createInitialState(),
+  classSections: [{ id: "class-report-test", schoolId: "school-test", name: "Grade 6 Lab", studentIds: [], status: "setup" }],
+  classSessions: [],
+  schoolReports: []
+});
+assert.equal(reportState.schoolReports.length, 1, "school report refresh should create one report per scoped class");
+assert.equal(reportState.schoolReports[0].classId, "class-report-test", "school report should identify its class");
+assert.match(reportState.schoolReports[0].reportType, /classroom-progress/, "school report should use a progress snapshot type");
+assert.ok(readFileSync("src/app.js", "utf8").includes("Persisted school reports"), "school admin UI should render persisted report summaries");
+assert.ok(readFileSync("scripts/serve.mjs", "utf8").includes("refreshSchoolReports"), "school write workflows should refresh report snapshots");
 
 assert.ok(getPipelineStats().gates >= 2, "content pipeline should include review gates");
 assert.ok(qualityGates.length >= 7, "quality gates should include launch checks");
