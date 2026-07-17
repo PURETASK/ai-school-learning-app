@@ -165,7 +165,8 @@ export function normalizeSupabaseAuthResponse(payload = {}) {
       email: String(user.email || "").trim().toLowerCase(),
       emailVerified: Boolean(user.email_confirmed_at || user.confirmed_at),
       createdAt: user.created_at || "",
-      userMetadata: user.user_metadata || {}
+      userMetadata: user.user_metadata || {},
+      appMetadata: user.app_metadata || {}
     }
   };
 }

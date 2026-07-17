@@ -180,6 +180,7 @@ import {
   supabaseRequestPasswordReset,
   supabaseSignIn,
   supabaseSignUp,
+  supabaseVerifyEmail,
   supabaseUpdatePassword
 } from "../src/supabaseAuth.js";
 import { extractSourceEvidence, fetchApprovedSourceAudit, isApprovedLiveSourceUrl } from "../src/liveSourceAudit.js";
@@ -4022,6 +4023,7 @@ const providerFetch = async (url, options = {}) => {
   if (url.includes("/token?grant_type=password")) {
     return new Response(JSON.stringify({ user: { id: "provider-parent-1", email: "parent@example.test", email_confirmed_at: "2026-07-17T00:00:00Z" }, access_token: "provider-access-token", refresh_token: "provider-refresh-token", expires_in: 3600 }), { status: 200, headers: { "content-type": "application/json" } });
   }
+  if (url.endsWith("/verify")) return new Response(JSON.stringify({ user: { id: "provider-teacher-1", email: "teacher@example.test", email_confirmed_at: "2026-07-17T00:00:00Z", app_metadata: { role: "teacher", scope: "assigned", teacherId: "teacher-1" } }, access_token: "teacher-verified-token", refresh_token: "teacher-refresh-token" }), { status: 200, headers: { "content-type": "application/json" } });
   if (url.endsWith("/recover")) return new Response(JSON.stringify({}), { status: 200, headers: { "content-type": "application/json" } });
   if (url.endsWith("/user")) return new Response(JSON.stringify({ user: { id: "provider-parent-1", email: "parent@example.test", email_confirmed_at: "2026-07-17T00:00:00Z" } }), { status: 200, headers: { "content-type": "application/json" } });
   return new Response(JSON.stringify({}), { status: 200, headers: { "content-type": "application/json" } });
@@ -4031,6 +4033,19 @@ assert.equal(providerSignup.user.id, "provider-parent-1", "provider signup shoul
 assert.equal(JSON.parse(providerRequests[0].options.body).options.data.requested_role, "parent", "provider signup should store role as non-authorizing profile metadata");
 const providerSignin = await supabaseSignIn({ email: "parent@example.test", password: "parent-pass-123", fetchImpl: providerFetch, env: providerTestEnv });
 assert.equal(providerSignin.access_token, "provider-access-token", "provider sign-in should return an access token");
+const normalizedProviderClaims = normalizeSupabaseAuthResponse({
+  user: {
+    id: "provider-teacher-1",
+    email: "teacher@example.test",
+    email_confirmed_at: "2026-07-17T00:00:00Z",
+    app_metadata: { role: "teacher", scope: "assigned", teacherId: "teacher-1" }
+  },
+  access_token: "teacher-token"
+});
+assert.equal(normalizedProviderClaims.user.appMetadata.role, "teacher", "normalized provider users should preserve app metadata role claims");
+assert.equal(normalizedProviderClaims.user.appMetadata.teacherId, "teacher-1", "normalized provider users should preserve scoped role identifiers");
+const verifiedProvider = await supabaseVerifyEmail({ tokenHash: "verify-hash", fetchImpl: providerFetch, env: providerTestEnv });
+assert.equal(verifiedProvider.user.app_metadata.role, "teacher", "provider email verification should return the original role claims");
 await supabaseRequestPasswordReset({ email: "parent@example.test", fetchImpl: providerFetch, env: providerTestEnv });
 await supabaseUpdatePassword({ accessToken: "provider-access-token", password: "new-parent-pass-123", fetchImpl: providerFetch, env: providerTestEnv });
 await supabaseAdminCreateUser({

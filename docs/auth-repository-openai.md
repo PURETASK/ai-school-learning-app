@@ -135,6 +135,8 @@ $env:NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="..."
 
 Keep `SUPABASE_SECRET_KEY`, service-role keys, and the database password server-only. Do not put them in browser bundles, committed `.env` files, screenshots, or docs. Direct SQL migration still needs the separate Postgres database password in `DATABASE_URL`; the Supabase secret/server API key is not a database password.
 
+Provider signup requires the server-only Supabase secret key because the server provisions the normalized `app_metadata` role and scope claims after account creation. The email-verification route preserves those claims when it returns the verified session; it does not replace teacher, student, school, or parent identities with a default role.
+
 Trusted proxy mode, for deployments where an upstream edge/auth layer verifies the token:
 
 ```powershell

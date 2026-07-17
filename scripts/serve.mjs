@@ -832,6 +832,11 @@ async function handleApi(request, response, pathname) {
   if (request.method === "POST" && pathname === "/api/auth/signup") {
     const body = await readJsonBody(request);
     if (useProviderAuth()) {
+      if (!String(process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim()) {
+        const error = new Error("Provider signup requires SUPABASE_SECRET_KEY so the server can provision role claims securely.");
+        error.status = 503;
+        throw error;
+      }
       const provider = normalizeSupabaseAuthResponse(await supabaseSignUp({
         email: body.email,
         password: body.password,
@@ -1068,7 +1073,28 @@ async function handleApi(request, response, pathname) {
     const body = await readJsonBody(request);
     if (useProviderAuth()) {
       const provider = normalizeSupabaseAuthResponse(await supabaseVerifyEmail({ tokenHash: body.token || body.tokenHash || body.code, type: body.type || "signup" }));
-      sendJson(response, 200, { accepted: true, provider: "supabase", token: provider.accessToken, refreshToken: provider.refreshToken, user: provider.user, session: publicSessionSummary({ authenticated: Boolean(provider.accessToken), productionAuth: true, authProvider: "supabase", role: "parent", scope: "own-household", userId: provider.user.id, email: provider.user.email, emailVerified: true }) });
+      const appMetadata = provider.user.appMetadata || {};
+      sendJson(response, 200, {
+        accepted: true,
+        provider: "supabase",
+        token: provider.accessToken,
+        refreshToken: provider.refreshToken,
+        user: provider.user,
+        session: publicSessionSummary({
+          authenticated: Boolean(provider.accessToken),
+          productionAuth: true,
+          authProvider: "supabase",
+          role: appMetadata.role || "parent",
+          scope: appMetadata.scope || "own-household",
+          userId: appMetadata.userId || provider.user.id,
+          ...(appMetadata.studentId ? { studentId: appMetadata.studentId } : {}),
+          ...(appMetadata.guardianId ? { guardianId: appMetadata.guardianId } : {}),
+          ...(appMetadata.teacherId ? { teacherId: appMetadata.teacherId } : {}),
+          ...(appMetadata.schoolId ? { schoolId: appMetadata.schoolId } : {}),
+          email: provider.user.email,
+          emailVerified: true
+        })
+      });
       return true;
     }
     const payload = await queueStateMutation(async () => {
