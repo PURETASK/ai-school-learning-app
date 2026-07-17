@@ -2057,6 +2057,10 @@ export function createAccountSecurityReadModel(rowsByTable = {}, options = {}) {
   const teachers = toArray(rowsByTable.teachers);
   const invitations = toArray(rowsByTable.account_invitations);
   const guardianLinks = toArray(rowsByTable.guardian_student_links);
+  const studentGuardians = toArray(rowsByTable.student_guardians);
+  const teacherClassAssignments = toArray(rowsByTable.teacher_class_assignments);
+  const classes = toArray(rowsByTable.classes);
+  const enrollments = toArray(rowsByTable.enrollments);
   const consentRecords = Object.fromEntries(
     toArray(rowsByTable.consent_records)
       .filter((row) => row.student_id)
@@ -2129,6 +2133,10 @@ export function createAccountSecurityReadModel(rowsByTable = {}, options = {}) {
     authAuditEvents,
     invitations,
     guardianLinks,
+    studentGuardians,
+    teacherClassAssignments,
+    classes,
+    enrollments,
     consentRecords
   };
 }

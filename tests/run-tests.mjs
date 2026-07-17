@@ -207,6 +207,7 @@ import {
   agentReviewRepositoryTableIds,
   aiTutorEventRepositoryTableIds,
   accountSecurityRepositoryTableIds,
+  createAccountSecurityReadModel,
   classroomEvidenceRepositoryTableIds,
   classroomMonitorRepositoryTableIds,
   classroomStudentRepositoryTableIds,
@@ -1733,6 +1734,24 @@ assert.ok(repositoryAccountSecurity.summary.accountCount >= 3, "account security
 assert.ok(repositoryAccountSecurity.summary.pendingEmailVerification >= 1, "account security read model should count pending email verification audit rows");
 assert.ok(repositoryAccountSecurity.summary.pendingPasswordReset >= 1, "account security read model should count pending password reset audit rows");
 assert.ok(repositoryAccountSecurity.sessionRevocations.length >= 2, "account security read model should expose session revocation rows");
+const normalizedScopeSecurity = createAccountSecurityReadModel({
+  users: [
+    { id: "parent-user", role: "parent", email: "parent@example.test", email_verified: true },
+    { id: "student-user", role: "student", email: "child@example.test", email_verified: true },
+    { id: "teacher-user", role: "teacher", email: "teacher@example.test", email_verified: true }
+  ],
+  students: [{ id: "student-1", user_id: "student-user", status: "active" }],
+  guardians: [{ id: "guardian-1", user_id: "parent-user" }],
+  student_guardians: [{ student_id: "student-1", guardian_id: "guardian-1", status: "approved" }],
+  guardian_student_links: [],
+  teacher_class_assignments: [{ teacher_id: "teacher-1", class_id: "class-1", status: "active" }],
+  classes: [{ id: "class-1", teacher_id: "teacher-1", status: "active" }],
+  enrollments: [{ class_id: "class-1", student_id: "student-1", status: "active" }],
+  consent_records: []
+});
+assert.equal(normalizedScopeSecurity.studentGuardians.length, 1, "account security read model should preserve direct parent-child links");
+assert.equal(normalizedScopeSecurity.teacherClassAssignments.length, 1, "account security read model should preserve teacher assignments");
+assert.equal(normalizedScopeSecurity.enrollments.length, 1, "account security read model should preserve class enrollments");
 
 const lessonLibrarySummary = getPlatformLessonLibrarySummary();
 const lessonLibrarySamples = getPlatformLessonLibrarySamples(8);

@@ -357,8 +357,12 @@ function scopeAccountSecurityForSession(accountSecurity = {}, session = {}, stat
   if (session.role === "student" && session.studentId) ownUserIds.add(`user-${session.studentId}`);
   if (session.role === "parent" && session.guardianId) {
     const linkedStudentIds = new Set(
-      (accountSecurity.guardianLinks || [])
+      [
+        ...(accountSecurity.guardianLinks || []),
+        ...(accountSecurity.studentGuardians || [])
+      ]
         .filter((link) => link.guardian_id === session.guardianId || link.guardianId === session.guardianId)
+        .filter((link) => (link.status || "approved") === "approved" && !link.revoked_at && !link.revokedAt)
         .map((link) => link.student_id || link.studentId)
         .filter(Boolean)
     );
@@ -368,10 +372,25 @@ function scopeAccountSecurityForSession(accountSecurity = {}, session = {}, stat
       .forEach((account) => ownUserIds.add(account.userId || `user-${account.id}`));
   }
   if (session.role === "teacher" && session.teacherId) {
-    (state.classSections || [])
-      .filter((section) => section.teacherId === session.teacherId)
-      .flatMap((section) => section.studentIds || [])
-      .forEach((studentId) => ownUserIds.add(`user-${studentId}`));
+    const assignedClassIds = new Set([
+      ...(accountSecurity.teacherClassAssignments || [])
+        .filter((assignment) => assignment.teacher_id === session.teacherId || assignment.teacherId === session.teacherId)
+        .filter((assignment) => (assignment.status || "active") === "active" && !assignment.revoked_at && !assignment.revokedAt)
+        .map((assignment) => assignment.class_id || assignment.classId),
+      ...(accountSecurity.classes || [])
+        .filter((item) => item.teacher_id === session.teacherId || item.teacherId === session.teacherId)
+        .map((item) => item.id)
+    ].filter(Boolean));
+    const assignedStudentIds = new Set(
+      (accountSecurity.enrollments || [])
+        .filter((enrollment) => assignedClassIds.has(enrollment.class_id || enrollment.classId))
+        .filter((enrollment) => (enrollment.status || "active") === "active")
+        .map((enrollment) => enrollment.student_id || enrollment.studentId)
+        .filter(Boolean)
+    );
+    students
+      .filter((student) => assignedStudentIds.has(student.id))
+      .forEach((student) => ownUserIds.add(student.userId || `user-${student.id}`));
     ownUserIds.add(session.userId);
   }
   const scopedAccounts = ["school-admin"].includes(session.role)
