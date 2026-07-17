@@ -609,7 +609,7 @@ function gradeBandForGrade(grade = "") {
   return "9-12";
 }
 
-async function readRoleScopedBootstrap(session, state = {}) {
+async function readRoleScopedBootstrap(session) {
   const profile = await stateRepository.readLearnerProfiles({
     role: session.role,
     studentId: session.studentId || "",
@@ -1351,8 +1351,7 @@ async function handleApi(request, response, pathname) {
       requireRepositoryPermission(session, tableId, "read", session.scope);
     }
     requireRepositoryPermission(session, "visual_assets", "read", session.scope);
-    const state = await ensureStateFile();
-    sendJson(response, 200, await readRoleScopedBootstrap(session, state));
+    sendJson(response, 200, await readRoleScopedBootstrap(session));
     return true;
   }
 
@@ -1393,7 +1392,6 @@ async function handleApi(request, response, pathname) {
     requireRepositoryPermission(session, "group_artifacts", "read", repositoryScopeForRole(session));
     requireRepositoryPermission(session, "teacher_interventions", "read", repositoryScopeForRole(session));
     const url = new URL(request.url, `http://localhost:${port}`);
-    const state = await ensureStateFile();
     const classSectionId = url.searchParams.get("classSectionId") || "";
     const monitor = await stateRepository.readClassroomMonitor({
       limit: url.searchParams.get("limit") || 10000,
@@ -1404,7 +1402,10 @@ async function handleApi(request, response, pathname) {
       repository: stateRepository.status(),
       session: publicSessionSummary(session),
       monitor,
-      fallbackMonitor: getTeacherClassMonitor(state, classSectionId)
+      fallbackMonitor:
+        stateRepository.status().mode === "json"
+          ? getTeacherClassMonitor(await ensureStateFile(), classSectionId)
+          : null
     });
     return true;
   }
@@ -1418,7 +1419,6 @@ async function handleApi(request, response, pathname) {
     if (session.role === "student") {
       learnerId = session.studentId;
     }
-    const state = await ensureStateFile();
     if (learnerId) {
       await requireLearnerReadAccess(session, state, learnerId, "student classroom session");
     }
@@ -1430,7 +1430,10 @@ async function handleApi(request, response, pathname) {
       repository: stateRepository.status(),
       session: publicSessionSummary(session),
       ...classroom,
-      fallbackClassroom: getLearnerClassSession(state, learnerId)
+      fallbackClassroom:
+        stateRepository.status().mode === "json"
+          ? getLearnerClassSession(await ensureStateFile(), learnerId)
+          : null
     });
     return true;
   }
