@@ -787,7 +787,12 @@ export const productionDataModel = [
       "provider_usage",
       "provider_moderation",
       "provider_review",
+      "provider_attempt_status",
+      "provider_attempted_at",
       "provider_attached_at",
+      "reviewed_by_user_id",
+      "reviewed_at",
+      "review_history",
       "created_at"
     ],
     foreignKeys: [{ column: "student_id", references: "students.id" }, { column: "lesson_id", references: "lessons.id" }]
@@ -2240,7 +2245,12 @@ export function createProductionSeedProjection(state = {}) {
       provider_usage: log.providerUsage || {},
       provider_moderation: log.providerModeration || {},
       provider_review: log.providerReview || {},
+      provider_attempt_status: log.providerAttemptStatus || "",
+      provider_attempted_at: log.providerAttemptedAt || "",
       provider_attached_at: log.providerAttachedAt || "",
+      reviewed_by_user_id: log.reviewedBy || "",
+      reviewed_at: log.reviewedAt || "",
+      review_history: log.reviewHistory || [],
       created_at: log.timestamp || timestamp
     });
   }
@@ -2462,26 +2472,40 @@ export function createProductionSeedProjection(state = {}) {
     const needsTruthReview = item.requiresHumanReview || item.needsExternalResearch || (typeof item.truthScore === "number" && item.truthScore < 4);
     return (item.flagged || needsTruthReview) && !item.reviewStatus;
   })) {
+    const providerReview = log.providerReview || {};
+    const providerIssues = Array.isArray(providerReview.issues) ? providerReview.issues : [];
+    const truthIssues = log.truthIssues || log.truthReview?.issues || [];
+    const reviewIssues = [...new Set([...truthIssues, ...providerIssues])];
+    const providerAverage = typeof providerReview.average === "number" ? providerReview.average : null;
+    const score = providerAverage !== null
+      ? Math.round(providerAverage * 20)
+      : typeof log.truthScore === "number" ? log.truthScore * 20 : null;
+    const grade = providerAverage === null
+      ? ""
+      : providerAverage >= 4.5 ? "A" : providerAverage >= 4 ? "B" : providerAverage >= 3 ? "C" : providerAverage >= 2 ? "D" : "F";
+    const providerStatus = log.providerAttemptStatus || (log.provider ? "accepted" : "local-only");
     tables.agent_review_items.push({
       id: `review-ai-${log.id}`,
       source_type: "ai",
       source_id: log.id,
       owner_agent_id: log.flagged ? "ai-safety" : "truth-policy",
-      priority: log.flagged || log.needsExternalResearch ? "high" : "medium",
+      priority: log.flagged || log.needsExternalResearch || providerStatus !== "accepted" ? "high" : "medium",
       status: "pending",
       decision: "",
       reviewed_by_user_id: "",
       reviewed_at: "",
       artifact_type: "ai_tutor_response",
       artifact_id: log.id,
-      score: typeof log.truthScore === "number" ? log.truthScore * 20 : null,
-      grade: "",
+      score,
+      grade,
       threshold: 80,
       passed: false,
       critical_blockers: log.flagged ? ["Safety review required."] : [],
-      blockers: log.truthIssues || [],
-      revision_instructions: log.needsExternalResearch ? ["Truth-policy review requires staff-side source checking."] : [],
-      review_history: []
+      blockers: log.flagged ? ["Safety review required.", ...reviewIssues] : reviewIssues,
+      revision_instructions: providerIssues.length
+        ? providerIssues
+        : log.needsExternalResearch ? ["Truth-policy review requires staff-side source checking."] : [],
+      review_history: log.reviewHistory || []
     });
   }
 

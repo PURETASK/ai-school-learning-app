@@ -2207,7 +2207,7 @@ async function handleApi(request, response, pathname) {
           moderation: providerResult.moderation || {},
           readiness: getOpenAiTutorReadiness(process.env)
         };
-        if (providerResult.accepted) {
+        if (providerResult.plan?.accepted) {
           const attached = attachTutorProviderResponse(nextTutor.state, nextTutor.log.id, providerResult, {
             minimumAverage: Number(process.env.OPENAI_TUTOR_MIN_REVIEW_AVERAGE || 4)
           });
@@ -2225,6 +2225,11 @@ async function handleApi(request, response, pathname) {
               review: attached.result.providerReview
             };
           } else {
+            finalTutor = {
+              ...nextTutor,
+              state: attached.state,
+              log: attached.result.log
+            };
             provider = { ...provider, reason: attached.result.reason, review: attached.result.providerReview };
           }
         }

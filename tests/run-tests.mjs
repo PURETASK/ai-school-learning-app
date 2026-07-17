@@ -3577,6 +3577,31 @@ const providerProjection = getPlatformSeedProjection(attachedProviderTutor.state
 assert.equal(providerProjection.provider, "openai", "provider metadata should reach the normalized seed projection");
 assert.equal(providerProjection.provider_request_id, "resp-tutor-test-1", "provider request id should reach the normalized seed projection");
 assert.equal(providerProjection.provider_review.accepted, true, "provider quality review should reach the normalized seed projection");
+const rejectedProviderTutor = attachTutorProviderResponse(serverTutorTurn.state, serverTutorTurn.log.id, {
+  ...providerTutorResult,
+  response: { ...providerTutorResult.response, text: "Today the law proves that all students always learn this one way." }
+});
+assert.equal(rejectedProviderTutor.result.accepted, false, "low-quality provider response should remain on the local fallback");
+assert.equal(rejectedProviderTutor.result.log.providerAttemptStatus, "quality-rejected", "quality-rejected provider attempts should be retained for manager review");
+assert.equal(rejectedProviderTutor.result.log.requiresHumanReview, true, "quality-rejected provider attempts should require human review");
+const rejectedProviderReviewQueue = getAgentReviewQueue(rejectedProviderTutor.state);
+const rejectedProviderReviewItem = rejectedProviderReviewQueue.items.find((item) => item.id === `ai:${serverTutorTurn.log.id}`);
+assert.ok(rejectedProviderReviewItem, "quality-rejected provider attempt should appear in the manager review queue");
+assert.equal(rejectedProviderReviewItem.providerStatus, "quality-rejected", "manager queue should expose the provider attempt status");
+assert.ok(["A", "B", "C", "D", "F"].includes(rejectedProviderReviewItem.grade), "manager queue should expose the A-F tutor grade");
+assert.equal(rejectedProviderReviewItem.threshold, 80, "manager queue tutor quality threshold should use the 0-100 scale");
+assert.deepEqual(rejectedProviderReviewItem.actions, ["approve", "request_revision", "reject"], "manager queue should expose the full AI review action set");
+const rejectedProviderDossier = getManagerReviewDossier(rejectedProviderTutor.state, `ai:${serverTutorTurn.log.id}`);
+assert.equal(rejectedProviderDossier.threshold, 80, "AI manager dossier should use the 0-100 threshold");
+assert.ok(rejectedProviderDossier.categoryScores.length > 0, "AI manager dossier should expose provider category scores");
+const requestedProviderRevision = resolveAgentReviewItem(rejectedProviderTutor.state, `ai:${serverTutorTurn.log.id}`, "request_revision");
+assert.equal(requestedProviderRevision.result.accepted, true, "manager should be able to request an AI provider revision");
+assert.equal(requestedProviderRevision.state.aiLogs[0].reviewStatus, "revision-requested", "AI revision requests should have an explicit review status");
+assert.ok(requestedProviderRevision.state.aiLogs[0].reviewHistory.length >= 1, "AI manager actions should persist review history");
+assert.ok(requestedProviderRevision.result.revisionInstructions.length >= 1, "AI revision requests should include actionable instructions");
+const reviewedProviderProjection = getPlatformSeedProjection(requestedProviderRevision.state).tables.ai_tutor_events[0];
+assert.equal(reviewedProviderProjection.reviewed_by_user_id, "manager", "AI review actor should reach the normalized projection");
+assert.equal(reviewedProviderProjection.review_history[0].action, "request_revision", "AI review history should reach the normalized projection");
 let flaggedResponseCalls = 0;
 const flaggedProvider = await generateOpenAiTutorResponse({
   state: serverTutorTurn.state,
@@ -3592,6 +3617,8 @@ const flaggedProvider = await generateOpenAiTutorResponse({
 });
 assert.equal(flaggedProvider.blocked, true, "moderation should block unsafe tutor provider input");
 assert.equal(flaggedResponseCalls, 1, "moderation failure should prevent the response model call");
+const flaggedProviderAttempt = attachTutorProviderResponse(serverTutorTurn.state, serverTutorTurn.log.id, flaggedProvider);
+assert.equal(flaggedProviderAttempt.result.log.providerAttemptStatus, "moderation-blocked", "moderation-blocked attempts should be retained for manager review");
 const aiRepository = createStateRepository({ root: `${process.env.TEMP || "C:\\tmp"}\\k12-learning-ai-repository-test`, env: {} });
 await aiRepository.writeState(serverTutorTurn.state);
 const repositoryTutorEvents = await aiRepository.readAiTutorEvents({ learnerId: "avery" });

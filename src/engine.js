@@ -7530,19 +7530,36 @@ export function getAgentReviewQueue(state) {
     })
     .map((log) => {
       const truthIssues = log.truthIssues || log.truthReview?.issues || [];
-      const truthSummary = truthIssues.length ? truthIssues.join(" ") : `Truth-policy score ${log.truthScore || "n/a"}/5.`;
+      const providerReview = log.providerReview || {};
+      const providerIssues = providerReview.issues || [];
+      const reviewIssues = [...new Set([...truthIssues, ...providerIssues])];
+      const truthSummary = reviewIssues.length ? reviewIssues.join(" ") : `Truth-policy score ${log.truthScore || "n/a"}/5.`;
+      const providerStatus = log.providerAttemptStatus || (log.provider ? "accepted" : "local-only");
       return {
         id: `ai:${log.id}`,
         type: "ai",
-        title: log.flagged ? `${log.lessonTitle} AI safety flag` : `${log.lessonTitle} tutor truth review`,
-        status: log.flagged ? log.type : log.truthReviewStatus || "needs-human-review",
-        priority: log.flagged || log.needsExternalResearch ? "high" : "medium",
+        title: log.flagged ? `${log.lessonTitle} AI safety flag` : `${log.lessonTitle} tutor review`,
+        status: log.flagged ? log.type : log.reviewStatus || log.truthReviewStatus || "needs-human-review",
+        priority: log.flagged || log.needsExternalResearch || providerStatus !== "accepted" ? "high" : "medium",
         ownerAgentId: log.flagged ? "ai-safety" : "truth-policy",
-        summary: log.flagged ? log.analysis || log.response : truthSummary,
+        summary: log.flagged ? log.analysis || log.response : `${truthSummary}${providerStatus !== "local-only" ? ` Provider status: ${providerStatus}.` : ""}`,
+        score: typeof providerReview.average === "number" ? Math.round(providerReview.average * 20) : typeof log.truthScore === "number" ? log.truthScore * 20 : null,
+        grade: typeof providerReview.average === "number"
+          ? providerReview.average >= 4.5 ? "A" : providerReview.average >= 4 ? "B" : providerReview.average >= 3 ? "C" : providerReview.average >= 2 ? "D" : "F"
+          : "",
+        threshold: 80,
+        passed: providerStatus === "accepted" && !log.flagged && !log.requiresHumanReview,
+        blockers: log.flagged ? [log.analysis || "Safety review required."] : reviewIssues,
+        revisionInstructions: providerIssues.length ? providerIssues : log.needsExternalResearch ? ["Truth-policy review requires staff-side source checking."] : [],
+        reviewHistory: log.reviewHistory || [],
+        providerStatus,
+        providerReview,
         nextAction: log.flagged
           ? "Parent or teacher should review the flagged interaction and follow the safety escalation path."
-          : "Truth-policy reviewer should inspect the tutor reasoning, lesson grounding, and any source-research need before treating it as approved guidance.",
-        actions: ["reviewed"]
+          : providerStatus === "quality-rejected"
+            ? "Request revision or reject the provider response; the student already received the local tutor fallback."
+            : "Approve, request revision, or reject after checking the tutor reasoning, lesson grounding, and source-research need.",
+        actions: ["approve", "request_revision", "reject"]
       };
     });
 
@@ -7704,23 +7721,35 @@ function getReviewDossierSections(state = {}, item = {}, artifact = null) {
   }
 
   if (item.type === "ai") {
+    const providerReview = artifact?.providerReview || {};
+    const providerScores = providerReview.scores || {};
+    const categoryScores = Object.entries(providerScores).map(([id, score]) => ({
+      id,
+      label: id.replace(/([A-Z])/g, " $1").replace(/^./, (value) => value.toUpperCase()),
+      score: Math.round(Number(score || 0) * 20),
+      passed: Number(score || 0) >= 4,
+      feedback: Number(score || 0) >= 4 ? "Passed the tutor quality threshold." : "Revise this category before treating the provider response as cleared."
+    }));
     return {
-      grade: "",
-      score: typeof artifact?.truthScore === "number" ? artifact.truthScore : null,
-      threshold: 4,
-      categoryScores: [],
+      grade: typeof providerReview.average === "number"
+        ? providerReview.average >= 4.5 ? "A" : providerReview.average >= 4 ? "B" : providerReview.average >= 3 ? "C" : providerReview.average >= 2 ? "D" : "F"
+        : "",
+      score: typeof providerReview.average === "number" ? Math.round(providerReview.average * 20) : typeof artifact?.truthScore === "number" ? artifact.truthScore * 20 : null,
+      threshold: 80,
+      categoryScores,
       blockers: artifact?.flagged ? [artifact.analysis || "Tutor event was flagged."] : [],
-      issues: artifact?.truthIssues || artifact?.truthReview?.issues || [],
+      issues: [...(artifact?.truthIssues || artifact?.truthReview?.issues || []), ...(providerReview.issues || [])],
       missingRequirements: [],
-      revisionInstructions: [],
-      reviewHistory: [],
+      revisionInstructions: providerReview.issues || [],
+      reviewHistory: artifact?.reviewHistory || [],
       sourcePrompt: artifact?.input || "",
       reviewChecklist: [
         "Check that the tutor guided instead of giving direct answers.",
         "Check that reasoning matches the lesson and grade band.",
+        "Check the provider moderation result and model/request metadata.",
         "Escalate unsafe, personal, or out-of-scope student input."
       ],
-      publishImpact: "Reviewed tutor events become quality evidence for improving explanations and safety rules."
+      publishImpact: `Provider status: ${artifact?.providerAttemptStatus || (artifact?.provider ? "accepted" : "local-only")}. Reviewed tutor events become quality evidence for improving explanations and safety rules.`
     };
   }
 
@@ -8004,17 +8033,45 @@ export function resolveAgentReviewItem(state, reviewId, decision = "approve") {
 
   if (type === "ai") {
     let found = false;
+    let reviewedLog = null;
+    const nextStatus =
+      normalizedDecision === "approve"
+        ? "approved"
+        : normalizedDecision === "request_revision"
+          ? "revision-requested"
+          : normalizedDecision === "reject"
+            ? "rejected"
+            : "reviewed";
     const nextState = {
       ...state,
       aiLogs: (state.aiLogs || []).map((log) => {
         if (log.id !== id) return log;
         found = true;
-        return {
-          ...log,
-          reviewStatus: "reviewed",
-          reviewedAt,
-          reviewedBy: "manager"
+        const providerIssues = log.providerReview?.issues || [];
+        const revisionInstructions = normalizedDecision === "request_revision"
+          ? (providerIssues.length ? providerIssues : log.needsExternalResearch ? ["Complete staff-side source checking before another provider attempt."] : ["Re-run the tutor quality gate with a clearer, grade-appropriate explanation."])
+          : [];
+        const reviewRecord = {
+          action: normalizedDecision,
+          status: nextStatus,
+          reviewer: "manager",
+          createdAt: reviewedAt,
+          providerStatus: log.providerAttemptStatus || (log.provider ? "accepted" : "local-only"),
+          grade: typeof log.providerReview?.average === "number"
+            ? log.providerReview.average >= 4.5 ? "A" : log.providerReview.average >= 4 ? "B" : log.providerReview.average >= 3 ? "C" : log.providerReview.average >= 2 ? "D" : "F"
+            : "",
+          score: typeof log.providerReview?.average === "number" ? Math.round(log.providerReview.average * 20) : null,
+          revisionInstructions
         };
+        reviewedLog = {
+          ...log,
+          reviewStatus: nextStatus,
+          reviewedAt,
+          reviewedBy: "manager",
+          reviewHistory: [reviewRecord, ...(log.reviewHistory || [])].slice(0, 20),
+          providerRevisionInstructions: revisionInstructions
+        };
+        return reviewedLog;
       })
     };
     return {
@@ -8023,7 +8080,12 @@ export function resolveAgentReviewItem(state, reviewId, decision = "approve") {
         accepted: found,
         reviewId,
         decision: normalizedDecision,
-        summary: found ? "AI tutor review item marked reviewed." : "AI review item was not found."
+        summary: found
+          ? normalizedDecision === "request_revision"
+            ? "AI tutor response returned for provider revision with manager instructions."
+            : `AI tutor review marked ${nextStatus}.`
+          : "AI review item was not found.",
+        revisionInstructions: reviewedLog?.providerRevisionInstructions || []
       }
     };
   }
@@ -9207,15 +9269,51 @@ export function askAiTutor(
 
 export function attachTutorProviderResponse(state, logId, providerResult = {}, { minimumAverage = 4 } = {}) {
   const existingLog = (state.aiLogs || []).find((log) => log.id === logId);
-  if (!existingLog || !providerResult.accepted || !providerResult.response?.text) {
+  const providerWasAttempted = Boolean(providerResult.plan?.accepted);
+  if (!existingLog || !providerWasAttempted) {
     return {
       state,
       result: {
         accepted: false,
         fallback: true,
-        reason: providerResult.blocked ? "Provider moderation blocked the request." : "Provider response was not eligible for attachment.",
+        reason: providerResult.blocked ? "Provider moderation blocked the request." : "Provider generation was not attempted.",
         providerReview: null,
         log: existingLog || null
+      }
+    };
+  }
+
+  const providerBase = {
+    provider: "openai",
+    providerModel: providerResult.model || providerResult.plan?.config?.model || "",
+    providerRequestId: providerResult.requestId || "",
+    providerUsage: providerResult.usage || {},
+    providerModeration: providerResult.moderation || {},
+    providerAttemptedAt: new Date().toISOString()
+  };
+  if (!providerResult.accepted || !providerResult.response?.text) {
+    const blockedLog = {
+      ...existingLog,
+      ...providerBase,
+      providerAttemptStatus: providerResult.blocked ? "moderation-blocked" : "provider-failed",
+      providerReview: {
+        accepted: false,
+        average: null,
+        scores: {},
+        issues: [providerResult.error || "Provider response was not eligible for attachment."],
+        needsExternalResearch: false
+      },
+      requiresHumanReview: true,
+      reviewStatus: ""
+    };
+    return {
+      state: { ...state, aiLogs: [blockedLog, ...(state.aiLogs || []).filter((log) => log.id !== logId)] },
+      result: {
+        accepted: false,
+        fallback: true,
+        reason: providerResult.blocked ? "Provider moderation blocked the request." : "Provider response was not eligible for attachment.",
+        providerReview: blockedLog.providerReview,
+        log: blockedLog
       }
     };
   }
@@ -9236,9 +9334,17 @@ export function attachTutorProviderResponse(state, logId, providerResult = {}, {
     needsExternalResearch: truthReview.needsExternalResearch
   };
   if (!accepted) {
+    const reviewedFallbackLog = {
+      ...existingLog,
+      ...providerBase,
+      providerAttemptStatus: "quality-rejected",
+      providerReview,
+      requiresHumanReview: true,
+      reviewStatus: ""
+    };
     return {
-      state,
-      result: { accepted: false, fallback: true, reason: "Provider response did not pass the tutor quality gate.", providerReview, log: existingLog }
+      state: { ...state, aiLogs: [reviewedFallbackLog, ...(state.aiLogs || []).filter((log) => log.id !== logId)] },
+      result: { accepted: false, fallback: true, reason: "Provider response did not pass the tutor quality gate.", providerReview, log: reviewedFallbackLog }
     };
   }
 
@@ -9265,11 +9371,8 @@ export function attachTutorProviderResponse(state, logId, providerResult = {}, {
     firstPrinciplesPrompt: response.firstPrinciplesPrompt || existingLog.firstPrinciplesPrompt,
     hintPath: response.hintPath.length ? response.hintPath : existingLog.hintPath,
     nextQuestion: response.nextQuestion || existingLog.nextQuestion,
-    provider: "openai",
-    providerModel: providerResult.model || "",
-    providerRequestId: providerResult.requestId || "",
-    providerUsage: providerResult.usage || {},
-    providerModeration: providerResult.moderation || {},
+    ...providerBase,
+    providerAttemptStatus: "accepted",
     providerReview,
     truthScore: truthReview.score,
     truthIssues: truthReview.issues,
