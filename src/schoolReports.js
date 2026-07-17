@@ -43,3 +43,36 @@ export function formatSchoolReportCsv(report = {}) {
   );
   return [headers.map(csvSafeValue).join(","), ...rows].join("\r\n") + "\r\n";
 }
+
+export function formatSchoolReportSnapshotsCsv({ reports = [] } = {}) {
+  const headers = [
+    "school_id",
+    "class_id",
+    "report_type",
+    "summary",
+    "average_mastery",
+    "needs_help",
+    "teacher_support",
+    "submitted_artifacts",
+    "group_missions",
+    "session_status",
+    "created_at"
+  ];
+  const rows = reports.map((report) => {
+    const metrics = report.metrics || {};
+    return [
+      report.schoolId,
+      report.classId,
+      report.reportType,
+      report.summary,
+      metrics.averageMastery,
+      metrics.needsHelp,
+      metrics.teacherSupport,
+      metrics.submittedArtifacts,
+      metrics.groupMissions,
+      metrics.sessionStatus,
+      report.createdAt
+    ].map(csvSafeValue).join(",");
+  });
+  return [headers.map(csvSafeValue).join(","), ...rows].join("\r\n") + "\r\n";
+}

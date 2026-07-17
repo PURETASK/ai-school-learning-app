@@ -395,6 +395,20 @@ export async function fetchSchoolRosterExport() {
   };
 }
 
+export async function fetchSchoolReportsExport() {
+  const response = await fetch("/api/school/reports/export", {
+    headers: getAuthToken() ? { Authorization: `Bearer ${getAuthToken()}` } : {}
+  });
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(body || `School report export failed with ${response.status}`);
+  }
+  return {
+    csv: await response.text(),
+    filename: response.headers.get("content-disposition") || "school-reports.csv"
+  };
+}
+
 export async function postRewardRequest(payload) {
   return requestJson("/api/rewards/request", {
     method: "POST",

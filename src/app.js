@@ -130,6 +130,7 @@ import {
   fetchRetentionSchedules,
   fetchRuntimeConfiguration,
   fetchSchoolOverview,
+  fetchSchoolReportsExport,
   fetchSchoolRosterExport,
   fetchStateDependencyAudit,
   fetchTutorEvents,
@@ -6613,7 +6614,10 @@ function renderSchoolAdminView() {
           </div>
         </article>
         <article class="school-report-card">
-          <h3>School report snapshot</h3>
+          <div class="section-head compact">
+            <h3>School report snapshot</h3>
+            <button class="secondary-button" type="button" data-school-reports-export>Download reports</button>
+          </div>
           <div class="metric-grid single">
             ${renderMetric("Average mastery", `${monitor.metrics.averageMastery}%`, "Class session")}
             ${renderMetric("Needs help", monitor.metrics.needsHelp, "Teacher intervention")}
@@ -8300,6 +8304,7 @@ app.addEventListener("click", (event) => {
   const resolveInterventionButton = event.target.closest("[data-resolve-intervention]");
   const interventionOutcomeButton = event.target.closest("[data-intervention-outcome]");
   const rosterExportButton = event.target.closest("[data-school-roster-export]");
+  const reportsExportButton = event.target.closest("[data-school-reports-export]");
   const submitButton = event.target.closest("[data-submit-quiz]");
   const resetButton = event.target.closest("[data-reset]");
   const placementButton = event.target.closest("[data-run-placement]");
@@ -8342,6 +8347,31 @@ app.addEventListener("click", (event) => {
       })
       .catch((error) => {
         lastSchoolResult = { accepted: false, reason: error.message || "Roster export failed." };
+        render();
+      });
+    shouldRender = false;
+  }
+
+  if (reportsExportButton) {
+    playUiSound("success");
+    lastSchoolResult = { accepted: true, summary: "Preparing the school report export..." };
+    render();
+    fetchSchoolReportsExport()
+      .then(({ csv }) => {
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `school-reports-${currentSession?.schoolId || state.schoolProfile?.id || "export"}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+        lastSchoolResult = { accepted: true, summary: "School report CSV downloaded." };
+        render();
+      })
+      .catch((error) => {
+        lastSchoolResult = { accepted: false, reason: error.message || "School report export failed." };
         render();
       });
     shouldRender = false;

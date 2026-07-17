@@ -73,6 +73,7 @@ import {
   runArtifactRevisionLoop
 } from "../src/engine.js";
 import { exportRepositoryRosterCsv } from "../src/roster.js";
+import { formatSchoolReportSnapshotsCsv } from "../src/schoolReports.js";
 import { generateOpenAiImage } from "../src/openaiImageService.js";
 import { generateOpenAiTutorResponse, getOpenAiTutorReadiness } from "../src/openaiTutorService.js";
 import { fulfillGiftCardReward, getGiftCardFulfillmentReadiness } from "../src/rewardFulfillmentService.js";
@@ -1611,6 +1612,14 @@ async function handleApi(request, response, pathname) {
     const schoolId = session.schoolId || "school-demo-1";
     const operations = await stateRepository.readSchoolOperations({ schoolId, limit: 10000 });
     sendCsv(response, 200, exportRepositoryRosterCsv(operations), `school-roster-${schoolId}.csv`);
+    return true;
+  }
+
+  if (request.method === "GET" && pathname === "/api/school/reports/export") {
+    requireSchoolAdmin(session, "school_reports", "read");
+    const schoolId = session.schoolId || "school-demo-1";
+    const operations = await stateRepository.readSchoolOperations({ schoolId, limit: 10000 });
+    sendCsv(response, 200, formatSchoolReportSnapshotsCsv({ reports: operations.reports || [] }), `school-reports-${schoolId}.csv`);
     return true;
   }
 

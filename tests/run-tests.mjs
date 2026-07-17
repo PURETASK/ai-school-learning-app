@@ -160,6 +160,7 @@ import {
   runArtifactRevisionLoop,
   scoreQuiz
 } from "../src/engine.js";
+import { formatSchoolReportSnapshotsCsv } from "../src/schoolReports.js";
 import {
   createActionTokenRecord,
   createPasswordRecord,
@@ -3991,8 +3992,13 @@ const reportState = refreshSchoolReports({
 assert.equal(reportState.schoolReports.length, 1, "school report refresh should create one report per scoped class");
 assert.equal(reportState.schoolReports[0].classId, "class-report-test", "school report should identify its class");
 assert.match(reportState.schoolReports[0].reportType, /classroom-progress/, "school report should use a progress snapshot type");
+const schoolReportsCsv = formatSchoolReportSnapshotsCsv({ reports: reportState.schoolReports });
+assert.match(schoolReportsCsv, /school_id,class_id,report_type,summary/, "school report export should include a stable CSV header");
+assert.match(schoolReportsCsv, /class-report-test/, "school report export should include the scoped class");
 assert.ok(readFileSync("src/app.js", "utf8").includes("Persisted school reports"), "school admin UI should render persisted report summaries");
+assert.ok(readFileSync("src/app.js", "utf8").includes("data-school-reports-export"), "school admin UI should expose report export action");
 assert.ok(readFileSync("scripts/serve.mjs", "utf8").includes("refreshSchoolReports"), "school write workflows should refresh report snapshots");
+assert.ok(readFileSync("scripts/serve.mjs", "utf8").includes("/api/school/reports/export"), "school server should expose a report export route");
 
 assert.ok(getPipelineStats().gates >= 2, "content pipeline should include review gates");
 assert.ok(qualityGates.length >= 7, "quality gates should include launch checks");
