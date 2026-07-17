@@ -25,7 +25,8 @@ function tutorConfig(env = process.env) {
     maxInputChars: positiveInteger(env.OPENAI_TUTOR_MAX_INPUT_CHARS, 2200),
     maxOutputTokens: positiveInteger(env.OPENAI_TUTOR_MAX_OUTPUT_TOKENS, 700),
     dailyTokenLimit: positiveInteger(env.OPENAI_TUTOR_DAILY_TOKEN_LIMIT, 42000),
-    minimumReviewAverage: Math.min(Math.max(Number(env.OPENAI_TUTOR_MIN_REVIEW_AVERAGE || 4), 1), 5)
+    minimumReviewAverage: Math.min(Math.max(Number(env.OPENAI_TUTOR_MIN_REVIEW_AVERAGE || 4), 1), 5),
+    maxRevisionAttempts: Math.min(Math.max(positiveInteger(env.OPENAI_TUTOR_MAX_REVISION_ATTEMPTS, 1), 0), 2)
   };
 }
 
@@ -44,27 +45,36 @@ export function getOpenAiTutorReadiness(env = process.env) {
     maxOutputTokens: config.maxOutputTokens,
     dailyTokenLimit: config.dailyTokenLimit,
     minimumReviewAverage: config.minimumReviewAverage,
+    maxRevisionAttempts: config.maxRevisionAttempts,
     missing
   };
 }
 
 function countProviderCallsToday(state = {}) {
   const today = new Date().toISOString().slice(0, 10);
-  return (state.aiLogs || []).filter((log) => {
-    if (log.provider !== "openai") return false;
-    const rawDate = log.providerAttachedAt || log.timestamp || "";
-    const parsed = Date.parse(rawDate);
-    return Number.isFinite(parsed) && new Date(parsed).toISOString().slice(0, 10) === today;
-  }).length;
+  return (state.aiLogs || []).reduce((total, log) => {
+    if (log.provider !== "openai") return total;
+    if (Array.isArray(log.providerAttemptHistory) && log.providerAttemptHistory.length) {
+      return total + log.providerAttemptHistory.filter((attempt) => {
+        const parsed = Date.parse(attempt.attemptedAt || "");
+        return Number.isFinite(parsed) && new Date(parsed).toISOString().slice(0, 10) === today;
+      }).length;
+    }
+    const parsed = Date.parse(log.providerAttemptedAt || log.providerAttachedAt || log.timestamp || "");
+    return total + (Number.isFinite(parsed) && new Date(parsed).toISOString().slice(0, 10) === today ? 1 : 0);
+  }, 0);
 }
 
 function countProviderTokensToday(state = {}) {
   const today = new Date().toISOString().slice(0, 10);
   return (state.aiLogs || []).reduce((total, log) => {
     if (log.provider !== "openai") return total;
-    const parsed = Date.parse(log.providerAttachedAt || log.timestamp || "");
+    const parsed = Date.parse(log.providerAttemptedAt || log.providerAttachedAt || log.timestamp || "");
     if (!Number.isFinite(parsed) || new Date(parsed).toISOString().slice(0, 10) !== today) return total;
-    return total + Number(log.providerUsage?.totalTokens || 0);
+    const historyTokens = Array.isArray(log.providerAttemptHistory)
+      ? log.providerAttemptHistory.reduce((sum, attempt) => sum + Number(attempt.usage?.totalTokens || 0), 0)
+      : 0;
+    return total + (historyTokens || Number(log.providerUsage?.totalTokens || 0));
   }, 0);
 }
 
@@ -93,7 +103,8 @@ export function createTutorGenerationPlan({ state = {}, input = "", env = proces
       maxInputChars: config.maxInputChars,
       maxOutputTokens: config.maxOutputTokens,
       dailyTokenLimit: config.dailyTokenLimit,
-      minimumReviewAverage: config.minimumReviewAverage
+      minimumReviewAverage: config.minimumReviewAverage,
+      maxRevisionAttempts: config.maxRevisionAttempts
     }
   };
 }
@@ -171,6 +182,8 @@ export async function generateOpenAiTutorResponse({
   localResponse = {},
   ageBand = "K-5",
   explanationMode = "diagnose",
+  revisionInstructions = [],
+  revisionAttempt = 1,
   env = process.env,
   fetchImpl = defaultFetch
 } = {}) {
@@ -215,6 +228,12 @@ export async function generateOpenAiTutorResponse({
     "Never request personal information. Do not claim to be a human, guarantee a grade, or answer a live quiz directly.",
     "Return only a JSON object with keys: text, analysis, nextStep, hintPath, nextQuestion, visualHint, firstPrinciplesPrompt, modeId.",
     "hintPath must be an array of no more than five short steps. Keep the response age-appropriate and under 900 words.",
+    ...(revisionInstructions.length
+      ? [
+          "This is a revision attempt. Preserve what was useful, but fix every issue listed below before returning the JSON.",
+          `Manager revision instructions: ${JSON.stringify(revisionInstructions.slice(0, 8).map((item) => trimText(item, 400)))} `
+        ]
+      : []),
     `Lesson context: ${JSON.stringify(context)}`
   ].join("\n");
   const input = `Student confusion statement:\n${plan.input}`;
@@ -239,6 +258,7 @@ export async function generateOpenAiTutorResponse({
     moderation: { flagged: false, categories: moderationResult.categories || {} },
     usage: safeUsage(generated.usage),
     plan,
+    revisionAttempt: Number(revisionAttempt) || 1,
     fallback: false
   };
 }

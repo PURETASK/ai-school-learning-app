@@ -176,7 +176,7 @@ POST /api/tutor/ask
 POST /api/tutor/feedback
 ```
 
-`/api/tutor/ask` runs the adaptive tutor on the server, stores the authenticated learner id on the AI log, attaches an automatic Truth And Fact-Check review, and persists through the repository. `/api/tutor/feedback` records whether the response helped and queues Fun And Retention redesign signals when the learner is still confused, says it is too hard, or needs a picture.
+`/api/tutor/ask` runs the adaptive tutor on the server, stores the authenticated learner id on the AI log, attaches an automatic Truth And Fact-Check review, and persists through the repository. When a provider response fails the quality gate, the server can make one bounded revision attempt (configurable up to two with `OPENAI_TUTOR_MAX_REVISION_ATTEMPTS`), passing the grader's issues back into the provider prompt. Each attempt stores its status, request id, usage, moderation result, grade, and revision issues in `provider_attempt_history`; a passing attempt replaces the local fallback, while a failed sequence keeps the safe local tutor response and enters manager review. `/api/tutor/feedback` records whether the response helped and queues Fun And Retention redesign signals when the learner is still confused, says it is too hard, or needs a picture.
 
 The next repository pass should continue shrinking broad `/api/state` hydration by moving more feature screens onto explicit normalized routes.
 

@@ -2184,62 +2184,75 @@ async function handleApi(request, response, pathname) {
       const support = getLessonTeachingSupport(lesson.id, nextTutor.state);
       let finalTutor = nextTutor;
       let provider = { attempted: false, accepted: false, fallback: true, readiness: getOpenAiTutorReadiness(process.env) };
-      try {
-        const providerResult = await generateOpenAiTutorResponse({
-          state: nextTutor.state,
-          lesson,
-          support,
-          studentInput: nextTutor.log.input,
-          localResponse: nextTutor.response,
-          ageBand: String(body.ageBand || "K-5"),
-          explanationMode: String(body.explanationMode || "diagnose"),
-          env: process.env
-        });
-        provider = {
-          attempted: Boolean(providerResult.plan?.accepted),
-          accepted: false,
-          fallback: true,
-          blocked: Boolean(providerResult.blocked),
-          reason: providerResult.reason || providerResult.error || providerResult.plan?.blockers?.[0] || "Local tutor response retained.",
-          model: providerResult.model || "",
-          requestId: providerResult.requestId || "",
-          usage: providerResult.usage || {},
-          moderation: providerResult.moderation || {},
-          readiness: getOpenAiTutorReadiness(process.env)
-        };
-        if (providerResult.plan?.accepted) {
-          const attached = attachTutorProviderResponse(nextTutor.state, nextTutor.log.id, providerResult, {
-            minimumAverage: Number(process.env.OPENAI_TUTOR_MIN_REVIEW_AVERAGE || 4)
+      const maxRevisionAttempts = Math.min(Math.max(Number(process.env.OPENAI_TUTOR_MAX_REVISION_ATTEMPTS || 1), 0), 2);
+      const providerAttemptSummaries = [];
+      let providerState = nextTutor.state;
+      let revisionInstructions = [];
+      for (let revisionAttempt = 1; revisionAttempt <= maxRevisionAttempts + 1; revisionAttempt += 1) {
+        let providerResult;
+        try {
+          providerResult = await generateOpenAiTutorResponse({
+            state: providerState,
+            lesson,
+            support,
+            studentInput: nextTutor.log.input,
+            localResponse: nextTutor.response,
+            ageBand: String(body.ageBand || "K-5"),
+            explanationMode: String(body.explanationMode || "diagnose"),
+            revisionInstructions,
+            revisionAttempt,
+            env: process.env
           });
-          if (attached.result.accepted) {
-            finalTutor = {
-              state: attached.state,
-              response: { ...nextTutor.response, ...providerResult.response },
-              log: attached.result.log
-            };
-            provider = {
-              ...provider,
-              accepted: true,
-              fallback: false,
-              reason: "Provider response passed the tutor quality gate.",
-              review: attached.result.providerReview
-            };
-          } else {
-            finalTutor = {
-              ...nextTutor,
-              state: attached.state,
-              log: attached.result.log
-            };
-            provider = { ...provider, reason: attached.result.reason, review: attached.result.providerReview };
-          }
+        } catch (error) {
+          providerResult = {
+            accepted: false,
+            error: "The provider request failed; the local tutor response was retained.",
+            plan: { accepted: true, config: { model: process.env.OPENAI_TUTOR_MODEL || "" } }
+          };
         }
-      } catch {
         provider = {
           ...provider,
-          attempted: true,
-          reason: "The provider request failed; the local tutor response was retained."
+          attempted: Boolean(provider.attempted || providerResult.plan?.accepted),
+          blocked: Boolean(providerResult.blocked),
+          reason: providerResult.reason || providerResult.error || providerResult.plan?.blockers?.[0] || "Local tutor response retained.",
+          model: providerResult.model || provider.model || "",
+          requestId: providerResult.requestId || provider.requestId || "",
+          usage: providerResult.usage || provider.usage || {},
+          moderation: providerResult.moderation || provider.moderation || {},
+          readiness: getOpenAiTutorReadiness(process.env)
         };
+        if (!providerResult.plan?.accepted) break;
+        const attached = attachTutorProviderResponse(providerState, nextTutor.log.id, providerResult, {
+          minimumAverage: Number(process.env.OPENAI_TUTOR_MIN_REVIEW_AVERAGE || 4)
+        });
+        providerState = attached.state;
+        finalTutor = {
+          ...nextTutor,
+          state: attached.state,
+          response: attached.result.accepted ? { ...nextTutor.response, ...providerResult.response } : nextTutor.response,
+          log: attached.result.log
+        };
+        providerAttemptSummaries.push({
+          attempt: revisionAttempt,
+          status: attached.result.accepted ? "accepted" : attached.result.log?.providerAttemptStatus || "rejected",
+          requestId: providerResult.requestId || "",
+          review: attached.result.providerReview,
+          revisionInstructions: attached.result.providerReview?.issues || []
+        });
+        provider = {
+          ...provider,
+          accepted: Boolean(attached.result.accepted),
+          fallback: !attached.result.accepted,
+          reason: attached.result.accepted ? "Provider response passed the tutor quality gate." : attached.result.reason,
+          review: attached.result.providerReview,
+          revisionAttempt: revisionAttempt
+        };
+        if (attached.result.accepted || providerResult.blocked || revisionAttempt > maxRevisionAttempts) break;
+        revisionInstructions = attached.result.providerReview?.issues?.length
+          ? attached.result.providerReview.issues
+          : ["Strengthen the explanation, preserve hint-first tutoring, and remove unsupported or overbroad claims."];
       }
+      provider = { ...provider, attempts: providerAttemptSummaries, revisionAttempts: Math.max(0, providerAttemptSummaries.length - 1) };
       return { state: await writeTutorWorkflow(finalTutor.state), response: finalTutor.response, log: finalTutor.log, provider };
     });
     sendJson(response, 200, payload);

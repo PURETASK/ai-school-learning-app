@@ -9283,16 +9283,40 @@ export function attachTutorProviderResponse(state, logId, providerResult = {}, {
     };
   }
 
+  const providerAttemptedAt = new Date().toISOString();
+  const previousAttemptHistory = Array.isArray(existingLog.providerAttemptHistory) ? existingLog.providerAttemptHistory : [];
+  const providerAttemptNumber = previousAttemptHistory.length + 1;
   const providerBase = {
     provider: "openai",
     providerModel: providerResult.model || providerResult.plan?.config?.model || "",
     providerRequestId: providerResult.requestId || "",
     providerUsage: providerResult.usage || {},
     providerModeration: providerResult.moderation || {},
-    providerAttemptedAt: new Date().toISOString()
+    providerAttemptedAt,
+    providerAttemptNumber
   };
+  const withAttemptHistory = (log, { status, review = null, error = "" } = {}) => ({
+    ...log,
+    providerAttemptHistory: [
+      {
+        attempt: providerAttemptNumber,
+        status,
+        attemptedAt: providerAttemptedAt,
+        requestId: providerResult.requestId || "",
+        model: providerResult.model || providerResult.plan?.config?.model || "",
+        usage: providerResult.usage || {},
+        moderation: providerResult.moderation || {},
+        average: typeof review?.average === "number" ? review.average : null,
+        grade: typeof review?.average === "number"
+          ? review.average >= 4.5 ? "A" : review.average >= 4 ? "B" : review.average >= 3 ? "C" : review.average >= 2 ? "D" : "F"
+          : "",
+        issues: review?.issues || (error ? [error] : [])
+      },
+      ...previousAttemptHistory
+    ].slice(0, 8)
+  });
   if (!providerResult.accepted || !providerResult.response?.text) {
-    const blockedLog = {
+    const blockedLog = withAttemptHistory({
       ...existingLog,
       ...providerBase,
       providerAttemptStatus: providerResult.blocked ? "moderation-blocked" : "provider-failed",
@@ -9305,7 +9329,11 @@ export function attachTutorProviderResponse(state, logId, providerResult = {}, {
       },
       requiresHumanReview: true,
       reviewStatus: ""
-    };
+    }, {
+      status: providerResult.blocked ? "moderation-blocked" : "provider-failed",
+      review: null,
+      error: providerResult.error || "Provider response was not eligible for attachment."
+    });
     return {
       state: { ...state, aiLogs: [blockedLog, ...(state.aiLogs || []).filter((log) => log.id !== logId)] },
       result: {
@@ -9334,14 +9362,14 @@ export function attachTutorProviderResponse(state, logId, providerResult = {}, {
     needsExternalResearch: truthReview.needsExternalResearch
   };
   if (!accepted) {
-    const reviewedFallbackLog = {
+    const reviewedFallbackLog = withAttemptHistory({
       ...existingLog,
       ...providerBase,
       providerAttemptStatus: "quality-rejected",
       providerReview,
       requiresHumanReview: true,
       reviewStatus: ""
-    };
+    }, { status: "quality-rejected", review: providerReview });
     return {
       state: { ...state, aiLogs: [reviewedFallbackLog, ...(state.aiLogs || []).filter((log) => log.id !== logId)] },
       result: { accepted: false, fallback: true, reason: "Provider response did not pass the tutor quality gate.", providerReview, log: reviewedFallbackLog }
@@ -9358,7 +9386,7 @@ export function attachTutorProviderResponse(state, logId, providerResult = {}, {
     adaptive: existingLog.adaptive,
     flagged: false
   };
-  const updatedLog = {
+  const updatedLog = withAttemptHistory({
     ...existingLog,
     response: response.text,
     analysis: response.analysis || existingLog.analysis,
@@ -9382,7 +9410,7 @@ export function attachTutorProviderResponse(state, logId, providerResult = {}, {
     requiresHumanReview: truthReview.requiresHumanReview,
     reviewStatus: truthReview.requiresHumanReview ? "" : "auto-reviewed",
     providerAttachedAt: new Date().toISOString()
-  };
+  }, { status: "accepted", review: providerReview });
   const nextState = {
     ...state,
     aiLogs: [updatedLog, ...(state.aiLogs || []).filter((log) => log.id !== logId)]

@@ -3573,6 +3573,7 @@ const attachedProviderTutor = attachTutorProviderResponse(serverTutorTurn.state,
 assert.equal(attachedProviderTutor.result.accepted, true, "provider tutor response should pass the local quality gate");
 assert.equal(attachedProviderTutor.result.log.provider, "openai", "accepted provider response should be marked on the tutor log");
 assert.equal(attachedProviderTutor.result.log.providerRequestId, "resp-tutor-test-1", "provider request id should be persisted for review");
+assert.equal(attachedProviderTutor.result.log.providerAttemptHistory.length, 1, "first provider attempt should create one audit-history entry");
 const providerProjection = getPlatformSeedProjection(attachedProviderTutor.state).tables.ai_tutor_events[0];
 assert.equal(providerProjection.provider, "openai", "provider metadata should reach the normalized seed projection");
 assert.equal(providerProjection.provider_request_id, "resp-tutor-test-1", "provider request id should reach the normalized seed projection");
@@ -3584,6 +3585,26 @@ const rejectedProviderTutor = attachTutorProviderResponse(serverTutorTurn.state,
 assert.equal(rejectedProviderTutor.result.accepted, false, "low-quality provider response should remain on the local fallback");
 assert.equal(rejectedProviderTutor.result.log.providerAttemptStatus, "quality-rejected", "quality-rejected provider attempts should be retained for manager review");
 assert.equal(rejectedProviderTutor.result.log.requiresHumanReview, true, "quality-rejected provider attempts should require human review");
+const revisedProviderTutor = attachTutorProviderResponse(rejectedProviderTutor.state, serverTutorTurn.log.id, providerTutorResult);
+assert.equal(revisedProviderTutor.result.accepted, true, "a later provider revision should be attachable after a rejected attempt");
+assert.equal(revisedProviderTutor.result.log.providerAttemptHistory.length, 2, "accepted revision should retain the rejected provider attempt");
+assert.equal(revisedProviderTutor.result.log.providerAttemptHistory[1].status, "quality-rejected", "provider history should preserve the first quality result");
+let revisionInstructionRequest = null;
+await generateOpenAiTutorResponse({
+  state: serverTutorTurn.state,
+  lesson,
+  support: getLessonTeachingSupport(lesson.id, serverTutorTurn.state),
+  studentInput: "I am confused.",
+  revisionInstructions: ["Use a concrete ratio table and explain why the denominator cannot be zero."],
+  revisionAttempt: 2,
+  env: { OPENAI_API_KEY: "test-key" },
+  fetchImpl: async (url, options) => {
+    if (url.endsWith("/moderations")) return { ok: true, status: 200, json: async () => ({ results: [{ flagged: false, categories: {} }] }) };
+    revisionInstructionRequest = JSON.parse(options.body);
+    return { ok: true, status: 200, json: async () => ({ id: "resp-tutor-revision", output_text: JSON.stringify({ text: "Try a table first.", analysis: "A focused visual revision.", nextStep: "Build the table.", hintPath: ["List the two quantities."], modeId: "visual" }), usage: { total_tokens: 12 } }) };
+  }
+});
+assert.match(revisionInstructionRequest.instructions, /denominator cannot be zero/i, "revision instructions should reach the provider prompt");
 const rejectedProviderReviewQueue = getAgentReviewQueue(rejectedProviderTutor.state);
 const rejectedProviderReviewItem = rejectedProviderReviewQueue.items.find((item) => item.id === `ai:${serverTutorTurn.log.id}`);
 assert.ok(rejectedProviderReviewItem, "quality-rejected provider attempt should appear in the manager review queue");
