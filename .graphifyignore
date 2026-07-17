@@ -1,0 +1,7 @@
+# Graphify may inspect source code and approved schema/docs, but never runtime or generated artifacts.
+.env*
+data/app-state.json
+tmp/
+graphify-out/
+node_modules/
+.git/

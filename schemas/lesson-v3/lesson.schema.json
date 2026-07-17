@@ -1,0 +1,297 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus-learning-os.local/schemas/lesson-v3/lesson.schema.json",
+  "title": "Nexus Learning OS Lesson V3",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "title",
+    "academy",
+    "gradeLevel",
+    "subject",
+    "unitId",
+    "lessonFamily",
+    "activePhases",
+    "learningObjective",
+    "successCriteria",
+    "outcomes",
+    "requiredMasteryProofs",
+    "feedbackRules",
+    "reteachPaths",
+    "challengePaths",
+    "contentStatus",
+    "version"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "enum": ["3"]
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "academy": {
+      "enum": ["foundation", "bridge", "scholar"]
+    },
+    "gradeLevel": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unitId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lessonFamily": {
+      "$ref": "#/$defs/lessonFamily"
+    },
+    "secondaryLessonFamily": {
+      "$ref": "#/$defs/lessonFamily"
+    },
+    "activePhases": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/learningPhase"
+      }
+    },
+    "targetLearningStates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/learningState"
+      }
+    },
+    "learningObjective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "successCriteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "essentialQuestion": {
+      "type": "string"
+    },
+    "standardsTags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "thinkingSkillTags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "vocabularyTerms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "prerequisiteSkillIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "outcomes": {
+      "type": "object",
+      "required": ["knowledge", "capability"],
+      "properties": {
+        "knowledge": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "capability": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reasoning": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "retention": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "transfer": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "phaseModules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/phaseModule"
+      }
+    },
+    "proofTasks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/proofTask"
+      }
+    },
+    "requiredMasteryProofs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/masteryProof"
+      }
+    },
+    "feedbackRules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/feedbackRule"
+      }
+    },
+    "reteachPaths": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/adaptivePath"
+      }
+    },
+    "challengePaths": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/adaptivePath"
+      }
+    },
+    "contentStatus": {
+      "enum": ["seed", "draft", "reviewed", "pilot_ready", "approved"]
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "lessonFamily": {
+      "enum": [
+        "concept_launch",
+        "skill_workshop",
+        "fluency_sprint",
+        "reasoning_lab",
+        "inquiry_investigation",
+        "seminar_discussion",
+        "mastery_check",
+        "transfer_challenge",
+        "project_studio"
+      ]
+    },
+    "learningPhase": {
+      "enum": ["orient", "model", "deconstruct", "practice", "reason", "prove", "remember", "transfer", "adapt"]
+    },
+    "learningState": {
+      "enum": ["not_diagnosed", "prerequisite_gap", "acquiring", "developing", "accurate", "secure", "durable", "transferable"]
+    },
+    "masteryProof": {
+      "enum": ["recall", "explain", "perform", "retain", "transfer"]
+    },
+    "phaseModule": {
+      "type": "object",
+      "required": ["phase", "title", "studentAction"],
+      "properties": {
+        "phase": {
+          "$ref": "#/$defs/learningPhase"
+        },
+        "title": {
+          "type": "string"
+        },
+        "studentAction": {
+          "type": "string"
+        },
+        "teacherModel": {
+          "type": "string"
+        },
+        "visualSupport": {
+          "type": "string"
+        },
+        "successCheck": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "proofTask": {
+      "type": "object",
+      "required": ["proof", "prompt", "independentRequired"],
+      "properties": {
+        "proof": {
+          "$ref": "#/$defs/masteryProof"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "independentRequired": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "feedbackRule": {
+      "type": "object",
+      "required": ["diagnosisCode", "result", "hint", "action"],
+      "properties": {
+        "diagnosisCode": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "hint": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "adaptivePath": {
+      "type": "object",
+      "required": ["id", "trigger", "action"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "trigger": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

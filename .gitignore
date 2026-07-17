@@ -1,6 +1,15 @@
-node_modules/
-.next/
-*.tsbuildinfo
 .env
-.env.local
+.env.*
+!.env.example
+ai school .env file.txt
+logs/
+node_modules/
+coverage/
+dist/
+graphify-out/
+data/app-state.json
+tmp/
+.codex/
+.agents/
 .DS_Store
+Thumbs.db

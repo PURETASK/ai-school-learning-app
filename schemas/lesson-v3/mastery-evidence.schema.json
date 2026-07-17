@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus-learning-os.local/schemas/lesson-v3/mastery-evidence.schema.json",
+  "title": "Nexus Learning OS Mastery Evidence V3",
+  "type": "object",
+  "required": ["id", "learnerId", "lessonId", "proof", "result", "learningState", "assistance", "recordedAt"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "learnerId": { "type": "string", "minLength": 1 },
+    "lessonId": { "type": "string", "minLength": 1 },
+    "skillId": { "type": "string" },
+    "proof": { "enum": ["recall", "explain", "perform", "retain", "transfer"] },
+    "result": { "enum": ["correct", "partially_correct", "incorrect", "incomplete", "not_attempted"] },
+    "learningState": { "enum": ["not_diagnosed", "prerequisite_gap", "acquiring", "developing", "accurate", "secure", "durable", "transferable"] },
+    "assistance": { "enum": ["independent", "hinted", "guided", "modeled", "ineligible"] },
+    "score": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "confidence": { "type": ["number", "null"], "minimum": 1, "maximum": 5 },
+    "diagnosisCode": { "type": "string" },
+    "evidenceRef": { "type": "string" },
+    "recordedAt": { "type": "string", "minLength": 1 },
+    "stateTransition": { "type": ["object", "null"] }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,176 @@
+{
+  "id": "california-grade-6-source-ledger-v1",
+  "title": "California Grade 6 Source Ledger",
+  "gradeLevel": "6",
+  "academy": "bridge",
+  "createdAt": "2026-07-12",
+  "policy": {
+    "summary": "Use official standards as primary alignment sources. Use IXL as a staff-only reference for coverage comparison and outbound links. Do not copy proprietary IXL lesson text, skill banks, videos, practice items, explanations, or sequence wholesale into student-facing content.",
+    "publishRule": "Every student-facing lesson must be written in original Nexus V3 language, pass grading and review, and cite only approved source cards or official standards tags.",
+    "ixlAllowedUse": [
+      "Store public URL metadata for staff review.",
+      "Compare broad topic coverage against our original scope sequence.",
+      "Link staff to IXL pages as optional external references."
+    ],
+    "ixlBlockedUse": [
+      "Copying full skill lists into student-facing content.",
+      "Copying IXL lesson explanations, video transcripts, examples, or assessment items.",
+      "Presenting IXL sequencing as our curriculum without original redesign and review."
+    ]
+  },
+  "sources": [
+    {
+      "id": "ixl-ca-ccss-math-g6-skill-plan",
+      "provider": "IXL",
+      "title": "California Common Core Content Standards: Grade 6 Math Skill Plan",
+      "url": "https://www.ixl.com/math/skill-plans/california-common-core-content-standards-grade-6",
+      "subject": "math",
+      "sourceType": "commercial-skill-plan-reference",
+      "allowedUse": "Staff reference and coverage comparison only.",
+      "status": "reference-only"
+    },
+    {
+      "id": "ixl-ca-ccss-ela-g6-skill-plan",
+      "provider": "IXL",
+      "title": "California Common Core Content Standards: Grade 6 ELA Skill Plan",
+      "url": "https://www.ixl.com/ela/skill-plans/california-common-core-content-standards-grade-6",
+      "subject": "ela",
+      "sourceType": "commercial-skill-plan-reference",
+      "allowedUse": "Staff reference and coverage comparison only.",
+      "status": "reference-only"
+    },
+    {
+      "id": "ixl-ca-ngss-science-g6-skill-plan",
+      "provider": "IXL",
+      "title": "California Next Generation Science Standards: Grade 6 Science Skill Plan",
+      "url": "https://www.ixl.com/science/skill-plans/california-next-generation-science-standards-grade-6",
+      "subject": "science",
+      "sourceType": "commercial-skill-plan-reference",
+      "allowedUse": "Staff reference and coverage comparison only.",
+      "status": "reference-only"
+    },
+    {
+      "id": "ixl-ca-social-studies-g6-skill-plan",
+      "provider": "IXL",
+      "title": "California Content Standards: Grade 6 Social Studies Skill Plan",
+      "url": "https://www.ixl.com/social-studies/skill-plans/california-content-standards-grade-6",
+      "subject": "social-studies",
+      "sourceType": "commercial-skill-plan-reference",
+      "allowedUse": "Staff reference and coverage comparison only.",
+      "status": "reference-only"
+    },
+    {
+      "id": "ixl-g6-math-skills",
+      "provider": "IXL",
+      "title": "Grade 6 Math Skills",
+      "url": "https://www.ixl.com/math/grade-6/skills",
+      "subject": "math",
+      "sourceType": "commercial-practice-reference",
+      "observedCoverageSignal": "Grade 6 math page reports hundreds of skills and broad categories including arithmetic fluency, rational numbers, ratios, algebra, geometry, measurement, and data.",
+      "allowedUse": "Staff reference link, broad category comparison, no copied skill bank.",
+      "status": "reference-only"
+    },
+    {
+      "id": "ixl-g6-math-lessons",
+      "provider": "IXL",
+      "title": "Grade 6 Math Lessons",
+      "url": "https://www.ixl.com/math/grade-6/lessons",
+      "subject": "math",
+      "sourceType": "commercial-lesson-reference",
+      "observedCoverageSignal": "Grade 6 math page reports lesson and video counts plus broad topic families.",
+      "allowedUse": "Staff reference link and topic-gap audit only.",
+      "status": "reference-only"
+    },
+    {
+      "id": "ixl-g6-math-videos",
+      "provider": "IXL",
+      "title": "Grade 6 Math Videos",
+      "url": "https://www.ixl.com/math/grade-6/videos",
+      "subject": "math",
+      "sourceType": "commercial-video-reference",
+      "observedCoverageSignal": "Grade 6 video page reports a large video library associated with Grade 6 math support.",
+      "allowedUse": "Outbound staff reference link only unless licensed/embedded by agreement.",
+      "status": "reference-only"
+    },
+    {
+      "id": "ixl-math-lessons-index",
+      "provider": "IXL",
+      "title": "Math Lessons Index",
+      "url": "https://www.ixl.com/math/lessons",
+      "subject": "math",
+      "sourceType": "commercial-index-reference",
+      "allowedUse": "Staff reference link and coverage comparison only.",
+      "status": "reference-only"
+    },
+    {
+      "id": "ixl-science-index",
+      "provider": "IXL",
+      "title": "Science Index",
+      "url": "https://www.ixl.com/science",
+      "subject": "science",
+      "sourceType": "commercial-index-reference",
+      "allowedUse": "Staff reference link and broad coverage comparison only.",
+      "status": "reference-only"
+    },
+    {
+      "id": "ixl-ela-index",
+      "provider": "IXL",
+      "title": "Language Arts Index",
+      "url": "https://www.ixl.com/ela",
+      "subject": "ela",
+      "sourceType": "commercial-index-reference",
+      "allowedUse": "Staff reference link and broad coverage comparison only.",
+      "status": "reference-only"
+    },
+    {
+      "id": "ixl-social-studies-index",
+      "provider": "IXL",
+      "title": "Social Studies Index",
+      "url": "https://www.ixl.com/social-studies",
+      "subject": "social-studies",
+      "sourceType": "commercial-index-reference",
+      "allowedUse": "Staff reference link and broad coverage comparison only.",
+      "status": "reference-only"
+    },
+    {
+      "id": "ca-common-core-math-g6",
+      "provider": "California Department of Education",
+      "title": "California Common Core State Standards for Mathematics",
+      "url": "https://www.cde.ca.gov/be/st/ss/documents/ccssmathstandardaug2013.pdf",
+      "subject": "math",
+      "sourceType": "official-standards",
+      "allowedUse": "Primary standards alignment and standards-tagging source.",
+      "status": "primary"
+    },
+    {
+      "id": "ca-common-core-ela-g6",
+      "provider": "California Department of Education",
+      "title": "California Common Core State Standards for ELA/Literacy",
+      "url": "https://www.cde.ca.gov/be/st/ss/documents/finalelaccssstandards.pdf",
+      "subject": "ela",
+      "sourceType": "official-standards",
+      "allowedUse": "Primary standards alignment and standards-tagging source.",
+      "status": "primary"
+    },
+    {
+      "id": "ca-ngss-g6",
+      "provider": "California Department of Education",
+      "title": "California Next Generation Science Standards",
+      "url": "https://www.cde.ca.gov/pd/ca/sc/ngssstandards.asp",
+      "subject": "science",
+      "sourceType": "official-standards",
+      "allowedUse": "Primary standards alignment and standards-tagging source.",
+      "status": "primary"
+    },
+    {
+      "id": "ca-history-social-science-g6",
+      "provider": "California Department of Education",
+      "title": "History-Social Science Content Standards for California Public Schools",
+      "url": "https://www.cde.ca.gov/be/st/ss/documents/histsocscistnd.pdf",
+      "subject": "social-studies",
+      "sourceType": "official-standards",
+      "allowedUse": "Primary standards alignment and standards-tagging source.",
+      "status": "primary"
+    }
+  ]
+}
