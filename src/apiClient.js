@@ -1,6 +1,7 @@
 const apiAvailable = typeof fetch === "function";
 const authTokenKey = "k12-learning-auth-token";
 const authRefreshTokenKey = "k12-learning-refresh-token";
+let refreshInFlight = null;
 
 export function getAuthToken() {
   return typeof localStorage === "undefined" ? "" : localStorage.getItem(authTokenKey) || "";
@@ -25,9 +26,66 @@ function setRefreshToken(token = "") {
   else localStorage.removeItem(authRefreshTokenKey);
 }
 
+function decodeJwtPayload(token = "") {
+  const encoded = String(token || "").split(".")[1];
+  if (!encoded) return null;
+  try {
+    const normalized = encoded.replaceAll("-", "+").replaceAll("_", "/");
+    const padded = `${normalized}${"=".repeat((4 - (normalized.length % 4)) % 4)}`;
+    const decoded = typeof atob === "function"
+      ? atob(padded)
+      : typeof Buffer !== "undefined"
+        ? Buffer.from(padded, "base64").toString("utf8")
+        : "";
+    return decoded ? JSON.parse(decoded) : null;
+  } catch {
+    return null;
+  }
+}
+
+function tokenNeedsRefresh(token = "", leewaySeconds = 60) {
+  const payload = decodeJwtPayload(token);
+  const expiresAt = Number(payload?.exp || 0);
+  return Boolean(expiresAt && expiresAt <= Math.floor(Date.now() / 1000) + leewaySeconds);
+}
+
+async function refreshAccessToken() {
+  const refreshToken = getRefreshToken();
+  if (!refreshToken) return "";
+  if (refreshInFlight) return refreshInFlight;
+
+  refreshInFlight = (async () => {
+    const response = await fetch("/api/auth/refresh", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refreshToken })
+    });
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok || !body.token) {
+      throw new Error(body.error || `Session refresh failed with ${response.status}`);
+    }
+    setAuthToken(body.token);
+    if (body.refreshToken) setRefreshToken(body.refreshToken);
+    return body.token;
+  })().finally(() => {
+    refreshInFlight = null;
+  });
+
+  return refreshInFlight;
+}
+
 async function requestJson(path, options = {}, allowRefresh = true) {
   if (!apiAvailable) {
     throw new Error("Fetch API is not available in this environment.");
+  }
+
+  if (allowRefresh && path !== "/api/auth/refresh" && tokenNeedsRefresh(getAuthToken())) {
+    try {
+      await refreshAccessToken();
+    } catch {
+      setAuthToken("");
+      setRefreshToken("");
+    }
   }
 
   const response = await fetch(path, {
@@ -41,13 +99,7 @@ async function requestJson(path, options = {}, allowRefresh = true) {
 
   if (response.status === 401 && allowRefresh && getRefreshToken() && path !== "/api/auth/refresh") {
     try {
-      const refreshed = await requestJson(
-        "/api/auth/refresh",
-        { method: "POST", body: JSON.stringify({ refreshToken: getRefreshToken() }) },
-        false
-      );
-      if (refreshed.token) setAuthToken(refreshed.token);
-      if (refreshed.refreshToken) setRefreshToken(refreshed.refreshToken);
+      await refreshAccessToken();
       return requestJson(path, options, false);
     } catch {
       setAuthToken("");
