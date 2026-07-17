@@ -437,7 +437,7 @@ function executeStandardsLookup(input) {
 
 function containsAny(value, words) {
   const normalized = String(value || "").toLowerCase();
-  return words.some((word) => normalized.includes(word));
+  return words.some((word) => normalized.includes(String(word || "").toLowerCase()));
 }
 
 function scoreTutorResponse({ lesson, support, studentInput, tutorResponse }) {

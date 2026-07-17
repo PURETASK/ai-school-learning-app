@@ -25,6 +25,7 @@ import {
   addGeneratedVisualAsset,
   appendAiLog,
   askAiTutor,
+  attachTutorProviderResponse,
   completeLessonQuiz,
   createAdaptiveTutorResponse,
   createContentDraft,
@@ -182,6 +183,11 @@ import {
 } from "../src/supabaseAuth.js";
 import { extractSourceEvidence, fetchApprovedSourceAudit, isApprovedLiveSourceUrl } from "../src/liveSourceAudit.js";
 import { createImageGenerationPlan, estimateImageCostCents } from "../src/openaiImageService.js";
+import {
+  createTutorGenerationPlan,
+  generateOpenAiTutorResponse,
+  getOpenAiTutorReadiness
+} from "../src/openaiTutorService.js";
 import {
   getVisualAssetStorageConfig,
   parseDataImageUrl,
@@ -3507,6 +3513,85 @@ assert.equal(serverTutorProjection.tables.ai_tutor_events[0].student_id, "avery"
 assert.equal(serverTutorProjection.tables.ai_tutor_events[0].lesson_id, lesson.id, "AI tutor projection should use the explicit lesson id");
 assert.equal(serverTutorProjection.tables.ai_tutor_events[0].truth_score, serverTutorTurn.log.truthScore, "AI tutor projection should store truth-policy score");
 assert.deepEqual(serverTutorProjection.tables.ai_tutor_events[0].truth_issues, serverTutorTurn.log.truthIssues, "AI tutor projection should store truth-policy issues");
+const tutorReadiness = getOpenAiTutorReadiness({ OPENAI_API_KEY: "test-key", OPENAI_TUTOR_MODEL: "test-model" });
+assert.equal(tutorReadiness.ready, true, "OpenAI tutor readiness should pass with a server-only API key");
+assert.equal(getOpenAiTutorReadiness({ OPENAI_TUTOR_ENABLED: "false", OPENAI_API_KEY: "test-key" }).ready, false, "disabled OpenAI tutor should not be marked ready");
+assert.equal(
+  createTutorGenerationPlan({ input: "I am confused", env: { OPENAI_TUTOR_ENABLED: "true" } }).accepted,
+  false,
+  "tutor generation plan should block when the server key is missing"
+);
+const providerLimitState = {
+  aiLogs: [{ provider: "openai", providerAttachedAt: new Date().toISOString() }]
+};
+assert.equal(
+  createTutorGenerationPlan({ state: providerLimitState, input: "I am confused", env: { OPENAI_API_KEY: "test-key", OPENAI_TUTOR_DAILY_LIMIT: "1" } }).accepted,
+  false,
+  "tutor generation plan should block after the daily provider limit"
+);
+const tutorProviderRequests = [];
+const tutorProviderFetch = async (url, options) => {
+  tutorProviderRequests.push({ url, body: JSON.parse(options.body) });
+  if (url.endsWith("/moderations")) {
+    return { ok: true, status: 200, json: async () => ({ results: [{ flagged: false, categories: {} }] }) };
+  }
+  return {
+    ok: true,
+    status: 200,
+    json: async () => ({
+      id: "resp-tutor-test-1",
+      output_text: JSON.stringify({
+        text: `The confusing part of ${lesson.title} is the step where you connect the model to the reason. Let us use a diagram and one small example before you retry.`,
+        analysis: "The learner needs the first step and a visual model.",
+        nextStep: "Point to the part of the model that represents the whole.",
+        hintPath: ["Name the whole", "Mark the equal parts", "Explain why the model matches"],
+        nextQuestion: "Which part of the diagram shows the whole?",
+        visualHint: "Sketch the model and label the whole before the parts.",
+        firstPrinciplesPrompt: "What is the core object before we split it into parts?",
+        modeId: "visual"
+      }),
+      usage: { input_tokens: 120, output_tokens: 90, total_tokens: 210 }
+    })
+  };
+};
+const providerTutorResult = await generateOpenAiTutorResponse({
+  state: serverTutorTurn.state,
+  lesson,
+  support: getLessonTeachingSupport(lesson.id, serverTutorTurn.state),
+  studentInput: "The diagram and first step are confusing.",
+  localResponse: serverTutorTurn.response,
+  ageBand: "K-5",
+  explanationMode: "diagnose",
+  env: { OPENAI_API_KEY: "test-key", OPENAI_TUTOR_MODEL: "test-model" },
+  fetchImpl: tutorProviderFetch
+});
+assert.equal(providerTutorResult.accepted, true, "mock provider tutor response should pass generation gates");
+assert.equal(tutorProviderRequests.length, 2, "provider tutor should moderate before calling the response model");
+assert.ok(!JSON.stringify(tutorProviderRequests[1].body).includes("avery"), "provider tutor request should not include the learner id");
+assert.equal(tutorProviderRequests[1].body.store, false, "provider tutor response calls should disable provider response storage");
+const attachedProviderTutor = attachTutorProviderResponse(serverTutorTurn.state, serverTutorTurn.log.id, providerTutorResult);
+assert.equal(attachedProviderTutor.result.accepted, true, "provider tutor response should pass the local quality gate");
+assert.equal(attachedProviderTutor.result.log.provider, "openai", "accepted provider response should be marked on the tutor log");
+assert.equal(attachedProviderTutor.result.log.providerRequestId, "resp-tutor-test-1", "provider request id should be persisted for review");
+const providerProjection = getPlatformSeedProjection(attachedProviderTutor.state).tables.ai_tutor_events[0];
+assert.equal(providerProjection.provider, "openai", "provider metadata should reach the normalized seed projection");
+assert.equal(providerProjection.provider_request_id, "resp-tutor-test-1", "provider request id should reach the normalized seed projection");
+assert.equal(providerProjection.provider_review.accepted, true, "provider quality review should reach the normalized seed projection");
+let flaggedResponseCalls = 0;
+const flaggedProvider = await generateOpenAiTutorResponse({
+  state: serverTutorTurn.state,
+  lesson,
+  support: getLessonTeachingSupport(lesson.id, serverTutorTurn.state),
+  studentInput: "I am confused.",
+  env: { OPENAI_API_KEY: "test-key" },
+  fetchImpl: async (url, options) => {
+    flaggedResponseCalls += 1;
+    if (url.endsWith("/moderations")) return { ok: true, status: 200, json: async () => ({ results: [{ flagged: true, categories: { violence: true } }] }) };
+    return { ok: true, status: 200, json: async () => ({ output_text: "should not run" }) };
+  }
+});
+assert.equal(flaggedProvider.blocked, true, "moderation should block unsafe tutor provider input");
+assert.equal(flaggedResponseCalls, 1, "moderation failure should prevent the response model call");
 const aiRepository = createStateRepository({ root: `${process.env.TEMP || "C:\\tmp"}\\k12-learning-ai-repository-test`, env: {} });
 await aiRepository.writeState(serverTutorTurn.state);
 const repositoryTutorEvents = await aiRepository.readAiTutorEvents({ learnerId: "avery" });

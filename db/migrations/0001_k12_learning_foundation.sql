@@ -748,6 +748,13 @@ create table if not exists public."ai_tutor_events" (
   "truth_review_status" text,
   "flagged" boolean not null default false,
   "review_status" text,
+  "provider" text,
+  "provider_model" text,
+  "provider_request_id" text,
+  "provider_usage" jsonb not null default '[]'::jsonb,
+  "provider_moderation" jsonb not null default '[]'::jsonb,
+  "provider_review" jsonb not null default '[]'::jsonb,
+  "provider_attached_at" timestamptz,
   "created_at" timestamptz,
   primary key ("id")
 );
@@ -1805,6 +1812,20 @@ alter table public."ai_tutor_events" add column if not exists "truth_review_stat
 alter table public."ai_tutor_events" add column if not exists "flagged" boolean not null default false;
 
 alter table public."ai_tutor_events" add column if not exists "review_status" text;
+
+alter table public."ai_tutor_events" add column if not exists "provider" text;
+
+alter table public."ai_tutor_events" add column if not exists "provider_model" text;
+
+alter table public."ai_tutor_events" add column if not exists "provider_request_id" text;
+
+alter table public."ai_tutor_events" add column if not exists "provider_usage" jsonb not null default '[]'::jsonb;
+
+alter table public."ai_tutor_events" add column if not exists "provider_moderation" jsonb not null default '[]'::jsonb;
+
+alter table public."ai_tutor_events" add column if not exists "provider_review" jsonb not null default '[]'::jsonb;
+
+alter table public."ai_tutor_events" add column if not exists "provider_attached_at" timestamptz;
 
 alter table public."ai_tutor_events" add column if not exists "created_at" timestamptz;
 
@@ -7431,7 +7452,7 @@ begin
     from information_schema.columns
     where table_schema = 'public'
       and table_name = 'ai_tutor_events'
-      and column_name not in ('id', 'student_id', 'lesson_id', 'input', 'response', 'analysis', 'type', 'mode_id', 'mode_title', 'strategy', 'visual_hint', 'first_principles_prompt', 'student_feedback', 'feedback_note', 'helped', 'quality_score', 'truth_score', 'truth_issues', 'needs_external_research', 'truth_review_status', 'flagged', 'review_status', 'created_at')
+      and column_name not in ('id', 'student_id', 'lesson_id', 'input', 'response', 'analysis', 'type', 'mode_id', 'mode_title', 'strategy', 'visual_hint', 'first_principles_prompt', 'student_feedback', 'feedback_note', 'helped', 'quality_score', 'truth_score', 'truth_issues', 'needs_external_research', 'truth_review_status', 'flagged', 'review_status', 'provider', 'provider_model', 'provider_request_id', 'provider_usage', 'provider_moderation', 'provider_review', 'provider_attached_at', 'created_at')
   loop
     if row_count = 0 then
       execute format('alter table public.%I drop column if exists %I', 'ai_tutor_events', legacy_column.column_name);
@@ -16997,6 +17018,156 @@ begin
       alter table public."ai_tutor_events" alter column "review_status" type text using "review_status"::text;
     else
       raise exception 'Column public.ai_tutor_events.review_status has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'ai_tutor_events'
+    and c.column_name = 'provider';
+  if actual_type is not null and actual_type <> 'text' then
+    select count(*) into row_count from public."ai_tutor_events";
+    if row_count = 0 then
+      alter table public."ai_tutor_events" alter column "provider" drop default;
+      alter table public."ai_tutor_events" alter column "provider" type text using "provider"::text;
+    else
+      raise exception 'Column public.ai_tutor_events.provider has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'ai_tutor_events'
+    and c.column_name = 'provider_model';
+  if actual_type is not null and actual_type <> 'text' then
+    select count(*) into row_count from public."ai_tutor_events";
+    if row_count = 0 then
+      alter table public."ai_tutor_events" alter column "provider_model" drop default;
+      alter table public."ai_tutor_events" alter column "provider_model" type text using "provider_model"::text;
+    else
+      raise exception 'Column public.ai_tutor_events.provider_model has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'ai_tutor_events'
+    and c.column_name = 'provider_request_id';
+  if actual_type is not null and actual_type <> 'text' then
+    select count(*) into row_count from public."ai_tutor_events";
+    if row_count = 0 then
+      alter table public."ai_tutor_events" alter column "provider_request_id" drop default;
+      alter table public."ai_tutor_events" alter column "provider_request_id" type text using "provider_request_id"::text;
+    else
+      raise exception 'Column public.ai_tutor_events.provider_request_id has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'ai_tutor_events'
+    and c.column_name = 'provider_usage';
+  if actual_type is not null and actual_type <> 'jsonb' then
+    select count(*) into row_count from public."ai_tutor_events";
+    if row_count = 0 then
+      alter table public."ai_tutor_events" alter column "provider_usage" drop default;
+      alter table public."ai_tutor_events" alter column "provider_usage" type jsonb using "provider_usage"::jsonb;
+  alter table public."ai_tutor_events" alter column "provider_usage" set default '[]'::jsonb;
+    else
+      raise exception 'Column public.ai_tutor_events.provider_usage has type %, expected jsonb, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'ai_tutor_events'
+    and c.column_name = 'provider_moderation';
+  if actual_type is not null and actual_type <> 'jsonb' then
+    select count(*) into row_count from public."ai_tutor_events";
+    if row_count = 0 then
+      alter table public."ai_tutor_events" alter column "provider_moderation" drop default;
+      alter table public."ai_tutor_events" alter column "provider_moderation" type jsonb using "provider_moderation"::jsonb;
+  alter table public."ai_tutor_events" alter column "provider_moderation" set default '[]'::jsonb;
+    else
+      raise exception 'Column public.ai_tutor_events.provider_moderation has type %, expected jsonb, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'ai_tutor_events'
+    and c.column_name = 'provider_review';
+  if actual_type is not null and actual_type <> 'jsonb' then
+    select count(*) into row_count from public."ai_tutor_events";
+    if row_count = 0 then
+      alter table public."ai_tutor_events" alter column "provider_review" drop default;
+      alter table public."ai_tutor_events" alter column "provider_review" type jsonb using "provider_review"::jsonb;
+  alter table public."ai_tutor_events" alter column "provider_review" set default '[]'::jsonb;
+    else
+      raise exception 'Column public.ai_tutor_events.provider_review has type %, expected jsonb, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'ai_tutor_events'
+    and c.column_name = 'provider_attached_at';
+  if actual_type is not null and actual_type <> 'timestamptz' then
+    select count(*) into row_count from public."ai_tutor_events";
+    if row_count = 0 then
+      alter table public."ai_tutor_events" alter column "provider_attached_at" drop default;
+      alter table public."ai_tutor_events" alter column "provider_attached_at" type timestamptz using "provider_attached_at"::timestamptz;
+    else
+      raise exception 'Column public.ai_tutor_events.provider_attached_at has type %, expected timestamptz, and table is not empty; repair manually before applying constraints.', actual_type;
     end if;
   end if;
 end $$;

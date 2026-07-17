@@ -16,6 +16,7 @@ import {
 import {
   addGeneratedVisualAsset,
   askAiTutor,
+  attachTutorProviderResponse,
   canAccessRepositoryAction,
   completeLessonQuiz,
   createEmailVerificationRequest,
@@ -31,6 +32,7 @@ import {
   getAuthSecuritySummary,
   getLearnerClassSession,
   getLearnerAccess,
+  getLessonTeachingSupport,
   getPlatformLessonLibrarySamples,
   getPlatformLessonLibrarySummary,
   getPlatformMigration,
@@ -72,6 +74,7 @@ import {
 } from "../src/engine.js";
 import { exportRepositoryRosterCsv } from "../src/roster.js";
 import { generateOpenAiImage } from "../src/openaiImageService.js";
+import { generateOpenAiTutorResponse, getOpenAiTutorReadiness } from "../src/openaiTutorService.js";
 import { fulfillGiftCardReward, getGiftCardFulfillmentReadiness } from "../src/rewardFulfillmentService.js";
 import { createNormalizedStateUpsertSql, createStateRepository, learnerProfileRepositoryTableIds, learningEvidenceRepositoryTableIds } from "../src/repository.js";
 import { uploadVisualAssetToSupabaseStorage } from "../src/visualAssetStorageService.js";
@@ -805,6 +808,7 @@ async function handleApi(request, response, pathname) {
       security,
       repository: stateRepository.status(),
       openAiImages: getPlatformOpenAiImageReadiness(process.env),
+      openAiTutor: getOpenAiTutorReadiness(process.env),
       giftCards: getGiftCardFulfillmentReadiness(process.env)
     });
     return true;
@@ -2176,7 +2180,62 @@ async function handleApi(request, response, pathname) {
         learnerId,
         scratchpadReview: Boolean(body.scratchpadReview)
       });
-      return { state: await writeTutorWorkflow(nextTutor.state), response: nextTutor.response, log: nextTutor.log };
+      const lesson = findLessonInState(nextTutor.state, nextTutor.log.lessonId);
+      const support = getLessonTeachingSupport(lesson.id, nextTutor.state);
+      let finalTutor = nextTutor;
+      let provider = { attempted: false, accepted: false, fallback: true, readiness: getOpenAiTutorReadiness(process.env) };
+      try {
+        const providerResult = await generateOpenAiTutorResponse({
+          state: nextTutor.state,
+          lesson,
+          support,
+          studentInput: nextTutor.log.input,
+          localResponse: nextTutor.response,
+          ageBand: String(body.ageBand || "K-5"),
+          explanationMode: String(body.explanationMode || "diagnose"),
+          env: process.env
+        });
+        provider = {
+          attempted: Boolean(providerResult.plan?.accepted),
+          accepted: false,
+          fallback: true,
+          blocked: Boolean(providerResult.blocked),
+          reason: providerResult.reason || providerResult.error || providerResult.plan?.blockers?.[0] || "Local tutor response retained.",
+          model: providerResult.model || "",
+          requestId: providerResult.requestId || "",
+          usage: providerResult.usage || {},
+          moderation: providerResult.moderation || {},
+          readiness: getOpenAiTutorReadiness(process.env)
+        };
+        if (providerResult.accepted) {
+          const attached = attachTutorProviderResponse(nextTutor.state, nextTutor.log.id, providerResult, {
+            minimumAverage: Number(process.env.OPENAI_TUTOR_MIN_REVIEW_AVERAGE || 4)
+          });
+          if (attached.result.accepted) {
+            finalTutor = {
+              state: attached.state,
+              response: { ...nextTutor.response, ...providerResult.response },
+              log: attached.result.log
+            };
+            provider = {
+              ...provider,
+              accepted: true,
+              fallback: false,
+              reason: "Provider response passed the tutor quality gate.",
+              review: attached.result.providerReview
+            };
+          } else {
+            provider = { ...provider, reason: attached.result.reason, review: attached.result.providerReview };
+          }
+        }
+      } catch {
+        provider = {
+          ...provider,
+          attempted: true,
+          reason: "The provider request failed; the local tutor response was retained."
+        };
+      }
+      return { state: await writeTutorWorkflow(finalTutor.state), response: finalTutor.response, log: finalTutor.log, provider };
     });
     sendJson(response, 200, payload);
     return true;

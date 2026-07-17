@@ -781,6 +781,13 @@ export const productionDataModel = [
       "truth_review_status",
       "flagged",
       "review_status",
+      "provider",
+      "provider_model",
+      "provider_request_id",
+      "provider_usage",
+      "provider_moderation",
+      "provider_review",
+      "provider_attached_at",
       "created_at"
     ],
     foreignKeys: [{ column: "student_id", references: "students.id" }, { column: "lesson_id", references: "lessons.id" }]
@@ -2227,6 +2234,13 @@ export function createProductionSeedProjection(state = {}) {
       truth_review_status: log.truthReviewStatus || log.truthReview?.status || "",
       flagged: Boolean(log.flagged),
       review_status: log.reviewStatus || "",
+      provider: log.provider || "",
+      provider_model: log.providerModel || "",
+      provider_request_id: log.providerRequestId || "",
+      provider_usage: log.providerUsage || {},
+      provider_moderation: log.providerModeration || {},
+      provider_review: log.providerReview || {},
+      provider_attached_at: log.providerAttachedAt || "",
       created_at: log.timestamp || timestamp
     });
   }

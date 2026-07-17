@@ -26,6 +26,7 @@ import { createImageGenerationPlan, getOpenAiImageReadiness } from "./openaiImag
 import { getVisualAssetStorageConfig } from "./visualAssetStorageService.js";
 import { getProductionAuthReadiness, isProductionAuthProviderConfigured } from "./productionAuth.js";
 import { executeToolGateway, getToolGatewaySummary, getToolRegistry, reviewTutorResponseQuality } from "./toolGateway.js";
+import { getOpenAiTutorReadiness } from "./openaiTutorService.js";
 import {
   createGeneratedVisualAsset,
   findVisualOpportunity,
@@ -4374,6 +4375,7 @@ export function getRuntimeConfigurationStatus(env = {}) {
   const authReadiness = getProductionAuthReadiness(env);
   const authBlockers = [...(authReadiness.blockers || []), ...(authReadiness.missing || []).map((item) => `Missing ${item}.`)];
   const openAiImage = getOpenAiImageReadiness(env);
+  const openAiTutor = getOpenAiTutorReadiness(env);
   const visualAssetStorage = getVisualAssetStorageConfig(env);
   const blockers = [];
   const warnings = [];
@@ -4384,6 +4386,7 @@ export function getRuntimeConfigurationStatus(env = {}) {
   if (productionMode && !authProviderConfigured) blockers.push("Production runtime must configure Supabase or another trusted auth provider.");
   if (authProviderConfigured && !authReadiness.passed) blockers.push(...authBlockers);
   if (!openAiImage.ready) warnings.push("OpenAI image generation is not ready; image prompts stay review-only until OPENAI_API_KEY and image settings are configured.");
+  if (!openAiTutor.ready) warnings.push("OpenAI tutor generation is not ready; the local tutor remains the fallback until OPENAI_API_KEY and tutor limits are configured.");
   if (!visualAssetStorage.ready) warnings.push("Supabase visual asset storage is not ready; generated images cannot be promoted from data URLs to storage/CDN-backed production assets.");
   if (!supabasePublishableConfigured) warnings.push("Supabase publishable key is not configured for browser/client auth setup.");
   if (!supabaseSecretConfigured) warnings.push("Supabase server secret key is not configured; server-only Supabase API operations remain unavailable.");
@@ -4401,6 +4404,7 @@ export function getRuntimeConfigurationStatus(env = {}) {
     authProviderConfigured,
     authReadiness,
     openAiImage,
+    openAiTutor,
     visualAssetStorage,
     blockers,
     warnings,
@@ -4439,6 +4443,15 @@ export function getRuntimeConfigurationStatus(env = {}) {
         passed: openAiImage.ready && openAiImage.reviewRequired,
         value: openAiImage.ready ? "configured" : "review-only",
         detail: openAiImage.ready ? `${openAiImage.model} with review gate and daily cost controls.` : "OPENAI_API_KEY or image settings are missing."
+      },
+      {
+        id: "openai-tutor",
+        label: "OpenAI tutor",
+        passed: openAiTutor.ready,
+        value: openAiTutor.ready ? "configured" : "local fallback",
+        detail: openAiTutor.ready
+          ? `${openAiTutor.model} with moderation, daily limits, and quality review.`
+          : "Set OPENAI_API_KEY and tutor settings before enabling provider-backed student tutoring."
       },
       {
         id: "visual-storage",
@@ -4635,9 +4648,11 @@ export function getProductCompletenessAudit(state = createInitialState(), env = 
     {
       id: "tutor",
       title: "Tutor diagnosis and quality loop",
-      status: auditStatus(tutor.totalInteractions > 0 && tutor.truthReviewed > 0),
-      evidence: `${tutor.totalInteractions} interactions; ${tutor.truthReviewed} truth-reviewed; ${tutor.improvementSignalCount} improvement signals.`,
-      nextStep: "Connect live LLM tutoring with the same stuck-point, hint-first, truth-review, and feedback loop."
+      status: auditStatus(tutor.totalInteractions > 0 && tutor.truthReviewed > 0 && runtime.openAiTutor?.ready === true),
+      evidence: `${tutor.totalInteractions} interactions; ${tutor.truthReviewed} truth-reviewed; ${tutor.improvementSignalCount} improvement signals; provider=${runtime.openAiTutor?.ready ? "ready" : "local fallback"}.`,
+      nextStep: runtime.openAiTutor?.ready
+        ? "Keep provider responses behind moderation, quality review, and persisted feedback gates."
+        : "Configure OPENAI_API_KEY and tutor limits, then verify the provider-backed path without bypassing the local tutor fallback."
     },
     {
       id: "agents",
@@ -9188,6 +9203,88 @@ export function askAiTutor(
     response,
     log: withTutorEvidence.aiLogs[0]
   };
+}
+
+export function attachTutorProviderResponse(state, logId, providerResult = {}, { minimumAverage = 4 } = {}) {
+  const existingLog = (state.aiLogs || []).find((log) => log.id === logId);
+  if (!existingLog || !providerResult.accepted || !providerResult.response?.text) {
+    return {
+      state,
+      result: {
+        accepted: false,
+        fallback: true,
+        reason: providerResult.blocked ? "Provider moderation blocked the request." : "Provider response was not eligible for attachment.",
+        providerReview: null,
+        log: existingLog || null
+      }
+    };
+  }
+
+  const lesson = findLessonInState(state, existingLog.lessonId);
+  const truthReview = createTutorTruthReview(lesson, existingLog.input || "", providerResult.response);
+  const answerPolicyScore = Number(truthReview.scores?.answerPolicy || 0);
+  const accepted =
+    truthReview.average >= Number(minimumAverage || 4) &&
+    answerPolicyScore >= 5 &&
+    !providerResult.response.flagged &&
+    !truthReview.needsExternalResearch;
+  const providerReview = {
+    accepted,
+    average: truthReview.average,
+    scores: truthReview.scores,
+    issues: truthReview.issues,
+    needsExternalResearch: truthReview.needsExternalResearch
+  };
+  if (!accepted) {
+    return {
+      state,
+      result: { accepted: false, fallback: true, reason: "Provider response did not pass the tutor quality gate.", providerReview, log: existingLog }
+    };
+  }
+
+  const response = {
+    ...providerResult.response,
+    modeId: providerResult.response.modeId || existingLog.modeId || "diagnose",
+    modeTitle: existingLog.modeTitle || "Diagnose First",
+    strategy: providerResult.response.strategy || existingLog.strategy || "Provider response passed the local truth-policy gate.",
+    stuckPointCategoryId: existingLog.stuckPointCategoryId || "",
+    stuckPointLabel: existingLog.stuckPointLabel || "",
+    adaptive: existingLog.adaptive,
+    flagged: false
+  };
+  const updatedLog = {
+    ...existingLog,
+    response: response.text,
+    analysis: response.analysis || existingLog.analysis,
+    nextStep: response.nextStep || existingLog.nextStep,
+    prompt: response.prompt || existingLog.prompt,
+    modeId: response.modeId,
+    modeTitle: response.modeTitle,
+    strategy: response.strategy,
+    visualHint: response.visualHint || existingLog.visualHint,
+    firstPrinciplesPrompt: response.firstPrinciplesPrompt || existingLog.firstPrinciplesPrompt,
+    hintPath: response.hintPath.length ? response.hintPath : existingLog.hintPath,
+    nextQuestion: response.nextQuestion || existingLog.nextQuestion,
+    provider: "openai",
+    providerModel: providerResult.model || "",
+    providerRequestId: providerResult.requestId || "",
+    providerUsage: providerResult.usage || {},
+    providerModeration: providerResult.moderation || {},
+    providerReview,
+    truthScore: truthReview.score,
+    truthIssues: truthReview.issues,
+    truthReview,
+    truthReviewStatus: truthReview.status,
+    needsExternalResearch: truthReview.needsExternalResearch,
+    requiresHumanReview: truthReview.requiresHumanReview,
+    reviewStatus: truthReview.requiresHumanReview ? "" : "auto-reviewed",
+    providerAttachedAt: new Date().toISOString()
+  };
+  const nextState = {
+    ...state,
+    aiLogs: [updatedLog, ...(state.aiLogs || []).filter((log) => log.id !== logId)]
+  };
+  return { state: nextState, result: { accepted: true, fallback: false, providerReview, log: updatedLog } };
 }
 
 function createLessonImprovementSignal(log, feedback, note) {
