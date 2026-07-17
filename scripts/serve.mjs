@@ -102,9 +102,13 @@ const root = resolve(process.cwd());
 loadEnvFile({ root });
 const port = Number(process.env.PORT || 4173);
 const stateRepository = createStateRepository({ root, env: process.env });
+const isProductionRuntime = () => ["production", "prod"].includes(String(process.env.APP_ENV || process.env.NODE_ENV || "").toLowerCase());
+const configuredAuthProvider = () => String(
+  process.env.AUTH_PROVIDER || ((process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL) ? "supabase" : "")
+).trim().toLowerCase();
 const useProviderAuth = () =>
-  (process.env.NODE_ENV === "production" || process.env.AUTH_USE_SUPABASE_AUTH === "true") &&
-  process.env.AUTH_PROVIDER === "supabase" &&
+  (isProductionRuntime() || process.env.AUTH_USE_SUPABASE_AUTH === "true") &&
+  configuredAuthProvider() === "supabase" &&
   isSupabaseAuthConfigured(process.env);
 
 const mimeTypes = {
@@ -2534,7 +2538,23 @@ async function handleApi(request, response, pathname) {
   return false;
 }
 
-createServer(async (request, response) => {
+async function assertProductionStartup() {
+  if (!isProductionRuntime()) return;
+  const runtime = getRuntimeConfigurationStatus(process.env);
+  if (!runtime.ready) {
+    throw new Error(`Production startup blocked: ${runtime.blockers.join(" ")}`);
+  }
+  if (stateRepository.status().mode !== "postgres") {
+    throw new Error("Production startup blocked: K12_REPOSITORY_MODE=postgres is required.");
+  }
+  try {
+    await stateRepository.readNormalizedTable("lessons", { limit: 1 });
+  } catch (error) {
+    throw new Error(`Production startup blocked: normalized Postgres probe failed. ${error.message || "Check DATABASE_URL credentials."}`);
+  }
+}
+
+const server = createServer(async (request, response) => {
   const { pathname } = new URL(request.url, `http://localhost:${port}`);
   if (pathname.startsWith("/api/")) {
     try {
@@ -2566,6 +2586,18 @@ createServer(async (request, response) => {
     response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
     response.end("Not found");
   }
-}).listen(port, () => {
-  console.log(`K-12 Learning Academies preview running at http://localhost:${port}`);
 });
+
+async function startServer() {
+  try {
+    await assertProductionStartup();
+    server.listen(port, () => {
+      console.log(`K-12 Learning Academies preview running at http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error(error.message || "Server startup failed.");
+    process.exitCode = 1;
+  }
+}
+
+startServer();
