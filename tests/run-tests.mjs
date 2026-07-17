@@ -3729,7 +3729,9 @@ assert.ok(appSource.includes("repositoryBootstrap?.catalog || null"), "scoped ca
 
 const serverSource = readFileSync("scripts/serve.mjs", "utf8");
 const apiClientSource = readFileSync("src/apiClient.js", "utf8");
-assert.ok(serverSource.includes('stateRepository.status().mode === "postgres" && pathname !== "/api/auth/session"'), "Postgres requests should avoid broad auth snapshot hydration");
+assert.ok(serverSource.includes('const postgresRepository = stateRepository.status().mode === "postgres"'), "Postgres requests should identify normalized repository mode");
+assert.ok(serverSource.includes("const normalizedSecurity = postgresRepository ? await stateRepository.readAccountSecurity"), "Postgres auth session should read normalized account security");
+assert.ok(serverSource.includes("accounts: []"), "Anonymous auth sessions should not expose account records");
 for (const expected of [
   'pathname === "/api/bootstrap"',
   'pathname === "/api/runtime/health"',

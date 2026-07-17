@@ -756,19 +756,26 @@ async function handleApi(request, response, pathname) {
     }
     return true;
   }
-  const authState =
-    stateRepository.status().mode === "postgres" && pathname !== "/api/auth/session"
-      ? {}
-      : await ensureStateFile();
+  const postgresRepository = stateRepository.status().mode === "postgres";
+  const authState = postgresRepository ? {} : await ensureStateFile();
   const repositorySessionRevoked = session.authenticated ? await stateRepository.isSessionRevoked(session) : false;
   if (isSessionRevoked(authState, session) || repositorySessionRevoked) {
     session = revokedSession(session);
   }
 
   if (request.method === "GET" && pathname === "/api/auth/session") {
+    const normalizedSecurity = postgresRepository ? await stateRepository.readAccountSecurity({ limit: 10000 }) : null;
+    const security = normalizedSecurity
+      ? (() => {
+          const scoped = session.authenticated
+            ? scopeAccountSecurityForSession(normalizedSecurity, session, {})
+            : { summary: normalizedSecurity.summary, accounts: [] };
+          return { ...(scoped.summary || {}), accounts: scoped.accounts || [] };
+        })()
+      : getAuthSecuritySummary(authState);
     sendJson(response, 200, {
       session: publicSessionSummary(session),
-      security: getAuthSecuritySummary(authState),
+      security,
       repository: stateRepository.status(),
       openAiImages: getPlatformOpenAiImageReadiness(process.env),
       giftCards: getGiftCardFulfillmentReadiness(process.env)
