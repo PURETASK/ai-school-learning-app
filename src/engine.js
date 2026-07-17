@@ -27,6 +27,7 @@ import { getVisualAssetStorageConfig } from "./visualAssetStorageService.js";
 import { getProductionAuthReadiness, isProductionAuthProviderConfigured } from "./productionAuth.js";
 import { executeToolGateway, getToolGatewaySummary, getToolRegistry, reviewTutorResponseQuality } from "./toolGateway.js";
 import { getOpenAiTutorReadiness } from "./openaiTutorService.js";
+import { adaptStructuredLesson } from "./contentImportAdapter.js";
 import {
   createGeneratedVisualAsset,
   findVisualOpportunity,
@@ -6566,6 +6567,7 @@ export function getDraftEvidenceAudit(draft) {
 }
 
 function normalizeLessonImport(rawLesson = {}, index = 0) {
+  rawLesson = adaptStructuredLesson(rawLesson);
   const subject = String(rawLesson.subject || "").trim();
   const standards = Array.isArray(rawLesson.standards) && rawLesson.standards.length ? rawLesson.standards : defaultStandardsForSubject(subject);
   const evidenceMoves = normalizeEvidenceMoves(subject, rawLesson.evidenceMoves || {});
@@ -6692,7 +6694,8 @@ export function validateLessonBatch(batchInput) {
 export function importLessonBatch(state, batchInput) {
   const validation = validateLessonBatch(batchInput);
   const importedAt = new Date().toLocaleString();
-  const batchId = `batch-${Date.now()}`;
+  const requestedBatchId = Array.isArray(batchInput) ? "" : String(batchInput?.sourceBatchId || "").trim();
+  const batchId = requestedBatchId || `batch-${Date.now()}`;
   const job = {
     id: batchId,
     status: validation.accepted ? "imported" : "rejected",
@@ -6753,6 +6756,14 @@ export function importLessonBatch(state, batchInput) {
       readability: lesson.readability,
       evidenceMoves: lesson.evidenceMoves,
       evidenceAudit: summarizeEvidenceAudit(audit),
+      sourceLessonId: lesson.sourceLessonId || lesson.id,
+      estimatedMinutes: lesson.estimatedMinutes,
+      masteryThreshold: lesson.masteryThreshold,
+      activePhases: lesson.activePhases || [],
+      memoryVaultItems: lesson.memoryVaultItems || [],
+      retrievalCheck: lesson.retrievalCheck || null,
+      reteachPath: lesson.reteachPath || null,
+      challengePath: lesson.challengePath || null,
       publicationBlocked: false,
       blockedReason: "",
       sourceBatchId: batchId,

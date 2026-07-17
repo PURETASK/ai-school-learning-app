@@ -2938,6 +2938,35 @@ assert.equal(getDraftEvidenceAudit(acceptedBatchImport.state.contentDrafts[0]).p
 assert.ok(acceptedBatchImport.state.contentDrafts[0].visual.altText, "imported draft should preserve visual alt text");
 assert.ok(acceptedBatchImport.state.contentDrafts[0].accessibilityNotes, "imported draft should preserve accessibility notes");
 assert.equal(getContentDraftCompletenessReview(acceptedBatchImport.state.contentDrafts[0]).passed, true, "imported draft should preserve or scaffold full lesson body");
+
+const bridgeNativeLessonPaths = [
+  "../content/bridge-academy/grade-6/computer-science/BA-G6-CS-U1-L1_DEBUGGING_AN_ALGORITHM.json",
+  "../content/bridge-academy/grade-6/ela/BA-G6-ELA-U2-L1_THEME_AND_TEXT_EVIDENCE.json",
+  "../content/bridge-academy/grade-6/math/BA-G6-MATH-U1-L1_UNDERSTANDING_RATIOS.json",
+  "../content/bridge-academy/grade-6/science/BA-G6-SCI-U2-L1_WATER_CYCLE_SYSTEMS.json",
+  "../content/bridge-academy/grade-6/social-studies/BA-G6-SS-U2-L1_ANCIENT_CIVILIZATIONS_AND_GEOGRAPHY.json"
+];
+const bridgeNativeBatch = {
+  sourceBatchId: "bridge-academy-grade-6-native-batch-1",
+  lessons: bridgeNativeLessonPaths.map((file) => JSON.parse(readFileSync(new URL(file, import.meta.url), "utf8")))
+};
+const bridgeNativeValidation = validateLessonBatch(bridgeNativeBatch);
+assert.equal(bridgeNativeValidation.accepted, true, "native Bridge Grade 6 batch should pass the compatibility adapter and quality gate");
+assert.deepEqual(
+  bridgeNativeValidation.lessons.map((lesson) => lesson.subject).sort(),
+  ["computer-science", "ela", "math", "science", "social-studies"],
+  "native Bridge batch should normalize source subject labels"
+);
+assert.ok(bridgeNativeValidation.lessons.every((lesson) => lesson.quizQuestions.length >= 10), "native Bridge lessons should preserve their quiz banks");
+assert.ok(bridgeNativeValidation.lessons.every((lesson) => lesson.visualSupports.length >= 3), "native Bridge lessons should receive hero, diagram, and tutor visuals");
+assert.ok(bridgeNativeValidation.lessons.every((lesson) => lesson.groupHomework), "Bridge lessons should include structured group homework");
+const bridgeNativeImport = importLessonBatch(state, bridgeNativeBatch);
+assert.equal(bridgeNativeImport.result.imported, 5, "native Bridge batch should create five reviewable drafts");
+assert.equal(bridgeNativeImport.state.contentDrafts[0].sourceBatchId, bridgeNativeBatch.sourceBatchId, "native batch id should be stable for review and publication");
+assert.ok(
+  bridgeNativeImport.state.contentDrafts.filter((draft) => draft.sourceBatchId === bridgeNativeBatch.sourceBatchId).every((draft) => draft.sourceLessonId),
+  "native drafts should retain source lesson ids"
+);
 assert.ok(acceptedBatchImport.state.contentDrafts[0].visualSupports.length >= 2, "imported draft should include visual supports");
 assert.ok(acceptedBatchImport.state.contentDrafts[0].sourceCards.length >= 1, "imported draft should include source cards");
 assert.equal(getVisualAssetSummary(acceptedBatchImport.state).total, baselineVisualSummary.total + 2, "valid batch should create visual asset records");

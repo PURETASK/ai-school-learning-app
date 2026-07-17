@@ -2543,7 +2543,7 @@ createServer(async (request, response) => {
         sendJson(response, 404, { error: "API route not found" });
       }
     } catch (error) {
-      sendJson(response, error.status || 500, { error: error.message || "API error" });
+      writeJsonResponse(response, error.status || 500, { error: error.message || "API error" });
     }
     return;
   }

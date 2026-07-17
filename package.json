@@ -12,6 +12,7 @@
     "export:seed": "node scripts/export-normalized-seed.mjs",
     "storage:setup": "node scripts/setup-visual-storage.mjs",
     "visual:generate-one": "node scripts/generate-production-visual.mjs",
+    "content:import:bridge6": "node scripts/import-bridge-grade6.mjs",
     "supabase:check": "node scripts/check-supabase-connection.mjs",
     "graph:extract": "python -m graphify update . --force --no-cluster",
     "graph:tree": "graphify tree --graph graphify-out/graph.json --output graphify-out/GRAPH_TREE.html --root . --label \"Nexus Learning OS\"",
