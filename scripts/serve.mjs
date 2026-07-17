@@ -17,7 +17,6 @@ import {
   addGeneratedVisualAsset,
   askAiTutor,
   canAccessRepositoryAction,
-  canParentAccessLearner,
   completeLessonQuiz,
   createEmailVerificationRequest,
   createParentManagedChildAccount,
@@ -358,13 +357,13 @@ function scopeAccountSecurityForSession(accountSecurity = {}, session = {}, stat
   if (session.role === "student" && session.studentId) ownUserIds.add(`user-${session.studentId}`);
   if (session.role === "parent" && session.guardianId) {
     const linkedStudentIds = new Set(
-      (state.localAccounts || [])
-        .filter((account) => account.role === "student" && account.guardianId === session.guardianId)
-        .map((account) => account.studentId)
+      (accountSecurity.guardianLinks || [])
+        .filter((link) => link.guardian_id === session.guardianId || link.guardianId === session.guardianId)
+        .map((link) => link.student_id || link.studentId)
         .filter(Boolean)
     );
     students.filter((student) => linkedStudentIds.has(student.id)).forEach((student) => ownUserIds.add(student.userId || `user-${student.id}`));
-    (state.localAccounts || [])
+    accounts
       .filter((account) => account.guardianId === session.guardianId)
       .forEach((account) => ownUserIds.add(account.userId || `user-${account.id}`));
   }
@@ -444,7 +443,46 @@ function requireSchoolAdmin(session, tableId, operation = "write") {
   return requireRepositoryPermission(session, tableId, operation, repositoryScopeForRole(session));
 }
 
-function requireTutorAccess(session, state, learnerId) {
+async function readRepositoryLearnerScope(session, learnerId = "") {
+  return stateRepository.readLearnerProfiles({
+    role: session.role,
+    studentId: session.studentId || "",
+    guardianId: session.guardianId || "",
+    teacherId: session.teacherId || "",
+    learnerIds: learnerId ? [learnerId] : [],
+    limit: 10000
+  });
+}
+
+async function repositoryCanAccessLearner(session, learnerId = "") {
+  if (!learnerId || ["school-admin", "platform-admin"].includes(session.role)) return true;
+  const profile = await readRepositoryLearnerScope(session, learnerId);
+  return profile.learners.some((learner) => learner.id === learnerId && learner.status === "active");
+}
+
+async function readRepositoryLearnerAccess(session, state, learnerId) {
+  if (stateRepository.status().mode !== "postgres") return getLearnerAccess(state, learnerId);
+  const profile = await readRepositoryLearnerScope(session, learnerId);
+  const learner = profile.learners.find((item) => item.id === learnerId);
+  if (!learner) return { active: false, aiAllowed: false, blockedReasons: ["Learner access is not in this session's scope."] };
+
+  const security = await stateRepository.readAccountSecurity({ limit: 10000 });
+  const consent = security.consentRecords?.[learnerId];
+  const parentIds = learner.guardianIds || [];
+  const parentUserIds = new Set(
+    security.guardians.filter((guardian) => parentIds.includes(guardian.id)).map((guardian) => guardian.userId).filter(Boolean)
+  );
+  const parentVerified = security.accounts.some(
+    (account) => parentUserIds.has(account.userId) && account.emailVerified
+  );
+  const blockedReasons = [];
+  if (!parentVerified) blockedReasons.push("Parent email is not verified.");
+  if (!consent?.dataCollection || !consent?.portfolio) blockedReasons.push("Required parent consent is missing.");
+  if (!consent?.aiHelper) blockedReasons.push("AI tutor is disabled by parent control.");
+  return { active: blockedReasons.length === 0, aiAllowed: Boolean(consent?.aiHelper), blockedReasons };
+}
+
+async function requireTutorAccess(session, state, learnerId) {
   requireRepositoryPermission(session, "ai_tutor_events", "write", session.scope);
   if (session.role === "student" && learnerId !== session.studentId) {
     const error = new Error("Student tutor sessions can only write the authenticated learner's own AI tutor events.");
@@ -452,7 +490,7 @@ function requireTutorAccess(session, state, learnerId) {
     throw error;
   }
 
-  const access = getLearnerAccess(state, learnerId);
+  const access = await readRepositoryLearnerAccess(session, state, learnerId);
   if (!access.active || !access.aiAllowed) {
     const error = new Error(
       access.blockedReasons?.length
@@ -497,36 +535,37 @@ function requireLearningEvidenceAccess(session, state, learnerId) {
   }
 }
 
-function requireRewardDecisionAccess(session, state = {}, rewardRequest = {}) {
+async function requireRewardDecisionAccess(session, state = {}, rewardRequest = {}) {
   requireAuthenticated(session);
   if (!["parent", "school-admin", "platform-admin"].includes(session.role)) {
     const error = new Error("A parent or admin session is required to approve, reject, or redeem rewards.");
     error.status = 403;
     throw error;
   }
-  if (session.role === "parent" && !canParentAccessLearner(state, session, rewardRequest.learnerId)) {
+  if (session.role === "parent" && !(await repositoryCanAccessLearner(session, rewardRequest.learnerId))) {
     const error = new Error("Parents can only approve or redeem rewards for their own linked child accounts.");
     error.status = 403;
     throw error;
   }
 }
 
-function canTeacherAccessLearner(state = {}, session = {}, learnerId = "") {
+async function canTeacherAccessLearner(state = {}, session = {}, learnerId = "") {
   const normalizedLearnerId = String(learnerId || "").trim();
   if (!normalizedLearnerId) return false;
   if (["school-admin", "platform-admin"].includes(session.role)) return true;
   if (session.role !== "teacher" || !session.teacherId) return false;
+  if (stateRepository.status().mode === "postgres") return repositoryCanAccessLearner(session, normalizedLearnerId);
   return (state.classSections || []).some(
     (section) => section.teacherId === session.teacherId && (section.studentIds || []).includes(normalizedLearnerId)
   );
 }
 
-function requireLearnerReadAccess(session, state = {}, learnerId = "", label = "learner records") {
+async function requireLearnerReadAccess(session, state = {}, learnerId = "", label = "learner records") {
   requireAuthenticated(session);
   if (!learnerId || ["school-admin", "platform-admin"].includes(session.role)) return;
   if (session.role === "student" && learnerId === session.studentId) return;
-  if (session.role === "parent" && canParentAccessLearner(state, session, learnerId)) return;
-  if (session.role === "teacher" && canTeacherAccessLearner(state, session, learnerId)) return;
+  if (session.role === "parent" && (await repositoryCanAccessLearner(session, learnerId))) return;
+  if (session.role === "teacher" && (await canTeacherAccessLearner(state, session, learnerId))) return;
   const error = new Error(`This session cannot read ${label} for the requested learner.`);
   error.status = 403;
   throw error;
@@ -540,30 +579,13 @@ function gradeBandForGrade(grade = "") {
   return "9-12";
 }
 
-function learnerIdsForScopedBootstrap(state = {}, session = {}) {
-  if (session.role === "student") return session.studentId ? [session.studentId] : [];
-  if (session.role === "parent") {
-    return (state.learners || [])
-      .filter((learner) => canParentAccessLearner(state, session, learner.id))
-      .map((learner) => learner.id)
-      .filter(Boolean);
-  }
-  if (session.role === "teacher") {
-    return (state.learners || [])
-      .filter((learner) => canTeacherAccessLearner(state, session, learner.id))
-      .map((learner) => learner.id)
-      .filter(Boolean);
-  }
-  return [];
-}
-
 async function readRoleScopedBootstrap(session, state = {}) {
   const profile = await stateRepository.readLearnerProfiles({
     role: session.role,
     studentId: session.studentId || "",
     guardianId: session.guardianId || "",
     teacherId: session.teacherId || "",
-    learnerIds: learnerIdsForScopedBootstrap(state, session),
+    learnerIds: session.role === "student" && session.studentId ? [session.studentId] : [],
     limit: 10000
   });
   const learnerIds = profile.learners.map((learner) => learner.id).filter(Boolean);
@@ -826,7 +848,7 @@ async function handleApi(request, response, pathname) {
       const claims = registered.result.sessionClaims;
       const token = createSessionToken(claims, getSessionSecret(process.env));
       return {
-        state: await writeAccountSecurity(nextState),
+        state: await writeAccountProvisioning(nextState, registered.result.account.id),
         result: registered.result,
         emailVerification,
         devVerificationToken: emailVerification?.accepted && !emailVerification.alreadyVerified ? verificationToken.token : "",
@@ -1190,7 +1212,7 @@ async function handleApi(request, response, pathname) {
         return { state, result: childAccount.result };
       }
       return {
-        state: await writeAccountSecurity(childAccount.state),
+        state: await writeAccountProvisioning(childAccount.state, childAccount.result.account.id),
         result: childAccount.result,
         session: publicSessionSummary(session)
       };
@@ -1341,7 +1363,7 @@ async function handleApi(request, response, pathname) {
     }
     const state = await ensureStateFile();
     if (learnerId) {
-      requireLearnerReadAccess(session, state, learnerId, "student classroom session");
+      await requireLearnerReadAccess(session, state, learnerId, "student classroom session");
     }
     const classroom = await stateRepository.readLearnerClassSession({
       limit: url.searchParams.get("limit") || 10000,
@@ -1365,7 +1387,7 @@ async function handleApi(request, response, pathname) {
     const state = await ensureStateFile();
     const learnerId = url.searchParams.get("learnerId") || "";
     if (learnerId) {
-      requireLearnerReadAccess(session, state, learnerId, "classroom evidence");
+      await requireLearnerReadAccess(session, state, learnerId, "classroom evidence");
     }
     const evidence = await stateRepository.readClassroomEvidence({
       limit: url.searchParams.get("limit") || 10000,
@@ -1616,7 +1638,7 @@ async function handleApi(request, response, pathname) {
       error.status = 400;
       throw error;
     } else if (learnerId) {
-      requireLearnerReadAccess(session, state, learnerId, "lesson scratchpads");
+      await requireLearnerReadAccess(session, state, learnerId, "lesson scratchpads");
     }
     const scratchpads = await stateRepository.readLessonScratchpads({
       limit: url.searchParams.get("limit") || 10000,
@@ -1643,7 +1665,7 @@ async function handleApi(request, response, pathname) {
       error.status = 400;
       throw error;
     } else if (learnerId) {
-      requireLearnerReadAccess(session, state, learnerId, "assignments");
+      await requireLearnerReadAccess(session, state, learnerId, "assignments");
     }
     const assignments = await stateRepository.readAssignments({
       limit: url.searchParams.get("limit") || 10000,
@@ -1670,7 +1692,7 @@ async function handleApi(request, response, pathname) {
       error.status = 400;
       throw error;
     } else if (learnerId) {
-      requireLearnerReadAccess(session, state, learnerId, "retention schedules");
+      await requireLearnerReadAccess(session, state, learnerId, "retention schedules");
     }
     const schedules = await stateRepository.readRetentionSchedules({
       limit: url.searchParams.get("limit") || 10000,
@@ -1699,7 +1721,7 @@ async function handleApi(request, response, pathname) {
       error.status = 400;
       throw error;
     } else if (learnerId) {
-      requireLearnerReadAccess(session, state, learnerId, "portfolio and badge evidence");
+      await requireLearnerReadAccess(session, state, learnerId, "portfolio and badge evidence");
     }
     const evidence = await stateRepository.readPortfolioEvidence({
       limit: url.searchParams.get("limit") || 10000,
@@ -1835,7 +1857,7 @@ async function handleApi(request, response, pathname) {
           repository: stateRepository.status()
         };
       }
-      requireRewardDecisionAccess(session, state, requestRecord);
+      await requireRewardDecisionAccess(session, state, requestRecord);
       const decided = updateRewardApprovalStatus(state, {
         requestId: body.requestId,
         status: body.status,
@@ -1867,7 +1889,7 @@ async function handleApi(request, response, pathname) {
           giftCards: getGiftCardFulfillmentReadiness(process.env)
         };
       }
-      requireRewardDecisionAccess(session, state, requestRecord);
+      await requireRewardDecisionAccess(session, state, requestRecord);
       const fulfilled = await fulfillGiftCardReward({
         request: requestRecord,
         state,
@@ -1913,10 +1935,10 @@ async function handleApi(request, response, pathname) {
       learnerId = session.studentId;
       guardianId = "";
     } else if (session.role === "parent") {
-      if (learnerId) requireLearnerReadAccess(session, state, learnerId, "reward approvals");
+      if (learnerId) await requireLearnerReadAccess(session, state, learnerId, "reward approvals");
       guardianId = session.guardianId || guardianId;
     } else if (session.role === "teacher" && learnerId) {
-      requireLearnerReadAccess(session, state, learnerId, "reward approvals");
+      await requireLearnerReadAccess(session, state, learnerId, "reward approvals");
     }
     const rewards = await stateRepository.readRewardApprovals({
       limit: url.searchParams.get("limit") || 10000,
@@ -1965,7 +1987,7 @@ async function handleApi(request, response, pathname) {
       error.status = 400;
       throw error;
     } else if (learnerId) {
-      requireLearnerReadAccess(session, state, learnerId, "AI tutor events");
+      await requireLearnerReadAccess(session, state, learnerId, "AI tutor events");
     }
     const events = await stateRepository.readAiTutorEvents({
       limit: url.searchParams.get("limit") || 10000,
@@ -2031,7 +2053,7 @@ async function handleApi(request, response, pathname) {
     const payload = await queueStateMutation(async () => {
       const state = await ensureStateFile();
       const learnerId = String(body.learnerId || session.studentId || "avery");
-      requireTutorAccess(session, state, learnerId);
+      await requireTutorAccess(session, state, learnerId);
       const nextTutor = askAiTutor(state, {
         input: String(body.input || ""),
         lessonId: String(body.lessonId || state.selectedLessonId || "g3-fractions-number-line"),
@@ -2052,7 +2074,7 @@ async function handleApi(request, response, pathname) {
       const state = await ensureStateFile();
       const log = (state.aiLogs || []).find((item) => item.id === body.logId);
       const learnerId = String(log?.learnerId || body.learnerId || session.studentId || "avery");
-      requireTutorAccess(session, state, learnerId);
+      await requireTutorAccess(session, state, learnerId);
       const feedback = submitTutorFeedback(state, String(body.logId || ""), String(body.feedback || "still-confused"), String(body.note || ""));
       return { state: await writeTutorWorkflow(feedback.state), result: feedback.result };
     });

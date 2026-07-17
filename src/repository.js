@@ -2057,6 +2057,20 @@ export function createAccountSecurityReadModel(rowsByTable = {}, options = {}) {
   const teachers = toArray(rowsByTable.teachers);
   const invitations = toArray(rowsByTable.account_invitations);
   const guardianLinks = toArray(rowsByTable.guardian_student_links);
+  const consentRecords = Object.fromEntries(
+    toArray(rowsByTable.consent_records)
+      .filter((row) => row.student_id)
+      .map((row) => [
+        row.student_id,
+        {
+          studentId: row.student_id,
+          dataCollection: Boolean(row.data_collection),
+          portfolio: Boolean(row.portfolio),
+          aiHelper: Boolean(row.ai_helper),
+          updatedAt: row.updated_at || ""
+        }
+      ])
+  );
   const sessionRevocations = toArray(rowsByTable.session_revocations)
     .map(normalizedSessionRevocationRow)
     .sort((left, right) => String(right.createdAt || "").localeCompare(String(left.createdAt || "")));
@@ -2114,7 +2128,8 @@ export function createAccountSecurityReadModel(rowsByTable = {}, options = {}) {
     sessionRevocations,
     authAuditEvents,
     invitations,
-    guardianLinks
+    guardianLinks,
+    consentRecords
   };
 }
 
