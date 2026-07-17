@@ -756,7 +756,10 @@ async function handleApi(request, response, pathname) {
     }
     return true;
   }
-  const authState = await ensureStateFile();
+  const authState =
+    stateRepository.status().mode === "postgres" && pathname !== "/api/auth/session"
+      ? {}
+      : await ensureStateFile();
   const repositorySessionRevoked = session.authenticated ? await stateRepository.isSessionRevoked(session) : false;
   if (isSessionRevoked(authState, session) || repositorySessionRevoked) {
     session = revokedSession(session);

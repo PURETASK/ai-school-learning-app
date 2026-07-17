@@ -3729,6 +3729,7 @@ assert.ok(appSource.includes("repositoryBootstrap?.catalog || null"), "scoped ca
 
 const serverSource = readFileSync("scripts/serve.mjs", "utf8");
 const apiClientSource = readFileSync("src/apiClient.js", "utf8");
+assert.ok(serverSource.includes('stateRepository.status().mode === "postgres" && pathname !== "/api/auth/session"'), "Postgres requests should avoid broad auth snapshot hydration");
 for (const expected of [
   'pathname === "/api/bootstrap"',
   'pathname === "/api/runtime/health"',
