@@ -1823,6 +1823,9 @@ assert.match(localProductAudit.categories.find((item) => item.id === "content-sc
 assert.match(localProductAudit.categories.find((item) => item.id === "content-scale").evidence, /pilot scale gate=open/, "product audit should explain that the pilot visual quality gate is open");
 const configuredProductAudit = getProductCompletenessAudit(state, postgresRuntimeStatus);
 assert.notEqual(configuredProductAudit.categories.find((item) => item.id === "runtime").status, "blocked", "configured runtime should clear the runtime blocker");
+assert.equal(configuredProductAudit.categories.find((item) => item.id === "database").status, "blocked", "database audit should require a live repository probe instead of trusting URL presence");
+const verifiedProductAudit = getProductCompletenessAudit(state, { ...postgresRuntimeStatus, databaseVerified: true });
+assert.equal(verifiedProductAudit.categories.find((item) => item.id === "database").status, "complete", "database audit should pass after a live repository probe is recorded");
 assert.equal(estimateImageCostCents({ model: "gpt-image-2", size: "1024x1024", quality: "medium" }), 5.3, "image cost estimate should use configured model/size/quality");
 const blockedImagePlan = createImageGenerationPlan({
   prompt: "Generate a learning diagram",

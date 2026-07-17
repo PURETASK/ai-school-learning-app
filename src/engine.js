@@ -4540,6 +4540,7 @@ export function getProductCompletenessAudit(state = createInitialState(), env = 
   const contentReviewQueue = (state.contentDrafts || []).filter((draft) => draft.status === "review" || draft.publicationBlocked).length;
   const corePilotReady = pilotQuality.scaleUnlocked && published.total >= 6 && published.withVisualSupports >= 6 && published.withQuiz >= 6;
   const databaseBlocked = !runtime.databaseConfigured || runtime.repositoryMode !== "postgres";
+  const liveDatabaseHealthy = runtime.databaseVerified === true || runtime.liveHealth?.healthy === true;
   const productionAuthReady = runtime.authProviderConfigured && runtime.authReadiness?.passed;
   const categories = [
     {
@@ -4566,9 +4567,13 @@ export function getProductCompletenessAudit(state = createInitialState(), env = 
     {
       id: "database",
       title: "Database migration and normalized repository",
-      status: auditStatus(migration.passed && dataModel.passed && runtime.databaseConfigured, !runtime.databaseConfigured),
-      evidence: `${dataModel.schema.tableCount} tables modeled; migration ${migration.passed ? "ready" : "not ready"}; DB ${runtime.databaseConfigured ? "configured" : "missing"}.`,
-      nextStep: runtime.databaseConfigured ? "Run db:apply, db:seed, and db:verify against Supabase." : "Paste DATABASE_URL into local/server environment before applying SQL."
+      status: auditStatus(migration.passed && dataModel.passed && runtime.databaseConfigured && liveDatabaseHealthy, !runtime.databaseConfigured || (runtime.repositoryMode === "postgres" && !liveDatabaseHealthy)),
+      evidence: `${dataModel.schema.tableCount} tables modeled; migration ${migration.passed ? "ready" : "not ready"}; DB ${runtime.databaseConfigured ? "configured" : "missing"}; live probe ${liveDatabaseHealthy ? "passed" : "not verified"}.`,
+      nextStep: !runtime.databaseConfigured
+        ? "Paste DATABASE_URL into the server environment before applying SQL."
+        : liveDatabaseHealthy
+          ? "Keep db:verify in deployment checks after every migration."
+          : "Run npm run supabase:check, repair DATABASE_URL credentials, then apply and verify the migration."
     },
     {
       id: "pilot-lessons",

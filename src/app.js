@@ -5487,7 +5487,14 @@ function renderRuntimeConfigurationPanel() {
 }
 
 function renderProductCompletenessPanel({ compact = false } = {}) {
-  const audit = getProductCompletenessAudit(state, currentRuntimeConfiguration?.runtime || {});
+  const runtime = currentRuntimeConfiguration?.runtime
+    ? {
+        ...currentRuntimeConfiguration.runtime,
+        liveHealth: currentRuntimeHealth,
+        databaseVerified: currentRuntimeHealth?.healthy === true
+      }
+    : {};
+  const audit = getProductCompletenessAudit(state, runtime);
   return `
     <section class="panel wide-panel product-completeness-panel">
       <div class="section-head">
