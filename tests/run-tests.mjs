@@ -2968,6 +2968,17 @@ assert.ok(
   bridgeNativeImport.state.contentDrafts.filter((draft) => draft.sourceBatchId === bridgeNativeBatch.sourceBatchId).every((draft) => draft.sourceLessonId),
   "native drafts should retain source lesson ids"
 );
+const nativeBatchReviewItem = getAgentReviewQueue(bridgeNativeImport.state).items.find((item) => item.id === `batch:${bridgeNativeBatch.sourceBatchId}`);
+assert.ok(nativeBatchReviewItem, "native imported batches should appear in the manager review queue");
+assert.equal(nativeBatchReviewItem.type, "batch", "native imported batch review should use the batch workflow");
+assert.equal(getManagerReviewDossier(bridgeNativeImport.state, nativeBatchReviewItem.id).found, true, "native imported batches should have a manager dossier");
+const approvedNativeBatch = resolveAgentReviewItem(bridgeNativeImport.state, nativeBatchReviewItem.id, "approve");
+assert.equal(approvedNativeBatch.result.accepted, true, "manager should be able to approve a native imported batch");
+assert.equal(approvedNativeBatch.result.affectedDrafts, 5, "native batch approval should update every imported draft");
+assert.ok(
+  approvedNativeBatch.state.contentDrafts.filter((draft) => draft.sourceBatchId === bridgeNativeBatch.sourceBatchId).every((draft) => draft.batchReviewStatus === "approved"),
+  "native batch approval should stamp every draft with the batch decision"
+);
 for (const draft of bridgeNativeImport.state.contentDrafts.filter((item) => item.sourceBatchId === bridgeNativeBatch.sourceBatchId)) {
   const publishedNativeLesson = createPublishedLessonFromDraft(draft, { publishedBy: "quality-gate" });
   const nativeLessonValidation = validateNexusLessonV3(publishedNativeLesson);

@@ -1453,7 +1453,7 @@ function getReviewableContentBatchIds(state = {}) {
     ...new Set([
       ...(state.contentDrafts || []).map((draft) => draft.sourceBatchId),
       ...(state.contentBatchPublications || []).map((publication) => publication.sourceBatchId)
-    ].filter((id) => id === bridgeGrade6BatchOneId))
+    ].filter(Boolean))
   ];
 }
 
@@ -1512,7 +1512,9 @@ function getContentBatchReviewState(state = {}, sourceBatchId = "") {
   return {
     id: `batch-review-${sourceBatchId}`,
     sourceBatchId,
-    title: sourceBatchId === bridgeGrade6BatchOneId ? "Bridge Academy Grade 6 Batch 1" : sourceBatchId,
+    title: sourceBatchId === bridgeGrade6BatchOneId
+      ? "Bridge Academy Grade 6 Batch 1"
+      : sourceBatchId.replace(/[-_]+/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase()),
     status: published ? "published" : partialPublication ? "partial" : approved ? "approved" : rejected ? "rejected" : revisionRequired ? "revision-required" : "manager-review",
     decision: published || partialPublication || approved ? "approved" : rejected ? "rejected" : revisionRequired ? "revision-required" : "",
     academyId: drafts[0]?.academyId || publishedBatchLessons[0]?.academyId || "",
