@@ -189,6 +189,17 @@ async function writeAccountSecurity(state) {
   });
 }
 
+async function writeAccountProvisioning(state, accountId = "") {
+  if (typeof stateRepository.writeAccountProvisioning === "function") {
+    return stateRepository.writeAccountProvisioning({
+      ...createInitialState(),
+      ...state,
+      persistedAt: new Date().toISOString()
+    }, accountId);
+  }
+  return writeAccountSecurity(state);
+}
+
 async function writeLearningEvidence(state) {
   return stateRepository.writeLearningEvidence({
     ...createInitialState(),
@@ -762,7 +773,7 @@ async function handleApi(request, response, pathname) {
           });
         }
         return {
-          state: await writeAccountSecurity(registered.state),
+          state: await writeAccountProvisioning(registered.state, registered.result.account.id),
           result: registered.result
         };
       });
@@ -1129,7 +1140,7 @@ async function handleApi(request, response, pathname) {
             emailVerified: true
           });
           if (!childAccount.result.accepted) return { state, result: childAccount.result };
-          const nextState = await writeAccountSecurity(childAccount.state);
+          const nextState = await writeAccountProvisioning(childAccount.state, childAccount.result.account.id);
           const claims = childAccount.result.sessionClaims;
           if (process.env.SUPABASE_SECRET_KEY) {
             await supabaseSetAppMetadata(providerUser.id, {

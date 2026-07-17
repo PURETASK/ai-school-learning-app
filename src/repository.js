@@ -539,6 +539,10 @@ export class JsonStateRepository {
   async writeAccountSecurity(state) {
     return this.writeState(state);
   }
+
+  async writeAccountProvisioning(state) {
+    return this.writeAccountSecurity(state);
+  }
 }
 
 function sqlString(value) {
@@ -2225,6 +2229,123 @@ export function createNormalizedStateUpsertSql(state, tableIds = normalizedRepos
   };
 }
 
+export function createAccountProvisioningRows(state = {}, accountId = "") {
+  const account = (state.localAccounts || []).find((item) => item.id === accountId || item.userId === accountId) || null;
+  if (!account) return { account: null, rowsByTable: {} };
+  const timestamp = account.updatedAt || account.createdAt || new Date().toISOString();
+  const rowsByTable = {
+    users: [
+      {
+        id: account.userId || `user-${account.id}`,
+        role: account.role,
+        display_name: account.displayName,
+        username: account.username || "",
+        email: account.email || "",
+        email_verified: Boolean(account.emailVerified || account.status === "active"),
+        auth_provider: account.authProvider || "local-preview",
+        provider_subject: account.providerSubject || account.userId || account.id,
+        status: account.status || "active",
+        created_at: account.createdAt || timestamp,
+        updated_at: account.updatedAt || timestamp
+      }
+    ]
+  };
+
+  if (account.role === "parent" && account.guardianId) {
+    rowsByTable.guardians = [{
+      id: account.guardianId,
+      user_id: account.userId || `user-${account.id}`,
+      preferred_report_day: "Friday",
+      household_setup_complete: false,
+      created_at: account.createdAt || timestamp,
+      updated_at: account.updatedAt || timestamp
+    }];
+  }
+  if (account.role === "teacher" && account.teacherId) {
+    rowsByTable.teachers = [{
+      id: account.teacherId,
+      user_id: account.userId || `user-${account.id}`,
+      display_name: account.displayName || "Teacher",
+      organization_name: "Learning Academy",
+      created_at: account.createdAt || timestamp,
+      updated_at: account.updatedAt || timestamp
+    }];
+  }
+
+  if (account.role === "student" && account.studentId) {
+    const learner = (state.learners || []).find((item) => item.id === account.studentId) || {};
+    const academyId = learner.academyId || account.academyId || "foundation";
+    const grade = String(learner.grade || account.grade || "3");
+    const gradeLevelId = learner.gradeLevelId || account.gradeLevelId || `${academyId}-${grade.toLowerCase()}`;
+    rowsByTable.students = [{
+      id: account.studentId,
+      user_id: account.userId || `user-${account.id}`,
+      academy_id: academyId,
+      grade_level_id: gradeLevelId,
+      display_name: learner.name || account.displayName || "Learner",
+      schedule: learner.schedule || (academyId === "foundation" ? "45 min/day" : academyId === "bridge" ? "60 min/day" : "90 min/day"),
+      status: learner.status || "active",
+      created_at: account.createdAt || timestamp,
+      updated_at: account.updatedAt || timestamp
+    }];
+    if (account.guardianId) {
+      rowsByTable.student_guardians = [{
+        id: `guardian-link-${account.guardianId}-${account.studentId}`,
+        student_id: account.studentId,
+        guardian_id: account.guardianId,
+        relationship: "parent",
+        can_manage_consent: true,
+        created_at: account.createdAt || timestamp
+      }];
+      rowsByTable.guardian_student_links = [{
+        id: `guardian-student-link-${account.guardianId}-${account.studentId}`,
+        guardian_id: account.guardianId,
+        student_id: account.studentId,
+        relationship: "parent",
+        status: "approved",
+        requested_by_user_id: account.userId || `user-${account.id}`,
+        approved_by_user_id: account.userId || `user-${account.id}`,
+        created_at: account.createdAt || timestamp,
+        approved_at: timestamp,
+        revoked_at: ""
+      }];
+    }
+    const consent = state.consentRecords?.[account.studentId] || {};
+    rowsByTable.consent_records = [{
+      id: `consent-${account.studentId}`,
+      student_id: account.studentId,
+      guardian_id: account.guardianId || "",
+      data_collection: Boolean(consent.dataCollection),
+      ai_helper: Boolean(consent.aiHelper),
+      portfolio: Boolean(consent.portfolio),
+      third_party_sharing: Boolean(consent.thirdPartySharing),
+      consented_by: consent.consentedBy || "Parent",
+      updated_at: consent.lastUpdated || timestamp
+    }];
+    const supports = learner.accommodations || [];
+    if (supports.length) {
+      rowsByTable.accommodations = supports.map((support, index) => ({
+        id: `accommodation-${account.studentId}-${index + 1}`,
+        student_id: account.studentId,
+        support,
+        source: "parent-setup",
+        created_at: timestamp
+      }));
+    }
+  }
+  return { account, rowsByTable };
+}
+
+export function createNormalizedRowsUpsertSql(rowsByTable = {}) {
+  const tableIds = Object.keys(rowsByTable);
+  const statements = tableIds.map((tableId) => createUpsertStatement(tableMeta(tableId), rowsByTable[tableId] || []));
+  return {
+    tableIds,
+    rowCounts: Object.fromEntries(tableIds.map((tableId) => [tableId, (rowsByTable[tableId] || []).length])),
+    sql: `${statements.join("\n\n")}\n`
+  };
+}
+
 export function createNormalizedTableDeleteMissingSql(state, tableIds = []) {
   const projection = createProductionSeedProjection(state);
   const statements = tableIds.map((tableId) => {
@@ -2601,6 +2722,19 @@ export class PostgresStateRepository {
 
   async writeAccountSecurity(state) {
     return this.writeProjectedState(state, accountSecurityRepositoryTableIds, { splitTables: true });
+  }
+
+  async writeAccountProvisioning(state, accountId = "") {
+    const provisioning = createAccountProvisioningRows(state, accountId);
+    if (!provisioning.account) throw new Error(`Account ${accountId} was not found for targeted provisioning.`);
+    const plan = createNormalizedRowsUpsertSql(provisioning.rowsByTable);
+    if (plan.sql.trim()) await runPsql({ sql: plan.sql, env: this.env });
+    return {
+      mode: this.mode,
+      accountId: provisioning.account.id,
+      tableIds: plan.tableIds,
+      rowCounts: plan.rowCounts
+    };
   }
 }
 

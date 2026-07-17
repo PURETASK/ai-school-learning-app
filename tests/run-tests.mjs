@@ -215,6 +215,8 @@ import {
   contentWorkflowRepositoryTableIds,
   auditEventRepositoryTableIds,
   contentDraftRepositoryTableIds,
+  createAccountProvisioningRows,
+  createNormalizedRowsUpsertSql,
   createNormalizedStateUpsertSql,
   createNormalizedTableDeleteMissingSql,
   createNormalizedTableSelectSql,
@@ -1668,6 +1670,17 @@ assert.equal(providerChildSignup.result.account.authProvider, "supabase", "manag
 assert.equal(providerChildSignup.result.account.userId, "supabase-child-001", "managed provider child should use provider user id");
 assert.equal(providerChildSignup.state.localAccounts.find((account) => account.username === "provider-child").passwordHash, undefined, "provider child records must not store a local password hash");
 assert.equal(providerChildSignup.state.consentRecords["learner-provider-child"].aiHelper, true, "provider child should persist parent AI consent");
+const targetedProvisioning = createAccountProvisioningRows(providerChildSignup.state, providerChildSignup.result.account.id);
+assert.deepEqual(
+  targetedProvisioning.rowsByTable.users.map((row) => row.id),
+  ["supabase-child-001"],
+  "targeted account provisioning should write only the provider user row for this account"
+);
+assert.ok(targetedProvisioning.rowsByTable.students?.some((row) => row.id === "learner-provider-child"), "targeted provisioning should include the linked student row");
+assert.ok(targetedProvisioning.rowsByTable.guardian_student_links?.length === 1, "targeted provisioning should include the approved guardian link");
+const targetedProvisioningSql = createNormalizedRowsUpsertSql(targetedProvisioning.rowsByTable);
+assert.ok(targetedProvisioningSql.sql.includes('insert into public."users"'), "targeted provisioning SQL should include users");
+assert.ok(!targetedProvisioningSql.sql.includes("demo-parent@example.invalid"), "targeted provisioning SQL should not include seeded demo accounts");
 assert.equal(
   canParentAccessLearner(managedChildSignup.state, { authenticated: true, role: "school-admin" }, "learner-managed-child"),
   true,

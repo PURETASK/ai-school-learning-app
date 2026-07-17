@@ -2112,6 +2112,9 @@ export function registerLocalAccount(state = {}, input = {}) {
     ...(input.passwordAlgorithm ? { passwordAlgorithm: input.passwordAlgorithm } : {}),
     authProvider,
     ...(input.providerSubject ? { providerSubject: input.providerSubject } : {}),
+    grade,
+    academyId,
+    gradeLevelId: `${academyId}-${grade.toLowerCase()}`,
     schoolId: input.schoolId || (providerManaged ? "" : "school-demo-1"),
     createdAt: new Date().toISOString(),
     ...accountLinks
@@ -2136,6 +2139,8 @@ export function registerLocalAccount(state = {}, input = {}) {
         username: account.username || "",
         authProvider: account.authProvider || "",
         providerSubject: account.providerSubject || "",
+        grade: account.grade || "",
+        academyId: account.academyId || "",
         status: account.status || "active",
         emailVerified: Boolean(account.emailVerified),
         studentId: account.studentId || "",
