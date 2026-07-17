@@ -71,6 +71,7 @@ import {
   getPlatformLessonProductionBatchPlan,
   getPilotQualityGateReport,
   getPublishedLessonSummary,
+  getReviewableContentBatchIds,
   getPlacementPlan,
   getPipelineStats,
   getRadicalLearningSummary,
@@ -104,6 +105,7 @@ import {
   createContentDraft,
   updateClassSessionStatus,
   getContentAuthoringSummary,
+  getContentBatchReviewState,
   getContentDraftCompletenessReview,
   getContentDraftTruthReview,
   getAppViewContractSummary,
@@ -2512,29 +2514,31 @@ function renderBatchImportResult() {
   `;
 }
 
-function getBridgeBatchPublicationPanelState() {
-  const sourceBatchId = "bridge-academy-grade-6-batch-1";
-  const drafts = (state.contentDrafts || []).filter((draft) => draft.sourceBatchId === sourceBatchId);
-  const publications = (state.contentBatchPublications || []).filter((publication) => publication.sourceBatchId === sourceBatchId);
-  const latestPublication = publications[0] || null;
-  const publishedLessons = (state.publishedLessons || []).filter((lesson) => lesson.sourceBatchId === sourceBatchId);
-  const approved = drafts.length > 0 && drafts.every((draft) => draft.batchReviewStatus === "approved");
-  const published = latestPublication?.status === "published" || (publishedLessons.length >= 5 && drafts.every((draft) => draft.status === "published"));
-  return {
-    sourceBatchId,
-    drafts,
-    publications,
-    latestPublication,
-    publishedLessons,
-    approved,
-    published,
-    reviewReady: drafts.length >= 5,
-    blockedDrafts: drafts.filter((draft) => draft.publicationBlocked)
-  };
+function getContentBatchPublicationPanelStates() {
+  return getReviewableContentBatchIds(state).map((sourceBatchId) => {
+    const review = getContentBatchReviewState(state, sourceBatchId);
+    const drafts = (state.contentDrafts || []).filter((draft) => draft.sourceBatchId === sourceBatchId);
+    const publications = (state.contentBatchPublications || []).filter((publication) => publication.sourceBatchId === sourceBatchId);
+    const latestPublication = review.publication || publications[0] || null;
+    const publishedLessons = (state.publishedLessons || []).filter((lesson) => lesson.sourceBatchId === sourceBatchId);
+    const approved = ["approved", "published", "partial"].includes(review.status);
+    const published = review.status === "published" || (publishedLessons.length === review.totalLessons && review.totalLessons > 0);
+    return {
+      ...review,
+      drafts,
+      publications,
+      latestPublication,
+      publishedLessons,
+      approved,
+      published,
+      reviewReady: review.totalLessons > 0,
+      blockedDrafts: drafts.filter((draft) => draft.publicationBlocked)
+    };
+  });
 }
 
-function renderBatchPublicationResult() {
-  if (!lastBatchPublicationResult) return "";
+function renderBatchPublicationResult(sourceBatchId = "") {
+  if (!lastBatchPublicationResult || (sourceBatchId && lastBatchPublicationResult.sourceBatchId !== sourceBatchId)) return "";
   return `
     <div class="batch-result ${lastBatchPublicationResult.accepted && !lastBatchPublicationResult.blockedCount ? "passed" : "failed"}">
       <strong>${lastBatchPublicationResult.accepted ? "Batch publication attempted" : "Batch publication blocked"}</strong>
@@ -2549,14 +2553,29 @@ function renderBatchPublicationResult() {
 }
 
 function renderBridgeBatchPublicationPanel() {
-  const batch = getBridgeBatchPublicationPanelState();
-  const status = batch.published ? "Published" : batch.approved ? "Approved" : batch.reviewReady ? "Needs batch approval" : "Preparing";
-  return `
+  const batches = getContentBatchPublicationPanelStates();
+  if (!batches.length) {
+    return `
+      <section class="batch-publication-panel">
+        <div class="section-head compact">
+          <div>
+            <p class="eyebrow">Content publication</p>
+            <h3>No imported lesson batches yet</h3>
+          </div>
+          <span class="status-pill">Waiting for import</span>
+        </div>
+        <p class="callout">Import a validated lesson batch to create a manager review gate and a publication workflow.</p>
+      </section>
+    `;
+  }
+  return batches.map((batch) => {
+    const status = batch.published ? "Published" : batch.approved ? "Approved" : batch.reviewReady ? "Needs batch approval" : "Preparing";
+    return `
     <section class="batch-publication-panel">
       <div class="section-head compact">
         <div>
-          <p class="eyebrow">Bridge Academy batch publication</p>
-          <h3>Grade 6 Batch 1: manager-approved lessons to student catalog</h3>
+          <p class="eyebrow">${html(batch.academyId || "Academy")} content publication</p>
+          <h3>${html(batch.title)}: manager-approved lessons to student catalog</h3>
         </div>
         <span class="status-pill">${html(status)}</span>
       </div>
@@ -2568,8 +2587,8 @@ function renderBridgeBatchPublicationPanel() {
         ${renderMetric("Blocked", batch.blockedDrafts.length, "Individual gates")}
         ${renderMetric("Latest", batch.latestPublication?.status || "None", "Batch result")}
       </div>
-      <p class="callout">This action does not bypass review. It sends every manager-approved Grade 6 Batch 1 draft through the individual content publication gate, including truth approval, evidence checks, completeness, and visual rules.</p>
-      ${renderBatchPublicationResult()}
+      <p class="callout">This action does not bypass review. It sends every manager-approved lesson in this batch through the individual content publication gate, including truth approval, evidence checks, completeness, and visual rules.</p>
+      ${renderBatchPublicationResult(batch.sourceBatchId)}
       ${
         batch.latestPublication
           ? `<div class="published-lesson-list batch-publication-history">
@@ -2586,11 +2605,12 @@ function renderBridgeBatchPublicationPanel() {
           : ""
       }
       <div class="button-group">
-        <button class="primary-button" data-publish-batch="${html(batch.sourceBatchId)}" ${batch.approved && !batch.published ? "" : "disabled"}>Publish approved Grade 6 batch</button>
+        <button class="primary-button" data-publish-batch="${html(batch.sourceBatchId)}" ${batch.approved && !batch.published ? "" : "disabled"}>Publish approved batch</button>
         <button class="secondary-button" data-view="tools">Open manager review queue</button>
       </div>
     </section>
-  `;
+    `;
+  }).join("");
 }
 
 function renderPublishedLessonRecords() {

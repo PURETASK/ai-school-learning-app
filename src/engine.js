@@ -1538,7 +1538,7 @@ function getContentBatchReviewState(state = {}, sourceBatchId = "") {
     blockers: latestPublication ? (latestPublication.results || []).filter((result) => result.status !== "published").map((result) => `${result.title}: ${result.blockedReason || "Publication blocked."}`) : blockers,
     revisionInstructions: blockers.length
       ? blockers.slice(0, 6)
-      : ["Approve the batch to mark all five drafts as manager-reviewed, then publish each lesson through the individual content gate."],
+      : [`Approve the batch to mark all ${drafts.length || publishedBatchLessons.length} lesson(s) as manager-reviewed, then publish each lesson through the individual content gate.`],
     reviewHistory: [
       ...publicationHistory.map((publication) => ({
         action: "batch-publication",
@@ -7405,7 +7405,13 @@ export function getVisualLearningAgentAudit(state) {
   return getProjectVisualAudit(state, { includeFullCatalog: true });
 }
 
-export { getFullLibraryVisualCatalogSummary, getLessonVisualCatalog, getVisualProductionBatchPlan };
+export {
+  getContentBatchReviewState,
+  getFullLibraryVisualCatalogSummary,
+  getLessonVisualCatalog,
+  getReviewableContentBatchIds,
+  getVisualProductionBatchPlan
+};
 
 export function getVisualLearningOpportunity(state, slotId) {
   return findVisualOpportunity(state, slotId);
