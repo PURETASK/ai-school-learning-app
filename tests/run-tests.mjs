@@ -3732,6 +3732,8 @@ for (const expected of [
   "repositoryCanAccessLearner",
   "requireLegacySnapshotAccess",
   'requireRepositoryPermission(session, "app_state_snapshots", operation, session.scope)',
+  'pathname === "/api/learning/catalog"',
+  "A learnerId is required for scoped learning catalog reads.",
   'pathname === "/api/learning/interactive"',
   'pathname === "/api/rewards/approvals"',
   'pathname === "/api/learning/scratchpads"',

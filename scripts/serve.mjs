@@ -1625,6 +1625,7 @@ async function handleApi(request, response, pathname) {
     requireRepositoryPermission(session, "interactive_skill_evidence", "read", session.scope);
     requireRepositoryPermission(session, "quiz_attempts", "read", session.scope);
     const url = new URL(request.url, `http://localhost:${port}`);
+    const state = await ensureStateFile();
     const requestedLearnerId = url.searchParams.get("learnerId");
     let learnerId = requestedLearnerId === null ? "" : String(requestedLearnerId);
     if (session.role === "student") {
@@ -1634,6 +1635,15 @@ async function handleApi(request, response, pathname) {
         throw error;
       }
       learnerId = session.studentId;
+    } else if (["parent", "teacher"].includes(session.role)) {
+      if (!learnerId) {
+        const error = new Error("A learnerId is required for scoped learning catalog reads.");
+        error.status = 400;
+        throw error;
+      }
+      await requireLearnerReadAccess(session, state, learnerId, "learning catalog progress");
+    } else if (learnerId) {
+      await requireLearnerReadAccess(session, state, learnerId, "learning catalog progress");
     }
     const limit = url.searchParams.get("limit") || 10000;
     const catalog = await stateRepository.readLearningCatalog({ learnerId, limit });
