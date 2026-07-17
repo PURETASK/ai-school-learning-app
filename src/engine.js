@@ -3154,6 +3154,68 @@ export function updateClassSessionStatus(state = {}, input = {}) {
   };
 }
 
+export function updateGroupMission(state = {}, input = {}) {
+  const missionId = String(input.missionId || input.groupMissionId || "").trim();
+  const mission = (state.groupMissions || []).find((item) => item.id === missionId);
+  if (!mission) {
+    return { state, result: { accepted: false, reason: "Group mission was not found." } };
+  }
+
+  const session = findClassSessionById(state, mission.sessionId);
+  const classSection = session ? findClassSectionForSession(state, session) : null;
+  if (!session || !classSection) {
+    return { state, result: { accepted: false, reason: "The group mission is not linked to a class session." } };
+  }
+
+  const title = String(input.title ?? mission.title ?? "").trim();
+  const sharedArtifact = String(input.sharedArtifact ?? mission.sharedArtifact ?? "").trim();
+  const teacherLookFor = String(input.teacherLookFor ?? mission.teacherLookFor ?? "").trim();
+  const individualEvidence = String(input.individualEvidence ?? mission.individualEvidence ?? "").trim();
+  const roleLabels = Array.isArray(input.roleLabels)
+    ? input.roleLabels.map((item) => String(item).trim()).filter(Boolean)
+    : String(input.roleLabels ?? mission.roleLabels ?? "")
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean);
+  const groupSize = Math.max(2, Math.min(8, Number(input.groupSize ?? mission.groupSize ?? 3) || 3));
+
+  if (title.length < 8) {
+    return { state, result: { accepted: false, reason: "Mission title must be at least 8 characters." } };
+  }
+  if (sharedArtifact.length < 8) {
+    return { state, result: { accepted: false, reason: "Describe the shared artifact students will create." } };
+  }
+  if (teacherLookFor.length < 12) {
+    return { state, result: { accepted: false, reason: "Add a concrete teacher look-for before saving the mission." } };
+  }
+  if (individualEvidence.length < 12) {
+    return { state, result: { accepted: false, reason: "Add the individual evidence requirement for accountability." } };
+  }
+
+  const updatedMission = {
+    ...mission,
+    title,
+    groupSize,
+    sharedArtifact,
+    roleLabels: roleLabels.length ? roleLabels : mission.roleLabels || [],
+    individualEvidence,
+    teacherLookFor,
+    updatedAt: new Date().toISOString()
+  };
+  const nextState = {
+    ...state,
+    groupMissions: (state.groupMissions || []).map((item) => (item.id === mission.id ? updatedMission : item))
+  };
+  return {
+    state: nextState,
+    result: {
+      accepted: true,
+      mission: updatedMission,
+      summary: `${updatedMission.title} was updated for ${classSection.name}.`
+    }
+  };
+}
+
 export function submitClassroomArtifact(state = {}, input = {}) {
   const missionId = String(input.missionId || "").trim();
   const learnerId = String(input.learnerId || input.studentId || "").trim();
@@ -4511,6 +4573,7 @@ export function getStateDependencyAudit() {
     "/api/rewards/fulfill",
     "/api/classroom/session/status",
     "/api/classroom/artifact",
+    "/api/classroom/mission",
     "/api/classroom/intervention",
     "/api/school/class",
     "/api/school/enrollment",

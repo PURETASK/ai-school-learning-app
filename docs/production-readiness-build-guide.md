@@ -734,7 +734,7 @@ Verify browser console has zero errors.
 
 ## Immediate Next Implementation Tasks
 
-1. Add school-admin repository/API routes for teacher invitations, group mission authoring, attendance/session records, and report download snapshots.
+1. Add school-admin repository/API routes for teacher invitations, attendance/session records, and report download snapshots. Group mission editing is now implemented through the teacher classroom command surface and the normalized `group_missions` repository slice.
 2. Wire a concrete provider, such as Supabase Auth, Clerk, Auth0, or another OIDC provider, into the production auth adapter.
 3. Keep the server running with `K12_REPOSITORY_MODE=postgres` and verify each converted normalized feature route against Supabase.
 4. Add Source Findings review view in the Admin or Tools area.
@@ -751,6 +751,7 @@ Completed groundwork:
 - Production mode with `AUTH_PROVIDER` configured rejects local prototype tokens by default.
 - `account_invitations`, `guardian_student_links`, `teacher_class_assignments`, `session_revocations`, and `auth_audit_events` are in the production schema and migration.
 - The Bridge Academy School/Classroom Mode shell now has a student/staff preview, student group-evidence submission, teacher live monitor, teacher launch/status controls, teacher intervention creation/resolution, school-admin operations page, dedicated classroom API/write routes, and normalized schema tables for schools, class sessions, group missions, group artifacts, teacher interventions, and school reports.
+- Teacher classroom operations now include validated group mission editing with role labels, shared artifact requirements, individual accountability evidence, teacher look-fors, and normalized repository persistence through `PUT /api/classroom/mission`.
 - School-admin operations now include class creation, learner enrollment, all-or-nothing CSV roster import, pending student invitations, and school-scoped CSV export through `writeSchoolOperations()`.
 - `npm run db:verify` checks a staging database after migration apply.
 

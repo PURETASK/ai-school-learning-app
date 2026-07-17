@@ -151,6 +151,7 @@ import {
   submitAffectCheckin,
   submitTutorFeedback,
   updateClassSessionStatus,
+  updateGroupMission,
   verifyLocalAccountEmail,
   updateContentDraftStatus,
   updateVisualAssetStatus,
@@ -880,6 +881,27 @@ assert.equal(getClassroomProductSummary(submittedClassArtifact.state).submittedA
 const monitorAfterArtifact = getTeacherClassMonitor(submittedClassArtifact.state);
 assert.equal(monitorAfterArtifact.metrics.submittedArtifacts, 1, "teacher monitor should count submitted group evidence");
 assert.equal(monitorAfterArtifact.learners[0].artifact.artifactStatus, "submitted", "teacher monitor should expose artifact state");
+const updatedGroupMission = updateGroupMission(launchedClassSession.state, {
+  missionId: "mission-weather-forecast-crew",
+  title: "Pressure Map Forecast Brief",
+  groupSize: 4,
+  sharedArtifact: "A labeled forecast map with three evidence callouts.",
+  roleLabels: "evidence lead, map designer, skeptic, presenter",
+  individualEvidence: "Each learner writes one evidence sentence linking pressure movement to the forecast.",
+  teacherLookFor: "Every learner should explain why one pressure arrow supports the forecast instead of merely naming it."
+});
+assert.equal(updatedGroupMission.result.accepted, true, "teacher should be able to edit the group mission");
+assert.equal(updatedGroupMission.result.mission.groupSize, 4, "mission edits should persist the configured group size");
+assert.deepEqual(
+  updatedGroupMission.result.mission.roleLabels,
+  ["evidence lead", "map designer", "skeptic", "presenter"],
+  "mission edits should normalize comma-separated student roles"
+);
+const invalidGroupMission = updateGroupMission(launchedClassSession.state, {
+  missionId: "mission-weather-forecast-crew",
+  title: "Short"
+});
+assert.equal(invalidGroupMission.result.accepted, false, "mission edits should reject incomplete accountability requirements");
 assert.equal(
   getTeacherClassMonitor(submittedClassArtifact.state, "", { allowFallback: false }).classSection,
   null,

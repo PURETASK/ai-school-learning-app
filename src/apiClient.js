@@ -319,6 +319,13 @@ export async function postClassroomArtifact(payload) {
   });
 }
 
+export async function putClassroomMission(payload) {
+  return requestJson("/api/classroom/mission", {
+    method: "PUT",
+    body: JSON.stringify(payload)
+  });
+}
+
 export async function postTeacherIntervention(payload) {
   return requestJson("/api/classroom/intervention", {
     method: "POST",

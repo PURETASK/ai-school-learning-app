@@ -104,6 +104,7 @@ import {
   simulateDiagnosticPlacement,
   createContentDraft,
   updateClassSessionStatus,
+  updateGroupMission,
   getContentAuthoringSummary,
   getContentBatchReviewState,
   getContentDraftCompletenessReview,
@@ -142,6 +143,7 @@ import {
   postLessonScratchpad,
   postInteractiveResponse,
   postClassroomArtifact,
+  putClassroomMission,
   postClassSessionStatus,
   postTeacherIntervention,
   postSchoolClass,
@@ -6489,6 +6491,25 @@ function renderTeacherClassroomCommand() {
         <strong>${html(monitor.mission?.title || "No mission assigned")}</strong>
         <p>${html(monitor.mission?.teacherLookFor || "Teacher confirms each learner has individual evidence before mastery credit.")}</p>
       </div>
+      ${
+        monitor.mission
+          ? `<form class="classroom-mission-form" data-classroom-mission="${html(monitor.mission.id)}">
+              <div class="section-head compact">
+                <h3>Edit group mission</h3>
+                <span class="form-note">Changes are saved to the classroom repository.</span>
+              </div>
+              <div class="school-setup-grid">
+                <label>Mission title<input name="title" required minlength="8" value="${html(monitor.mission.title || "")}" /></label>
+                <label>Group size<input name="groupSize" type="number" min="2" max="8" value="${html(monitor.mission.groupSize || 3)}" /></label>
+                <label>Shared artifact<input name="sharedArtifact" required minlength="8" value="${html(monitor.mission.sharedArtifact || "")}" /></label>
+                <label>Student roles<input name="roleLabels" value="${html((monitor.mission.roleLabels || []).join(", "))}" /></label>
+                <label>Individual evidence<textarea name="individualEvidence" rows="3" required minlength="12">${html(monitor.mission.individualEvidence || "")}</textarea></label>
+                <label>Teacher look-for<textarea name="teacherLookFor" rows="3" required minlength="12">${html(monitor.mission.teacherLookFor || "")}</textarea></label>
+              </div>
+              <button class="secondary-button" type="submit">Save mission</button>
+            </form>`
+          : ""
+      }
     </section>
   `;
 }
@@ -8981,6 +9002,40 @@ app.addEventListener("input", (event) => {
 app.addEventListener("submit", (event) => {
   event.preventDefault();
   const form = new FormData(event.target);
+
+  if (event.target.matches(".classroom-mission-form")) {
+    const input = {
+      missionId: event.target.dataset.classroomMission,
+      title: String(form.get("title") || ""),
+      groupSize: Number(form.get("groupSize") || 3),
+      sharedArtifact: String(form.get("sharedArtifact") || ""),
+      roleLabels: String(form.get("roleLabels") || ""),
+      individualEvidence: String(form.get("individualEvidence") || ""),
+      teacherLookFor: String(form.get("teacherLookFor") || "")
+    };
+    const updated = updateGroupMission(state, input);
+    state = updated.state;
+    lastClassroomResult = updated.result;
+    saveState(state);
+    render();
+    if (!updated.result.accepted) return;
+
+    putClassroomMission(input)
+      .then(async ({ state: persisted, result }) => {
+        state = mergePersistedState(state, persisted);
+        lastClassroomResult = result;
+        await refreshRepositoryReadModels();
+        saveState(state);
+        render();
+      })
+      .catch((error) => {
+        lastClassroomResult = { accepted: false, reason: error.message || "Group mission could not be persisted." };
+        state = markPersistenceError(state, error);
+        saveState(state);
+        render();
+      });
+    return;
+  }
 
   if (event.target.id === "signupForm") {
     lastAuthResult = { accepted: true, summary: "Creating account..." };

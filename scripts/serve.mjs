@@ -66,6 +66,7 @@ import {
   submitTutorHintRetry,
   verifyLocalAccountEmail,
   updateClassSessionStatus,
+  updateGroupMission,
   updateLessonScratchpad,
   updateRewardApprovalStatus,
   updateContentDraftStatus,
@@ -1584,6 +1585,28 @@ async function handleApi(request, response, pathname) {
         state: persisted,
         result: submitted.result,
         classroom: getLearnerClassSession(persisted, learnerId),
+        repository: stateRepository.status()
+      };
+    });
+    sendJson(response, payload.result.accepted ? 200 : 400, payload);
+    return true;
+  }
+
+  if (request.method === "PUT" && pathname === "/api/classroom/mission") {
+    requireClassroomStaff(session, "group_missions", "write");
+    const body = await readJsonBody(request);
+    const payload = await queueStateMutation(async () => {
+      const state = await ensureStateFile();
+      const updated = updateGroupMission(state, body);
+      if (!updated.result.accepted) {
+        return { state, result: updated.result, repository: stateRepository.status() };
+      }
+      const persisted = await writeClassroomWorkflow(updated.state);
+      const missionSession = persisted.classSessions?.find((item) => item.id === updated.result.mission.sessionId);
+      return {
+        state: persisted,
+        result: updated.result,
+        monitor: getTeacherClassMonitor(persisted, missionSession?.classSectionId || ""),
         repository: stateRepository.status()
       };
     });
