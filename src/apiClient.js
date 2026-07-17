@@ -162,6 +162,7 @@ export async function postChildAccount(payload) {
 
 export function signOutLocal() {
   setAuthToken("");
+  setRefreshToken("");
 }
 
 export async function fetchPersistedState() {

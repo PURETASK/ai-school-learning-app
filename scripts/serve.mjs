@@ -986,10 +986,38 @@ async function handleApi(request, response, pathname) {
       return true;
     }
     const body = await readJsonBody(request);
+    if (!String(body.refreshToken || "").trim()) {
+      const error = new Error("A provider refresh token is required.");
+      error.status = 401;
+      throw error;
+    }
     const raw = await supabaseRefreshSession({ refreshToken: body.refreshToken });
     const provider = normalizeSupabaseAuthResponse(raw);
     if (!provider.accessToken) throw new Error("Supabase Auth did not return a refreshed access token.");
-    sendJson(response, 200, { accepted: true, provider: "supabase", token: provider.accessToken, refreshToken: provider.refreshToken, user: provider.user });
+    const refreshedSession = await getRequestSessionAsync(
+      { headers: { authorization: `Bearer ${provider.accessToken}` } },
+      process.env
+    );
+    if (!refreshedSession.authenticated) {
+      const error = new Error(refreshedSession.authError || "The refreshed provider session could not be verified.");
+      error.status = 401;
+      throw error;
+    }
+    const refreshedSessionRevoked = isSessionRevoked(authState, refreshedSession) || await stateRepository.isSessionRevoked(refreshedSession);
+    if (refreshedSessionRevoked) {
+      await supabaseSignOut({ accessToken: provider.accessToken }).catch(() => {});
+      const error = new Error("The provider session has been revoked. Sign in again.");
+      error.status = 401;
+      throw error;
+    }
+    sendJson(response, 200, {
+      accepted: true,
+      provider: "supabase",
+      token: provider.accessToken,
+      refreshToken: provider.refreshToken,
+      user: provider.user,
+      session: publicSessionSummary(refreshedSession)
+    });
     return true;
   }
 

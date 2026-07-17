@@ -3744,6 +3744,11 @@ const apiClientSource = readFileSync("src/apiClient.js", "utf8");
 assert.ok(serverSource.includes('const postgresRepository = stateRepository.status().mode === "postgres"'), "Postgres requests should identify normalized repository mode");
 assert.ok(serverSource.includes("const normalizedSecurity = postgresRepository ? await stateRepository.readAccountSecurity"), "Postgres auth session should read normalized account security");
 assert.ok(serverSource.includes("accounts: []"), "Anonymous auth sessions should not expose account records");
+assert.ok(serverSource.includes("A provider refresh token is required."), "provider refresh should reject missing refresh tokens");
+assert.ok(serverSource.includes("const refreshedSession = await getRequestSessionAsync"), "provider refresh should verify refreshed JWT claims");
+assert.ok(serverSource.includes("stateRepository.isSessionRevoked(refreshedSession)"), "provider refresh should enforce app-level session revocation");
+assert.ok(serverSource.includes("supabaseSignOut({ accessToken: provider.accessToken }).catch(() => {})"), "revoked refresh sessions should be terminated at the provider when possible");
+assert.ok(apiClientSource.includes("setRefreshToken(\"\");\n}"), "local sign-out should clear the refresh token as well as the access token");
 for (const expected of [
   'pathname === "/api/bootstrap"',
   'pathname === "/api/runtime/health"',
