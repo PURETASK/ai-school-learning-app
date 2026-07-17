@@ -1444,7 +1444,7 @@ async function handleApi(request, response, pathname) {
     requireRepositoryPermission(session, "group_artifacts", "read", repositoryScopeForRole(session));
     requireRepositoryPermission(session, "teacher_interventions", "read", repositoryScopeForRole(session));
     const url = new URL(request.url, `http://localhost:${port}`);
-    const state = await ensureStateFile();
+    const state = stateRepository.status().mode === "json" ? await ensureStateFile() : {};
     const learnerId = url.searchParams.get("learnerId") || "";
     if (learnerId) {
       await requireLearnerReadAccess(session, state, learnerId, "classroom evidence");
@@ -1666,7 +1666,7 @@ async function handleApi(request, response, pathname) {
     requireRepositoryPermission(session, "interactive_skill_evidence", "read", session.scope);
     requireRepositoryPermission(session, "quiz_attempts", "read", session.scope);
     const url = new URL(request.url, `http://localhost:${port}`);
-    const state = await ensureStateFile();
+    const state = stateRepository.status().mode === "json" ? await ensureStateFile() : {};
     const requestedLearnerId = url.searchParams.get("learnerId");
     let learnerId = requestedLearnerId === null ? "" : String(requestedLearnerId);
     if (session.role === "student") {
@@ -1699,7 +1699,7 @@ async function handleApi(request, response, pathname) {
   if (request.method === "GET" && pathname === "/api/learning/scratchpads") {
     requireRepositoryPermission(session, "lesson_scratchpads", "read", repositoryScopeForRole(session));
     const url = new URL(request.url, `http://localhost:${port}`);
-    const state = await ensureStateFile();
+    const state = stateRepository.status().mode === "json" ? await ensureStateFile() : {};
     let learnerId = url.searchParams.get("learnerId") || "";
     if (session.role === "student") {
       learnerId = session.studentId;
@@ -1726,7 +1726,7 @@ async function handleApi(request, response, pathname) {
   if (request.method === "GET" && pathname === "/api/learning/assignments") {
     requireRepositoryPermission(session, "assignments", "read", repositoryScopeForRole(session));
     const url = new URL(request.url, `http://localhost:${port}`);
-    const state = await ensureStateFile();
+    const state = stateRepository.status().mode === "json" ? await ensureStateFile() : {};
     let learnerId = url.searchParams.get("learnerId") || "";
     if (session.role === "student") {
       learnerId = session.studentId;
@@ -1753,7 +1753,7 @@ async function handleApi(request, response, pathname) {
   if (request.method === "GET" && pathname === "/api/learning/retention-schedules") {
     requireRepositoryPermission(session, "retention_schedules", "read", repositoryScopeForRole(session));
     const url = new URL(request.url, `http://localhost:${port}`);
-    const state = await ensureStateFile();
+    const state = stateRepository.status().mode === "json" ? await ensureStateFile() : {};
     let learnerId = url.searchParams.get("learnerId") || "";
     if (session.role === "student") {
       learnerId = session.studentId;
@@ -1782,7 +1782,7 @@ async function handleApi(request, response, pathname) {
     requireRepositoryPermission(session, "student_badges", "read", repositoryScopeForRole(session));
     requireRepositoryPermission(session, "badges", "read", repositoryScopeForRole(session));
     const url = new URL(request.url, `http://localhost:${port}`);
-    const state = await ensureStateFile();
+    const state = stateRepository.status().mode === "json" ? await ensureStateFile() : {};
     let learnerId = url.searchParams.get("learnerId") || "";
     if (session.role === "student") {
       learnerId = session.studentId;
@@ -1998,7 +1998,7 @@ async function handleApi(request, response, pathname) {
   if (request.method === "GET" && pathname === "/api/rewards/approvals") {
     requireRepositoryPermission(session, "reward_approvals", "read", repositoryScopeForRole(session));
     const url = new URL(request.url, `http://localhost:${port}`);
-    const state = await ensureStateFile();
+    const state = stateRepository.status().mode === "json" ? await ensureStateFile() : {};
     let learnerId = url.searchParams.get("learnerId") || "";
     let guardianId = url.searchParams.get("guardianId") || "";
     if (session.role === "student") {
@@ -2043,7 +2043,7 @@ async function handleApi(request, response, pathname) {
     requireRepositoryPermission(session, "ai_tutor_events", "read", repositoryScopeForRole(session));
     const url = new URL(request.url, `http://localhost:${port}`);
     const requestedLearnerId = url.searchParams.get("learnerId");
-    const state = await ensureStateFile();
+    const state = stateRepository.status().mode === "json" ? await ensureStateFile() : {};
     let learnerId = requestedLearnerId === null ? "" : String(requestedLearnerId);
     if (session.role === "student") {
       if (learnerId && learnerId !== session.studentId) {

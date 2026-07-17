@@ -3751,6 +3751,7 @@ for (const expected of [
   "repositoryCanAccessLearner",
   "includeProgress: session.role === \"student\"",
   "stateRepository.status().mode === \"json\"",
+  "stateRepository.status().mode === \"json\" ? await ensureStateFile() : {}",
   "requireLegacySnapshotAccess",
   'requireRepositoryPermission(session, "app_state_snapshots", operation, session.scope)',
   'pathname === "/api/learning/catalog"',
