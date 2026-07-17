@@ -4603,8 +4603,8 @@ export function getProductCompletenessAudit(state = createInitialState(), env = 
     {
       id: "agents",
       title: "Manager and specialist agents",
-      status: auditStatus(agents.toolCount >= 9 && agents.reviewGatedExternalTools >= 1),
-      evidence: `${agents.toolCount} managed tools; ${agents.reviewGatedExternalTools} review-gated external-risk tools.`,
+      status: auditStatus(agents.totalTools >= 9 && agents.reviewRequiredTools >= 1),
+      evidence: `${agents.totalTools} managed tools; ${agents.reviewRequiredTools} review-gated external-risk tools.`,
       nextStep: "Continue moving source audit, visual generation, and tutor grading through logged gateway tools."
     },
     {

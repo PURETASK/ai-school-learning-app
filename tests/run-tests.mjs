@@ -1787,6 +1787,9 @@ assert.equal(localRuntimeStatus.ready, true, "local runtime status should allow 
 assert.equal(localRuntimeStatus.repositoryMode, "json", "local runtime status should report JSON fallback mode without DATABASE_URL");
 assert.ok(localRuntimeStatus.warnings.some((warning) => /OpenAI image generation/i.test(warning)), "local runtime status should warn when OpenAI images are not configured");
 assert.ok(localRuntimeStatus.warnings.some((warning) => /visual asset storage/i.test(warning)), "local runtime status should warn when visual storage is not configured");
+const completenessAudit = getProductCompletenessAudit(createInitialState(), { NODE_ENV: "development" });
+const agentAudit = completenessAudit.categories.find((category) => category.id === "agents");
+assert.match(agentAudit.evidence, /managed tools; .* review-gated external-risk tools/, "readiness audit should use the tool gateway summary contract");
 const stateDependencyAudit = getStateDependencyAudit();
 assert.equal(stateDependencyAudit.summary.legacySnapshotRoutes, 3, "state dependency audit should track remaining broad state routes");
 assert.ok(stateDependencyAudit.focusedReadRoutes.includes("/api/auth/security"), "state dependency audit should include account-security read route");
