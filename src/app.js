@@ -5203,6 +5203,8 @@ function renderLearningLabView() {
 
 function renderAccountAccessPanel() {
   const session = currentSession || { role: "loading", scope: "loading", authenticated: false };
+  const runtime = currentRuntimeConfiguration?.runtime || {};
+  const providerAuthLive = Boolean(runtime.productionMode && runtime.authProviderConfigured && runtime.authReadiness?.passed);
   const localSecurity = getAuthSecuritySummary(state);
   const security = repositoryAccountSecurity?.summary
     ? {
@@ -5317,7 +5319,7 @@ function renderAccountAccessPanel() {
         </div>
         <div class="auth-card auth-action-card">
           <h3>Email verification</h3>
-          <p>Request a verification code, paste the received code, then the app issues a new verified session. Local preview shows the code because no email provider is connected yet.</p>
+          <p>${providerAuthLive ? "Request a verification email from the live identity provider, then return here after confirming it." : "Request a verification code, paste it here, then the app issues a new verified session in local development preview."}</p>
           <form class="inline-form compact-auth-form" id="emailVerificationRequestForm">
             <label>
               Account email
@@ -5335,7 +5337,7 @@ function renderAccountAccessPanel() {
         </div>
         <div class="auth-card auth-action-card">
           <h3>Password reset</h3>
-          <p>Reset requests use one-time codes and revoke previous sessions after the password changes. Production will deliver codes by email.</p>
+          <p>${providerAuthLive ? "Reset requests use the live identity provider and revoke previous sessions after the password changes." : "Reset requests use one-time codes and revoke previous sessions after the password changes in local development preview."}</p>
           <form class="inline-form compact-auth-form" id="passwordResetRequestForm">
             <label>
               Account email or username
@@ -5385,7 +5387,7 @@ function renderAccountAccessPanel() {
           }
         </article>
       </div>
-      <p class="callout">Local auth now enforces the product flow: adult email verification, parent-gated child creation, one-time password reset, and server-side session revocation. Production still needs a real identity/email provider and live database reads/writes everywhere.</p>
+      <p class="callout">${providerAuthLive ? "Live Supabase Auth is active for identity, email verification, password reset, and provider sessions. Parent-gated child creation and server-side revocation remain enforced." : "Local development auth enforces adult email verification, parent-gated child creation, one-time password reset, and server-side session revocation. Production requires the live provider and verified database runtime."}</p>
     </section>
   `;
 }
