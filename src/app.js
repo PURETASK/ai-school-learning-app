@@ -270,8 +270,16 @@ const storedSoundPreference = globalThis.localStorage?.getItem?.(soundPreference
 let uiSoundEnabled = storedSoundPreference !== "false";
 let scratchpadSyncTimer = null;
 
-function announceLearningMoment(message, tone = "success") {
-  learningMoment = { message: String(message || "Learning evidence recorded."), tone };
+function announceLearningMoment(message, tone = "success", options = {}) {
+  const baseMessage = String(message || "Learning evidence recorded.");
+  const xp = Number.isFinite(Number(options.xp)) ? Number(options.xp) : 0;
+  const next = String(options.next || "").trim();
+  learningMoment = {
+    message: [baseMessage, xp > 0 ? `+${xp} XP` : "", next ? `Next: ${next}` : ""].filter(Boolean).join("  |  "),
+    tone,
+    xp,
+    next: next || "Keep going when you are ready."
+  };
   if (learningMomentTimer) globalThis.clearTimeout?.(learningMomentTimer);
   learningMomentTimer = globalThis.setTimeout?.(() => {
     learningMoment = null;
@@ -1813,7 +1821,11 @@ function submitLessonQuiz(lessonId) {
     quizResult?.passed
       ? `Checkpoint cleared: ${quizResult.score}% and a mastery path is open.`
       : "Checkpoint recorded. Your retry path is ready; mistakes are useful evidence.",
-    quizResult?.passed ? "success" : "retry"
+    quizResult?.passed ? "success" : "retry",
+    {
+      xp: quizResult?.passed ? Math.max(20, Math.round((quizResult.score / 100) * 60)) : 10,
+      next: quizResult?.passed ? "Return tomorrow to prove you still remember it." : "Use the repair move, then try the checkpoint again."
+    }
   );
   saveState(state);
   postLessonQuiz(lessonId, answers, learnerId)
@@ -8935,7 +8947,10 @@ app.addEventListener("click", (event) => {
       correct,
       feedback
     });
-    announceLearningMoment(correct ? "Model solved: +30 XP evidence recorded." : "Good attempt. The next hint is ready.", correct ? "success" : "retry");
+    announceLearningMoment(correct ? "Model solved: your brain found the pattern." : "Good attempt. The next hint is ready.", correct ? "success" : "retry", {
+      xp: correct ? 30 : 0,
+      next: correct ? "Use the model to explain why it works." : "Try the smaller hint before changing your answer."
+    });
     postInteractiveResponse({
       learnerId,
       lessonId: lesson.id,
@@ -8976,7 +8991,10 @@ app.addEventListener("click", (event) => {
       state = completed.state;
       saveState(state);
       playUiSound("success");
-      announceLearningMoment(`Phase cleared: ${phase.replaceAll("-", " ")} · +8 XP`, "success");
+      announceLearningMoment(`Phase cleared: ${phase.replaceAll("-", " ")}`, "success", {
+        xp: 8,
+        next: phase === "remember" ? "Your next mission is transfer: use the idea somewhere new." : "The next evidence move is ready below."
+      });
       postLessonPhase({ lessonId, learnerId, phase })
         .then(async ({ state: persisted, result }) => {
           state = mergePersistedState(state, persisted);
