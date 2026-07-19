@@ -897,6 +897,12 @@ function getRepositoryLearningCatalogStatus(options = {}) {
   };
 }
 
+function getRepositoryCatalogLesson(learnerId = "", lessonId = "") {
+  const scopedCatalog = learnerId ? repositoryLearningCatalogsByLearner[learnerId] : null;
+  const catalog = scopedCatalog || repositoryLearningCatalog;
+  return catalog?.lessons?.find((item) => item.id === lessonId) || null;
+}
+
 function getRepositoryTutorEventSummary(learnerId = "") {
   const scopedEvents = learnerId ? repositoryTutorEventsByLearner[learnerId] : null;
   const source = scopedEvents || repositoryTutorEvents;
@@ -1118,6 +1124,9 @@ function getRepositoryLessonEvidence(learnerId = "", lessonId = "") {
   const tutorEvents = tutor.events.filter((event) => !lessonId || event.lessonId === lessonId);
   const reward = repositoryRewardApprovalForLesson(learnerId, lessonId);
   const scratchpad = repositoryScratchpadForLesson(learnerId, lessonId);
+  const catalogLesson = getRepositoryCatalogLesson(learnerId, lessonId);
+  const phaseCompletions = Array.isArray(catalogLesson?.phaseCompletions) ? catalogLesson.phaseCompletions : [];
+  const phaseEvidenceSource = catalogLesson ? "learner-scoped repository" : "local lesson fallback";
   const lesson = findLessonInState(state, lessonId) || currentLesson();
   const widgetId = getLessonInteractiveConfig(lesson).widgetId;
   const interactiveSignal =
@@ -1128,6 +1137,9 @@ function getRepositoryLessonEvidence(learnerId = "", lessonId = "") {
   return {
     source: quizMastery.latest || reward || tutorEvents.length || scratchpad || interactiveSignal ? "learner-scoped repository" : "local lesson fallback",
     catalogSource: catalogStatus.source,
+    phaseEvidenceSource,
+    phaseCompletions,
+    completedPhaseCount: Number(catalogLesson?.completedPhaseCount || 0),
     error: catalogStatus.error || tutor.error || "",
     quizMastery,
     interactive,
@@ -4281,11 +4293,14 @@ function renderNexusLessonPhaseSequence(lesson, answers, result, experience, sup
   const nativeLabel = playerModel.lesson.schemaVersion === "3" ? "Native V3" : "V2 adapted";
   const validationLabel = playerModel.validation.passed ? "Contract ready" : "Needs contract repair";
   const modules = playerModel.modules;
+  const repositoryEvidence = getRepositoryLessonEvidence(learnerId, lesson.id);
   const completedPhases = new Set(
-    (state.learningEvents || [])
-      .filter((event) => event.learnerId === learnerId && event.lessonId === lesson.id && event.type === "phase_completed")
-      .map((event) => event.value?.phase)
-      .filter(Boolean)
+    repositoryEvidence.phaseEvidenceSource === "learner-scoped repository"
+      ? repositoryEvidence.phaseCompletions.map((item) => item.phase).filter(Boolean)
+      : (state.learningEvents || [])
+          .filter((event) => event.learnerId === learnerId && event.lessonId === lesson.id && event.type === "phase_completed")
+          .map((event) => event.value?.phase)
+          .filter(Boolean)
   );
   return `
     <section class="nexus-phase-player" aria-label="Nexus V3 lesson phases">
