@@ -2138,6 +2138,7 @@ const repositoryLearningCatalog = await jsonRepository.readLearningCatalog({ lea
 assert.equal(repositoryLearningCatalog.source, "normalized-repository", "learning catalog should identify the normalized repository source");
 assert.ok(repositoryLearningCatalog.tableIds.includes("lesson_progress"), "learning catalog should read progress tables");
 assert.ok(learningCatalogRepositoryTableIds.includes("mastery_records"), "learning catalog table set should include mastery records");
+assert.ok(learningCatalogRepositoryTableIds.includes("learning_events"), "learning catalog table set should include phase learning events");
 assert.ok(repositoryLearningCatalog.summary.lessonCount >= pilotLessons.length, "learning catalog should include seed lessons");
 assert.ok(repositoryLearningCatalog.summary.withQuiz >= pilotLessons.length, "learning catalog should connect lessons to quiz questions");
 assert.ok(
@@ -3357,6 +3358,20 @@ const secondPhase = recordStudentEngagementAction(duplicatePhase, {
   value: { phase: "practice", source: "nexus-phase-player" }
 });
 assert.equal(secondPhase.learningEvents.length, duplicatePhase.learningEvents.length + 1, "different phases should each create evidence");
+const phaseEvidenceRepository = createStateRepository({ root: `${process.env.TEMP || "C:\\tmp"}\\k12-learning-phase-catalog-test`, env: {} });
+await phaseEvidenceRepository.writeState(secondPhase);
+const phaseEvidenceCatalog = await phaseEvidenceRepository.readLearningCatalog({ learnerId: "avery" });
+const phaseEvidenceLesson = phaseEvidenceCatalog.lessons.find((item) => item.id === lesson.id);
+assert.deepEqual(
+  phaseEvidenceLesson.phaseCompletions.map((item) => item.phase),
+  ["practice", "model"],
+  "learning catalog should hydrate scoped phase completion evidence"
+);
+assert.equal(phaseEvidenceLesson.completedPhaseCount, 2, "learning catalog should count unique completed phases");
+assert.equal(phaseEvidenceCatalog.summary.withPhaseEvidence, 1, "learning catalog should summarize lessons with phase evidence");
+const phaseMetadataOnlyCatalog = await phaseEvidenceRepository.readLearningCatalog({ learnerId: "avery", includeProgress: false });
+const phaseMetadataOnlyLesson = phaseMetadataOnlyCatalog.lessons.find((item) => item.id === lesson.id);
+assert.equal(phaseMetadataOnlyLesson.completedPhaseCount, 0, "metadata-only catalogs should omit phase evidence");
 
 state = updateLessonScratchpad(state, {
   learnerId: "avery",

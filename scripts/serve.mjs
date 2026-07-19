@@ -1803,6 +1803,7 @@ async function handleApi(request, response, pathname) {
     requireRepositoryPermission(session, "lesson_scratchpads", "read", session.scope);
     requireRepositoryPermission(session, "interactive_skill_evidence", "read", session.scope);
     requireRepositoryPermission(session, "quiz_attempts", "read", session.scope);
+    requireRepositoryPermission(session, "learning_events", "read", session.scope);
     const url = new URL(request.url, `http://localhost:${port}`);
     const state = stateRepository.status().mode === "json" ? await ensureStateFile() : {};
     const requestedLearnerId = url.searchParams.get("learnerId");

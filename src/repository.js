@@ -71,7 +71,8 @@ export const learningCatalogRepositoryTableIds = [
   "mastery_records",
   "lesson_scratchpads",
   "interactive_skill_evidence",
-  "quiz_attempts"
+  "quiz_attempts",
+  "learning_events"
 ];
 
 export const learningEvidenceRepositoryTableIds = [
@@ -664,7 +665,8 @@ export function createLearningCatalogReadModel(tables = {}, { learnerId = "", in
         mastery_records: [],
         lesson_scratchpads: [],
         interactive_skill_evidence: [],
-        quiz_attempts: []
+        quiz_attempts: [],
+        learning_events: []
       };
   const lessons = progressTables.lessons || [];
   const activitiesByLesson = groupRowsBy(progressTables.activities || [], "lesson_id");
@@ -676,8 +678,10 @@ export function createLearningCatalogReadModel(tables = {}, { learnerId = "", in
   const scratchpadRows = filterByLearner(progressTables.lesson_scratchpads || [], learnerId);
   const interactiveRows = filterByLearner(progressTables.interactive_skill_evidence || [], learnerId);
   const attemptRows = filterByLearner(progressTables.quiz_attempts || [], learnerId);
+  const learningEventRows = filterByLearner(progressTables.learning_events || [], learnerId);
   const interactiveByLesson = groupRowsBy(interactiveRows, "lesson_id");
   const attemptsByQuiz = groupRowsBy(attemptRows, "quiz_id");
+  const learningEventsByLesson = groupRowsBy(learningEventRows, "lesson_id");
 
   const catalogLessons = lessons.map((lesson) => {
     const activities = activitiesByLesson.get(lesson.id) || [];
@@ -705,6 +709,13 @@ export function createLearningCatalogReadModel(tables = {}, { learnerId = "", in
       .sort((left, right) => String(right.updatedAt || "").localeCompare(String(left.updatedAt || "")));
     const attempts = quiz ? attemptsByQuiz.get(quiz.id) || [] : [];
     const latest = latestAttempt(attempts);
+    const phaseCompletions = (learningEventsByLesson.get(lesson.id) || [])
+      .filter((row) => row.event_type === "phase_completed" && row.value?.phase)
+      .map((row) => ({
+        phase: row.value.phase,
+        occurredAt: row.occurred_at || ""
+      }))
+      .sort((left, right) => String(right.occurredAt || "").localeCompare(String(left.occurredAt || "")));
 
     return {
       id: lesson.id,
@@ -789,6 +800,8 @@ export function createLearningCatalogReadModel(tables = {}, { learnerId = "", in
         : null,
       interactiveSkillEvidence,
       latestInteractiveSkillEvidence: interactiveSkillEvidence[0] || null,
+      phaseCompletions,
+      completedPhaseCount: new Set(phaseCompletions.map((item) => item.phase)).size,
       latestAttempt: latest
         ? {
             id: latest.id,
@@ -813,6 +826,8 @@ export function createLearningCatalogReadModel(tables = {}, { learnerId = "", in
       withScratchpad: catalogLessons.filter((lesson) => lesson.scratchpad).length,
       withInteractiveEvidence: catalogLessons.filter((lesson) => lesson.interactiveSkillEvidence.length > 0).length,
       interactiveEvidenceSignals: catalogLessons.reduce((sum, lesson) => sum + lesson.interactiveSkillEvidence.length, 0),
+      withPhaseEvidence: catalogLessons.filter((lesson) => lesson.phaseCompletions.length > 0).length,
+      phaseCompletionSignals: catalogLessons.reduce((sum, lesson) => sum + lesson.phaseCompletions.length, 0),
       withQuiz: catalogLessons.filter((lesson) => lesson.quizQuestionCount > 0).length,
       visualSupportActivities: catalogLessons.reduce((sum, lesson) => sum + lesson.visualSupportCount, 0),
       groupHomeworkActivities: catalogLessons.reduce((sum, lesson) => sum + lesson.groupHomeworkCount, 0)
