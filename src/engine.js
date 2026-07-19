@@ -1934,6 +1934,31 @@ export function saveState(state) {
   }
 }
 
+// A scoped session may keep static lesson content in the browser, but it must
+// never render cached learner, household, classroom, or account records when
+// the repository bootstrap is unavailable.
+export function isolateStateForStrictLearnerScope(state = {}) {
+  const isolated = { ...(state || {}) };
+  for (const key of [
+    "learners", "localAccounts", "parentProfile", "consentRecords", "placementResults",
+    "learningEvents", "retentionSchedules", "masteryBenefits", "affectCheckins", "experimentRuns",
+    "assignments", "schoolProfile", "classSections", "classSessions", "groupMissions",
+    "lessonScratchpads", "interactiveResponses", "rewardApprovals", "quizResults", "mastery",
+    "aiLogs", "toolCallLogs", "accountInvitations", "emailVerificationRequests", "passwordResetRequests",
+    "sessionRevocations", "contentDrafts", "contentImportJobs", "visualGenerationJobs",
+    "artifactReviewHistory", "lessonImprovementSignals"
+  ]) {
+    isolated[key] = Array.isArray(isolated[key]) ? [] : {};
+  }
+  isolated.pendingTutorPrompt = "";
+  isolated.persistence = {
+    ...(isolated.persistence || {}),
+    source: "repository-scoped",
+    lastError: "Scoped repository data is unavailable; cached learner records were withheld."
+  };
+  return isolated;
+}
+
 export function resetState() {
   const fresh = createInitialState();
   saveState(fresh);

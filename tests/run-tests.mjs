@@ -103,6 +103,7 @@ import {
   getRewardPlan,
   getRewardApprovalQueue,
   getRuntimeConfigurationStatus,
+  isolateStateForStrictLearnerScope,
   getStateDependencyAudit,
   getTeacherClassMonitor,
   refreshSchoolReports,
@@ -1855,6 +1856,19 @@ assert.equal(postgresRuntimeStatus.checks.find((check) => check.id === "visual-s
 const brokenProductionRuntimeStatus = getRuntimeConfigurationStatus({ NODE_ENV: "production" });
 assert.equal(brokenProductionRuntimeStatus.ready, false, "production runtime should fail without database and auth provider config");
 assert.ok(brokenProductionRuntimeStatus.blockers.some((blocker) => /DATABASE_URL/.test(blocker)), "production runtime should report missing DATABASE_URL");
+const scopedIsolation = isolateStateForStrictLearnerScope({
+  learners: [{ id: "private-learner" }],
+  localAccounts: [{ id: "private-account" }],
+  lessonScratchpads: { "private-learner": { lesson: { confusion: "private" } } },
+  quizResults: { lesson: { score: 100 } },
+  visualAssets: [{ id: "safe-asset" }],
+  selectedLessonId: "safe-lesson"
+});
+assert.equal(scopedIsolation.learners.length, 0, "strict learner scope should withhold cached learner records");
+assert.deepEqual(scopedIsolation.lessonScratchpads, {}, "strict learner scope should withhold cached scratchpads");
+assert.deepEqual(scopedIsolation.quizResults, {}, "strict learner scope should withhold cached quiz results");
+assert.equal(scopedIsolation.visualAssets[0].id, "safe-asset", "strict learner scope should preserve non-private visual assets");
+assert.equal(scopedIsolation.persistence.source, "repository-scoped", "strict learner scope should mark repository isolation");
 const localProductAudit = getProductCompletenessAudit(state, {});
 assert.equal(localProductAudit.readyForSale, false, "product audit should not mark the current local build as sellable");
 assert.ok(localProductAudit.total >= 10, "product audit should cover major product systems");

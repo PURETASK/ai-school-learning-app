@@ -86,6 +86,7 @@ import {
   getVisualProductionBatchPlan,
   getVisualAssetSummary,
   importLessonBatch,
+  isolateStateForStrictLearnerScope,
   loadState,
   markPersistenceError,
   mergePersistedState,
@@ -1592,7 +1593,10 @@ async function hydrateFromServer() {
     } catch (bootstrapError) {
       repositoryBootstrap = null;
       repositoryLearnerProfiles = null;
-      // The focused refresh below remains the compatibility path while rollout continues.
+      if (hasStrictLearnerScope()) {
+        state = isolateStateForStrictLearnerScope(state);
+        repositoryLearningCatalogError = "Scoped learner bootstrap is unavailable; cached learner records are withheld.";
+      }
     }
     const scopedRepositoryPathReady = hasStrictLearnerScope() && Boolean(repositoryBootstrap?.catalog && repositoryBootstrap?.learnerProfiles);
     if (scopedRepositoryPathReady) {
@@ -1600,9 +1604,9 @@ async function hydrateFromServer() {
       state = mergeRepositoryLearningCatalog(state, repositoryBootstrap.catalog);
     } else if (hasStrictLearnerScope()) {
       // A scoped session must not fall back to the broad snapshot when a focused
-      // bootstrap is unavailable. Keep local UI state and surface the repository
-      // error instead of risking cross-learner hydration.
-      repositoryLearningCatalogError = "Scoped learner bootstrap is unavailable.";
+      // bootstrap is unavailable. Isolate cached records before rendering.
+      state = isolateStateForStrictLearnerScope(state);
+      repositoryLearningCatalogError = "Scoped learner bootstrap is unavailable; cached learner records are withheld.";
     } else {
       const persisted = await fetchPersistedState();
       state = mergePersistedState(state, persisted);
@@ -1611,6 +1615,7 @@ async function hydrateFromServer() {
     saveState(state);
     render();
   } catch (error) {
+    if (hasStrictLearnerScope()) state = isolateStateForStrictLearnerScope(state);
     state = markPersistenceError(state, error);
     saveState(state);
     render();
