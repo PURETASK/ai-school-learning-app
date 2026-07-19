@@ -8317,6 +8317,226 @@ body {
   }
 }
 
+/* Final contrast layer: keep the neon academy theme readable across legacy cards. */
+:root {
+  --contrast-bg: #060816;
+  --contrast-panel: rgba(12, 17, 38, 0.96);
+  --contrast-card: rgba(17, 24, 55, 0.94);
+  --contrast-text: #f8fbff;
+  --contrast-muted: #c2cce0;
+  --contrast-border: rgba(37, 217, 255, 0.34);
+}
+
+body {
+  color: var(--contrast-text);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+.brand-block h1,
+.glitch-title,
+.classroom-copy h2,
+.class-launch-card h3,
+.school-profile-card h3 {
+  font-family: var(--font-display);
+  color: var(--contrast-text);
+}
+
+.panel,
+.role-hero,
+.level-home-panel,
+.student-home-panel,
+.daily-path-panel,
+.academy-rules-panel,
+.side-panel,
+.experience-switchboard,
+.course-card,
+.learner-card,
+.agent-card,
+.pipeline-stage,
+.path-card,
+.assignment-row,
+.standard-row,
+.readiness-row,
+.log-entry,
+.policy-grid article,
+.task-grid article,
+.evidence-card,
+.evidence-source-card,
+.principle-card,
+.reward-grid article,
+.group-homework,
+.source-list a,
+.setup-step,
+.placement-card,
+.reward-config-list article,
+.experiment-list article,
+.recall-list article,
+.draft-card,
+.library-sample-card,
+.objective-box,
+.visual-prompt,
+.teaching-studio,
+.teaching-diagram,
+.support-card,
+.misunderstanding-card,
+.coach-loop article,
+.coach-prompt,
+.coach-response,
+.auth-card,
+.visual-asset-card,
+.tool-gateway-card,
+.agent-review-card,
+.module-grid span,
+.school-class-form,
+.school-enrollment-form,
+.school-roster-import-form,
+.school-roster-export-card,
+.school-profile-card,
+.school-report-card,
+.class-launch-card,
+.class-monitor-card {
+  background: var(--contrast-card);
+  border-color: var(--contrast-border);
+  color: var(--contrast-text);
+}
+
+.panel,
+.role-hero,
+.level-home-panel,
+.student-home-panel,
+.daily-path-panel,
+.academy-rules-panel,
+.side-panel,
+.experience-switchboard {
+  background:
+    linear-gradient(135deg, rgba(13, 18, 42, 0.98), rgba(12, 10, 30, 0.96)),
+    linear-gradient(90deg, rgba(37, 217, 255, 0.08), rgba(255, 63, 180, 0.07));
+}
+
+.panel p,
+.panel li,
+.panel label,
+.panel summary,
+.panel td,
+.panel th,
+.panel .course-card p,
+.panel .library-sample-card p,
+.panel .library-sample-card small,
+.panel .form-note {
+  color: var(--contrast-muted);
+}
+
+.panel h1,
+.panel h2,
+.panel h3,
+.panel h4,
+.panel strong,
+.panel .course-card ol,
+.panel .course-card li,
+.panel .section-head,
+.panel .section-head h2,
+.panel .section-head h3 {
+  color: var(--contrast-text);
+}
+
+.panel input,
+.panel select,
+.panel textarea,
+.tool-gateway-form input,
+.tool-gateway-form select,
+.visual-agent-form textarea,
+.school-roster-import-form textarea,
+.asset-replace-form input {
+  border-color: var(--contrast-border);
+  background: rgba(6, 8, 22, 0.82);
+  color: var(--contrast-text);
+}
+
+.panel input::placeholder,
+.panel textarea::placeholder {
+  color: #8797b8;
+}
+
+.nav-tab,
+.small-button,
+.secondary-button,
+.grade-pill,
+.academy-card,
+.lesson-row {
+  border-color: var(--contrast-border);
+  background: var(--contrast-card);
+  color: var(--contrast-text);
+}
+
+.nav-tab:hover,
+.small-button:hover,
+.secondary-button:hover,
+.grade-pill:hover,
+.academy-card:hover,
+.lesson-row:hover {
+  border-color: var(--neon-cyan);
+  background: rgba(37, 217, 255, 0.14);
+  color: var(--contrast-text);
+}
+
+.primary-button,
+.nav-tab.active,
+.small-button.active,
+.grade-pill.active {
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+  border-color: var(--neon-cyan);
+  color: #050713;
+}
+
+.callout,
+.adaptive-note,
+.evidence-panel,
+.visual-band,
+.draft-gate,
+.evidence-author-fields,
+.lesson-body-author-fields {
+  border-color: var(--contrast-border);
+  background: rgba(17, 24, 55, 0.82);
+  color: var(--contrast-text);
+}
+
+.callout,
+.callout strong,
+.callout p,
+.callout li,
+.callout span {
+  color: var(--contrast-text);
+}
+
+.status-pill,
+.subject-chip,
+.range-badge {
+  color: #050713;
+}
+
+.status-pill {
+  background: var(--neon-lime);
+}
+
+.status-pill.failed,
+.status-pill.blocked {
+  background: var(--neon-coral);
+}
+
+.status-pill.review,
+.status-pill.pending {
+  background: var(--neon-amber);
+}
+
+.status-pill.passed,
+.status-pill.ready {
+  background: var(--neon-cyan);
+}
+
 /* End-to-end learning product flow */
 .product-flow-panel,
 .special-ai-showcase,
@@ -8657,4 +8877,115 @@ body {
   overflow: visible;
   text-overflow: clip;
   line-height: 1.05;
+}
+
+/* Final readability contract: legacy cards inherit the neon academy palette. */
+body {
+  color: var(--contrast-text, #f8fbff);
+  background: var(--contrast-bg, #060816);
+  font-family: var(--font-body, "Atkinson Hyperlegible", sans-serif);
+}
+
+.panel,
+.readiness-row,
+.setup-step,
+.auth-card,
+.visual-asset-card,
+.agent-review-card,
+.library-sample-card,
+.objective-box,
+.visual-prompt,
+.teaching-studio,
+.teaching-diagram,
+.support-card,
+.misunderstanding-card,
+.coach-loop article,
+.coach-prompt,
+.coach-response,
+.tool-gateway-card,
+.school-card,
+.school-summary-card,
+.class-launch-card,
+.classroom-card,
+.module-card,
+.lesson-card {
+  color: var(--contrast-text, #f8fbff);
+  background: var(--contrast-card, rgba(17, 24, 55, 0.94));
+  border-color: var(--contrast-border, rgba(37, 217, 255, 0.34));
+}
+
+.panel {
+  background:
+    linear-gradient(135deg, rgba(16, 26, 62, 0.98), rgba(20, 14, 48, 0.96));
+}
+
+.panel h1,
+.panel h2,
+.panel h3,
+.panel h4,
+.panel strong,
+.panel legend,
+.panel .title,
+.panel .section-title {
+  color: var(--contrast-text, #f8fbff);
+}
+
+.panel p,
+.panel li,
+.panel label,
+.panel small,
+.panel .muted,
+.panel .subtle,
+.panel .form-note,
+.panel .helper-text,
+.panel .description {
+  color: var(--contrast-muted, #c2cce0);
+}
+
+.panel input,
+.panel select,
+.panel textarea,
+.auth-card input,
+.auth-card select,
+.auth-card textarea {
+  color: var(--contrast-text, #f8fbff);
+  background: rgba(5, 9, 26, 0.92);
+  border-color: rgba(37, 217, 255, 0.38);
+}
+
+.panel input::placeholder,
+.panel textarea::placeholder {
+  color: rgba(194, 204, 224, 0.72);
+}
+
+.secondary-button,
+.small-button,
+.nav-tab,
+.academy-card,
+.lesson-row {
+  color: var(--contrast-text, #f8fbff);
+  background: rgba(8, 13, 35, 0.9);
+  border-color: rgba(37, 217, 255, 0.34);
+}
+
+.secondary-button:hover,
+.small-button:hover,
+.nav-tab:hover,
+.academy-card:hover,
+.lesson-row:hover,
+.nav-tab.active {
+  color: #050713;
+  background: linear-gradient(135deg, #25d9ff, #a96bff);
+  border-color: transparent;
+}
+
+.panel .status-pill,
+.panel .subject-chip,
+.panel .range-badge,
+.panel .status-pill strong {
+  color: #050713;
+}
+
+html {
+  color-scheme: dark;
 }
