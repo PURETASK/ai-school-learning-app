@@ -2789,6 +2789,9 @@ function renderBridgeBatchPublicationPanel() {
           : ""
       }
       <div class="button-group">
+        ${batch.status === "manager-review" || batch.status === "revision-required"
+          ? `<button class="primary-button" data-review-id="batch:${html(batch.sourceBatchId)}" data-review-action="approve">Approve batch for publication</button>`
+          : ""}
         <button class="primary-button" data-publish-batch="${html(batch.sourceBatchId)}" ${batch.approved && !batch.published ? "" : "disabled"}>Publish approved batch</button>
         <button class="secondary-button" data-view="tools">Open manager review queue</button>
       </div>
