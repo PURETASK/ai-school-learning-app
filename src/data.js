@@ -2191,6 +2191,153 @@ function defaultStudentFacingGuide(lesson) {
   };
 }
 
+function nativeFoundationPilotV3(lesson, config = {}) {
+  if (!config.ids?.includes(lesson.id)) return {};
+
+  const guide = lesson.studentFacing || defaultStudentFacingGuide(lesson);
+  const callouts = lesson.teachingSupport?.diagramCallouts || [];
+  const misunderstandings = lesson.teachingSupport?.commonMisunderstandings || [];
+  const phases = [
+    {
+      phase: "orient",
+      title: config.orientTitle || "Notice the challenge",
+      studentAction: config.orientAction || `Look at the model and describe what you notice about ${lesson.title}.`,
+      visualSupport: guide.mission,
+      successCheck: "I can say what I am trying to figure out before I choose an answer."
+    },
+    {
+      phase: "model",
+      title: config.modelTitle || "Build a model",
+      studentAction: config.modelAction || lesson.sections?.teach || lesson.objective,
+      visualSupport: callouts[0] ? `${callouts[0].title}: ${callouts[0].body}` : guide.bigIdea,
+      successCheck: "My model shows the important parts and how they connect."
+    },
+    {
+      phase: "deconstruct",
+      title: "Spot the parts",
+      studentAction: config.deconstructAction || `Sort the examples, evidence, or steps that belong to ${lesson.title}.`,
+      visualSupport: callouts.slice(1).map((item) => `${item.title}: ${item.body}`).join(" "),
+      successCheck: "I can explain why one choice fits and another choice does not."
+    },
+    {
+      phase: "practice",
+      title: "Try the method",
+      studentAction: lesson.sections?.guidedPractice || "Try one example, check the model, and correct your first attempt if needed.",
+      visualSupport: guide.example,
+      successCheck: "I can use the model to complete a new example."
+    },
+    {
+      phase: "reason",
+      title: "Explain the why",
+      studentAction: config.reasonAction || guide.quickCheck,
+      visualSupport: guide.nonExample,
+      successCheck: "My explanation names evidence or a rule, not only an answer."
+    },
+    {
+      phase: "prove",
+      title: "Show your thinking",
+      studentAction: lesson.sections?.independentPractice || lesson.objective,
+      visualSupport: "Choose a drawing, spoken explanation, labeled model, or written response.",
+      successCheck: "Another learner could understand my reasoning from my proof."
+    },
+    {
+      phase: "remember",
+      title: "Retrieve it later",
+      studentAction: config.rememberAction || `After a short delay, recall the key idea from ${lesson.title} without copying the original example.`,
+      visualSupport: guide.studentSummary,
+      successCheck: "I can retrieve the idea when the order and example change."
+    },
+    {
+      phase: "transfer",
+      title: "Use it somewhere new",
+      studentAction: config.transferAction || lesson.sections?.challenge || `Use the idea from ${lesson.title} in a new situation.`,
+      visualSupport: "A new context, example, or problem that keeps the same underlying idea.",
+      successCheck: "I can recognize when this idea is useful outside the original example."
+    },
+    {
+      phase: "adapt",
+      title: "Choose your next move",
+      studentAction: guide.tutorHandoff,
+      visualSupport: "Pick a helper note, alternate model, reteach path, or challenge path based on your evidence.",
+      successCheck: "I can name what is still confusing and choose a productive next step."
+    }
+  ];
+
+  return {
+    schemaVersion: "3",
+    academy: "foundation",
+    gradeLevel: String(lesson.grade),
+    course: lesson.courseTitle,
+    unitId: config.unitId || slug(lesson.unitTitle || lesson.title),
+    lessonNumber: config.lessonNumber || 1,
+    lessonFamily: config.lessonFamily || "concept_launch",
+    secondaryLessonFamily: "reasoning_lab",
+    activePhases: phases.map((item) => item.phase),
+    targetLearningStates: ["not_diagnosed", "acquiring", "developing", "accurate", "secure", "durable", "transferable"],
+    learningObjective: lesson.objective,
+    successCriteria: [
+      `I can describe the big idea in ${lesson.title}.`,
+      "I can use a visual model or example to solve a new problem.",
+      "I can explain my reasoning and repair a misunderstanding.",
+      "I can retrieve and transfer the idea after a delay."
+    ],
+    essentialQuestion: config.essentialQuestion || `How can a model help me understand ${lesson.title}?`,
+    standardsTags: lesson.standards,
+    thinkingSkillTags: config.thinkingSkillTags || ["model-based-reasoning", "explain-with-evidence", "misconception-repair", "transfer"],
+    vocabularyTerms: config.vocabularyTerms || [],
+    prerequisiteSkillIds: config.prerequisiteSkillIds || [],
+    outcomes: {
+      knowledge: [lesson.teachingSupport?.summary || lesson.objective],
+      capability: [lesson.objective, "Use a model, example, or explanation to demonstrate the idea."],
+      reasoning: ["Use evidence from the model or task to justify a choice."],
+      retention: ["Retrieve the core idea after the original lesson context is removed."],
+      transfer: ["Apply the idea to a new example, context, or problem."]
+    },
+    phaseModules: phases,
+    proofTasks: [
+      { proof: "recall", prompt: `After a delay, retrieve the key idea from ${lesson.title}.`, independentRequired: true },
+      { proof: "explain", prompt: guide.quickCheck, independentRequired: true },
+      { proof: "perform", prompt: lesson.sections?.independentPractice || lesson.objective, independentRequired: true },
+      { proof: "retain", prompt: `Complete a delayed Memory Vault check for ${lesson.title}.`, independentRequired: true },
+      { proof: "transfer", prompt: lesson.sections?.challenge || `Apply ${lesson.title} to a new situation.`, independentRequired: true }
+    ],
+    requiredMasteryProofs: ["recall", "explain", "perform", "retain", "transfer"],
+    feedbackRules: misunderstandings.length
+      ? misunderstandings.map((item, index) => ({
+        diagnosisCode: `${lesson.id}-misconception-${index + 1}`,
+        result: item.mistake,
+        hint: item.fix,
+        action: "Route to the alternate representation before retrying."
+      }))
+      : [{
+        diagnosisCode: `${lesson.id}-needs-explanation`,
+        result: "The learner has an incomplete explanation.",
+        hint: guide.tutorHandoff,
+        action: "Ask for a model, example, or first step before retrying."
+      }],
+    reteachPaths: [{
+      id: `${lesson.id}-reteach`,
+      trigger: "The learner misses the model or cannot explain the key relationship.",
+      action: lesson.sections?.reteach || "Return to the concrete model, narrate each step, and retry with a smaller example."
+    }],
+    prerequisiteRepairPaths: [{
+      id: `${lesson.id}-prerequisite-repair`,
+      trigger: "The learner cannot identify the basic parts needed for the lesson.",
+      action: "Use a short sort, match, or vocabulary check before returning to the main task."
+    }],
+    challengePaths: [{
+      id: `${lesson.id}-challenge`,
+      trigger: "The learner completes the proof independently.",
+      action: lesson.sections?.challenge || "Change the context and ask the learner to defend the same idea with new evidence."
+    }],
+    parentTeacherNotes: lesson.parentTeacherNotes || "Treat independent transfer and delayed recall as stronger evidence than one immediate quiz score.",
+    accessibilityNotes: lesson.accessibilityNotes || ["Provide text, visual, oral, and keyboard-accessible ways to demonstrate understanding.", "Do not rely on color alone."],
+    safetyNotes: lesson.safetyNotes || [],
+    contentStatus: "pilot_ready",
+    version: `3.0.0-${lesson.id}-native-exemplar`
+  };
+}
+
 function nativeFoundationFractionsV3(lesson) {
   if (lesson.id !== "g3-fractions-number-line") return {};
   return {
@@ -3274,6 +3421,31 @@ export const pilotLessons = [...basePilotLessons, specialAiLesson].map((lesson) 
     ...lesson,
     studentFacing,
     ...nativeFoundationFractionsV3({ ...lesson, studentFacing }),
+    ...nativeFoundationPilotV3({ ...lesson, studentFacing }, {
+      ids: ["g3-ela-main-idea-evidence", "g3-science-mini-ecosystem", "g3-social-regions-community-map"],
+      unitId: lesson.id.replace(/^g3-/, ""),
+      lessonFamily: lesson.subject === "science" ? "inquiry_investigation" : "reasoning_lab",
+      essentialQuestion: lesson.subject === "science"
+        ? "How can a model help us explain what changes in a living system?"
+        : lesson.subject === "social-studies"
+          ? "How can a map help us explain how people use a place?"
+          : "How can evidence help us identify the big idea?",
+      thinkingSkillTags: lesson.subject === "science"
+        ? ["systems-thinking", "model-based-reasoning", "cause-and-effect", "transfer"]
+        : lesson.subject === "social-studies"
+          ? ["spatial-reasoning", "map-literacy", "evidence", "transfer"]
+          : ["main-idea", "evidence", "text-structure", "transfer"],
+      vocabularyTerms: lesson.subject === "science"
+        ? ["ecosystem", "organism", "dependency", "nonliving", "model"]
+        : lesson.subject === "social-studies"
+          ? ["region", "symbol", "resource", "compass rose", "direction"]
+          : ["main idea", "detail", "evidence", "distractor", "nonfiction"],
+      prerequisiteSkillIds: lesson.subject === "science"
+        ? ["sort-living-nonliving", "read-simple-model"]
+        : lesson.subject === "social-studies"
+          ? ["read-symbols", "use-direction-words"]
+          : ["identify-topic", "read-supporting-detail"]
+    }),
     ...nativeScholarCellsV3({ ...lesson, studentFacing }),
     ...nativeBridgeRatiosV3({ ...lesson, studentFacing }),
     ...nativeBridgeWeatherV3({ ...lesson, studentFacing }),

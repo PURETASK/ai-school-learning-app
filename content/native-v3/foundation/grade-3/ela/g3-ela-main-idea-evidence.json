@@ -1,0 +1,332 @@
+{
+  "id": "g3-ela-main-idea-evidence",
+  "academyId": "foundation",
+  "grade": "3",
+  "subject": "ela",
+  "courseTitle": "ELA",
+  "unitTitle": "Main Idea",
+  "title": "Main Idea Detective",
+  "objective": "Identify the main idea of a nonfiction passage and support it with two details.",
+  "standards": [
+    "ccss-ela"
+  ],
+  "estimatedMinutes": 24,
+  "masteryThreshold": 80,
+  "xp": 120,
+  "visual": {
+    "type": "story-map",
+    "title": "Evidence detective board",
+    "caption": "A visual board with a main idea clue in the center and detail cards connected around it."
+  },
+  "teachingSupport": {
+    "summary": "A main idea is the big point that the strongest details all help prove.",
+    "description": "Learners use a detective board to sort details, reject distracting facts, and defend one main idea with proof.",
+    "diagramCallouts": [
+      {
+        "title": "Main idea",
+        "body": "Put the big point in the center only after checking several details."
+      },
+      {
+        "title": "Proof details",
+        "body": "Details should connect back to the center idea, not just sound interesting."
+      },
+      {
+        "title": "Distractor detail",
+        "body": "A fun fact can be true and still not prove the main idea."
+      }
+    ],
+    "helperNotes": [
+      "Ask: What do most of these details have in common?",
+      "Use two proof cards before writing the final sentence.",
+      "Have the learner explain why one detail does not belong."
+    ],
+    "commonMisunderstandings": [
+      {
+        "mistake": "Choosing the first sentence as the main idea every time.",
+        "fix": "Check whether every detail supports it before accepting it."
+      },
+      {
+        "mistake": "Picking an interesting detail instead of the big point.",
+        "fix": "Ask whether the detail is one clue or the whole message."
+      }
+    ],
+    "confusionPrompt": "Write whether you are stuck finding the big idea, choosing proof details, or rejecting distractors."
+  },
+  "funTasks": [
+    "Use clue cards to sort details that prove or do not prove the main idea.",
+    "Record a 20-second detective report explaining the strongest evidence.",
+    "Build a main-idea badge with one sentence and two proof stickers."
+  ],
+  "retentionChecks": [
+    "Same-day detail sort",
+    "Next-day main idea recall",
+    "Seven-day new passage transfer"
+  ],
+  "reward": "Unlock the Evidence Detective badge after a new-passage transfer task.",
+  "sections": {
+    "warmup": "Look at four picture clues and guess what they all have in common.",
+    "teach": "The main idea is what a text is mostly about. Strong details prove the main idea instead of adding random facts.",
+    "guidedPractice": "Read a short paragraph and drag two details onto the evidence board.",
+    "independentPractice": "Choose the best main idea and explain why two details support it.",
+    "activity": "Create a detective board with one main idea and two evidence cards.",
+    "reteach": "Ask what all the details have in common before choosing a main idea.",
+    "challenge": "Find one detail that is interesting but does not support the main idea."
+  },
+  "quiz": [
+    {
+      "id": "g3-main-idea-q1",
+      "prompt": "What is the main idea of a paragraph?",
+      "choices": [
+        "What the text is mostly about",
+        "The longest word",
+        "The first name in the text",
+        "A random fun fact"
+      ],
+      "answerIndex": 0,
+      "explanation": "The main idea tells what the whole paragraph is mostly about."
+    },
+    {
+      "id": "g3-main-idea-q2",
+      "prompt": "Which detail best supports a passage about how bees help plants?",
+      "choices": [
+        "Bees move pollen between flowers",
+        "Some people wear yellow shirts",
+        "A flower can be drawn with crayons",
+        "Honey jars can be heavy"
+      ],
+      "answerIndex": 0,
+      "explanation": "Moving pollen explains how bees help plants."
+    }
+  ],
+  "studentFacing": {
+    "mission": "Become a text detective and prove the big idea with the strongest clues.",
+    "whyItMatters": "Reading gets easier when you can separate the author's big point from extra facts.",
+    "bigIdea": "The main idea is the one sentence that most of the details work together to prove.",
+    "modelSteps": [
+      "Read the details like clues.",
+      "Ask what most clues have in common.",
+      "Choose two details that prove the same big point."
+    ],
+    "example": "If three details tell how bees move pollen and help flowers grow, the main idea is probably about bees helping plants.",
+    "nonExample": "A fun fact about honey jars may be true, but it does not prove how bees help plants.",
+    "quickCheck": "Can both proof details point back to the same center idea?",
+    "studentSummary": "Main idea is the big point; details are the proof.",
+    "tutorHandoff": "Tell the tutor if you are stuck choosing the big idea, finding proof, or rejecting a distractor."
+  },
+  "schemaVersion": "3",
+  "academy": "foundation",
+  "gradeLevel": "3",
+  "course": "ELA",
+  "unitId": "ela-main-idea-evidence",
+  "lessonNumber": 1,
+  "lessonFamily": "reasoning_lab",
+  "secondaryLessonFamily": "reasoning_lab",
+  "activePhases": [
+    "orient",
+    "model",
+    "deconstruct",
+    "practice",
+    "reason",
+    "prove",
+    "remember",
+    "transfer",
+    "adapt"
+  ],
+  "targetLearningStates": [
+    "not_diagnosed",
+    "acquiring",
+    "developing",
+    "accurate",
+    "secure",
+    "durable",
+    "transferable"
+  ],
+  "learningObjective": "Identify the main idea of a nonfiction passage and support it with two details.",
+  "successCriteria": [
+    "I can describe the big idea in Main Idea Detective.",
+    "I can use a visual model or example to solve a new problem.",
+    "I can explain my reasoning and repair a misunderstanding.",
+    "I can retrieve and transfer the idea after a delay."
+  ],
+  "essentialQuestion": "How can evidence help us identify the big idea?",
+  "standardsTags": [
+    "ccss-ela"
+  ],
+  "thinkingSkillTags": [
+    "main-idea",
+    "evidence",
+    "text-structure",
+    "transfer"
+  ],
+  "vocabularyTerms": [
+    "main idea",
+    "detail",
+    "evidence",
+    "distractor",
+    "nonfiction"
+  ],
+  "prerequisiteSkillIds": [
+    "identify-topic",
+    "read-supporting-detail"
+  ],
+  "outcomes": {
+    "knowledge": [
+      "A main idea is the big point that the strongest details all help prove."
+    ],
+    "capability": [
+      "Identify the main idea of a nonfiction passage and support it with two details.",
+      "Use a model, example, or explanation to demonstrate the idea."
+    ],
+    "reasoning": [
+      "Use evidence from the model or task to justify a choice."
+    ],
+    "retention": [
+      "Retrieve the core idea after the original lesson context is removed."
+    ],
+    "transfer": [
+      "Apply the idea to a new example, context, or problem."
+    ]
+  },
+  "phaseModules": [
+    {
+      "phase": "orient",
+      "title": "Notice the challenge",
+      "studentAction": "Look at the model and describe what you notice about Main Idea Detective.",
+      "visualSupport": "Become a text detective and prove the big idea with the strongest clues.",
+      "successCheck": "I can say what I am trying to figure out before I choose an answer."
+    },
+    {
+      "phase": "model",
+      "title": "Build a model",
+      "studentAction": "The main idea is what a text is mostly about. Strong details prove the main idea instead of adding random facts.",
+      "visualSupport": "Main idea: Put the big point in the center only after checking several details.",
+      "successCheck": "My model shows the important parts and how they connect."
+    },
+    {
+      "phase": "deconstruct",
+      "title": "Spot the parts",
+      "studentAction": "Sort the examples, evidence, or steps that belong to Main Idea Detective.",
+      "visualSupport": "Proof details: Details should connect back to the center idea, not just sound interesting. Distractor detail: A fun fact can be true and still not prove the main idea.",
+      "successCheck": "I can explain why one choice fits and another choice does not."
+    },
+    {
+      "phase": "practice",
+      "title": "Try the method",
+      "studentAction": "Read a short paragraph and drag two details onto the evidence board.",
+      "visualSupport": "If three details tell how bees move pollen and help flowers grow, the main idea is probably about bees helping plants.",
+      "successCheck": "I can use the model to complete a new example."
+    },
+    {
+      "phase": "reason",
+      "title": "Explain the why",
+      "studentAction": "Can both proof details point back to the same center idea?",
+      "visualSupport": "A fun fact about honey jars may be true, but it does not prove how bees help plants.",
+      "successCheck": "My explanation names evidence or a rule, not only an answer."
+    },
+    {
+      "phase": "prove",
+      "title": "Show your thinking",
+      "studentAction": "Choose the best main idea and explain why two details support it.",
+      "visualSupport": "Choose a drawing, spoken explanation, labeled model, or written response.",
+      "successCheck": "Another learner could understand my reasoning from my proof."
+    },
+    {
+      "phase": "remember",
+      "title": "Retrieve it later",
+      "studentAction": "After a short delay, recall the key idea from Main Idea Detective without copying the original example.",
+      "visualSupport": "Main idea is the big point; details are the proof.",
+      "successCheck": "I can retrieve the idea when the order and example change."
+    },
+    {
+      "phase": "transfer",
+      "title": "Use it somewhere new",
+      "studentAction": "Find one detail that is interesting but does not support the main idea.",
+      "visualSupport": "A new context, example, or problem that keeps the same underlying idea.",
+      "successCheck": "I can recognize when this idea is useful outside the original example."
+    },
+    {
+      "phase": "adapt",
+      "title": "Choose your next move",
+      "studentAction": "Tell the tutor if you are stuck choosing the big idea, finding proof, or rejecting a distractor.",
+      "visualSupport": "Pick a helper note, alternate model, reteach path, or challenge path based on your evidence.",
+      "successCheck": "I can name what is still confusing and choose a productive next step."
+    }
+  ],
+  "proofTasks": [
+    {
+      "proof": "recall",
+      "prompt": "After a delay, retrieve the key idea from Main Idea Detective.",
+      "independentRequired": true
+    },
+    {
+      "proof": "explain",
+      "prompt": "Can both proof details point back to the same center idea?",
+      "independentRequired": true
+    },
+    {
+      "proof": "perform",
+      "prompt": "Choose the best main idea and explain why two details support it.",
+      "independentRequired": true
+    },
+    {
+      "proof": "retain",
+      "prompt": "Complete a delayed Memory Vault check for Main Idea Detective.",
+      "independentRequired": true
+    },
+    {
+      "proof": "transfer",
+      "prompt": "Find one detail that is interesting but does not support the main idea.",
+      "independentRequired": true
+    }
+  ],
+  "requiredMasteryProofs": [
+    "recall",
+    "explain",
+    "perform",
+    "retain",
+    "transfer"
+  ],
+  "feedbackRules": [
+    {
+      "diagnosisCode": "g3-ela-main-idea-evidence-misconception-1",
+      "result": "Choosing the first sentence as the main idea every time.",
+      "hint": "Check whether every detail supports it before accepting it.",
+      "action": "Route to the alternate representation before retrying."
+    },
+    {
+      "diagnosisCode": "g3-ela-main-idea-evidence-misconception-2",
+      "result": "Picking an interesting detail instead of the big point.",
+      "hint": "Ask whether the detail is one clue or the whole message.",
+      "action": "Route to the alternate representation before retrying."
+    }
+  ],
+  "reteachPaths": [
+    {
+      "id": "g3-ela-main-idea-evidence-reteach",
+      "trigger": "The learner misses the model or cannot explain the key relationship.",
+      "action": "Ask what all the details have in common before choosing a main idea."
+    }
+  ],
+  "prerequisiteRepairPaths": [
+    {
+      "id": "g3-ela-main-idea-evidence-prerequisite-repair",
+      "trigger": "The learner cannot identify the basic parts needed for the lesson.",
+      "action": "Use a short sort, match, or vocabulary check before returning to the main task."
+    }
+  ],
+  "challengePaths": [
+    {
+      "id": "g3-ela-main-idea-evidence-challenge",
+      "trigger": "The learner completes the proof independently.",
+      "action": "Find one detail that is interesting but does not support the main idea."
+    }
+  ],
+  "parentTeacherNotes": "Treat independent transfer and delayed recall as stronger evidence than one immediate quiz score.",
+  "accessibilityNotes": [
+    "Provide text, visual, oral, and keyboard-accessible ways to demonstrate understanding.",
+    "Do not rely on color alone."
+  ],
+  "safetyNotes": [],
+  "contentStatus": "pilot_ready",
+  "version": "3.0.0-g3-ela-main-idea-evidence-native-exemplar"
+}

@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-07-19T11:14:00.285Z",
+  "generatedAt": "2026-07-19T12:10:16.866Z",
   "root": "C:\\Users\\onlyw\\Documents\\ai school",
   "status": "ready",
   "passed": true,
   "summary": {
     "pilotLessons": 8,
-    "nativeV3Pilots": 5,
-    "validNativeV3Pilots": 5,
-    "adaptedPilots": 3,
-    "contentFiles": 21,
+    "nativeV3Pilots": 8,
+    "validNativeV3Pilots": 8,
+    "adaptedPilots": 0,
+    "contentFiles": 24,
     "seedLessonFiles": 16,
     "contentVersions": {
-      "3": 21
+      "3": 24
     }
   },
   "checks": [
@@ -26,14 +26,14 @@
       "id": "native-v3-exemplars",
       "label": "At least three native V3 exemplars validate",
       "passed": true,
-      "detail": "5/5 pilot records are native V3 and valid.",
+      "detail": "8/8 pilot records are native V3 and valid.",
       "blocking": true
     },
     {
       "id": "v2-compatibility-adapter",
       "label": "V2 lessons remain explicitly adapted",
       "passed": true,
-      "detail": "3 pilot records still require the V2 adapter.",
+      "detail": "0 pilot records still require the V2 adapter.",
       "blocking": true
     },
     {
@@ -54,14 +54,14 @@
       "id": "legacy-content-inventory",
       "label": "On-disk legacy content is accounted for",
       "passed": true,
-      "detail": "16 legacy content files and 16 seed lesson files were inventoried; 5 native V3 files are tracked separately.",
+      "detail": "16 legacy content files and 16 seed lesson files were inventoried; 8 native V3 files are tracked separately.",
       "blocking": true
     },
     {
       "id": "native-content-files",
       "label": "All on-disk content is native V3",
       "passed": true,
-      "detail": "21/21 on-disk content files currently declare schemaVersion 3.",
+      "detail": "24/24 on-disk content files currently declare schemaVersion 3.",
       "blocking": true
     },
     {
@@ -76,6 +76,84 @@
     {
       "id": "g3-fractions-number-line",
       "title": "Fractions on a Number Line",
+      "academy": "foundation",
+      "gradeLevel": "3",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g3-ela-main-idea-evidence",
+      "title": "Main Idea Detective",
+      "academy": "foundation",
+      "gradeLevel": "3",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g3-science-mini-ecosystem",
+      "title": "Build a Mini Ecosystem",
+      "academy": "foundation",
+      "gradeLevel": "3",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g3-social-regions-community-map",
+      "title": "Map a Community Region",
       "academy": "foundation",
       "gradeLevel": "3",
       "passed": true,

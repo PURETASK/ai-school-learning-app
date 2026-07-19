@@ -1,0 +1,332 @@
+{
+  "id": "g3-science-mini-ecosystem",
+  "academyId": "foundation",
+  "grade": "3",
+  "subject": "science",
+  "courseTitle": "Science",
+  "unitTitle": "Ecosystems",
+  "title": "Build a Mini Ecosystem",
+  "objective": "Explain how organisms depend on each other in a small ecosystem.",
+  "standards": [
+    "ngss"
+  ],
+  "estimatedMinutes": 28,
+  "masteryThreshold": 80,
+  "xp": 130,
+  "visual": {
+    "type": "ecosystem-model",
+    "title": "Mini ecosystem image",
+    "caption": "A model showing sun, plants, insects, soil, water, and a simple food connection."
+  },
+  "teachingSupport": {
+    "summary": "An ecosystem is a set of living and nonliving parts that depend on each other.",
+    "description": "Learners build a model, add dependency arrows, remove one part, and explain how the system changes.",
+    "diagramCallouts": [
+      {
+        "title": "Energy source",
+        "body": "Sunlight starts many food connections because plants use it to make food."
+      },
+      {
+        "title": "Dependency arrow",
+        "body": "An arrow means one part needs or affects another part."
+      },
+      {
+        "title": "System change",
+        "body": "Removing water, plants, or insects changes more than one part of the ecosystem."
+      }
+    ],
+    "helperNotes": [
+      "Sort cards into living and nonliving before drawing arrows.",
+      "Ask what each part needs to survive.",
+      "Use a missing-part challenge to test whether the learner understands relationships."
+    ],
+    "commonMisunderstandings": [
+      {
+        "mistake": "Thinking only animals are important in an ecosystem.",
+        "fix": "Trace how plants, sunlight, water, and soil support the animals."
+      },
+      {
+        "mistake": "Drawing arrows as decoration instead of relationships.",
+        "fix": "Require every arrow to be read aloud as depends on or gives to."
+      }
+    ],
+    "confusionPrompt": "Write whether you are stuck on living parts, nonliving parts, arrows, or what changes when one part disappears."
+  },
+  "funTasks": [
+    "Build a paper mini ecosystem with arrows that show who depends on what.",
+    "Play dependency Jenga: remove one part and explain what changes.",
+    "Act out sun, plant, insect, and decomposer roles in a tiny ecosystem loop."
+  ],
+  "retentionChecks": [
+    "Same-day dependency arrow check",
+    "Next-day missing part challenge",
+    "Seven-day ecosystem transfer"
+  ],
+  "reward": "Unlock the Ecosystem Builder badge after explaining a new ecosystem.",
+  "sections": {
+    "warmup": "Name three living or nonliving parts of a backyard or park.",
+    "teach": "Organisms depend on food, water, shelter, sunlight, and other organisms. A model can show these connections.",
+    "guidedPractice": "Connect plants, insects, water, soil, and sunlight with dependency arrows.",
+    "independentPractice": "Explain what might happen if one part of the ecosystem disappears.",
+    "activity": "Build a mini ecosystem model with labeled arrows.",
+    "reteach": "Separate living and nonliving parts, then ask what each part needs.",
+    "challenge": "Compare a pond ecosystem and a garden ecosystem."
+  },
+  "quiz": [
+    {
+      "id": "g3-ecosystem-q1",
+      "prompt": "Why do many plants need sunlight?",
+      "choices": [
+        "To make food",
+        "To learn spelling",
+        "To become rocks",
+        "To stop all insects"
+      ],
+      "answerIndex": 0,
+      "explanation": "Plants use sunlight as part of making their food."
+    },
+    {
+      "id": "g3-ecosystem-q2",
+      "prompt": "What does a dependency arrow show in an ecosystem model?",
+      "choices": [
+        "How one part depends on another",
+        "Which word is longest",
+        "Where to write your name",
+        "How to erase the model"
+      ],
+      "answerIndex": 0,
+      "explanation": "Dependency arrows show relationships between parts of a system."
+    }
+  ],
+  "studentFacing": {
+    "mission": "Build a tiny ecosystem and prove how each part helps the system stay alive.",
+    "whyItMatters": "Science is about relationships. When one part changes, other parts can change too.",
+    "bigIdea": "Living and nonliving parts form a system when they depend on each other.",
+    "modelSteps": [
+      "Sort each part as living or nonliving.",
+      "Draw arrows for needs or effects.",
+      "Remove one part and predict what changes."
+    ],
+    "example": "A plant uses sunlight and water; an insect may use the plant for food or shelter.",
+    "nonExample": "An arrow with no explanation is decoration, not science evidence.",
+    "quickCheck": "Read every arrow out loud as 'depends on' or 'gives to.'",
+    "studentSummary": "An ecosystem is a web of parts that need or affect each other.",
+    "tutorHandoff": "Tell the tutor if the confusing part is living/nonliving, arrows, or what changes when one part disappears."
+  },
+  "schemaVersion": "3",
+  "academy": "foundation",
+  "gradeLevel": "3",
+  "course": "Science",
+  "unitId": "science-mini-ecosystem",
+  "lessonNumber": 1,
+  "lessonFamily": "inquiry_investigation",
+  "secondaryLessonFamily": "reasoning_lab",
+  "activePhases": [
+    "orient",
+    "model",
+    "deconstruct",
+    "practice",
+    "reason",
+    "prove",
+    "remember",
+    "transfer",
+    "adapt"
+  ],
+  "targetLearningStates": [
+    "not_diagnosed",
+    "acquiring",
+    "developing",
+    "accurate",
+    "secure",
+    "durable",
+    "transferable"
+  ],
+  "learningObjective": "Explain how organisms depend on each other in a small ecosystem.",
+  "successCriteria": [
+    "I can describe the big idea in Build a Mini Ecosystem.",
+    "I can use a visual model or example to solve a new problem.",
+    "I can explain my reasoning and repair a misunderstanding.",
+    "I can retrieve and transfer the idea after a delay."
+  ],
+  "essentialQuestion": "How can a model help us explain what changes in a living system?",
+  "standardsTags": [
+    "ngss"
+  ],
+  "thinkingSkillTags": [
+    "systems-thinking",
+    "model-based-reasoning",
+    "cause-and-effect",
+    "transfer"
+  ],
+  "vocabularyTerms": [
+    "ecosystem",
+    "organism",
+    "dependency",
+    "nonliving",
+    "model"
+  ],
+  "prerequisiteSkillIds": [
+    "sort-living-nonliving",
+    "read-simple-model"
+  ],
+  "outcomes": {
+    "knowledge": [
+      "An ecosystem is a set of living and nonliving parts that depend on each other."
+    ],
+    "capability": [
+      "Explain how organisms depend on each other in a small ecosystem.",
+      "Use a model, example, or explanation to demonstrate the idea."
+    ],
+    "reasoning": [
+      "Use evidence from the model or task to justify a choice."
+    ],
+    "retention": [
+      "Retrieve the core idea after the original lesson context is removed."
+    ],
+    "transfer": [
+      "Apply the idea to a new example, context, or problem."
+    ]
+  },
+  "phaseModules": [
+    {
+      "phase": "orient",
+      "title": "Notice the challenge",
+      "studentAction": "Look at the model and describe what you notice about Build a Mini Ecosystem.",
+      "visualSupport": "Build a tiny ecosystem and prove how each part helps the system stay alive.",
+      "successCheck": "I can say what I am trying to figure out before I choose an answer."
+    },
+    {
+      "phase": "model",
+      "title": "Build a model",
+      "studentAction": "Organisms depend on food, water, shelter, sunlight, and other organisms. A model can show these connections.",
+      "visualSupport": "Energy source: Sunlight starts many food connections because plants use it to make food.",
+      "successCheck": "My model shows the important parts and how they connect."
+    },
+    {
+      "phase": "deconstruct",
+      "title": "Spot the parts",
+      "studentAction": "Sort the examples, evidence, or steps that belong to Build a Mini Ecosystem.",
+      "visualSupport": "Dependency arrow: An arrow means one part needs or affects another part. System change: Removing water, plants, or insects changes more than one part of the ecosystem.",
+      "successCheck": "I can explain why one choice fits and another choice does not."
+    },
+    {
+      "phase": "practice",
+      "title": "Try the method",
+      "studentAction": "Connect plants, insects, water, soil, and sunlight with dependency arrows.",
+      "visualSupport": "A plant uses sunlight and water; an insect may use the plant for food or shelter.",
+      "successCheck": "I can use the model to complete a new example."
+    },
+    {
+      "phase": "reason",
+      "title": "Explain the why",
+      "studentAction": "Read every arrow out loud as 'depends on' or 'gives to.'",
+      "visualSupport": "An arrow with no explanation is decoration, not science evidence.",
+      "successCheck": "My explanation names evidence or a rule, not only an answer."
+    },
+    {
+      "phase": "prove",
+      "title": "Show your thinking",
+      "studentAction": "Explain what might happen if one part of the ecosystem disappears.",
+      "visualSupport": "Choose a drawing, spoken explanation, labeled model, or written response.",
+      "successCheck": "Another learner could understand my reasoning from my proof."
+    },
+    {
+      "phase": "remember",
+      "title": "Retrieve it later",
+      "studentAction": "After a short delay, recall the key idea from Build a Mini Ecosystem without copying the original example.",
+      "visualSupport": "An ecosystem is a web of parts that need or affect each other.",
+      "successCheck": "I can retrieve the idea when the order and example change."
+    },
+    {
+      "phase": "transfer",
+      "title": "Use it somewhere new",
+      "studentAction": "Compare a pond ecosystem and a garden ecosystem.",
+      "visualSupport": "A new context, example, or problem that keeps the same underlying idea.",
+      "successCheck": "I can recognize when this idea is useful outside the original example."
+    },
+    {
+      "phase": "adapt",
+      "title": "Choose your next move",
+      "studentAction": "Tell the tutor if the confusing part is living/nonliving, arrows, or what changes when one part disappears.",
+      "visualSupport": "Pick a helper note, alternate model, reteach path, or challenge path based on your evidence.",
+      "successCheck": "I can name what is still confusing and choose a productive next step."
+    }
+  ],
+  "proofTasks": [
+    {
+      "proof": "recall",
+      "prompt": "After a delay, retrieve the key idea from Build a Mini Ecosystem.",
+      "independentRequired": true
+    },
+    {
+      "proof": "explain",
+      "prompt": "Read every arrow out loud as 'depends on' or 'gives to.'",
+      "independentRequired": true
+    },
+    {
+      "proof": "perform",
+      "prompt": "Explain what might happen if one part of the ecosystem disappears.",
+      "independentRequired": true
+    },
+    {
+      "proof": "retain",
+      "prompt": "Complete a delayed Memory Vault check for Build a Mini Ecosystem.",
+      "independentRequired": true
+    },
+    {
+      "proof": "transfer",
+      "prompt": "Compare a pond ecosystem and a garden ecosystem.",
+      "independentRequired": true
+    }
+  ],
+  "requiredMasteryProofs": [
+    "recall",
+    "explain",
+    "perform",
+    "retain",
+    "transfer"
+  ],
+  "feedbackRules": [
+    {
+      "diagnosisCode": "g3-science-mini-ecosystem-misconception-1",
+      "result": "Thinking only animals are important in an ecosystem.",
+      "hint": "Trace how plants, sunlight, water, and soil support the animals.",
+      "action": "Route to the alternate representation before retrying."
+    },
+    {
+      "diagnosisCode": "g3-science-mini-ecosystem-misconception-2",
+      "result": "Drawing arrows as decoration instead of relationships.",
+      "hint": "Require every arrow to be read aloud as depends on or gives to.",
+      "action": "Route to the alternate representation before retrying."
+    }
+  ],
+  "reteachPaths": [
+    {
+      "id": "g3-science-mini-ecosystem-reteach",
+      "trigger": "The learner misses the model or cannot explain the key relationship.",
+      "action": "Separate living and nonliving parts, then ask what each part needs."
+    }
+  ],
+  "prerequisiteRepairPaths": [
+    {
+      "id": "g3-science-mini-ecosystem-prerequisite-repair",
+      "trigger": "The learner cannot identify the basic parts needed for the lesson.",
+      "action": "Use a short sort, match, or vocabulary check before returning to the main task."
+    }
+  ],
+  "challengePaths": [
+    {
+      "id": "g3-science-mini-ecosystem-challenge",
+      "trigger": "The learner completes the proof independently.",
+      "action": "Compare a pond ecosystem and a garden ecosystem."
+    }
+  ],
+  "parentTeacherNotes": "Treat independent transfer and delayed recall as stronger evidence than one immediate quiz score.",
+  "accessibilityNotes": [
+    "Provide text, visual, oral, and keyboard-accessible ways to demonstrate understanding.",
+    "Do not rely on color alone."
+  ],
+  "safetyNotes": [],
+  "contentStatus": "pilot_ready",
+  "version": "3.0.0-g3-science-mini-ecosystem-native-exemplar"
+}
