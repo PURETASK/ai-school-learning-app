@@ -59,8 +59,8 @@ function validateNativePilot(lesson) {
 export function buildMigrationReadinessReport({ root = defaultRoot } = {}) {
   const contentFiles = readJsonFiles(path.join(root, "content"));
   const seedFiles = readJsonFiles(path.join(root, "seed-lessons", "lessons", "json"));
-  const nativeContentRoot = path.join(root, "content", "native-v3") + path.sep;
-  const legacyContentFiles = contentFiles.filter((item) => !item.file.startsWith(nativeContentRoot));
+  const legacyContentFiles = contentFiles.filter((item) => item.error || item.value?.schemaVersion !== "3");
+  const nativeContentFiles = contentFiles.filter((item) => !item.error && item.value?.schemaVersion === "3");
   const nativePilots = pilotLessons.filter((lesson) => lesson.schemaVersion === "3");
   const adaptedPilots = pilotLessons.filter((lesson) => lesson.schemaVersion !== "3");
   const nativePilotResults = nativePilots.map(validateNativePilot);
@@ -105,8 +105,11 @@ export function buildMigrationReadinessReport({ root = defaultRoot } = {}) {
     check(
       "legacy-content-inventory",
       "On-disk legacy content is accounted for",
-      legacyContentFiles.length > 0 && seedFiles.length >= legacyContentFiles.length && Object.keys(contentVersions).every((version) => version !== "invalid-json"),
-      `${legacyContentFiles.length} legacy content files and ${seedFiles.length} seed lesson files were inventoried; ${contentFiles.length - legacyContentFiles.length} native V3 files are tracked separately.`
+      legacyContentFiles.length === 0
+        || (seedFiles.length >= legacyContentFiles.length && Object.keys(contentVersions).every((version) => version !== "invalid-json")),
+      legacyContentFiles.length === 0
+        ? "No on-disk legacy content remains; all content files declare schemaVersion 3."
+        : `${legacyContentFiles.length} legacy content files and ${seedFiles.length} seed lesson files were inventoried; ${nativeContentFiles.length} native V3 files are tracked separately.`
     ),
     check(
       "native-content-files",

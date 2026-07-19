@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-19T14:05:13.014Z",
+  "generatedAt": "2026-07-19T15:30:27.886Z",
   "root": "C:\\Users\\onlyw\\Documents\\ai school",
   "status": "ready",
   "passed": true,
@@ -8,10 +8,10 @@
     "nativeV3Pilots": 10,
     "validNativeV3Pilots": 10,
     "adaptedPilots": 0,
-    "contentFiles": 26,
+    "contentFiles": 27,
     "seedLessonFiles": 16,
     "contentVersions": {
-      "3": 26
+      "3": 27
     }
   },
   "checks": [
@@ -54,14 +54,14 @@
       "id": "legacy-content-inventory",
       "label": "On-disk legacy content is accounted for",
       "passed": true,
-      "detail": "16 legacy content files and 16 seed lesson files were inventoried; 10 native V3 files are tracked separately.",
+      "detail": "No on-disk legacy content remains; all content files declare schemaVersion 3.",
       "blocking": true
     },
     {
       "id": "native-content-files",
       "label": "All on-disk content is native V3",
       "passed": true,
-      "detail": "26/26 on-disk content files currently declare schemaVersion 3.",
+      "detail": "27/27 on-disk content files currently declare schemaVersion 3.",
       "blocking": true
     },
     {
