@@ -1107,12 +1107,18 @@ function repositoryParentEvidenceForLesson(learnerId = "", lessonId = "") {
   const reward = repositoryRewardApprovalForLesson(learnerId, lessonId);
   const scratchpad = repositoryScratchpadForLesson(learnerId, lessonId);
   const portfolio = repositoryPortfolioEvidenceForLesson(learnerId, lessonId);
+  const catalogLesson = getRepositoryCatalogLesson(learnerId, lessonId);
+  const phaseCompletions = Array.isArray(catalogLesson?.phaseCompletions) ? catalogLesson.phaseCompletions : [];
   return {
     quizMastery,
     reward,
     scratchpad,
     portfolio,
-    hasRepositoryEvidence: Boolean(quizMastery.latest || reward || scratchpad || portfolio.portfolioItem || portfolio.badge)
+    phaseCompletions,
+    completedPhaseCount: Number(catalogLesson?.completedPhaseCount || 0),
+    hasRepositoryEvidence: Boolean(
+      quizMastery.latest || reward || scratchpad || portfolio.portfolioItem || portfolio.badge || phaseCompletions.length
+    )
   };
 }
 
@@ -5994,7 +6000,7 @@ function renderParentEvidenceTimeline(learnerIds = []) {
           rows.length
             ? rows
                 .map(
-                  ({ learner, lesson, quiz, mastery, scratchpad, reward, repositoryQuizMastery, repositoryReward, repositoryScratchpad, repositoryPortfolio }) => {
+                  ({ learner, lesson, quiz, mastery, scratchpad, reward, repositoryQuizMastery, repositoryReward, repositoryScratchpad, repositoryPortfolio, repositoryEvidence }) => {
                     const evidenceScore = repositoryQuizMastery ? repositoryQuizMastery.quizScore || repositoryQuizMastery.masteryScore : quiz ? quiz.score : mastery.score || 0;
                     const evidenceStatus = repositoryQuizMastery
                       ? repositoryQuizMastery.quizPassed || repositoryQuizMastery.masteryScore >= 80
@@ -6026,6 +6032,15 @@ function renderParentEvidenceTimeline(learnerIds = []) {
                       ? `${repositoryQuizMastery.lessonTitle}: quiz ${repositoryQuizMastery.quizScore}% | mastery ${repositoryQuizMastery.masteryScore}% ${repositoryQuizMastery.masteryStatus || ""}`
                       : "No learner-scoped catalog quiz or mastery row for this lesson yet."
                   )}</p>
+                </div>
+                <div class="student-evidence-box ${repositoryEvidence.phaseCompletions.length ? "" : "muted-box"}">
+                  <strong>Nexus learning phases</strong>
+                  <p>${html(
+                    repositoryEvidence.phaseCompletions.length
+                      ? `${repositoryEvidence.completedPhaseCount} phase move(s) cleared: ${repositoryEvidence.phaseCompletions.map((item) => item.phase).join(", ")}.`
+                      : "No persisted phase-completion evidence for this lesson yet."
+                  )}</p>
+                  ${repositoryEvidence.phaseCompletions.length ? "<small>Read from the learner-scoped catalog phase evidence.</small>" : ""}
                 </div>
                 <div class="student-evidence-box ${visibleScratchpad ? "" : "muted-box"}">
                   <strong>Student writing</strong>
@@ -6486,6 +6501,16 @@ function renderTeacherClassroomCommand() {
     classSessionId: monitor.session.id,
     lessonId: monitor.lesson.id
   });
+  const repositoryPhaseAggregate = monitor.learners
+    .map((item) => getRepositoryCatalogLesson(item.learner.id, monitor.lesson.id))
+    .filter(Boolean)
+    .reduce(
+      (summary, lesson) => ({
+        learners: summary.learners + (lesson.completedPhaseCount > 0 ? 1 : 0),
+        phases: summary.phases + Number(lesson.completedPhaseCount || 0)
+      }),
+      { learners: 0, phases: 0 }
+    );
 
   return `
     <section class="panel wide-panel teacher-classroom-command">
@@ -6529,6 +6554,7 @@ function renderTeacherClassroomCommand() {
             ${renderMetric("Skill signals", repositoryLessonSignals.total, "Catalog evidence")}
             ${renderMetric("Catalog quizzes", repositoryLessonQuizMastery.quizAttempts, `${repositoryLessonQuizMastery.quizPassed} passed`)}
             ${renderMetric("Catalog mastery", repositoryLessonQuizMastery.mastered, `${repositoryLessonQuizMastery.needsReview} review`)}
+            ${renderMetric("Nexus phases", repositoryPhaseAggregate.phases, `${repositoryPhaseAggregate.learners} learner(s) started`)}
             ${renderMetric("Tutor events", repositoryTutorAggregate.total, `${repositoryTutorAggregate.needsTruthReview} review`)}
             ${renderMetric("Reward reads", repositoryRewardAggregate.total, `${repositoryRewardAggregate.parentActionRequired} parent action`)}
             ${renderMetric("Assignments", repositoryAssignmentAggregate.open, `${repositoryAssignmentAggregate.total} read`)}
@@ -6556,7 +6582,9 @@ function renderTeacherClassroomCommand() {
                             ? `Classroom repository read failed: ${repositoryClassroom.error}`
                             : repositoryMonitor.error
                               ? `Classroom monitor repository read failed: ${repositoryMonitor.error}`
-                              : "No learner-scoped repository skill, quiz, mastery, tutor, reward, portfolio, artifact, or intervention signal has been read for this live lesson yet."
+                              : repositoryPhaseAggregate.phases
+                                ? `${repositoryPhaseAggregate.phases} learner phase-completion signal(s) are recorded for this live lesson.`
+                                : "No learner-scoped repository skill, quiz, mastery, phase, tutor, reward, portfolio, artifact, or intervention signal has been read for this live lesson yet."
           )}</p>
         </article>
       </div>
@@ -6572,6 +6600,7 @@ function renderTeacherClassroomCommand() {
                     <small>Grade ${html(item.learner.grade)} | ${html(item.currentStep)} | ${html(item.artifact?.artifactStatus || "no artifact")}</small>
                     <small>${html(item.adaptiveReteach?.diagnosisLabel ? `Targeted reteach: ${item.adaptiveReteach.diagnosisLabel} - ${item.adaptiveReteach.reteachMove}` : "No targeted reteach evidence yet.")}</small>
                     <small>${html(item.interactiveSkillEvidence?.[0] ? `Interactive: ${item.interactiveSkillEvidence[0].skillLabel} - ${item.interactiveSkillEvidence[0].status}` : "No interactive skill evidence yet.")}</small>
+                    <small>${html(`${getRepositoryCatalogLesson(item.learner.id, monitor.lesson.id)?.completedPhaseCount || 0} Nexus phase(s) cleared from scoped catalog evidence.`)}</small>
                   </div>
                   <span>${html(item.status)}</span>
                   <b>${html(item.mastery.score || 0)}%</b>
