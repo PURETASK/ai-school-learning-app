@@ -105,7 +105,7 @@ export function buildMigrationReadinessReport({ root = defaultRoot } = {}) {
     check(
       "legacy-content-inventory",
       "On-disk legacy content is accounted for",
-      legacyContentFiles.length > 0 && seedFiles.length === legacyContentFiles.length && Object.keys(contentVersions).every((version) => version !== "invalid-json"),
+      legacyContentFiles.length > 0 && seedFiles.length >= legacyContentFiles.length && Object.keys(contentVersions).every((version) => version !== "invalid-json"),
       `${legacyContentFiles.length} legacy content files and ${seedFiles.length} seed lesson files were inventoried; ${contentFiles.length - legacyContentFiles.length} native V3 files are tracked separately.`
     ),
     check(

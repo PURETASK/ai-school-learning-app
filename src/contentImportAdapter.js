@@ -18,7 +18,9 @@ function phaseText(phase) {
 }
 
 function phaseCollection(rawLesson) {
-  const source = rawLesson?.activePhases && typeof rawLesson.activePhases === "object" ? rawLesson.activePhases : rawLesson?.lessonFlow;
+  const source = rawLesson?.schemaVersion === "3" && Array.isArray(rawLesson?.phaseModules)
+    ? rawLesson.phaseModules
+    : rawLesson?.activePhases && typeof rawLesson.activePhases === "object" ? rawLesson.activePhases : rawLesson?.lessonFlow;
   if (!source || typeof source !== "object") return {};
   if (Array.isArray(source)) {
     return source.reduce((result, phase) => {
@@ -72,6 +74,26 @@ function buildNativePhaseModules(rawLesson, phases, visualSupports) {
 }
 
 function buildNativeV3Fields(rawLesson, phases, visualSupports, subject, objective) {
+  if (rawLesson?.schemaVersion === "3") {
+    return {
+      schemaVersion: "3",
+      lessonFamily: text(rawLesson.lessonFamily),
+      activePhases: list(rawLesson.activePhases),
+      targetLearningStates: list(rawLesson.targetLearningStates),
+      learningObjective: objective,
+      successCriteria: list(rawLesson.successCriteria),
+      thinkingSkillTags: list(rawLesson.thinkingSkillTags),
+      outcomes: rawLesson.outcomes || {},
+      phaseModules: Array.isArray(rawLesson.phaseModules) ? rawLesson.phaseModules : [],
+      proofTasks: Array.isArray(rawLesson.proofTasks) ? rawLesson.proofTasks : [],
+      requiredMasteryProofs: list(rawLesson.requiredMasteryProofs),
+      feedbackRules: Array.isArray(rawLesson.feedbackRules) ? rawLesson.feedbackRules : [],
+      reteachPaths: Array.isArray(rawLesson.reteachPaths) ? rawLesson.reteachPaths : [],
+      challengePaths: Array.isArray(rawLesson.challengePaths) ? rawLesson.challengePaths : [],
+      contentStatus: text(rawLesson.contentStatus) || "review_required",
+      version: text(rawLesson.version) || "3.0.0"
+    };
+  }
   const phaseModules = buildNativePhaseModules(rawLesson, phases, visualSupports);
   const activePhases = phaseModules.map((module) => module.phase);
   const family = subject === "science" ? "inquiry_investigation" : subject === "math" ? "skill_workshop" : subject === "ela" || subject === "social-studies" ? "reasoning_lab" : "concept_launch";
