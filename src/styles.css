@@ -4462,8 +4462,121 @@ body {
 
 .ratio-table-widget,
 .weather-evidence-widget,
-.migration-map-widget {
+.migration-map-widget,
+.theme-evidence-widget,
+.settlement-evidence-widget {
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+}
+
+.theme-evidence-widget,
+.settlement-evidence-widget {
+  grid-template-columns: 1fr;
+}
+
+.evidence-board-track {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: stretch;
+}
+
+.evidence-board-card {
+  min-width: 0;
+  min-height: 112px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.evidence-board-card.active,
+.settlement-map-card.active {
+  border-color: #9cff4f;
+  background: rgba(156, 255, 79, 0.18);
+  box-shadow: inset 0 0 18px rgba(156, 255, 79, 0.14);
+}
+
+.evidence-board-card span {
+  display: inline-flex;
+  margin-bottom: 10px;
+  border-radius: 999px;
+  padding: 4px 8px;
+  background: rgba(69, 243, 255, 0.16);
+  color: #80f7ff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.evidence-board-card strong,
+.evidence-board-card p,
+.settlement-map-card strong,
+.settlement-map-card p {
+  display: block;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.evidence-board-card strong,
+.settlement-map-card strong {
+  color: #ffffff;
+}
+
+.evidence-board-card p,
+.settlement-map-card p {
+  margin-top: 7px;
+  color: rgba(255, 255, 255, 0.84);
+  font-weight: 850;
+}
+
+.evidence-board-arrow {
+  display: grid;
+  place-items: center;
+  align-self: center;
+  color: #ff4fd8;
+  font-style: normal;
+  font-weight: 950;
+}
+
+.settlement-map-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.settlement-map-card {
+  min-width: 0;
+  min-height: 112px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.settlement-map-route {
+  display: grid;
+  grid-template-columns: auto 1fr auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.settlement-map-route span {
+  display: grid;
+  min-height: auto;
+  place-items: center;
+  border: 1px solid rgba(69, 243, 255, 0.28);
+  border-radius: 999px;
+  padding: 7px 10px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.settlement-map-route i {
+  display: block;
+  min-height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #45f3ff, #ff4fd8);
 }
 
 .ratio-table,
@@ -5240,6 +5353,15 @@ body {
   .journey-step {
     min-height: auto;
   }
+
+  .evidence-board-track,
+  .settlement-map-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .evidence-board-arrow {
+    display: none;
+  }
 }
 
 @media (max-width: 560px) {
@@ -5258,6 +5380,19 @@ body {
 
   .main-grid {
     padding: 14px 12px 36px;
+  }
+
+  .evidence-board-track,
+  .settlement-map-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .settlement-map-route {
+    grid-template-columns: 1fr;
+  }
+
+  .settlement-map-route i {
+    min-height: 4px;
   }
 
   .panel {

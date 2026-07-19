@@ -4714,6 +4714,52 @@ function getLessonInteractiveConfig(lesson) {
     };
   }
 
+  if (lesson.id === "g6-ela-theme-text-evidence" || lesson.visual?.type === "theme-evidence-board") {
+    return {
+      widgetId: "g6-theme-evidence-board",
+      title: "Build the theme signal board",
+      prompt: "Which card is a theme message rather than a topic or plot detail?",
+      options: [
+        "Friendship",
+        "The story suggests that honest friendship requires difficult conversations",
+        "The character walks home",
+        "A forest"
+      ],
+      correctValue: "The story suggests that honest friendship requires difficult conversations",
+      success: "Correct. A theme message explains what the story suggests about life, choices, or relationships.",
+      retry: "Try again. A topic names a subject and a plot detail tells what happened. A theme is a complete message about the subject.",
+      boardZones: [
+        { label: "Topic", value: "The subject the story explores" },
+        { label: "Plot clue", value: "A detail showing what happened" },
+        { label: "Pattern", value: "What repeats or changes across the story" },
+        { label: "Theme", value: "A complete message about life" }
+      ]
+    };
+  }
+
+  if (lesson.id === "g6-social-geography-early-humans" || lesson.visual?.type === "settlement-evidence-map") {
+    return {
+      widgetId: "g6-settlement-evidence-map",
+      title: "Run the settlement decision lab",
+      prompt: "Which clue shows both a benefit and a tradeoff?",
+      options: [
+        "River water and fertile soil, with flood risk",
+        "A random date with no location",
+        "A colorful icon with no source",
+        "Only the biggest map symbol"
+      ],
+      correctValue: "River water and fertile soil, with flood risk",
+      success: "Correct. Strong historical reasoning names a resource and the risk people had to manage.",
+      retry: "Try again. Look for evidence that connects a place, a human need, and a possible cost.",
+      boardZones: [
+        { label: "Resource", value: "Water, soil, food, materials" },
+        { label: "Route", value: "Travel and trade path" },
+        { label: "Tradeoff", value: "Benefit plus risk" },
+        { label: "Claim", value: "A conditional settlement decision" }
+      ]
+    };
+  }
+
   if (lesson.id === "published-draft-next-wave-bridge-6-ela-u1-l1" || lesson.sourceDraftId === "draft-next-wave-bridge-6-ela-u1-l1") {
     return {
       widgetId: "myth-decoder-board",
@@ -4915,6 +4961,49 @@ function renderInteractiveMiniModel(lesson, config, response) {
             `
           )
           .join("")}
+      </div>
+    `;
+  }
+
+  if (config.widgetId === "g6-theme-evidence-board") {
+    return `
+      <div class="interactive-model bridge-batch-widget theme-evidence-widget" aria-label="Theme evidence board">
+        <div class="evidence-board-track">
+          ${(config.boardZones || [])
+            .map(
+              (zone, index) => `
+                <article class="evidence-board-card ${selected === config.correctValue && zone.label === "Theme" ? "active" : ""}">
+                  <span>${String(index + 1).padStart(2, "0")}</span>
+                  <strong>${html(zone.label)}</strong>
+                  <p>${html(zone.value)}</p>
+                </article>
+                ${index < (config.boardZones || []).length - 1 ? '<i class="evidence-board-arrow" aria-hidden="true">-></i>' : ""}
+              `
+            )
+            .join("")}
+        </div>
+        <small>Move from the story detail to the pattern, then state the message.</small>
+      </div>
+    `;
+  }
+
+  if (config.widgetId === "g6-settlement-evidence-map") {
+    return `
+      <div class="interactive-model bridge-batch-widget settlement-evidence-widget" aria-label="Settlement evidence map">
+        <div class="settlement-map-grid">
+          ${(config.boardZones || [])
+            .map(
+              (zone) => `
+                <article class="settlement-map-card ${selected === config.correctValue && zone.label === "Tradeoff" ? "active" : ""}">
+                  <strong>${html(zone.label)}</strong>
+                  <p>${html(zone.value)}</p>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+        <div class="settlement-map-route" aria-hidden="true"><span>place</span><i></i><span>need</span><i></i><span>choice</span></div>
+        <small>Use the map like a historian: place -> need -> choice -> tradeoff.</small>
       </div>
     `;
   }
