@@ -4005,10 +4005,53 @@ body {
 }
 
 .nexus-teacher-model,
-.nexus-memory-card {
+.nexus-memory-card,
+.nexus-orient-card,
+.nexus-breakdown-card,
+.nexus-success-check {
   border-radius: 18px;
   padding: 14px;
   background: #f8fafc;
+}
+
+.nexus-orient-card,
+.nexus-breakdown-card {
+  display: grid;
+  gap: 8px;
+  border: 2px solid rgba(32, 118, 255, 0.16);
+  background: linear-gradient(135deg, #f0f8ff, #ffffff);
+}
+
+.nexus-orient-card strong,
+.nexus-breakdown-card strong,
+.nexus-success-check strong {
+  color: var(--ink);
+  font-weight: 950;
+}
+
+.nexus-orient-card p,
+.nexus-breakdown-card p {
+  margin: 0;
+}
+
+.nexus-orient-card span,
+.nexus-success-check span {
+  color: #405066;
+  font-size: 14px;
+}
+
+.nexus-breakdown-card ol {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 22px;
+  color: #405066;
+}
+
+.nexus-success-check {
+  display: grid;
+  gap: 4px;
+  border-left: 4px solid var(--green);
 }
 
 .nexus-phase-action {

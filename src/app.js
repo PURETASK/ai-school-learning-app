@@ -4122,7 +4122,27 @@ function getNexusLessonPlayerModel(lesson) {
 }
 
 function renderNexusPhaseAction(module, lesson, learnerId, scratchpad, answers, result) {
+  if (module.phase === "orient") {
+    return `
+      <div class="nexus-orient-card">
+        <strong>Mission start</strong>
+        <p>${html(lesson.essentialQuestion || lesson.learningObjective || module.studentAction)}</p>
+        <span>Before you begin, make one prediction or connection.</span>
+      </div>
+    `;
+  }
   if (module.phase === "model") return renderLessonVisual(lesson);
+  if (module.phase === "deconstruct") {
+    const steps = lesson.studentFacing?.steps || lesson.studentFacing?.modelSteps || [];
+    return `
+      <div class="nexus-breakdown-card">
+        <strong>Build the idea from its parts</strong>
+        ${steps.length
+          ? `<ol>${steps.slice(0, 5).map((step) => `<li>${html(typeof step === "string" ? step : step.text || step.title || "")}</li>`).join("")}</ol>`
+          : `<p>Underline the important parts, name what must be true, and explain how the parts connect.</p>`}
+      </div>
+    `;
+  }
   if (module.phase === "practice") {
     return `
       ${renderInteractiveWidget(lesson, learnerId)}
@@ -4228,8 +4248,8 @@ function renderNexusLessonPhaseSequence(lesson, answers, result, experience, sup
                   <p class="eyebrow">${html(playerModel.lesson.lessonFamily.replaceAll("_", " "))}</p>
                   <h3>${html(module.title)}</h3>
                   <p>${html(module.studentAction)}</p>
-                  ${module.teacherModel ? `<p class="nexus-teacher-model">${html(module.teacherModel)}</p>` : ""}
                   ${module.visualSupport ? `<small>${html(module.visualSupport)}</small>` : ""}
+                  ${module.successCheck ? `<div class="nexus-success-check"><strong>Check yourself</strong><span>${html(module.successCheck)}</span></div>` : ""}
                   ${action ? `<div class="nexus-phase-action">${action}</div>` : ""}
                 </div>
               </article>
