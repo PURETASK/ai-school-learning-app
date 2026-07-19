@@ -1357,6 +1357,7 @@ assert.equal(platformProjection.summary.requiredTablesWithRows, platformProjecti
 const platformMigration = getPlatformMigration();
 const migrationReadiness = getPlatformMigrationReadiness();
 const repositoryAccess = getPlatformRepositoryAccessSummary();
+const normalizedEvidenceRepair = readFileSync(new URL("../db/repairs/0002_normalized_learning_evidence.sql", import.meta.url), "utf8");
 assert.equal(migrationReadiness.passed, true, "database migration readiness should pass");
 assert.match(platformMigration.sql, /create table if not exists public\."users"/, "migration should create users table");
 assert.match(platformMigration.sql, /"email_verified" boolean/, "migration should store provider email verification");
@@ -1370,6 +1371,9 @@ assert.match(platformMigration.sql, /create table if not exists public\."quiz_at
 assert.match(platformMigration.sql, /create table if not exists public\."lesson_scratchpads"/, "migration should create lesson scratchpads table");
 assert.match(platformMigration.sql, /create table if not exists public\."interactive_skill_evidence"/, "migration should create interactive skill evidence table");
 assert.match(platformMigration.sql, /"correct" boolean/, "migration should store interactive skill correctness as boolean");
+assert.match(normalizedEvidenceRepair, /create table if not exists public\.\"lesson_scratchpads\"/, "repair should recreate missing lesson scratchpads");
+assert.match(normalizedEvidenceRepair, /create table if not exists public\.\"interactive_skill_evidence\"/, "repair should recreate missing interactive evidence");
+assert.match(normalizedEvidenceRepair, /enable row level security/, "repair should restore RLS on missing evidence tables");
 assert.match(platformMigration.sql, /"mode_id" text/, "migration should store AI tutor explanation mode");
 assert.match(platformMigration.sql, /"quality_score" integer/, "migration should store tutor quality score");
 assert.match(platformMigration.sql, /"truth_score" integer/, "migration should store tutor truth-policy score");

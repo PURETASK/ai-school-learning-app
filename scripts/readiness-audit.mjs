@@ -1,3 +1,5 @@
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import { loadEnvFile } from "../src/env.js";
 import {
   createInitialState,
@@ -9,11 +11,39 @@ import { getMigrationReadiness } from "../src/migrations.js";
 
 loadEnvFile();
 
+function runSupabaseProbe() {
+  return new Promise((resolve) => {
+    const child = spawn(process.execPath, [fileURLToPath(new URL("./check-supabase-connection.mjs", import.meta.url))], {
+      env: process.env,
+      stdio: ["ignore", "pipe", "pipe"]
+    });
+    let stdout = "";
+    let stderr = "";
+    child.stdout.on("data", (chunk) => { stdout += chunk.toString("utf8"); });
+    child.stderr.on("data", (chunk) => { stderr += chunk.toString("utf8"); });
+    child.on("error", (error) => resolve({ ok: false, status: "failed", error: error.message, raw: null }));
+    child.on("close", (code) => {
+      try {
+        const summary = JSON.parse(stdout);
+        resolve({
+          ok: code === 0 && Boolean(summary.supabaseRestQuerySucceeded || summary.psqlQuerySucceeded),
+          status: code === 0 ? "passed" : "failed",
+          error: code === 0 ? "" : (summary.next || stderr.trim() || "Live database probe failed."),
+          raw: summary
+        });
+      } catch {
+        resolve({ ok: false, status: "failed", error: stderr.trim() || "Live database probe returned invalid output.", raw: null });
+      }
+    });
+  });
+}
+
 const strict = process.argv.includes("--strict");
 const runtime = getRuntimeConfigurationStatus(process.env);
 const product = getProductCompletenessAudit(createInitialState(), runtime);
 const migration = getMigrationReadiness();
 const dependencyAudit = getStateDependencyAudit();
+const databaseProbe = await runSupabaseProbe();
 
 const report = {
   generatedAt: new Date().toISOString(),
@@ -33,8 +63,16 @@ const report = {
     warnings: runtime.warnings
   },
   liveVerification: {
-    databaseProbe: "not-run",
-    databaseMigration: migration.passed ? "sql-ready-but-not-live-verified" : "sql-not-ready",
+    databaseProbe: {
+      status: databaseProbe.status,
+      ok: databaseProbe.ok,
+      error: databaseProbe.error,
+      repositoryMode: databaseProbe.raw?.repositoryMode || runtime.repositoryMode,
+      missingTables: databaseProbe.raw?.supabaseRestMissingTables || []
+    },
+    databaseMigration: databaseProbe.ok
+      ? migration.passed ? "sql-ready-and-live-verified" : "sql-not-ready"
+      : migration.passed ? "sql-ready-but-live-verification-failed" : "sql-not-ready",
     command: "npm run supabase:check",
     strictCommands: ["npm run db:verify", "npm run content:gate", "npm test"]
   },
@@ -59,7 +97,7 @@ const report = {
 
 const unresolved = [
   ...runtime.blockers,
-  "Live database probe has not been run by readiness:audit.",
+  ...(databaseProbe.ok ? [] : [`Live database probe failed: ${databaseProbe.error || "database is not reachable or normalized tables are incomplete."}`]),
   ...(dependencyAudit.productionBlocker ? ["Legacy snapshot persistence remains a production blocker."] : [])
 ];
 
