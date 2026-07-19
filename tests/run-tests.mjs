@@ -505,6 +505,18 @@ assert.ok(nativeVisualRendererSource.includes("algorithm-trace-debug-loop"), "al
 assert.ok(nativeVisualRendererSource.includes("cer-theme-proof-board"), "claim-evidence-reasoning lessons should use a matching proof interaction");
 assert.ok(nativeVisualRendererSource.includes("water-cycle-system-loop"), "water-cycle lessons should use a matching system interaction");
 assert.ok(nativeVisualRendererSource.includes("geography-choice-map-lab"), "geography map lessons should use a matching settlement interaction");
+for (const expected of [
+  "Algorithm trace debug loop",
+  "Theme claim evidence reasoning proof board",
+  "Water cycle system loop",
+  "Geography choice settlement lab",
+  "Trace one input in order",
+  "Reasoning is the bridge",
+  "Track the water as matter",
+  "Use geography as evidence"
+]) {
+  assert.ok(nativeVisualRendererSource.includes(expected), `native semantic practice model should include ${expected}`);
+}
 assert.ok(!nativeVisualRendererSource.includes(`{ "algorithm-trace": "ai-system-map", "claim-evidence-reasoning": "story-map", "water-cycle-system": "ecosystem-model", "geography-choice-map": "community-map" }`), "semantic Grade 6 visuals should not be aliased to generic diagrams");
 assert.equal(nativeBridgeRatiosLesson.schemaVersion, "3", "Grade 6 ratios exemplar should be a native V3 lesson");
 assert.equal(nativeBridgeRatiosLesson.lessonFamily, "skill_workshop", "Grade 6 ratios exemplar should use the skill workshop lesson family");

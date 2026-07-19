@@ -5246,6 +5246,81 @@ function renderInteractiveMiniModel(lesson, config, response) {
     `;
   }
 
+  if (config.widgetId === "algorithm-trace-debug-loop") {
+    return `
+      <div class="interactive-model bridge-batch-widget algorithm-trace-widget" aria-label="Algorithm trace debug loop">
+        <div class="evidence-board-track">
+          ${(config.boardZones || [])
+            .map(
+              (zone, index) => `
+                <article class="evidence-board-card ${selected === config.correctValue && zone.label === "Mismatch" ? "active" : ""}">
+                  <span>${String(index + 1).padStart(2, "0")}</span>
+                  <strong>${html(zone.label)}</strong>
+                  <p>${html(zone.value)}</p>
+                </article>
+                ${index < (config.boardZones || []).length - 1 ? '<i class="evidence-board-arrow" aria-hidden="true">-></i>' : ""}
+              `
+            )
+            .join("")}
+        </div>
+        <small>Trace one input in order, stop at the first mismatch, fix one rule, then retest.</small>
+      </div>
+    `;
+  }
+
+  if (config.widgetId === "cer-theme-proof-board") {
+    return `
+      <div class="interactive-model bridge-batch-widget cer-board-widget" aria-label="Theme claim evidence reasoning proof board">
+        ${(config.boardZones || [])
+          .map((zone) => `
+            <article class="${selected === config.correctValue && zone.label === "Reasoning" ? "active" : ""}">
+              <strong>${html(zone.label)}</strong>
+              <p>${html(zone.value)}</p>
+            </article>
+          `)
+          .join("")}
+        <small>Reasoning is the bridge: it tells why the story detail proves the theme.</small>
+      </div>
+    `;
+  }
+
+  if (config.widgetId === "water-cycle-system-loop") {
+    return `
+      <div class="interactive-model bridge-batch-widget water-cycle-widget" aria-label="Water cycle system loop">
+        <div class="weather-map-board">
+          <b>Sun</b>
+          <span class="wind-arrow">evaporate -> condense -> fall</span>
+          <strong class="${selected === config.correctValue ? "active" : ""}">water keeps moving</strong>
+        </div>
+        <div class="evidence-lane">
+          ${(config.boardZones || []).map((zone) => `<span>${html(zone.label)}: ${html(zone.value)}</span>`).join("")}
+        </div>
+        <small>Track the water as matter, then name the energy that drives each change.</small>
+      </div>
+    `;
+  }
+
+  if (config.widgetId === "geography-choice-map-lab") {
+    return `
+      <div class="interactive-model bridge-batch-widget settlement-evidence-widget" aria-label="Geography choice settlement lab">
+        <div class="settlement-map-grid">
+          ${(config.boardZones || [])
+            .map(
+              (zone) => `
+                <article class="settlement-map-card ${selected === config.correctValue && zone.label === "Tradeoff" ? "active" : ""}">
+                  <strong>${html(zone.label)}</strong>
+                  <p>${html(zone.value)}</p>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+        <div class="settlement-map-route" aria-hidden="true"><span>feature</span><i></i><span>need</span><i></i><span>decision</span></div>
+        <small>Use geography as evidence: feature -> benefit -> tradeoff -> settlement decision.</small>
+      </div>
+    `;
+  }
+
   if (config.widgetId === "g6-theme-evidence-board") {
     return `
       <div class="interactive-model bridge-batch-widget theme-evidence-widget" aria-label="Theme evidence board">
