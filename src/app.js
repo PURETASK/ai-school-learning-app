@@ -653,7 +653,11 @@ function renderExperienceSwitchboard({ eyebrow, title, items }) {
 function learnerMasterySnapshot(learner) {
   const lessons = getTodayPlan(state).filter((lesson) => lesson.academyId === learner.academyId || String(lesson.grade) === String(learner.grade));
   const selected = lessons[0] || getTodayPlan(state)[0];
-  const mastery = selected?.mastery || { score: 0, status: "Not started", evidence: "No lesson selected." };
+  const repositoryLesson = getRepositoryCatalogLesson(learner.id, selected?.id || "");
+  const repositoryCatalogAvailable = Boolean(repositoryLesson && getRepositoryLearningCatalogStatus({ learnerId: learner.id }).source === "learner-scoped");
+  const mastery = repositoryCatalogAvailable
+    ? repositoryLesson.mastery || { score: 0, status: "Not started", evidence: "No repository mastery evidence yet." }
+    : selected?.mastery || { score: 0, status: "Not started", evidence: "No lesson selected." };
   const placement = state.placementResults?.[learner.id];
   const recall = (state.retentionSchedules || []).find((item) => item.learnerId === learner.id);
   const tutorEvidence = getTutorReflectionEvidence(state, learner.id, selected?.id || "");
@@ -661,6 +665,8 @@ function learnerMasterySnapshot(learner) {
   return {
     lesson: selected,
     mastery,
+    masterySource: repositoryCatalogAvailable ? "learner-scoped repository" : "local lesson fallback",
+    phaseCompletions: repositoryCatalogAvailable ? repositoryLesson.phaseCompletions || [] : [],
     placement,
     recall,
     tutorEvidence
@@ -7042,6 +7048,7 @@ function renderTeacherView() {
                 </div>
                 <h3>${html(learner.name)}</h3>
                 <p>Grade ${html(learner.grade)} | ${html(learner.schedule)}</p>
+                <small>${html(`${snapshot.masterySource} | ${snapshot.phaseCompletions.length} Nexus phase(s) cleared`)}</small>
                 <small>${html(snapshot.placement?.supportPlan || "Run placement to build a support plan.")}</small>
                 <small>${html(snapshot.tutorEvidence.latestQualified ? `Tutor stuck point: ${snapshot.tutorEvidence.latestQualified.label}` : "No diagnosed tutor reflection for this lesson yet.")}</small>
                 <div class="mini-progress" aria-label="${html(`${learner.name} mastery ${snapshot.mastery.score}%`)}">

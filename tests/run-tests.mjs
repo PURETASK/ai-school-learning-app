@@ -4033,6 +4033,8 @@ for (const expected of [
   "Nexus learning phases",
   "repositoryPhaseAggregate",
   "Nexus phase(s) cleared from scoped catalog evidence.",
+  "masterySource",
+  "repositoryCatalogAvailable",
   "repositoryRewardApprovalForLesson",
   "getRepositoryLessonEvidence",
   "refreshLearningActionReadModels",
