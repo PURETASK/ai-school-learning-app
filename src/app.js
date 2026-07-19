@@ -946,6 +946,28 @@ function getRepositoryMasteryAggregate(learnerIds = []) {
   };
 }
 
+function applyRepositoryLessonMastery(lesson, learnerId = "") {
+  const catalogLesson = getRepositoryCatalogLesson(learnerId, lesson?.id || "");
+  const catalogStatus = getRepositoryLearningCatalogStatus({ learnerId });
+  if (!catalogLesson || catalogStatus.source !== "learner-scoped") return { lesson, source: "local lesson fallback" };
+  return {
+    source: "learner-scoped repository",
+    lesson: {
+      ...lesson,
+      mastery: catalogLesson.mastery
+        ? {
+            ...lesson.mastery,
+            score: Number(catalogLesson.mastery.score || 0),
+            status: catalogLesson.mastery.status || "needs-review",
+            evidence: catalogLesson.mastery.evidence || "Repository mastery evidence",
+            attempts: Number(catalogLesson.mastery.attempts || 0),
+            updatedAt: catalogLesson.mastery.updatedAt || ""
+          }
+        : { ...lesson.mastery, score: 0, status: "Not started", evidence: "No repository mastery evidence yet.", attempts: 0 }
+    }
+  };
+}
+
 function getRepositoryTutorEventSummary(learnerId = "") {
   const scopedEvents = learnerId ? repositoryTutorEventsByLearner[learnerId] : null;
   const source = scopedEvents || repositoryTutorEvents;
@@ -3721,7 +3743,12 @@ function renderStudentView() {
   const levelProfile = getLearnerLevelProfile(state, learner.id);
   const subjectProgress = getLearnerSubjectProgress(state, learner.id);
   const totals = getCurriculumTotals();
-  const todayPlan = scopedTodayPlan();
+  const rawTodayPlan = scopedTodayPlan();
+  const todayPlanReads = rawTodayPlan.map((lesson) => applyRepositoryLessonMastery(lesson, learner.id));
+  const todayPlan = todayPlanReads.map((entry) => entry.lesson);
+  const todayPlanSource = todayPlan.length && todayPlanReads.every((entry) => entry.source === "learner-scoped repository")
+    ? "learner-scoped repository"
+    : "local lesson fallback";
   const selectedPlan = todayPlan.find((lesson) => lesson.academyId === academy.id) || todayPlan[0];
   const promise = academyLearningPromise(academy.id);
 
@@ -3845,6 +3872,7 @@ function renderStudentView() {
         <div>
           <p class="eyebrow">Daily learning path</p>
           <h2>What the student does next</h2>
+          <small>${html(`Progress source: ${todayPlanSource}`)}</small>
         </div>
         <button class="secondary-button" data-view="lesson">Open lesson player</button>
       </div>

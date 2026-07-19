@@ -4038,6 +4038,8 @@ for (const expected of [
   "getRepositoryPhaseSummary",
   "Repository Nexus phases",
   "getRepositoryMasteryAggregate",
+  "applyRepositoryLessonMastery",
+  "Progress source:",
   "Scoped catalog evidence",
   "Phase evidence",
   "repositoryRewardApprovalForLesson",
