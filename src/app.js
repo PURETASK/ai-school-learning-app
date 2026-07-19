@@ -261,10 +261,22 @@ let currentSession = null;
 let currentGiftCardReadiness = null;
 let lastAuthResult = null;
 let lastRewardResult = null;
+let learningMoment = null;
+let learningMomentTimer = null;
 const soundPreferenceKey = "k12-learning-ui-sound-enabled";
 const storedSoundPreference = globalThis.localStorage?.getItem?.(soundPreferenceKey);
 let uiSoundEnabled = storedSoundPreference !== "false";
 let scratchpadSyncTimer = null;
+
+function announceLearningMoment(message, tone = "success") {
+  learningMoment = { message: String(message || "Learning evidence recorded."), tone };
+  if (learningMomentTimer) globalThis.clearTimeout?.(learningMomentTimer);
+  learningMomentTimer = globalThis.setTimeout?.(() => {
+    learningMoment = null;
+    learningMomentTimer = null;
+    render();
+  }, 3600);
+}
 
 function html(value) {
   return String(value)
@@ -490,6 +502,7 @@ function renderShell(content) {
     </header>
     <main class="main-grid academy-main role-${roleClass} view-${viewClass}">
       ${renderAccessStrip(access)}
+      ${learningMoment ? `<div class="learning-moment ${html(learningMoment.tone)}" role="status" aria-live="polite"><span aria-hidden="true">✦</span><strong>${html(learningMoment.message)}</strong></div>` : ""}
       ${content}
     </main>
   `;
@@ -1793,6 +1806,13 @@ function submitLessonQuiz(lessonId) {
   const answers = state.selectedAnswers[lessonId] || {};
   const learnerId = currentSession?.studentId || currentLearner()?.id || "";
   state = completeLessonQuiz(state, lessonId, answers, { learnerId });
+  const quizResult = state.quizResults?.[lessonId];
+  announceLearningMoment(
+    quizResult?.passed
+      ? `Checkpoint cleared: ${quizResult.score}% and a mastery path is open.`
+      : "Checkpoint recorded. Your retry path is ready; mistakes are useful evidence.",
+    quizResult?.passed ? "success" : "retry"
+  );
   saveState(state);
   postLessonQuiz(lessonId, answers, learnerId)
     .then(async (payload) => {
@@ -8813,6 +8833,7 @@ app.addEventListener("click", (event) => {
       correct,
       feedback
     });
+    announceLearningMoment(correct ? "Model solved: +30 XP evidence recorded." : "Good attempt. The next hint is ready.", correct ? "success" : "retry");
     postInteractiveResponse({
       learnerId,
       lessonId: lesson.id,
@@ -8848,6 +8869,7 @@ app.addEventListener("click", (event) => {
     });
     saveState(state);
     playUiSound("success");
+    announceLearningMoment(`Phase cleared: ${phase.replaceAll("-", " ")} · +8 XP`, "success");
     postLessonPhase({ lessonId, learnerId, phase })
       .then(async ({ state: persisted }) => {
         state = mergePersistedState(state, persisted);
@@ -8879,6 +8901,7 @@ app.addEventListener("click", (event) => {
 
   if (tutorRetryButton) {
     playUiSound("success");
+    announceLearningMoment("Tutor retry recorded: you used help to improve your thinking.", "success");
     const lessonId = tutorRetryButton.dataset.submitTutorRetry;
     const learnerId = currentSession?.studentId || currentLearner()?.id || "";
     const scratchpad = getLessonScratchpad(state, learnerId, lessonId);

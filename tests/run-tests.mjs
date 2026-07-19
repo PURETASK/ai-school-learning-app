@@ -4234,6 +4234,8 @@ assert.ok(stylesSource.includes(".tutor-hint-path"), "styles should include the 
 assert.ok(stylesSource.includes(".tutor-evidence-strip"), "styles should include the tutor XP evidence strip");
 assert.match(stylesSource, /\.batch-result[\s\S]*var\(--contrast-card\)/, "shared operational cards should use the neon contrast card background");
 assert.match(stylesSource, /\.batch-result\.passed[\s\S]*var\(--neon-lime\)/, "passed operational cards should use the neon success accent");
+assert.match(appSource, /announceLearningMoment/, "student learning actions should expose a visible evidence celebration");
+assert.match(stylesSource, /\.learning-moment/, "student learning celebrations should have dedicated responsive styling");
 assert.ok(stylesSource.includes(".tutor-retry-panel"), "styles should include the tutor retry panel");
 assert.ok(stylesSource.includes(".retry-after-hint-field"), "styles should include the tutor retry textarea");
 assert.ok(stylesSource.includes(".adaptive-reteach-card"), "styles should include the adaptive reteach card");

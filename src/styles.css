@@ -8488,6 +8488,37 @@ h4,
     linear-gradient(90deg, rgba(37, 217, 255, 0.08), rgba(255, 63, 180, 0.07));
 }
 
+.learning-moment {
+  position: sticky;
+  z-index: 4;
+  top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(680px, 100%);
+  margin: 0 auto 12px;
+  padding: 12px 16px;
+  border: 1px solid rgba(167, 243, 109, .48);
+  border-radius: 14px;
+  color: #07111c;
+  background: linear-gradient(100deg, #a7f36d, #ffd35a);
+  box-shadow: 0 12px 32px rgba(2, 8, 28, .35), 0 0 22px rgba(167, 243, 109, .28);
+  animation: learning-moment-in 220ms ease-out both;
+}
+
+.learning-moment span { font-size: 1.2rem; }
+.learning-moment strong { font-size: .9rem; }
+.learning-moment.retry { border-color: rgba(255, 101, 188, .6); background: linear-gradient(100deg, #ff65bc, #ffd35a); }
+
+@keyframes learning-moment-in {
+  from { opacity: 0; transform: translateY(-10px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .learning-moment { animation: none; }
+}
+
 /* Shared operational cards must keep readable contrast in the neon shell. */
 .batch-result,
 .import-job,
