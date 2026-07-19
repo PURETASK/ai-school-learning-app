@@ -1843,6 +1843,7 @@ assert.ok(stateDependencyAudit.focusedReadRoutes.includes("/api/auth/security"),
 assert.ok(stateDependencyAudit.focusedReadRoutes.includes("/api/rewards/approvals"), "state dependency audit should include reward read route");
 assert.ok(stateDependencyAudit.focusedReadRoutes.includes("/api/tutor/events"), "state dependency audit should include tutor event read route");
 assert.ok(stateDependencyAudit.focusedWriteRoutes.includes("/api/learning/quiz"), "state dependency audit should include feature-specific learning writes");
+assert.ok(stateDependencyAudit.focusedWriteRoutes.includes("/api/learning/phase"), "state dependency audit should include persisted Nexus phase completion writes");
 assert.equal(stateDependencyAudit.summary.productionBlocker, true, "state dependency audit should keep broad state dependency as a production blocker");
 const postgresRuntimeStatus = getRuntimeConfigurationStatus({
   DATABASE_URL: "postgresql://postgres:password@example.supabase.co:5432/postgres",
@@ -3334,6 +3335,28 @@ const duplicateEngagement = recordStudentEngagementAction(engagementState, {
   value: { source: "mission-board" }
 });
 assert.equal(duplicateEngagement.learningEvents.length, engagementState.learningEvents.length, "daily engagement actions should not award duplicate start evidence");
+const phaseStarted = recordStudentEngagementAction(engagementState, {
+  learnerId: "avery",
+  lessonId: lesson.id,
+  type: "phase_completed",
+  value: { phase: "model", source: "nexus-phase-player" }
+});
+assert.equal(phaseStarted.learningEvents[0].type, "phase_completed", "Nexus phase completion should create learning evidence");
+assert.equal(phaseStarted.learningEvents[0].value.phase, "model", "phase evidence should preserve the completed phase");
+const duplicatePhase = recordStudentEngagementAction(phaseStarted, {
+  learnerId: "avery",
+  lessonId: lesson.id,
+  type: "phase_completed",
+  value: { phase: "model", source: "nexus-phase-player" }
+});
+assert.equal(duplicatePhase.learningEvents.length, phaseStarted.learningEvents.length, "a phase should not award duplicate same-day XP");
+const secondPhase = recordStudentEngagementAction(duplicatePhase, {
+  learnerId: "avery",
+  lessonId: lesson.id,
+  type: "phase_completed",
+  value: { phase: "practice", source: "nexus-phase-player" }
+});
+assert.equal(secondPhase.learningEvents.length, duplicatePhase.learningEvents.length + 1, "different phases should each create evidence");
 
 state = updateLessonScratchpad(state, {
   learnerId: "avery",
@@ -3912,6 +3935,7 @@ for (const expected of [
   "renderInteractiveMiniModel",
   "data-scratchpad-field",
   "data-interactive-widget",
+  "data-phase-complete",
   "myth-decoder-board",
   "Myth Decoder Board",
   "ai-builder-system-sort",
@@ -4074,6 +4098,8 @@ for (const expected of [
   'pathname === "/api/learning/catalog"',
   "A learnerId is required for scoped learning catalog reads.",
   'pathname === "/api/learning/interactive"',
+  'pathname === "/api/learning/phase"',
+  "A valid Nexus learning phase is required.",
   'pathname === "/api/rewards/approvals"',
   'pathname === "/api/learning/scratchpads"',
   'pathname === "/api/learning/assignments"',

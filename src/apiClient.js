@@ -313,6 +313,13 @@ export async function postInteractiveResponse(payload) {
   });
 }
 
+export async function postLessonPhase(payload) {
+  return requestJson("/api/learning/phase", {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+}
+
 export async function postClassSessionStatus(payload) {
   return requestJson("/api/classroom/session/status", {
     method: "POST",

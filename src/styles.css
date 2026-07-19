@@ -4060,6 +4060,34 @@ body {
   margin-top: 6px;
 }
 
+.nexus-phase-completion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(24, 34, 50, 0.18);
+}
+
+.nexus-phase-completion span {
+  color: #405066;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.nexus-phase-completion.complete span {
+  color: #16835e;
+}
+
+.nexus-phase-completion button:disabled {
+  cursor: default;
+  opacity: 0.8;
+  background: #dff8ec;
+  color: #16835e;
+  border-color: rgba(22, 131, 94, 0.3);
+}
+
 .nexus-v2-fallback {
   background: rgba(255, 255, 255, 0.82);
 }

@@ -72,6 +72,8 @@ PII and child-linked tables are marked for row-level security. Student and paren
 
 ## Seed Projection
 
+`POST /api/learning/phase` records one same-day, learner-scoped Nexus phase completion in `learning_events`. Phase completion is a small evidence-based XP reward, deduplicated by learner, lesson, phase, and day, and rehydrated through `GET /api/learning/events` so the V3 phase player remains useful after refresh or database reload.
+
 `createProductionSeedProjection(state)` converts current prototype state into table-shaped rows:
 
 - Learners become `students`, `users`, `student_guardians`, `enrollments`, and `accommodations`.

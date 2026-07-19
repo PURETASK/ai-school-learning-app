@@ -145,6 +145,7 @@ import {
   fetchVisualAssets,
   postAgentReviewDecision,
   postLessonQuiz,
+  postLessonPhase,
   postLessonScratchpad,
   postInteractiveResponse,
   postClassroomArtifact,
@@ -4280,6 +4281,12 @@ function renderNexusLessonPhaseSequence(lesson, answers, result, experience, sup
   const nativeLabel = playerModel.lesson.schemaVersion === "3" ? "Native V3" : "V2 adapted";
   const validationLabel = playerModel.validation.passed ? "Contract ready" : "Needs contract repair";
   const modules = playerModel.modules;
+  const completedPhases = new Set(
+    (state.learningEvents || [])
+      .filter((event) => event.learnerId === learnerId && event.lessonId === lesson.id && event.type === "phase_completed")
+      .map((event) => event.value?.phase)
+      .filter(Boolean)
+  );
   return `
     <section class="nexus-phase-player" aria-label="Nexus V3 lesson phases">
       <div class="section-head">
@@ -4327,6 +4334,12 @@ function renderNexusLessonPhaseSequence(lesson, answers, result, experience, sup
                   ${module.visualSupport ? `<small>${html(module.visualSupport)}</small>` : ""}
                   ${module.successCheck ? `<div class="nexus-success-check"><strong>Check yourself</strong><span>${html(module.successCheck)}</span></div>` : ""}
                   ${action ? `<div class="nexus-phase-action">${action}</div>` : ""}
+                  <div class="nexus-phase-completion ${completedPhases.has(module.phase) ? "complete" : ""}">
+                    <span>${completedPhases.has(module.phase) ? "Evidence recorded" : "Finished this move?"}</span>
+                    <button class="small-button" type="button" data-phase-complete="${html(module.phase)}" data-lesson-id="${html(lesson.id)}" ${completedPhases.has(module.phase) ? "disabled" : ""}>
+                      ${completedPhases.has(module.phase) ? "Phase cleared" : "Clear phase +8 XP"}
+                    </button>
+                  </div>
                 </div>
               </article>
             `;
@@ -8439,6 +8452,7 @@ app.addEventListener("click", (event) => {
   const lessonButton = event.target.closest("[data-lesson]");
   const answerButton = event.target.closest("[data-answer]");
   const interactiveButton = event.target.closest("[data-interactive-widget]");
+  const phaseCompleteButton = event.target.closest("[data-phase-complete]");
   const scratchpadReviewButton = event.target.closest("[data-scratchpad-review]");
   const tutorRetryButton = event.target.closest("[data-submit-tutor-retry]");
   const rewardRequestButton = event.target.closest("[data-request-reward]");
@@ -8639,6 +8653,32 @@ app.addEventListener("click", (event) => {
         render();
       });
     saveState(state);
+    shouldRender = true;
+  }
+
+  if (phaseCompleteButton) {
+    const lessonId = phaseCompleteButton.dataset.lessonId || currentLesson()?.id || "";
+    const learnerId = currentSession?.studentId || currentLearner()?.id || "";
+    const phase = phaseCompleteButton.dataset.phaseComplete || "";
+    state = recordStudentEngagementAction({ ...state, selectedLessonId: lessonId }, {
+      learnerId,
+      lessonId,
+      type: "phase_completed",
+      value: { phase, source: "nexus-phase-player" }
+    });
+    saveState(state);
+    playUiSound("success");
+    postLessonPhase({ lessonId, learnerId, phase })
+      .then(async ({ state: persisted }) => {
+        state = mergePersistedState(state, persisted);
+        await refreshLearningActionReadModels();
+        saveState(state);
+        render();
+      })
+      .catch((error) => {
+        state = markPersistenceError(state, error);
+        render();
+      });
     shouldRender = true;
   }
 

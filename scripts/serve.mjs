@@ -53,6 +53,7 @@ import {
   resetLocalAccountPassword,
   registerLocalAccount,
   recordInteractiveResponse,
+  recordStudentEngagementAction,
   recordTeacherIntervention,
   refreshSchoolReports,
   createPasswordResetRequest,
@@ -2043,6 +2044,39 @@ async function handleApi(request, response, pathname) {
       return {
         state: persisted,
         response: persisted.interactiveResponses?.[learnerId]?.[lessonId]?.[body.widgetId] || nextState.interactiveResponses?.[learnerId]?.[lessonId]?.[body.widgetId] || null,
+        repository: stateRepository.status()
+      };
+    });
+    sendJson(response, 200, payload);
+    return true;
+  }
+
+  if (request.method === "POST" && pathname === "/api/learning/phase") {
+    const body = await readJsonBody(request);
+    const allowedPhases = new Set(["orient", "model", "deconstruct", "practice", "reason", "prove", "remember", "transfer", "adapt"]);
+    const phase = String(body.phase || "").trim().toLowerCase();
+    if (!allowedPhases.has(phase)) {
+      const error = new Error("A valid Nexus learning phase is required.");
+      error.status = 400;
+      throw error;
+    }
+    const payload = await queueStateMutation(async () => {
+      const state = await ensureStateFile();
+      const lessonId = String(body.lessonId || state.selectedLessonId || "g3-fractions-number-line");
+      const lesson = findLessonInState(state, lessonId);
+      const learnerId = String(body.learnerId || (session.role === "student" ? session.studentId : learnerIdForLesson(lesson)));
+      requireLearningEvidenceAccess(session, state, learnerId);
+      const nextState = recordStudentEngagementAction(state, {
+        learnerId,
+        lessonId,
+        type: "phase_completed",
+        value: { phase, source: "nexus-phase-player" }
+      });
+      const persisted = await writeLearningEvidence(nextState);
+      return {
+        state: persisted,
+        phase,
+        recorded: persisted.learningEvents?.some((event) => event.learnerId === learnerId && event.lessonId === lessonId && event.type === "phase_completed" && event.value?.phase === phase),
         repository: stateRepository.status()
       };
     });

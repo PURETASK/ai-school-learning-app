@@ -4617,6 +4617,7 @@ export function getStateDependencyAudit() {
     "/api/learning/quiz",
     "/api/learning/scratchpad",
     "/api/learning/interactive",
+    "/api/learning/phase",
     "/api/rewards/request",
     "/api/rewards/decision",
     "/api/rewards/fulfill",
@@ -5118,6 +5119,7 @@ function xpForEvent(state = {}, event = {}) {
   if (event.type === "scratchpad_tutor_reviewed") return event.value?.diagnosisReady ? 50 : 35;
   if (event.type === "tutor_hint_retry_submitted") return event.value?.usedDiagnosis ? 45 : 25;
   if (event.type === "interactive_widget_attempted") return event.value?.correct ? 30 : 12;
+  if (event.type === "phase_completed") return 8;
   if (event.type === "group_artifact_submitted") return 45;
   if (event.type === "teacher_intervention_recorded") return 10;
   if (event.type === "quiz_completed") {
@@ -5657,11 +5659,16 @@ export function getStudentEngagementProfile(state = {}, learnerId = "", now = ne
 }
 
 export function recordStudentEngagementAction(state = {}, { learnerId = "", lessonId = "", type = "", value = {} } = {}) {
-  const allowedTypes = new Set(["lesson_started", "affect_checkin_submitted", "interactive_widget_attempted"]);
+  const allowedTypes = new Set(["lesson_started", "affect_checkin_submitted", "interactive_widget_attempted", "phase_completed"]);
   if (!learnerId || !allowedTypes.has(type)) return state;
   const today = engagementDateKey(new Date());
   const duplicate = (state.learningEvents || []).some(
-    (event) => event.learnerId === learnerId && event.lessonId === lessonId && event.type === type && engagementDateKey(engagementEventDate(event)) === today
+    (event) =>
+      event.learnerId === learnerId &&
+      event.lessonId === lessonId &&
+      event.type === type &&
+      (type !== "phase_completed" || event.value?.phase === value?.phase) &&
+      engagementDateKey(engagementEventDate(event)) === today
   );
   return duplicate ? state : logLearningEvent(state, { learnerId, lessonId, type, value });
 }
