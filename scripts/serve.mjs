@@ -112,6 +112,25 @@ const useProviderAuth = () =>
   configuredAuthProvider() === "supabase" &&
   isSupabaseAuthConfigured(process.env);
 
+async function requireVerifiedProviderSession(accessToken, reason = "The provider session could not be verified.") {
+  const token = String(accessToken || "").trim();
+  if (!token) {
+    const error = new Error(reason);
+    error.status = 403;
+    throw error;
+  }
+  const verifiedSession = await getRequestSessionAsync(
+    { headers: { authorization: `Bearer ${token}` } },
+    process.env
+  );
+  if (!verifiedSession.authenticated || !verifiedSession.productionAuth || !verifiedSession.role || verifiedSession.role === "anonymous") {
+    const error = new Error(verifiedSession.authError || reason);
+    error.status = 403;
+    throw error;
+  }
+  return verifiedSession;
+}
+
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
@@ -949,13 +968,17 @@ async function handleApi(request, response, pathname) {
         error.status = 403;
         throw error;
       }
+      const verifiedSession = await requireVerifiedProviderSession(
+        provider.accessToken,
+        "Supabase Auth did not return the required application role claims."
+      );
       sendJson(response, 200, {
         accepted: true,
         provider: "supabase",
         token: provider.accessToken,
         refreshToken: provider.refreshToken,
         user: normalizedUser.user,
-        session: publicSessionSummary({ authenticated: true, productionAuth: true, authProvider: "supabase", role: verifiedUser.user?.app_metadata?.role || "parent", scope: verifiedUser.user?.app_metadata?.scope || "own-household", userId: normalizedUser.user.id, email: normalizedUser.user.email, emailVerified: normalizedUser.user.emailVerified })
+        session: publicSessionSummary(verifiedSession)
       });
       return true;
     }
@@ -1078,24 +1101,25 @@ async function handleApi(request, response, pathname) {
     const body = await readJsonBody(request);
     if (useProviderAuth()) {
       const provider = normalizeSupabaseAuthResponse(await supabaseVerifyEmail({ tokenHash: body.token || body.tokenHash || body.code, type: body.type || "signup" }));
-      const appMetadata = provider.user.appMetadata || {};
+      const verifiedSession = provider.accessToken
+        ? await requireVerifiedProviderSession(
+            provider.accessToken,
+            "Email verified, but Supabase Auth did not return the required application role claims."
+          )
+        : null;
       sendJson(response, 200, {
         accepted: true,
         provider: "supabase",
         token: provider.accessToken,
         refreshToken: provider.refreshToken,
         user: provider.user,
-        session: publicSessionSummary({
-          authenticated: Boolean(provider.accessToken),
+        session: publicSessionSummary(verifiedSession || {
+          authenticated: false,
           productionAuth: true,
           authProvider: "supabase",
-          role: appMetadata.role || "parent",
-          scope: appMetadata.scope || "own-household",
-          userId: appMetadata.userId || provider.user.id,
-          ...(appMetadata.studentId ? { studentId: appMetadata.studentId } : {}),
-          ...(appMetadata.guardianId ? { guardianId: appMetadata.guardianId } : {}),
-          ...(appMetadata.teacherId ? { teacherId: appMetadata.teacherId } : {}),
-          ...(appMetadata.schoolId ? { schoolId: appMetadata.schoolId } : {}),
+          role: "anonymous",
+          scope: "none",
+          userId: provider.user.id,
           email: provider.user.email,
           emailVerified: true
         })
