@@ -3918,6 +3918,8 @@ export function getLessonScratchpad(state = {}, learnerId = "", lessonId = "") {
     explanation: "",
     confusion: "",
     retryAfterHint: "",
+    recallResponse: "",
+    transferResponse: "",
     retryAfterHintAt: "",
     updatedAt: "",
     tutorReviewCount: 0
@@ -3938,6 +3940,8 @@ export function updateLessonScratchpad(state = {}, input = {}) {
     explanation: input.explanation === undefined ? previous.explanation || "" : String(input.explanation || ""),
     confusion: input.confusion === undefined ? previous.confusion || "" : String(input.confusion || ""),
     retryAfterHint: input.retryAfterHint === undefined ? previous.retryAfterHint || "" : String(input.retryAfterHint || ""),
+    recallResponse: input.recallResponse === undefined ? previous.recallResponse || "" : String(input.recallResponse || ""),
+    transferResponse: input.transferResponse === undefined ? previous.transferResponse || "" : String(input.transferResponse || ""),
     retryAfterHintAt:
       input.retryAfterHint === undefined
         ? previous.retryAfterHintAt || ""
@@ -3970,7 +3974,9 @@ export function createScratchpadTutorPrompt(state = {}, learnerId = "", lessonId
     mythBoard.value ? `My Myth Decoder Board choice: ${mythBoard.value} (${mythBoard.correct ? "marked correct" : "needs repair"})` : "",
     scratchpad.firstStep ? `My first try: ${scratchpad.firstStep}` : "",
     scratchpad.explanation ? `My explanation: ${scratchpad.explanation}` : "",
-    scratchpad.confusion ? `What I still do not understand: ${scratchpad.confusion}` : ""
+    scratchpad.confusion ? `What I still do not understand: ${scratchpad.confusion}` : "",
+    scratchpad.recallResponse ? `My delayed recall: ${scratchpad.recallResponse}` : "",
+    scratchpad.transferResponse ? `My transfer attempt: ${scratchpad.transferResponse}` : ""
   ].filter(Boolean);
   if (parts.length > 1) {
     const modeHint = lesson.id === "published-draft-next-wave-bridge-6-ela-u1-l1"
@@ -3989,7 +3995,9 @@ export function markScratchpadTutorReviewed(state = {}, learnerId = "", lessonId
     firstStep: scratchpad.firstStep,
     explanation: scratchpad.explanation,
     confusion: scratchpad.confusion,
-    retryAfterHint: scratchpad.retryAfterHint
+    retryAfterHint: scratchpad.retryAfterHint,
+    recallResponse: scratchpad.recallResponse,
+    transferResponse: scratchpad.transferResponse
   });
   return {
     ...nextState,
@@ -5701,6 +5709,8 @@ function phaseEvidenceReady(state = {}, learnerId = "", lessonId = "", phase = "
   }
   if (phase === "reason") return Boolean(scratchpad.explanation || scratchpad.confusion);
   if (phase === "prove") return Boolean(evidence.quizResult || state.quizResults?.[lessonId] || (state.learningEvents || []).some((event) => event.learnerId === learnerId && event.lessonId === lessonId && event.type === "quiz_completed"));
+  if (phase === "remember") return Boolean(scratchpad.recallResponse);
+  if (phase === "transfer") return Boolean(scratchpad.transferResponse);
   return true;
 }
 
@@ -5729,9 +5739,13 @@ export function getNexusPhaseProgress(state = {}, learnerId = "", lessonId = "",
             ? "Try the interactive model or write your first step before clearing practice."
             : module.phase === "reason"
               ? "Write your reasoning or exact confusion before clearing this phase."
-              : module.phase === "prove"
-                ? "Submit the checkpoint before clearing the prove phase."
-                : "Complete the evidence task before clearing this phase."
+            : module.phase === "prove"
+              ? "Submit the checkpoint before clearing the prove phase."
+              : module.phase === "remember"
+                ? "Write what you can recall without looking before clearing this phase."
+                : module.phase === "transfer"
+                  ? "Explain how the idea works in a new situation before clearing this phase."
+                  : "Complete the evidence task before clearing this phase."
           : "Ready for your next move.";
     return { phase: module.phase, index, done, ready, locked: !done && !ready, reason };
   });
@@ -5744,8 +5758,8 @@ export function getNexusPhaseProgress(state = {}, learnerId = "", lessonId = "",
   };
 }
 
-export function completeNexusPhase(state = {}, { learnerId = "", lessonId = "", phase = "" } = {}) {
-  const progress = getNexusPhaseProgress(state, learnerId, lessonId);
+export function completeNexusPhase(state = {}, { learnerId = "", lessonId = "", phase = "", scratchpad = null } = {}) {
+  const progress = getNexusPhaseProgress(state, learnerId, lessonId, { scratchpad });
   const target = progress.phases.find((item) => item.phase === phase);
   if (!target) {
     return { state, result: { accepted: false, reason: "That phase is not active in this lesson." } };

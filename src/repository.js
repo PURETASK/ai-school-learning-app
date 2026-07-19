@@ -794,6 +794,8 @@ export function createLearningCatalogReadModel(tables = {}, { learnerId = "", in
             explanation: scratchpad.explanation || "",
             confusion: scratchpad.confusion || "",
             retryAfterHint: scratchpad.retry_after_hint || "",
+            recallResponse: scratchpad.recall_response || "",
+            transferResponse: scratchpad.transfer_response || "",
             tutorReviewCount: Number(scratchpad.tutor_review_count || 0),
             updatedAt: scratchpad.updated_at || ""
           }
@@ -1214,9 +1216,11 @@ export function normalizedLessonScratchpadRow(row = {}) {
     explanation: row.explanation || "",
     confusion: row.confusion || "",
     retryAfterHint: row.retry_after_hint || "",
+    recallResponse: row.recall_response || "",
+    transferResponse: row.transfer_response || "",
     tutorReviewCount: Number(row.tutor_review_count || 0),
     updatedAt: row.updated_at || "",
-    hasStudentWriting: Boolean(row.first_step || row.explanation || row.confusion || row.retry_after_hint),
+    hasStudentWriting: Boolean(row.first_step || row.explanation || row.confusion || row.retry_after_hint || row.recall_response || row.transfer_response),
     needsTutorReview: Boolean((row.confusion || row.first_step || row.explanation) && !Number(row.tutor_review_count || 0))
   };
 }

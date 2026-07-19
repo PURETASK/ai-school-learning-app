@@ -471,7 +471,7 @@ export const productionDataModel = [
     id: "lesson_scratchpads",
     area: "progress",
     ownerAgentId: "backend",
-    description: "Student-written first steps, explanations, confusion statements, retry evidence, and tutor-review counts.",
+    description: "Student-written first steps, explanations, confusion statements, delayed recall, transfer proof, retry evidence, and tutor-review counts.",
     primaryKey: "id",
     pii: true,
     rls: true,
@@ -483,6 +483,8 @@ export const productionDataModel = [
       "explanation",
       "confusion",
       "retry_after_hint",
+      "recall_response",
+      "transfer_response",
       "tutor_review_count",
       "updated_at"
     ],
@@ -2022,6 +2024,8 @@ export function createProductionSeedProjection(state = {}) {
         explanation: scratchpad.explanation || "",
         confusion: scratchpad.confusion || "",
         retry_after_hint: scratchpad.retryAfterHint || "",
+        recall_response: scratchpad.recallResponse || "",
+        transfer_response: scratchpad.transferResponse || "",
         tutor_review_count: Number(scratchpad.tutorReviewCount || 0),
         updated_at: scratchpad.updatedAt || timestamp
       });

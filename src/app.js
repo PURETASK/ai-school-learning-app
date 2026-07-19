@@ -4423,11 +4423,11 @@ function renderNexusPhaseAction(module, lesson, learnerId, scratchpad, answers, 
   if (module.phase === "remember") {
     const firstRecall = lesson.retentionChecks?.[0] || "Come back later and prove the idea still sticks.";
     const memoryAsset = getLessonProductionVisualAsset(lesson, ["memory-vault"], { requirePreferredPlacement: true });
-    return `<div class="nexus-memory-card"><strong>Memory Vault</strong><p>${html(firstRecall.prompt || firstRecall)}</p>${renderProductionVisualFigure(memoryAsset, "Memory Vault retrieval cue", { className: "memory-vault-visual", title: "Memory Vault retrieval visual", reviewLabel: "Approved delayed-retrieval visual." })}</div>`;
+    return `<div class="nexus-memory-card"><strong>Memory Vault</strong><p>${html(firstRecall.prompt || firstRecall)}</p>${renderProductionVisualFigure(memoryAsset, "Memory Vault retrieval cue", { className: "memory-vault-visual", title: "Memory Vault retrieval visual", reviewLabel: "Approved delayed-retrieval visual." })}<label class="student-scratchpad"><span>Recall without looking</span><textarea rows="3" data-scratchpad-field="recallResponse" data-lesson-id="${html(lesson.id)}" placeholder="Write what you remember, then check the lesson after you submit.">${html(scratchpad.recallResponse || "")}</textarea></label></div>`;
   }
   if (module.phase === "transfer") {
     const firstTask = lesson.funTasks?.[1] || lesson.sections.challenge || module.studentAction;
-    return `<div class="active-task-pair"><div><strong>Transfer challenge</strong><p>${html(firstTask)}</p></div><div><strong>Explain</strong><p>Show how the idea still works when the situation changes.</p></div></div>`;
+    return `<div class="active-task-pair"><div><strong>Transfer challenge</strong><p>${html(firstTask)}</p></div><div><strong>Explain</strong><p>Show how the idea still works when the situation changes.</p></div><label class="student-scratchpad"><span>Your transfer proof</span><textarea rows="3" data-scratchpad-field="transferResponse" data-lesson-id="${html(lesson.id)}" placeholder="What changed? What stayed true? Explain with an example.">${html(scratchpad.transferResponse || "")}</textarea></label></div>`;
   }
   if (module.phase === "adapt") return renderStudentMisconceptionRepair(getLessonTeachingSupport(lesson.id, state), lesson);
   return "";

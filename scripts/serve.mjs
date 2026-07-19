@@ -33,6 +33,7 @@ import {
   getAuthSecuritySummary,
   getLearnerClassSession,
   getLearnerAccess,
+  getLessonScratchpad,
   getLessonTeachingSupport,
   getPlatformLessonLibrarySamples,
   getPlatformLessonLibrarySummary,
@@ -2008,7 +2009,9 @@ async function handleApi(request, response, pathname) {
         lessonId,
         firstStep: body.firstStep,
         explanation: body.explanation,
-        confusion: body.confusion
+        confusion: body.confusion,
+        recallResponse: body.recallResponse,
+        transferResponse: body.transferResponse
       });
       const withRetryEvidence =
         body.retryAfterHint !== undefined
@@ -2070,7 +2073,12 @@ async function handleApi(request, response, pathname) {
       const lesson = findLessonInState(state, lessonId);
       const learnerId = String(body.learnerId || (session.role === "student" ? session.studentId : learnerIdForLesson(lesson)));
       requireLearningEvidenceAccess(session, state, learnerId);
-      const completed = completeNexusPhase(state, { learnerId, lessonId, phase });
+      const completed = completeNexusPhase(state, {
+        learnerId,
+        lessonId,
+        phase,
+        scratchpad: getLessonScratchpad(state, learnerId, lessonId)
+      });
       if (!completed.result.accepted) {
         return {
           state,
