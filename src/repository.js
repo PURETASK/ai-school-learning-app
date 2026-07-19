@@ -85,6 +85,8 @@ export const learningEvidenceRepositoryTableIds = [
   "reward_approvals"
 ];
 
+export const learningEventRepositoryTableIds = ["learning_events"];
+
 export const tutorWorkflowRepositoryTableIds = ["ai_tutor_events", "lesson_scratchpads", "learning_events"];
 
 export const rewardWorkflowRepositoryTableIds = ["reward_approvals", "learning_events"];
@@ -368,6 +370,11 @@ export class JsonStateRepository {
     return createAiTutorEventReadModel(rows, options);
   }
 
+  async readLearningEvents(options = {}) {
+    const rows = await this.readNormalizedTable("learning_events", { limit: options.limit || 10000 });
+    return createLearningEventReadModel(rows, options);
+  }
+
   async readRewardApprovals(options = {}) {
     const rows = await this.readNormalizedTable("reward_approvals", { limit: options.limit || 10000 });
     return createRewardApprovalReadModel(rows, options);
@@ -616,6 +623,36 @@ function filterByLearner(rows = [], learnerId = "") {
 
 function latestAttempt(attempts = []) {
   return [...attempts].sort((left, right) => String(right.attempted_at || "").localeCompare(String(left.attempted_at || "")))[0] || null;
+}
+
+export function createLearningEventReadModel(rows = [], { learnerId = "", limit = 10000 } = {}) {
+  const events = rows
+    .filter((row) => !learnerId || row.student_id === learnerId)
+    .slice(0, normalizedLimit(limit))
+    .map((row) => ({
+      id: row.id || "",
+      learnerId: row.student_id || "",
+      lessonId: row.lesson_id || "",
+      type: row.event_type || "",
+      value: toObject(row.value),
+      occurredAt: row.occurred_at || ""
+    }))
+    .filter((event) => event.id && event.learnerId)
+    .sort((left, right) => String(right.occurredAt || "").localeCompare(String(left.occurredAt || "")));
+  return {
+    source: "normalized-repository",
+    learnerId: learnerId || "all",
+    tableIds: learningEventRepositoryTableIds,
+    summary: {
+      total: events.length,
+      learners: new Set(events.map((event) => event.learnerId)).size,
+      byType: events.reduce((counts, event) => {
+        counts[event.type || "unknown"] = (counts[event.type || "unknown"] || 0) + 1;
+        return counts;
+      }, {})
+    },
+    events
+  };
 }
 
 export function createLearningCatalogReadModel(tables = {}, { learnerId = "", includeProgress = true } = {}) {
@@ -2584,6 +2621,11 @@ export class PostgresStateRepository {
   async readAiTutorEvents(options = {}) {
     const rows = await this.readNormalizedTable("ai_tutor_events", { limit: options.limit || 10000 });
     return createAiTutorEventReadModel(rows, options);
+  }
+
+  async readLearningEvents(options = {}) {
+    const rows = await this.readNormalizedTable("learning_events", { limit: options.limit || 10000 });
+    return createLearningEventReadModel(rows, options);
   }
 
   async readRewardApprovals(options = {}) {

@@ -68,6 +68,7 @@ import {
   getLearnerLevelProfile,
   getStudentEngagementProfile,
   getLearnerSubjectProgress,
+  mergeRepositoryLearningEvents,
   getLearnerClassSession,
   getHouseholdLearnerInsights,
   getManagerReviewDossier,
@@ -241,6 +242,7 @@ import {
   lessonScratchpadRepositoryTableIds,
   learningCatalogRepositoryTableIds,
   learningEvidenceRepositoryTableIds,
+  learningEventRepositoryTableIds,
   learnerProfileRepositoryTableIds,
   createLearnerProfileReadModel,
   normalizedRepositoryTableIds,
@@ -2146,6 +2148,13 @@ assert.ok(
   metadataOnlyCatalog.lessons.every((item) => !item.progress && !item.mastery && !item.scratchpad && !item.latestAttempt),
   "metadata-only catalogs should omit learner progress and assessment evidence"
 );
+const repositoryLearningEvents = await jsonRepository.readLearningEvents({ learnerId: "avery" });
+assert.equal(repositoryLearningEvents.source, "normalized-repository", "learning event read model should identify the normalized repository source");
+assert.ok(repositoryLearningEvents.tableIds.includes("learning_events"), "learning event read model should expose its source table");
+assert.ok(repositoryLearningEvents.events.every((event) => event.learnerId === "avery"), "learning event read model should enforce learner filtering");
+const mergedLearningEventState = mergeRepositoryLearningEvents(createInitialState(), repositoryLearningEvents);
+assert.ok(mergedLearningEventState.learningEvents.some((event) => event.learnerId === "avery"), "repository learning events should merge into the student state");
+assert.ok(learningEventRepositoryTableIds.includes("learning_events"), "learning event repository slice should declare learning_events");
 assert.ok(learnerProfileRepositoryTableIds.includes("student_guardians"), "learner profile read model should include guardian links");
 const repositoryStudentProfiles = await jsonRepository.readLearnerProfiles({ role: "student", studentId: "avery" });
 assert.equal(repositoryStudentProfiles.source, "normalized-repository", "learner profiles should identify the normalized repository source");

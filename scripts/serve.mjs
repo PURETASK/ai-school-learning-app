@@ -1860,6 +1860,32 @@ async function handleApi(request, response, pathname) {
     return true;
   }
 
+  if (request.method === "GET" && pathname === "/api/learning/events") {
+    requireRepositoryPermission(session, "learning_events", "read", repositoryScopeForRole(session));
+    const url = new URL(request.url, `http://localhost:${port}`);
+    const state = stateRepository.status().mode === "json" ? await ensureStateFile() : {};
+    let learnerId = url.searchParams.get("learnerId") || "";
+    if (session.role === "student") {
+      learnerId = session.studentId;
+    } else if (["parent", "teacher"].includes(session.role) && !learnerId) {
+      const error = new Error("A learnerId is required for scoped learning-event reads.");
+      error.status = 400;
+      throw error;
+    } else if (learnerId) {
+      await requireLearnerReadAccess(session, state, learnerId, "learning events");
+    }
+    const events = await stateRepository.readLearningEvents({
+      limit: url.searchParams.get("limit") || 200,
+      learnerId
+    });
+    sendJson(response, 200, {
+      repository: stateRepository.status(),
+      session: publicSessionSummary(session),
+      ...events
+    });
+    return true;
+  }
+
   if (request.method === "GET" && pathname === "/api/learning/assignments") {
     requireRepositoryPermission(session, "assignments", "read", repositoryScopeForRole(session));
     const url = new URL(request.url, `http://localhost:${port}`);

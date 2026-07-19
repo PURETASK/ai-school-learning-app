@@ -2833,6 +2833,30 @@ export function mergeRepositoryLearningCatalog(state = {}, catalog = {}) {
   };
 }
 
+export function mergeRepositoryLearningEvents(state = {}, readModel = {}) {
+  const incoming = (readModel.events || []).filter((event) => event?.learnerId && event?.id);
+  if (!incoming.length) return state;
+  const learnerId = readModel.learnerId && readModel.learnerId !== "all" ? readModel.learnerId : incoming[0].learnerId;
+  const existing = (state.learningEvents || []).filter((event) => event.learnerId !== learnerId);
+  const normalized = incoming.map((event) => ({
+    id: event.id,
+    learnerId: event.learnerId,
+    lessonId: event.lessonId || "",
+    type: event.type || "",
+    value: event.value || {},
+    occurredAt: event.occurredAt || ""
+  }));
+  return {
+    ...state,
+    learningEvents: [...normalized, ...existing].slice(0, 200),
+    persistence: {
+      ...(state.persistence || {}),
+      source: "scoped-repository",
+      lastError: null
+    }
+  };
+}
+
 export function mergeRepositoryLearnerProfiles(state = {}, profileReadModel = {}) {
   const profiles = (profileReadModel.learners || []).filter((learner) => learner && learner.id);
   if (!profiles.length) return state;

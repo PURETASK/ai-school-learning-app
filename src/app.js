@@ -68,6 +68,7 @@ import {
   getPlatformRepositoryAccessSummary,
   getProductCompletenessAudit,
   mergeRepositoryLearningCatalog,
+  mergeRepositoryLearningEvents,
   mergeRepositoryLearnerProfiles,
   getStateDependencyAudit,
   getPlatformLessonProductionBatchPlan,
@@ -127,6 +128,7 @@ import {
   fetchClassroomStudent,
   fetchContentDrafts,
   fetchLearningCatalog,
+  fetchLearningEvents,
   fetchLessonScratchpads,
   fetchPersistedState,
   fetchRoleScopedBootstrap,
@@ -212,6 +214,8 @@ let repositoryLearningCatalog = null;
 let repositoryLearningCatalogError = null;
 let repositoryLearningCatalogsByLearner = {};
 let repositoryLearningCatalogErrorsByLearner = {};
+let repositoryLearningEventsByLearner = {};
+let repositoryLearningEventErrorsByLearner = {};
 let repositoryContentDrafts = null;
 let repositoryContentDraftsError = null;
 let repositoryVisualAssets = null;
@@ -1230,6 +1234,8 @@ async function refreshRepositoryTutorEvents() {
 
   const learnerIds = [...new Set(learnerIdsForCurrentSession())];
   if (!learnerIds.length) {
+    repositoryLearningEventsByLearner = {};
+    repositoryLearningEventErrorsByLearner = {};
     repositoryTutorEventsByLearner = {};
     repositoryTutorEventErrorsByLearner = {};
     repositoryRewardApprovalsByLearner = {};
@@ -1245,6 +1251,25 @@ async function refreshRepositoryTutorEvents() {
     repositoryStudentClassroomsByLearner = {};
     repositoryStudentClassroomErrorsByLearner = {};
     return;
+  }
+
+  const learningEventEntries = await Promise.all(
+    learnerIds.map(async (learnerId) => {
+      try {
+        return [learnerId, { events: await fetchLearningEvents({ learnerId }), error: null }];
+      } catch (eventError) {
+        return [learnerId, { events: null, error: eventError?.message || String(eventError) }];
+      }
+    })
+  );
+  repositoryLearningEventsByLearner = Object.fromEntries(learningEventEntries.map(([learnerId, entry]) => [learnerId, entry.events]));
+  repositoryLearningEventErrorsByLearner = Object.fromEntries(
+    learningEventEntries.filter(([, entry]) => entry.error).map(([learnerId, entry]) => [learnerId, entry.error])
+  );
+  for (const [learnerId, entry] of learningEventEntries) {
+    if (entry.events?.events?.length) {
+      state = mergeRepositoryLearningEvents(state, entry.events);
+    }
   }
 
   const tutorEntries = await Promise.all(

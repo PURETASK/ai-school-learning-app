@@ -248,6 +248,14 @@ export async function fetchLearningCatalog(learnerId = "") {
   return body.catalog;
 }
 
+export async function fetchLearningEvents({ learnerId = "", limit = "" } = {}) {
+  const params = new URLSearchParams();
+  if (learnerId) params.set("learnerId", learnerId);
+  if (limit) params.set("limit", String(limit));
+  const query = params.toString() ? `?${params.toString()}` : "";
+  return requestJson(`/api/learning/events${query}`);
+}
+
 export async function postLessonQuiz(lessonId, answers, learnerId = "") {
   return requestJson("/api/learning/quiz", {
     method: "POST",
