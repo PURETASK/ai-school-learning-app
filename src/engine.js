@@ -4458,6 +4458,54 @@ export function getPilotQualityGateReport(state = createInitialState()) {
   };
 }
 
+export function getContentPipelineWorkflowAudit(state = createInitialState(), sourceBatchId = bridgeGrade6BatchOneId) {
+  const initialBatch = getContentBatchReviewState(state, sourceBatchId);
+  if (!initialBatch.totalLessons) {
+    return {
+      sourceBatchId,
+      passed: false,
+      checks: { batchPresent: false, managerApproval: false, publication: false, lessonRecords: false },
+      summary: "The content workflow audit could not find a production batch to exercise.",
+      blockers: ["No content batch was found for workflow verification."]
+    };
+  }
+
+  const approved = resolveAgentReviewItem(state, `batch:${sourceBatchId}`, "approve");
+  const published = approved.result.accepted
+    ? publishApprovedContentBatch(approved.state, sourceBatchId, { reviewedBy: "workflow-audit" })
+    : { state: approved.state, result: { accepted: false, publishedCount: 0, blockedCount: initialBatch.totalLessons } };
+  const finalBatch = getContentBatchReviewState(published.state, sourceBatchId);
+  const publishedLessons = (published.state.publishedLessons || []).filter((lesson) => lesson.sourceBatchId === sourceBatchId);
+  const checks = {
+    batchPresent: initialBatch.totalLessons > 0,
+    managerApproval: approved.result.accepted && (approved.state.contentDrafts || [])
+      .filter((draft) => draft.sourceBatchId === sourceBatchId)
+      .every((draft) => draft.batchReviewStatus === "approved"),
+    publication: published.result.accepted && published.result.blockedCount === 0 && published.result.publishedCount === initialBatch.totalLessons,
+    lessonRecords: publishedLessons.length === initialBatch.totalLessons && publishedLessons.every((lesson) => lesson.status === "published")
+  };
+  const blockers = [
+    ...(!checks.managerApproval ? [approved.result.summary || "Manager approval did not complete."] : []),
+    ...(!checks.publication ? [published.result.summary || "Publication did not complete for every lesson."] : []),
+    ...(!checks.lessonRecords ? ["Published lesson records were not created for every approved draft."] : [])
+  ];
+
+  return {
+    sourceBatchId,
+    batchTitle: initialBatch.title,
+    passed: Object.values(checks).every(Boolean),
+    checks,
+    initialLessonCount: initialBatch.totalLessons,
+    approvedLessonCount: checks.managerApproval ? initialBatch.totalLessons : 0,
+    publishedLessonCount: publishedLessons.length,
+    finalStatus: finalBatch.status,
+    summary: Object.values(checks).every(Boolean)
+      ? "The real manager approval, individual lesson gate, and publication loop completed for every lesson in the batch."
+      : "The content workflow audit is blocked until approval and publication complete for every lesson.",
+    blockers
+  };
+}
+
 export function getPlatformOpenAiImageReadiness(env) {
   return getOpenAiImageReadiness(env);
 }
@@ -4718,10 +4766,11 @@ export function getProductCompletenessAudit(state = createInitialState(), env = 
   const auth = getAuthSecuritySummary(state);
   const tutor = getTutorQualityDashboard(state);
   const agents = getAgentToolGatewaySummary(state);
+  const contentWorkflow = getContentPipelineWorkflowAudit(state);
   const migration = getMigrationReadiness();
   const dataModel = getProductionDataModelReadiness(state);
   const contentReviewQueue = (state.contentDrafts || []).filter((draft) => draft.status === "review" || draft.publicationBlocked).length;
-  const corePilotReady = pilotQuality.scaleUnlocked && published.total >= 6 && published.withVisualSupports >= 6 && published.withQuiz >= 6;
+  const corePilotReady = pilotQuality.scaleUnlocked && contentWorkflow.passed && published.total >= 6 && published.withVisualSupports >= 6 && published.withQuiz >= 6;
   const durableRepository = ["postgres", "supabase-rest"].includes(runtime.repositoryMode);
   const databaseConfigured = runtime.databaseConnectionConfigured ?? runtime.databaseConfigured;
   const databaseBlocked = !databaseConfigured || !durableRepository;
@@ -4764,14 +4813,14 @@ export function getProductCompletenessAudit(state = createInitialState(), env = 
       id: "pilot-lessons",
       title: "Polished pilot and showcase lessons",
       status: auditStatus(corePilotReady),
-      evidence: `${pilotQuality.passedLessons}/${pilotQuality.totalLessons} pilots pass the B-or-better quality gate; ${published.total} published; ${published.withVisualSupports} visual-ready; ${published.withQuiz} quiz-ready.`,
-      nextStep: corePilotReady ? "Use the pilot and showcase lessons as the quality bar for the next production batches." : "Do not scale yet. Fix every pilot lesson below B, then rerun the content, prompt, visual, tutor, quiz, and accessibility gates."
+      evidence: `${pilotQuality.passedLessons}/${pilotQuality.totalLessons} pilots pass the B-or-better quality gate; ${published.total} published; ${published.withVisualSupports} visual-ready; ${published.withQuiz} quiz-ready; workflow=${contentWorkflow.passed ? "verified" : "blocked"}.`,
+      nextStep: corePilotReady ? "Use the pilot and showcase lessons as the quality bar for the next production batches." : "Do not scale yet. Complete the quality, manager approval, individual publication, and workflow verification gates before creating more content."
     },
     {
       id: "content-scale",
       title: "Full K-12 lesson production",
       status: auditStatus(corePilotReady && authoring.published >= library.generatedLessonCount, !corePilotReady),
-      evidence: `${library.generatedLessonCount.toLocaleString()} blueprints across ${batchPlan.totalBatches} production batches; ${authoring.total} drafts; ${authoring.published} published; ${contentReviewQueue} in review; pilot scale gate=${pilotQuality.scaleUnlocked ? "open" : "blocked"}.`,
+      evidence: `${library.generatedLessonCount.toLocaleString()} blueprints across ${batchPlan.totalBatches} production batches; ${authoring.total} drafts; ${authoring.published} published; ${contentReviewQueue} in review; pilot scale gate=${corePilotReady ? "open" : "blocked"}; workflow=${contentWorkflow.passed ? "verified" : "blocked"}.`,
       nextStep: corePilotReady
         ? `Start with ${batchPlan.firstWaveBatchCount} Bridge Academy batches (${batchPlan.firstWaveLessonCount.toLocaleString()} lessons), then convert each batch into reviewed drafts, visuals, quizzes, and published records.`
         : "Pilot quality gate is blocking scale. Resolve every lesson below B before creating the next production batch."

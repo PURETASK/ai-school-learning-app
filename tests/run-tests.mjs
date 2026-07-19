@@ -87,6 +87,7 @@ import {
   getPlatformLessonLibrarySummary,
   getPlatformLessonProductionBatchPlan,
   getPilotQualityGateReport,
+  getContentPipelineWorkflowAudit,
   getApprovedLessonVisualAsset,
   getPlatformMigration,
   getPlatformMigrationReadiness,
@@ -384,6 +385,11 @@ assert.equal(learningAiGrade.passed, true, "Learning AI should pass the lesson c
 const pilotQualityGate = getPilotQualityGateReport(createInitialState());
 assert.equal(pilotQualityGate.totalLessons, pilotLessons.length, "pilot quality gate should cover every pilot and showcased lesson");
 assert.equal(pilotQualityGate.scaleUnlocked, true, "lesson scale visual gate should unlock after every pilot has all required phase-specific visuals");
+const contentWorkflowAudit = getContentPipelineWorkflowAudit(createInitialState(), "bridge-academy-grade-6-batch-1");
+assert.equal(contentWorkflowAudit.passed, true, "content workflow audit should exercise manager approval through publication for every batch lesson");
+assert.equal(contentWorkflowAudit.checks.managerApproval, true, "content workflow audit should verify manager approval stamps every draft");
+assert.equal(contentWorkflowAudit.checks.publication, true, "content workflow audit should verify every approved lesson passes individual publication");
+assert.equal(contentWorkflowAudit.checks.lessonRecords, true, "content workflow audit should verify published lesson records exist for every draft");
 assert.equal(pilotQualityGate.passedLessons, pilotLessons.length, "all pilot lessons should pass after approved placement-specific visuals are seeded");
 assert.equal(pilotQualityGate.summary.missingVisualPlacements, 0, "pilot quality board should report no missing phase-specific visual placements");
 assert.ok(
