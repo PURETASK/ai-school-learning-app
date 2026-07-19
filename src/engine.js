@@ -5582,6 +5582,7 @@ export function getStudentEngagementProfile(state = {}, learnerId = "", now = ne
   const dateKey = engagementDateKey(now);
   const events = (state.learningEvents || []).filter((event) => event.learnerId === learner.id);
   const todayEvents = events.filter((event) => engagementDateKey(engagementEventDate(event)) === dateKey);
+  const levelProfile = getLearnerLevelProfile(state, learner.id);
   const hasToday = (type, predicate = () => true) => todayEvents.some((event) => event.type === type && predicate(event));
   const lessons = lessonsForLearner(state, learner);
   const nextLesson = lessons.find((lesson) => Number(state.mastery?.[lesson.id]?.score || 0) < Number(lesson.masteryThreshold || 80)) || lessons[0] || null;
@@ -5660,7 +5661,15 @@ export function getStudentEngagementProfile(state = {}, learnerId = "", now = ne
     completedMissions,
     totalMissions: missionDefinitions.length,
     celebration,
-    nextMission: missionDefinitions.find((mission) => !mission.done) || null
+    nextMission: missionDefinitions.find((mission) => !mission.done) || null,
+    rewardTrack: {
+      level: levelProfile.level,
+      totalXp: levelProfile.totalXp,
+      progressPercent: levelProfile.progressPercent,
+      xpToNextLevel: levelProfile.xpToNextLevel,
+      nextReward: levelProfile.nextReward,
+      unlockedCount: levelProfile.unlockedRewards.length
+    }
   };
 }
 

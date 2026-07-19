@@ -3334,9 +3334,11 @@ function renderChildLevelDashboard(learner, levelProfile, subjectProgress) {
   `;
 }
 
-function renderStudentEngagementBoard(learner, lesson) {
+function renderStudentEngagementBoard(learner, lesson, levelProfile) {
   const engagement = getStudentEngagementProfile(state, learner.id);
   const nextMission = engagement.nextMission;
+  const rewardTrack = engagement.rewardTrack || levelProfile;
+  const nextReward = rewardTrack?.nextReward;
   return `
     <section class="panel wide-panel engagement-board" aria-label="Daily learning missions">
       <div class="engagement-board-head">
@@ -3353,6 +3355,18 @@ function renderStudentEngagementBoard(learner, lesson) {
       </div>
       <div class="engagement-progress" aria-label="Daily mission progress">
         <span style="width:${Math.round((engagement.completedMissions / Math.max(1, engagement.totalMissions)) * 100)}%"></span>
+      </div>
+      <div class="mission-reward-runway" aria-label="Progress toward the next learning reward">
+        <div class="mission-reward-copy">
+          <span>Reward runway</span>
+          <strong>Level ${html(rewardTrack?.level || 1)} · ${html(nextReward?.title || "Next mastery unlock")}</strong>
+          <p>${html(nextReward?.benefit || "Keep collecting evidence through practice, explanation, and recall.")}</p>
+        </div>
+        <div class="mission-reward-meter">
+          <div class="mission-reward-meter-top"><span>${html(rewardTrack?.xpToNextLevel || 0)} XP to next level</span><strong>${html(rewardTrack?.progressPercent || 0)}%</strong></div>
+          <div class="mission-reward-track"><span style="width:${Math.max(0, Math.min(100, Number(rewardTrack?.progressPercent || 0)))}%"></span></div>
+          <small>${html(rewardTrack?.unlockedCount || 0)} reward milestone${Number(rewardTrack?.unlockedCount || 0) === 1 ? "" : "s"} unlocked</small>
+        </div>
       </div>
       <div class="mission-deck">
         ${engagement.missions.map((mission) => {
@@ -3799,7 +3813,7 @@ function renderStudentView() {
       ]
     })}
     ${renderProductLearningFlow({ learner, lesson: selectedPlan, levelProfile })}
-    ${renderStudentEngagementBoard(learner, selectedPlan)}
+    ${renderStudentEngagementBoard(learner, selectedPlan, levelProfile)}
     ${renderSpecialAiLessonShowcase()}
     ${renderStudentLaunchPanel(learner, selectedPlan, levelProfile)}
     ${renderChildLevelDashboard(learner, levelProfile, subjectProgress)}

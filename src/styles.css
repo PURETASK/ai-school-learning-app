@@ -9129,6 +9129,53 @@ html {
   transition: width .5s ease;
 }
 
+.mission-reward-runway {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, .8fr);
+  gap: 18px;
+  align-items: center;
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 211, 90, .3);
+  border-radius: 16px;
+  background: linear-gradient(105deg, rgba(44, 28, 70, .72), rgba(18, 30, 63, .72));
+}
+
+.mission-reward-copy span,
+.mission-reward-meter-top span,
+.mission-reward-meter small {
+  color: #ffd35a;
+  font-size: .68rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.mission-reward-copy strong {
+  display: block;
+  margin-top: 5px;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.mission-reward-copy p {
+  margin: 5px 0 0;
+  color: #bdcbee;
+  font-size: .82rem;
+  line-height: 1.4;
+}
+
+.mission-reward-meter-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 7px;
+}
+
+.mission-reward-meter-top strong { color: #fff; font-size: .82rem; }
+.mission-reward-track { height: 9px; overflow: hidden; border-radius: 99px; background: rgba(255,255,255,.12); }
+.mission-reward-track span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #a7f36d, #ffd35a, #ff65bc); box-shadow: 0 0 16px rgba(255, 211, 90, .5); transition: width .5s ease; }
+.mission-reward-meter small { display: block; margin-top: 7px; color: #9fb0d2; letter-spacing: .04em; text-transform: none; }
+
 .mission-deck {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -9169,6 +9216,7 @@ html {
 @media (max-width: 620px) {
   .engagement-board-head { flex-direction: column; }
   .engagement-stats { width: 100%; min-width: 0; }
+  .mission-reward-runway { grid-template-columns: 1fr; }
   .mission-deck { grid-template-columns: 1fr; }
   .mission-card { min-height: 0; }
 }
