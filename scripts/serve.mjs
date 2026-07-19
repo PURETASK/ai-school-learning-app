@@ -1209,7 +1209,10 @@ async function handleApi(request, response, pathname) {
         error.status = 401;
         throw error;
       }
-      await supabaseSignOut({ accessToken });
+      // Supabase's /logout endpoint revokes all refresh tokens for the user.
+      // A local request must stay local: our session-revocation record and
+      // request middleware enforce the current session without killing other devices.
+      if (body.revokeAll) await supabaseSignOut({ accessToken });
       const revoked = await queueStateMutation(async () => {
         const state = stateRepository.status().mode === "postgres" ? { sessionRevocations: [] } : await ensureStateFile();
         const result = revokeAccountSession(state, {
