@@ -935,7 +935,7 @@ function getRepositoryCatalogLesson(learnerId = "", lessonId = "") {
 function getRepositoryPhaseSummary(learnerId = "") {
   const scopedCatalog = learnerId ? repositoryLearningCatalogsByLearner[learnerId] : null;
   const catalog = scopedCatalog || repositoryLearningCatalog;
-  if (!catalog) return { source: "unavailable", lessons: 0, clearedLessons: 0, phases: 0, latest: null };
+  if (!catalog) return { source: "unavailable", lessons: 0, clearedLessons: 0, phases: 0, remembered: 0, transferred: 0, latest: null };
   const lessons = (catalog.lessons || []).filter((lesson) => lesson.completedPhaseCount > 0);
   const phaseCompletions = lessons.flatMap((lesson) => lesson.phaseCompletions || []);
   return {
@@ -943,6 +943,8 @@ function getRepositoryPhaseSummary(learnerId = "") {
     lessons: (catalog.lessons || []).length,
     clearedLessons: lessons.length,
     phases: phaseCompletions.length,
+    remembered: phaseCompletions.filter((item) => item.phase === "remember").length,
+    transferred: phaseCompletions.filter((item) => item.phase === "transfer").length,
     latest: phaseCompletions[0] || null
   };
 }
@@ -6181,12 +6183,12 @@ function renderParentLearnerInsights(insights) {
                   <strong>Repository Nexus phases</strong>
                   <p>${html(
                     repositoryPhases.phases
-                      ? `${repositoryPhases.phases} phase move(s) cleared across ${repositoryPhases.clearedLessons} lesson(s).`
+                      ? `${repositoryPhases.phases} phase move(s) cleared across ${repositoryPhases.clearedLessons} lesson(s). ${repositoryPhases.remembered} recall proof(s) and ${repositoryPhases.transferred} transfer proof(s).`
                       : repositoryStatus.error
                         ? `Learner-scoped catalog read failed: ${repositoryStatus.error}`
                         : "No catalog-backed phase completion evidence has been read for this child yet."
                   )}</p>
-                  <small>${html(`${repositoryPhases.clearedLessons}/${repositoryPhases.lessons} catalog lesson(s) have phase evidence from ${repositoryPhases.source}`)}</small>
+                  <small>${html(`${repositoryPhases.clearedLessons}/${repositoryPhases.lessons} catalog lesson(s) have phase evidence from ${repositoryPhases.source}; retention is ${repositoryPhases.transferred > 0 ? "showing transfer" : "waiting for transfer proof"}.`)}</small>
                 </div>
                 <div class="student-evidence-box ${repositoryRewards.summary.total ? "" : "muted-box"}">
                   <strong>Repository reward approvals</strong>
