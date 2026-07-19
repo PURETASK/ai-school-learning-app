@@ -280,12 +280,12 @@ import { buildMigrationReadinessReport } from "../scripts/report-v2-migration-re
 import { getNativeV3ExemplarRecords } from "../scripts/export-native-v3-exemplars.mjs";
 
 const v2V3MigrationReport = buildMigrationReadinessReport({ root: process.cwd() });
-assert.equal(v2V3MigrationReport.summary.contentFiles, 24, "migration report should inventory legacy and native on-disk content files");
+assert.equal(v2V3MigrationReport.summary.contentFiles, 26, "migration report should inventory legacy and native on-disk content files");
 assert.equal(v2V3MigrationReport.summary.seedLessonFiles, 16, "migration report should inventory the 16 seed lesson files");
-assert.equal(v2V3MigrationReport.summary.nativeV3Pilots, 8, "migration report should identify all eight native V3 pilot exemplars");
+assert.equal(v2V3MigrationReport.summary.nativeV3Pilots, 10, "migration report should identify all ten native V3 pilot exemplars");
 assert.ok(v2V3MigrationReport.checks.some((item) => item.id === "native-content-files" && item.passed), "migration report should confirm all on-disk content is native V3");
 assert.equal(v2V3MigrationReport.status, "ready", "migration report should be ready after the complete on-disk V3 migration");
-assert.equal(getNativeV3ExemplarRecords().length, 8, "native V3 export should expose all eight authored exemplars");
+assert.equal(getNativeV3ExemplarRecords().length, 10, "native V3 export should expose all ten authored exemplars");
 
 const totals = getCurriculumTotals();
 
@@ -481,6 +481,8 @@ assert.equal(
 );
 const nativeBridgeWeatherLesson = pilotLessons.find((item) => item.id === "g6-earth-systems-weather");
 const nativeBridgeRatiosLesson = pilotLessons.find((item) => item.id === "g6-math-ratios-unit-rates");
+const nativeBridgeElaLesson = pilotLessons.find((item) => item.id === "g6-ela-theme-text-evidence");
+const nativeBridgeSocialLesson = pilotLessons.find((item) => item.id === "g6-social-geography-early-humans");
 const nativeLearningAiLesson = pilotLessons.find((item) => item.id === "g6-learning-ai-build-test");
 assert.equal(nativeBridgeRatiosLesson.schemaVersion, "3", "Grade 6 ratios exemplar should be a native V3 lesson");
 assert.equal(nativeBridgeRatiosLesson.lessonFamily, "skill_workshop", "Grade 6 ratios exemplar should use the skill workshop lesson family");
@@ -530,6 +532,22 @@ assert.deepEqual(
   nativeBridgeWeatherLesson.activePhases,
   "Native Grade 6 V3 phase modules should render in activePhases order"
 );
+for (const [lesson, label, family] of [
+  [nativeBridgeElaLesson, "Grade 6 ELA", "reasoning_lab"],
+  [nativeBridgeSocialLesson, "Grade 6 Social Studies", "reasoning_lab"]
+]) {
+  const validation = validateNexusLessonV3(lesson);
+  assert.equal(lesson.schemaVersion, "3", `${label} should be a native V3 exemplar`);
+  assert.equal(lesson.academy, "bridge", `${label} should belong to Bridge Academy`);
+  assert.equal(lesson.lessonFamily, family, `${label} should use the reasoning lab family`);
+  assert.equal(validation.passed, true, `${label} should pass V3 validation`);
+  assert.deepEqual(
+    getRenderableNexusPhaseModules(lesson).map((module) => module.phase),
+    lesson.activePhases,
+    `${label} phase modules should follow authored active phase order`
+  );
+  assert.deepEqual(lesson.requiredMasteryProofs, ["recall", "explain", "perform", "retain", "transfer"], `${label} should require the full evidence path`);
+}
 const nativeLearningAiValidation = validateNexusLessonV3(nativeLearningAiLesson);
 assert.equal(nativeLearningAiValidation.passed, true, "Learning AI native V3 showcase should pass V3 validation");
 assert.deepEqual(

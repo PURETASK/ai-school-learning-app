@@ -8,7 +8,7 @@ For the complete moment-level catalog, subject matrix, grade-band slot requireme
 
 ## Current Inventory
 
-- Current pilot/showcase lessons: 8
+- Current pilot/showcase lessons: 10
 - Current catalog lessons including published copies: 16
 - Current visual-agent slots: 58
 - High-priority slots: 24
@@ -106,7 +106,7 @@ All assets must follow these rules:
 
 ## Priority Order
 
-1. Current 8 pilot/showcase lessons: complete all required visual slots.
+1. Current 10 pilot/showcase lessons: complete all required visual slots.
 2. Published copies of the same lessons: ensure they use approved storage-backed assets.
 3. Grade 6 Bridge Academy Batch 1: math, ELA, science, social studies, computer science.
 4. Quiz and test visual assets for Grade 6 math first.

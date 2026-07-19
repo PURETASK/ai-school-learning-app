@@ -34,7 +34,7 @@ The product should use the simplest effective visual format. A generated illustr
 
 ## 2. Audited Scope
 
-The catalog was derived from the canonical product source of truth, V7 migration/build documents, the existing visual backlog and agent, the lesson library generator, the eight pilot/showcase lessons, the Grade 6 Batch 1 plan, quiz/tutor requirements, and the current dashboard/admin workflows.
+The catalog was derived from the canonical product source of truth, V7 migration/build documents, the existing visual backlog and agent, the lesson library generator, the ten pilot/showcase lessons, the Grade 6 Batch 1 plan, quiz/tutor requirements, and the current dashboard/admin workflows.
 
 Current curriculum scale:
 
@@ -47,7 +47,7 @@ Current curriculum scale:
 | Scholar Academy 9-12 lessons | 1,904 |
 | Subjects | 10 |
 | Lessons with group homework | 3,292 |
-| Current pilot/showcase lessons | 8 |
+| Current pilot/showcase lessons | 10 |
 | Current visual-agent slots | 58 |
 | Current high-priority slots | 24 |
 
@@ -535,7 +535,7 @@ Minimum release grade: **B**. An A is preferred for core teaching models, miscon
 
 ### P0: pilot release gate
 
-1. Complete the eight pilot/showcase lesson slot mappings.
+1. Complete the ten pilot/showcase lesson slot mappings.
 2. Produce missing heroes, teaching diagrams, tutor cards, misconception repairs, and group workflows.
 3. Add quiz stimulus, answer explanation, and distractor diagnosis visuals for Ratio Quest and Learning AI.
 4. Promote approved pilot assets to Supabase Storage.
@@ -580,4 +580,4 @@ The visual system is production-ready when the app can show, for any published l
 - an approved storage-backed asset with complete review history;
 - and a safe fallback when no approved visual exists.
 
-The next work should remain focused on the eight pilots and Bridge Academy Grade 6 Batch 1 until this definition of done is verified end to end.
+The next work should remain focused on the ten pilots and Bridge Academy Grade 6 Batch 1 until this definition of done is verified end to end.

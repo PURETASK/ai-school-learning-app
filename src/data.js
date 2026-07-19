@@ -2050,6 +2050,181 @@ const basePilotLessons = [
         explanation: "Mitochondria are the major site of cellular energy transfer."
       }
     ]
+  },
+  {
+    id: "g6-ela-theme-text-evidence",
+    academyId: "bridge",
+    grade: "6",
+    subject: "ela",
+    courseTitle: "Grade 6 English Language Arts",
+    unitTitle: "Close Reading and Text Evidence",
+    title: "Theme Signal: Prove What the Story Means",
+    objective: "Determine a theme and support it with relevant text evidence and reasoning.",
+    standards: ["ccss-ela"],
+    estimatedMinutes: 34,
+    masteryThreshold: 80,
+    xp: 160,
+    visual: {
+      type: "theme-evidence-board",
+      title: "Theme evidence signal board",
+      caption: "A story map connects a character choice, a consequence, two short evidence cards, and a theme statement.",
+      altText: "A story map connects a character choice to a consequence, two labeled evidence cards, and a complete theme statement.",
+      generationPrompt: "Create a bold cyber-neon Grade 6 ELA teaching diagram showing a character choice, consequence, two short evidence cards, and a theme statement. Use readable labels, high contrast, no copyrighted characters, and classroom-safe visual metaphors."
+    },
+    teachingSupport: {
+      summary: "A theme is a message about life, not a one-word topic. Evidence shows what happened, and reasoning explains how it supports the message.",
+      description: "The app turns close reading into a signal hunt: notice a repeated choice or consequence, collect precise evidence, then explain the pattern in a complete sentence.",
+      diagramCallouts: [
+        { title: "Choice", body: "Name the decision or action the character makes." },
+        { title: "Consequence", body: "Track what changes because of that decision." },
+        { title: "Theme message", body: "Write what the pattern suggests about life, people, or choices." }
+      ],
+      helperNotes: [
+        "Start with what the character does before naming a theme.",
+        "Use two short evidence moments that show the same pattern, not two random quotes.",
+        "Add because: the evidence matters only when the reader explains the connection."
+      ],
+      commonMisunderstandings: [
+        { mistake: "Writing a topic such as friendship instead of a complete message.", fix: "Finish the sentence: The story suggests that friendship means ___ when ___." },
+        { mistake: "Listing a quote without explaining it.", fix: "After the evidence, explain what the character's choice reveals." },
+        { mistake: "Choosing a theme that does not match the character's actions.", fix: "Trace the same choice-consequence pattern in at least two places."
+        }
+      ],
+      confusionPrompt: "Write whether you are stuck on finding the pattern, choosing evidence, turning a topic into a message, or explaining the evidence."
+    },
+    funTasks: [
+      "Run a theme signal hunt: highlight repeated choices and consequences in a short story.",
+      "Build a two-card evidence board and challenge a teammate to find the missing reasoning.",
+      "Rewrite a one-word topic into three possible theme messages, then defend the strongest one."
+    ],
+    groupHomework: {
+      title: "Theme signal crew",
+      groupSize: "3-5 learners",
+      roles: ["Pattern scout", "Evidence curator", "Reasoning builder", "Skeptic", "Presenter"],
+      sharedOutcome: "Submit a theme board with a message, two evidence cards, and a because explanation for each card.",
+      parentRole: "Ask the student what the character learned or changed, then let the student point to the evidence."
+    },
+    retentionChecks: ["Next-day topic-versus-theme sort", "Three-day evidence-reasoning repair", "Seven-day new-story theme transfer"],
+    reward: "Unlock the Theme Decoder badge after an independent evidence explanation and delayed recall.",
+    evidenceMoves: {
+      priorKnowledgeCheck: "Ask the learner to describe a character choice and its consequence in a familiar story before introducing theme language.",
+      misconceptionCheck: "Check for topic-only answers, quote dumping, and evidence that does not match the proposed message.",
+      manipulativeRationale: "Use choice cards, consequence arrows, and evidence cards so the abstract theme message grows from visible story relationships.",
+      representations: ["Choice-consequence map", "Evidence cards", "Theme sentence frame", "Topic versus theme sort", "Student-created counterexample"],
+      problemSolvingStrategy: "Trace the pattern, select precise evidence, explain the connection, then test the message against the whole story.",
+      workedExample: "Model how a character repeatedly avoids asking for help, then show how the consequences support a message about courage and trust.",
+      examplesAndNonExamples: "Compare a complete theme message with the topic friendship and with a quote that has no explanation.",
+      knowledgeConnections: "Connect theme to cause and effect, character development, summary, evidence, discussion, and argumentative writing.",
+      metacognitivePrompt: "Plan the pattern you will trace, monitor whether each evidence card fits, and evaluate whether your message is transferable.",
+      interventionTrigger: "If the learner gives a topic, mismatched evidence, or no reasoning, route to the corresponding repair path before another quiz.",
+      transitionBridge: "Theme evidence work prepares learners for literary analysis, claims, commentary, and research writing.",
+      feedbackFrame: "Name the pattern, point to the first matching evidence card, and ask the learner to complete one because sentence."
+    },
+    sections: {
+      warmup: "Look at a character choice and predict what consequence might reveal a bigger message.",
+      teach: "A theme is a complete message about life. Readers find it by tracing repeated choices and consequences, then explaining evidence.",
+      guidedPractice: "Sort story moments into choice, consequence, evidence, and theme-message cards.",
+      independentPractice: "Write one theme message, cite two brief evidence moments, and explain how each supports the message.",
+      activity: "Build the interactive theme signal board and move evidence cards until the pattern is coherent.",
+      reteach: "Return to one choice and one consequence, then complete the sentence: This suggests that ___.",
+      challenge: "Test two possible themes against the whole story and explain which one has stronger evidence."
+    },
+    quiz: [
+      { id: "g6-ela-theme-q1", prompt: "Which is a theme rather than a topic?", choices: ["Friendship", "The story suggests that honest friendship requires difficult conversations", "A forest", "Courage"], answerIndex: 1, explanation: "A theme is a complete message, not a single topic word." },
+      { id: "g6-ela-theme-q2", prompt: "What should you add after a quotation or story detail?", choices: ["A new unrelated topic", "Reasoning that explains how it supports the theme", "Only a longer quotation", "A guess about the author"], answerIndex: 1, explanation: "Reasoning connects the evidence to the message." },
+      { id: "g6-ela-theme-q3", prompt: "Which evidence best supports a theme about asking for help?", choices: ["The character's jacket is blue", "The character refuses help twice, then succeeds after trusting a teammate", "The story has ten pages", "The setting is a city"], answerIndex: 1, explanation: "The repeated choice and changed consequence directly support the theme pattern." }
+    ],
+    parentTeacherNotes: "Use this as the Grade 6 ELA native V3 exemplar. Require a theme message, two relevant evidence cards, and reasoning before awarding mastery.",
+    accessibilityNotes: ["Provide text and audio versions of the short passage.", "Keep evidence cards keyboard sortable and label every connector.", "Do not rely on color alone for choice, consequence, or evidence categories."],
+    safetyNotes: ["Use school-safe, age-appropriate excerpts and avoid collecting student writing beyond the learning record."]
+  },
+  {
+    id: "g6-social-geography-early-humans",
+    academyId: "bridge",
+    grade: "6",
+    subject: "social-studies",
+    courseTitle: "Grade 6 Social Studies",
+    unitTitle: "Historical Thinking, Geography, and Early Humans",
+    title: "Map the Move: Why Communities Settle",
+    objective: "Use geographic evidence to explain why early communities settled in particular places and how those choices shaped daily life.",
+    standards: ["c3"],
+    estimatedMinutes: 36,
+    masteryThreshold: 80,
+    xp: 160,
+    visual: {
+      type: "settlement-evidence-map",
+      title: "Settlement decision map",
+      caption: "A labeled river-valley map connects water, fertile soil, transportation, hazards, and a community decision.",
+      altText: "A settlement map labels a river, fertile soil, travel route, flood risk, and a community decision supported by evidence.",
+      generationPrompt: "Create a bold cyber-neon Grade 6 social studies teaching diagram of an early river-valley settlement decision. Show a river, fertile soil, travel route, flood risk, resource icons, evidence arrows, and a final claim. Use readable labels, high contrast, no real people, no logos, and classroom-safe geography."
+    },
+    teachingSupport: {
+      summary: "Geography creates possibilities and constraints. Historical reasoning explains how people used evidence, resources, and tradeoffs to make choices.",
+      description: "The app turns a map into a decision lab: learners inspect physical features, compare benefits and risks, and defend a settlement choice without pretending geography determines everything.",
+      diagramCallouts: [
+        { title: "Resource", body: "Water, soil, animals, and materials can support daily life." },
+        { title: "Route", body: "Rivers and landforms can make travel, trade, or communication easier." },
+        { title: "Tradeoff", body: "The same place can offer benefits and hazards, such as fertile soil and flooding." }
+      ],
+      helperNotes: [
+        "Separate what the map shows from what historians infer.",
+        "Require at least two benefits and one tradeoff before accepting a settlement claim.",
+        "Avoid saying geography makes people act one way; ask what choices and adaptations were possible."
+      ],
+      commonMisunderstandings: [
+        { mistake: "Treating a map symbol as proof of a whole historical explanation.", fix: "Name the visible feature, then explain the reasonable inference and its limit." },
+        { mistake: "Listing resources without connecting them to daily life.", fix: "Complete: This resource could support ___ because ___." },
+        { mistake: "Assuming one location has only benefits or only risks.", fix: "Add a tradeoff and explain how a community might adapt."
+        }
+      ],
+      confusionPrompt: "Write whether you are stuck reading the map, connecting a resource to daily life, weighing a tradeoff, or writing the historical claim."
+    },
+    funTasks: [
+      "Run a settlement strategy game: choose a location, spend evidence tokens, and defend the tradeoffs.",
+      "Annotate a map with resource, route, hazard, and adaptation symbols.",
+      "Create a historical council briefing that argues for one location and answers the strongest objection."
+    ],
+    groupHomework: {
+      title: "Settlement council",
+      groupSize: "3-5 learners",
+      roles: ["Map analyst", "Resource historian", "Risk checker", "Adaptation designer", "Council speaker"],
+      sharedOutcome: "Submit an annotated settlement map and a claim-evidence-reasoning briefing with one tradeoff and adaptation.",
+      parentRole: "Ask the student to point to map evidence before accepting a claim about why people settled there."
+    },
+    retentionChecks: ["Next-day map-feature recall", "Three-day benefit-versus-tradeoff sort", "Seven-day new-region settlement transfer"],
+    reward: "Unlock the Evidence Cartographer badge after defending a settlement choice and revising it with new map evidence.",
+    evidenceMoves: {
+      priorKnowledgeCheck: "Ask the learner to identify water, land, and travel features on a familiar map and connect each to one possible human need.",
+      misconceptionCheck: "Check for symbol-as-proof reasoning, disconnected resource lists, and one-sided benefit claims.",
+      manipulativeRationale: "Use map tiles, resource tokens, hazard markers, and tradeoff cards so geographic reasoning becomes a visible decision process.",
+      representations: ["Settlement map", "Resource tokens", "Benefit-risk matrix", "Claim-evidence-reasoning card", "Adaptation sketch"],
+      problemSolvingStrategy: "Observe the map, connect features to needs, weigh benefits and risks, then defend a conditional claim.",
+      workedExample: "Model how a river can support water and transport while also creating flood risk that requires adaptation.",
+      examplesAndNonExamples: "Compare a claim that cites two map features with a claim that simply says a place was good.",
+      knowledgeConnections: "Connect geography to resources, trade, adaptation, civic decisions, map literacy, and historical cause-and-effect.",
+      metacognitivePrompt: "Plan which map evidence matters, monitor whether the claim overreaches, and evaluate the strongest tradeoff.",
+      interventionTrigger: "If the learner cannot connect a feature to a need or ignores risk, route to the map-label or tradeoff repair path.",
+      transitionBridge: "Settlement reasoning prepares learners for early civilizations, geographic systems, historical causation, and evidence-based civics.",
+      feedbackFrame: "Name the map feature, ask what need it could support, and require one benefit, one risk, and one adaptation."
+    },
+    sections: {
+      warmup: "Choose between two map locations and write one question you would need answered before settling.",
+      teach: "People use geography as one source of evidence. Resources, routes, hazards, choices, and adaptations all shape community life.",
+      guidedPractice: "Match map features to possible needs, benefits, risks, and adaptations.",
+      independentPractice: "Write a claim about the best settlement location using two map clues and one tradeoff.",
+      activity: "Use the interactive settlement board to spend evidence tokens and revise the choice after a new hazard appears.",
+      reteach: "Label one map feature, connect it to one human need, and add a because sentence.",
+      challenge: "Defend a less obvious location by showing how technology or adaptation changes the tradeoff."
+    },
+    quiz: [
+      { id: "g6-social-settle-q1", prompt: "Which pair is a geographic benefit and a tradeoff?", choices: ["River water and possible flooding", "A title and a homework grade", "A symbol and a random guess", "A story character and a theme"], answerIndex: 0, explanation: "A river can support life and travel while also creating flood risk." },
+      { id: "g6-social-settle-q2", prompt: "What makes a settlement claim stronger?", choices: ["It uses at least two map clues and explains the connection", "It uses the longest sentence", "It names only one resource", "It ignores hazards"], answerIndex: 0, explanation: "Evidence plus reasoning makes the historical claim testable and understandable." },
+      { id: "g6-social-settle-q3", prompt: "Which statement avoids overclaiming?", choices: ["The river forced everyone to settle there", "The river may have supported water and travel, while flooding required adaptation", "Maps prove exactly what every person believed", "Resources always create the same society"], answerIndex: 1, explanation: "The statement uses cautious language and includes both opportunity and adaptation."
+      }
+    ],
+    parentTeacherNotes: "Use this as the Grade 6 Social Studies native V3 exemplar. Students must distinguish map observation, inference, claim, tradeoff, and adaptation.",
+    accessibilityNotes: ["Provide a text table alongside the map and label every icon.", "Allow spoken or typed claim-evidence-reasoning responses.", "Use patterns and labels as well as color for benefits, risks, and routes."],
+    safetyNotes: ["Use historically respectful, age-appropriate examples and avoid presenting simplified geography as a complete explanation of people or cultures."]
   }
 ];
 
@@ -2265,7 +2440,7 @@ function nativeFoundationPilotV3(lesson, config = {}) {
 
   return {
     schemaVersion: "3",
-    academy: "foundation",
+    academy: lesson.academyId || config.academy || "foundation",
     gradeLevel: String(lesson.grade),
     course: lesson.courseTitle,
     unitId: config.unitId || slug(lesson.unitTitle || lesson.title),
@@ -3422,7 +3597,13 @@ export const pilotLessons = [...basePilotLessons, specialAiLesson].map((lesson) 
     studentFacing,
     ...nativeFoundationFractionsV3({ ...lesson, studentFacing }),
     ...nativeFoundationPilotV3({ ...lesson, studentFacing }, {
-      ids: ["g3-ela-main-idea-evidence", "g3-science-mini-ecosystem", "g3-social-regions-community-map"],
+      ids: [
+        "g3-ela-main-idea-evidence",
+        "g3-science-mini-ecosystem",
+        "g3-social-regions-community-map",
+        "g6-ela-theme-text-evidence",
+        "g6-social-geography-early-humans"
+      ],
       unitId: lesson.id.replace(/^g3-/, ""),
       lessonFamily: lesson.subject === "science" ? "inquiry_investigation" : "reasoning_lab",
       essentialQuestion: lesson.subject === "science"

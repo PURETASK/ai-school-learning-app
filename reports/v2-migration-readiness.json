@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-07-19T12:10:16.866Z",
+  "generatedAt": "2026-07-19T14:05:13.014Z",
   "root": "C:\\Users\\onlyw\\Documents\\ai school",
   "status": "ready",
   "passed": true,
   "summary": {
-    "pilotLessons": 8,
-    "nativeV3Pilots": 8,
-    "validNativeV3Pilots": 8,
+    "pilotLessons": 10,
+    "nativeV3Pilots": 10,
+    "validNativeV3Pilots": 10,
     "adaptedPilots": 0,
-    "contentFiles": 24,
+    "contentFiles": 26,
     "seedLessonFiles": 16,
     "contentVersions": {
-      "3": 24
+      "3": 26
     }
   },
   "checks": [
@@ -26,7 +26,7 @@
       "id": "native-v3-exemplars",
       "label": "At least three native V3 exemplars validate",
       "passed": true,
-      "detail": "8/8 pilot records are native V3 and valid.",
+      "detail": "10/10 pilot records are native V3 and valid.",
       "blocking": true
     },
     {
@@ -54,14 +54,14 @@
       "id": "legacy-content-inventory",
       "label": "On-disk legacy content is accounted for",
       "passed": true,
-      "detail": "16 legacy content files and 16 seed lesson files were inventoried; 8 native V3 files are tracked separately.",
+      "detail": "16 legacy content files and 16 seed lesson files were inventoried; 10 native V3 files are tracked separately.",
       "blocking": true
     },
     {
       "id": "native-content-files",
       "label": "All on-disk content is native V3",
       "passed": true,
-      "detail": "24/24 on-disk content files currently declare schemaVersion 3.",
+      "detail": "26/26 on-disk content files currently declare schemaVersion 3.",
       "blocking": true
     },
     {
@@ -234,6 +234,58 @@
       "title": "Cell Structure and Function",
       "academy": "scholar",
       "gradeLevel": "9",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g6-ela-theme-text-evidence",
+      "title": "Theme Signal: Prove What the Story Means",
+      "academy": "bridge",
+      "gradeLevel": "6",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g6-social-geography-early-humans",
+      "title": "Map the Move: Why Communities Settle",
+      "academy": "bridge",
+      "gradeLevel": "6",
       "passed": true,
       "errors": [],
       "activePhases": [
