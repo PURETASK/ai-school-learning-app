@@ -5929,6 +5929,16 @@ body {
   background: linear-gradient(90deg, var(--green), var(--blue));
 }
 
+.teacher-learner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.teacher-learner-actions .small-button {
+  flex: 1 1 180px;
+}
+
 .misconception-board {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }

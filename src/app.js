@@ -7312,6 +7312,15 @@ function renderTeacherView() {
                 .map((learner) => {
             const academy = findAcademy(learner.academyId);
             const snapshot = learnerMasterySnapshot(learner);
+            const classroom = currentSession?.role === "teacher" ? getLearnerClassSession(state, learner.id) : null;
+            const retentionAction = snapshot.retentionStatus === "Transfer proven" ? "Assign transfer challenge" : "Assign reteach";
+            const retentionInterventionType = snapshot.retentionStatus === "Transfer proven" ? "challenge" : "reteach";
+            const retentionInterventionSummary =
+              retentionInterventionType === "challenge"
+                ? "Assign a transfer challenge: retention is proven, so extend the skill to a new context and ask the learner to explain the choice."
+                : snapshot.retentionStatus === "Recall captured"
+                  ? "Assign a retrieval check: recall is captured, but transfer evidence is still missing."
+                  : "Assign a targeted reteach: review the learner's stuck point, visual model, and exit ticket before the next attempt.";
             return `
               <article class="teacher-learner-card">
                 <div class="teacher-learner-topline">
@@ -7327,7 +7336,14 @@ function renderTeacherView() {
                 <div class="mini-progress" aria-label="${html(`${learner.name} mastery ${snapshot.mastery.score}%`)}">
                   <span style="width: ${Math.min(100, Number(snapshot.mastery.score || 0))}%"></span>
                 </div>
-                <button class="small-button" data-lesson="${html(snapshot.lesson?.id || currentLesson().id)}" data-view="lesson">Open assigned lesson</button>
+                <div class="teacher-learner-actions">
+                  <button class="small-button" data-lesson="${html(snapshot.lesson?.id || currentLesson().id)}" data-view="lesson">Open assigned lesson</button>
+                  ${
+                    classroom?.session?.id
+                      ? `<button class="small-button secondary" data-record-intervention="${html(classroom.session.id)}" data-learner-id="${html(learner.id)}" data-intervention-type="${html(retentionInterventionType)}" data-intervention-summary="${html(retentionInterventionSummary)}">${html(retentionAction)}</button>`
+                      : ""
+                  }
+                </div>
               </article>
             `;
                 })
@@ -9158,14 +9174,17 @@ app.addEventListener("click", (event) => {
     playUiSound("success");
     const classSessionId = recordInterventionButton.dataset.recordIntervention;
     const learnerId = recordInterventionButton.dataset.learnerId;
+    const interventionType = recordInterventionButton.dataset.interventionType || "reteach";
     const targetedReteach = recordInterventionButton.dataset.targetedReteach || "";
-    const interventionSummary = targetedReteach
-      ? `Assign targeted support: ${targetedReteach}`
-      : "Teacher will review the learner's stuck point, visual model, and exit ticket before assigning the next step.";
+    const interventionSummary =
+      recordInterventionButton.dataset.interventionSummary ||
+      (targetedReteach
+        ? `Assign targeted support: ${targetedReteach}`
+        : "Teacher will review the learner's stuck point, visual model, and exit ticket before assigning the next step.");
     const recorded = recordTeacherIntervention(state, {
       classSessionId,
       learnerId,
-      interventionType: "reteach",
+      interventionType,
       summary: interventionSummary
     });
     state = recorded.state;
@@ -9174,7 +9193,7 @@ app.addEventListener("click", (event) => {
     postTeacherIntervention({
       classSessionId,
       learnerId,
-      interventionType: "reteach",
+      interventionType,
       summary: interventionSummary
     })
       .then(async ({ state: persisted, result }) => {
