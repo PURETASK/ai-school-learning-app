@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-19T10:54:56.036Z",
+  "generatedAt": "2026-07-19T11:02:20.016Z",
   "root": "C:\\Users\\onlyw\\Documents\\ai school",
   "status": "migration-required",
   "passed": false,
@@ -11,8 +11,8 @@
     "contentFiles": 21,
     "seedLessonFiles": 16,
     "contentVersions": {
-      "3": 8,
-      "2.0": 13
+      "3": 10,
+      "2.0": 11
     }
   },
   "checks": [
@@ -62,7 +62,7 @@
       "id": "native-content-files",
       "label": "All on-disk content is native V3",
       "passed": false,
-      "detail": "8/21 on-disk content files currently declare schemaVersion 3.",
+      "detail": "10/21 on-disk content files currently declare schemaVersion 3.",
       "blocking": true
     },
     {

@@ -1,13 +1,15 @@
 {
-  "schemaVersion": "2.0",
+  "schemaVersion": "3",
   "id": "BA-G6-MATH-U1-L1",
   "title": "Understanding Ratios",
   "academy": "bridge",
   "academyName": "Bridge Academy",
+  "academy": "bridge",
   "gradeLevel": "6",
   "subject": "Math",
   "course": "Grade 6 Math",
   "unit": "Unit 1: Ratios and Rates",
+  "unitTitle": "Unit 1: Ratios, Rates, and Proportional Reasoning",
   "lessonType": [
     "concept lesson",
     "skill lesson",
@@ -556,6 +558,68 @@
     ],
     "extensionRule": "Unlock at 90+ mastery or teacher/parent assignment; still schedule Memory Vault review."
   },
+  "lessonFamily": "skill_workshop",
+  "secondaryLessonFamily": "reasoning_lab",
+  "activePhases": ["orient", "model", "deconstruct", "practice", "reason", "prove", "remember", "transfer", "adapt"],
+  "targetLearningStates": ["acquiring", "developing", "accurate", "secure"],
+  "successCriteria": [
+    "I can explain what both quantities in a ratio mean.",
+    "I can build equivalent ratios by scaling both quantities together.",
+    "I can use a table or double number line to find a unit rate.",
+    "I can defend which deal is better with evidence."
+  ],
+  "outcomes": {
+    "knowledge": ["A ratio compares two quantities in a chosen order.", "A unit rate compares a quantity to one unit."],
+    "capability": ["Build a ratio table and double number line.", "Compare real-world deals with unit rates."],
+    "reasoning": ["Detect additive scaling and total-price traps."],
+    "retention": ["Recall the equivalent-ratio rule after a delay."],
+    "transfer": ["Apply ratio reasoning to recipes, maps, budgets, or game currency."]
+  },
+  "phaseModules": [
+    {"phase": "orient", "title": "Enter the neon market", "studentAction": "Choose which deal looks better and write what evidence you need to prove it.", "successCheck": "I can name the comparison I need to make."},
+    {"phase": "model", "title": "See the relationship", "studentAction": "Watch a ratio table and double number line show the same relationship before using a shortcut.", "successCheck": "I can match a table row to a point on the number line."},
+    {"phase": "deconstruct", "title": "Label and scale", "studentAction": "Separate quantity labels, scale factor, equivalent ratio, and unit rate in a worked deal.", "successCheck": "I can explain what every number represents."},
+    {"phase": "practice", "title": "Build the better-deal board", "studentAction": "Complete two ratio tables, map them, and calculate both unit rates.", "successCheck": "My representations and unit-rate sentences agree."},
+    {"phase": "reason", "title": "Defend the fair comparison", "studentAction": "Use because and two labeled unit rates to defend which deal is better.", "successCheck": "I do not choose from total price alone."},
+    {"phase": "prove", "title": "Complete the checkpoint", "studentAction": "Answer the ratio and rate questions independently and explain one choice.", "successCheck": "I can show the reasoning without a final-answer hint."},
+    {"phase": "remember", "title": "Retrieve the comparison rule", "studentAction": "Return later and recall how equivalent ratios and unit rates make comparisons fair.", "successCheck": "I can retrieve the rule without the original diagram."},
+    {"phase": "transfer", "title": "Find a real better deal", "studentAction": "Apply the method to a new recipe, map, price, or classroom-budget problem.", "successCheck": "The method works when the story changes."},
+    {"phase": "adapt", "title": "Choose reteach or challenge", "studentAction": "Repair labels or scaling when evidence shows a gap, or design a misleading deal when secure.", "successCheck": "My next move matches the error evidence."}
+  ],
+  "proofTasks": [
+    {"proof": "recall", "prompt": "State the rule for creating an equivalent ratio.", "independentRequired": true},
+    {"proof": "explain", "prompt": "Explain why adding the same number can change a ratio relationship.", "independentRequired": true},
+    {"proof": "perform", "prompt": "Compare two deals by finding both unit rates.", "independentRequired": true},
+    {"proof": "retain", "prompt": "Solve a new unit-rate comparison after a delay.", "independentRequired": true},
+    {"proof": "transfer", "prompt": "Use ratio reasoning in a changed real-world context.", "independentRequired": true}
+  ],
+  "requiredMasteryProofs": ["recall", "explain", "perform", "retain", "transfer"],
+  "feedbackRules": [
+    {"diagnosisCode": "ratio-order-reversal", "result": "The learner changes the meaning by reversing quantity order.", "hint": "Label both quantities before writing the ratio.", "action": "Return to the first labeled row."},
+    {"diagnosisCode": "additive-scaling", "result": "The learner adds instead of using a shared scale factor.", "hint": "Ask what number multiplies both quantities.", "action": "Use the ratio-table ladder."},
+    {"diagnosisCode": "total-price-trap", "result": "The learner chooses by total price instead of cost per unit.", "hint": "Reduce both deals to one unit.", "action": "Retry with the unit-rate sentence frame."}
+  ],
+  "reteachPaths": [
+    {"id": "g6-ratios-label-reteach", "trigger": "The learner cannot explain what the two numbers mean.", "action": "Use labeled item cards, then build two equivalent table rows."},
+    {"id": "g6-ratios-rate-reteach", "trigger": "The learner compares totals instead of unit rates.", "action": "Find the cost for one item in each deal before choosing."}
+  ],
+  "prerequisiteRepairPaths": [{"id": "g6-ratios-number-repair", "trigger": "The learner cannot divide the quantities.", "action": "Repair whole-number and decimal division with a simpler price example."}],
+  "challengePaths": [{"id": "g6-ratios-trap-challenge", "trigger": "The learner compares unit rates independently.", "action": "Design a deal that looks cheaper but has a worse unit rate."}],
+  "visualSupports": [
+    {"placement": "lesson-hero", "title": "Ratio market board", "description": "Two snack deals are shown with labeled quantities before the comparison begins.", "altText": "Two labeled snack deals are ready to compare."},
+    {"placement": "teaching-diagram", "title": "Ratio table to double number line", "description": "Matching rows and points show a relationship scaling together.", "altText": "Arrows connect equivalent ratio rows to points on a double number line."},
+    {"placement": "interactive-widget", "title": "Unit-rate calculator model", "description": "The learner changes quantity and price and observes the cost for one unit.", "altText": "Labeled controls change price and quantity and show the resulting unit rate in text."},
+    {"placement": "misconception-repair", "title": "Add or scale?", "description": "A side-by-side comparison contrasts additive changes with shared multiplication.", "altText": "One panel shows an incorrect additive change and one shows correct shared scaling."},
+    {"placement": "memory-vault", "title": "Fair comparison cue", "description": "A compact cue says label, scale, reduce to one, compare, explain.", "altText": "A five-step retrieval cue lists label, scale, reduce, compare, explain."}
+  ],
+  "groupHomework": {
+    "title": "Better deal crew",
+    "roles": ["Deal scout", "Table builder", "Number-line mapper", "Skeptic", "Presenter"],
+    "sharedArtifact": "A one-page deal comparison with a ratio table, double number line, unit rate, and recommendation.",
+    "individualAccountability": "Each learner submits one unit-rate sentence and one comparison error they checked."
+  },
+  "contentStatus": "pilot_ready",
+  "version": "3.0.0-bridge-grade6-ratios",
   "mastery": {
     "bands": [
       {

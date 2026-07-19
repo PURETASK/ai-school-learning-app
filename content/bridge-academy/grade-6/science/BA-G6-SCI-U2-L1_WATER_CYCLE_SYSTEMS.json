@@ -1,13 +1,15 @@
 {
-  "schemaVersion": "2.0",
+  "schemaVersion": "3",
   "id": "BA-G6-SCI-U2-L1",
   "title": "Water Cycle Systems",
   "academy": "bridge",
   "academyName": "Bridge Academy",
+  "academy": "bridge",
   "gradeLevel": "6",
   "subject": "Science",
   "course": "Grade 6 Science",
   "unit": "Unit 2: Earth Systems and Water",
+  "unitTitle": "Unit 2: Earth Systems and Water",
   "lessonType": [
     "concept lesson",
     "skill lesson",
@@ -564,6 +566,68 @@
     ],
     "extensionRule": "Unlock at 90+ mastery or teacher/parent assignment; still schedule Memory Vault review."
   },
+  "lessonFamily": "inquiry_investigation",
+  "secondaryLessonFamily": "reasoning_lab",
+  "activePhases": ["orient", "model", "deconstruct", "practice", "reason", "prove", "remember", "transfer", "adapt"],
+  "targetLearningStates": ["acquiring", "developing", "accurate", "secure"],
+  "successCriteria": [
+    "I can trace water through more than one reservoir.",
+    "I can name the process and energy or condition that drives a change.",
+    "I can use a model to explain why water does not disappear.",
+    "I can predict how a changed condition could affect the system."
+  ],
+  "outcomes": {
+    "knowledge": ["Water changes form and moves among connected reservoirs.", "Energy and conditions drive processes such as evaporation and condensation."],
+    "capability": ["Build a labeled water-cycle model.", "Use evidence to explain a water movement."],
+    "reasoning": ["Distinguish naming a process from explaining its cause and effect."],
+    "retention": ["Retrieve the water-cycle process sequence and system idea after a delay."],
+    "transfer": ["Apply the model to drought, pavement, forests, or temperature changes."]
+  },
+  "phaseModules": [
+    {"phase": "orient", "title": "Follow one water droplet", "studentAction": "Predict where a droplet could travel and what might make it change form.", "successCheck": "I can state a testable starting idea."},
+    {"phase": "model", "title": "See matter and energy move", "studentAction": "Watch a labeled model connect reservoirs, processes, arrows, and the Sun's energy.", "successCheck": "I can point to where water is stored and how it moves."},
+    {"phase": "deconstruct", "title": "Separate stage names from explanations", "studentAction": "Sort observations, process names, energy sources, and cause-and-effect explanations.", "successCheck": "I can explain what causes one process instead of only naming it."},
+    {"phase": "practice", "title": "Build the system map", "studentAction": "Place reservoir and process cards in more than one valid droplet path and label the arrows.", "successCheck": "My model shows connected movement, not a fixed circle only."},
+    {"phase": "reason", "title": "Explain a changed condition", "studentAction": "Use evidence to predict how heat, wind, pavement, drought, or forest loss could change movement.", "successCheck": "I connect a condition to a process and a reservoir."},
+    {"phase": "prove", "title": "Complete the systems checkpoint", "studentAction": "Answer the water-cycle questions and explain one arrow in the model independently.", "successCheck": "I can support the explanation with the model."},
+    {"phase": "remember", "title": "Retrieve the droplet story", "studentAction": "Return later and reconstruct a droplet path without looking at the original diagram.", "successCheck": "I can retrieve process, reservoir, and driver relationships."},
+    {"phase": "transfer", "title": "Investigate a local change", "studentAction": "Apply the model to a changed surface, weather pattern, or plant environment.", "successCheck": "The system model works in a new context."},
+    {"phase": "adapt", "title": "Choose reteach or challenge", "studentAction": "Repair missing arrows or causes, or extend the model with a human impact and testable prediction.", "successCheck": "My next move matches the model evidence."}
+  ],
+  "proofTasks": [
+    {"proof": "recall", "prompt": "Define evaporation, condensation, precipitation, and reservoir.", "independentRequired": true},
+    {"proof": "explain", "prompt": "Explain why evaporated water has not disappeared.", "independentRequired": true},
+    {"proof": "perform", "prompt": "Build and explain a labeled water-cycle system model.", "independentRequired": true},
+    {"proof": "retain", "prompt": "Reconstruct a water-droplet path after a delay.", "independentRequired": true},
+    {"proof": "transfer", "prompt": "Predict how a changed condition affects local water movement.", "independentRequired": true}
+  ],
+  "requiredMasteryProofs": ["recall", "explain", "perform", "retain", "transfer"],
+  "feedbackRules": [
+    {"diagnosisCode": "water-disappears", "result": "The learner treats evaporation as water being destroyed.", "hint": "Ask where the particles go and what state they are in.", "action": "Return to the matter-conservation model."},
+    {"diagnosisCode": "stage-list-only", "result": "The learner names stages without explaining connected causes.", "hint": "Add the driver and reservoir to one arrow.", "action": "Use the process-cause-effect sentence frame."},
+    {"diagnosisCode": "fixed-path", "result": "The learner thinks every droplet follows one identical route.", "hint": "Compare two valid paths through different reservoirs.", "action": "Retry the multi-path system map."}
+  ],
+  "reteachPaths": [
+    {"id": "g6-water-matter-reteach", "trigger": "The learner says water disappears during evaporation.", "action": "Use a particle model to trace liquid water into vapor and back into droplets."},
+    {"id": "g6-water-cause-reteach", "trigger": "The learner lists process names without causes.", "action": "Complete one process-cause-reservoir sentence before rebuilding the full model."}
+  ],
+  "prerequisiteRepairPaths": [{"id": "g6-water-states-repair", "trigger": "The learner cannot distinguish solid, liquid, and gas.", "action": "Repair states of matter with a particle model before returning to the cycle."}],
+  "challengePaths": [{"id": "g6-water-impact-challenge", "trigger": "The learner explains connected water-cycle processes.", "action": "Predict how pavement, forest loss, drought, or a temperature shift changes runoff, evaporation, and storage."}],
+  "visualSupports": [
+    {"placement": "lesson-hero", "title": "Water system panorama", "description": "A labeled landscape shows ocean, cloud, river, soil, plant, ice, and groundwater reservoirs.", "altText": "A landscape labels several places where water is stored."},
+    {"placement": "teaching-diagram", "title": "Matter and energy loop", "description": "Arrows connect reservoirs to processes and label the energy or condition driving each change.", "altText": "Arrows show water moving among reservoirs with process and energy labels."},
+    {"placement": "interactive-widget", "title": "Droplet path builder", "description": "The learner chooses a reservoir and process to build more than one valid water path.", "altText": "A text-based path builder lets the learner choose reservoir and process cards."},
+    {"placement": "misconception-repair", "title": "Disappearing or changing form?", "description": "A comparison shows water destruction as an incorrect model and matter movement as the corrected model.", "altText": "Two panels contrast water disappearing with water changing state and location."},
+    {"placement": "memory-vault", "title": "Droplet retrieval cue", "description": "A compact cue asks where water is stored, what process moves it, and what drives the change.", "altText": "Three labeled questions cue retrieval of reservoir, process, and driver."}
+  ],
+  "groupHomework": {
+    "title": "Water systems field team",
+    "roles": ["Reservoir mapper", "Energy tracker", "Evidence recorder", "Skeptic", "Presenter"],
+    "sharedArtifact": "A labeled water-cycle model plus a claim about how one changed condition affects water movement.",
+    "individualAccountability": "Each learner submits one process explanation and one evidence-based prediction."
+  },
+  "contentStatus": "pilot_ready",
+  "version": "3.0.0-bridge-grade6-water-cycle",
   "mastery": {
     "bands": [
       {
