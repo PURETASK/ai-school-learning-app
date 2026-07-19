@@ -4145,6 +4145,10 @@ assert.ok(serverSource.includes("const refreshedSession = await getRequestSessio
 assert.ok(serverSource.includes("stateRepository.isSessionRevoked(refreshedSession)"), "provider refresh should enforce app-level session revocation");
 assert.ok(serverSource.includes("for (const tableId of normalizedRepositoryTableIds)"), "production startup should probe every normalized repository table");
 assert.ok(serverSource.includes("Missing or unreadable normalized tables"), "production startup should report normalized migration gaps");
+assert.ok(serverSource.includes("probeNormalizedRepository()"), "runtime health should use the complete normalized repository probe");
+assert.ok(serverSource.includes("checkedTableCount: normalizedRepositoryTableIds.length"), "runtime health should report normalized table coverage");
+assert.match(apiClientSource, /error\.payload = body/, "API errors should preserve structured diagnostics for operational surfaces");
+assert.match(appSource, /health\?\.probe\?\.missingTables/, "runtime UI should show missing normalized tables from health diagnostics");
 assert.ok(serverSource.includes("supabaseSignOut({ accessToken: provider.accessToken }).catch(() => {})"), "revoked refresh sessions should be terminated at the provider when possible");
 assert.ok(serverSource.includes("if (body.revokeAll) await supabaseSignOut({ accessToken });"), "current-session revocation must not call Supabase global logout");
 assert.ok(apiClientSource.includes("setRefreshToken(\"\");\n}"), "local sign-out should clear the refresh token as well as the access token");

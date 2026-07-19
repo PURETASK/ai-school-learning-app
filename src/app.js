@@ -1726,7 +1726,7 @@ async function refreshRuntimeHealth() {
     currentRuntimeHealth = await fetchRuntimeHealth();
     currentRuntimeHealthError = null;
   } catch (error) {
-    currentRuntimeHealth = { healthy: false };
+    currentRuntimeHealth = error?.payload || { healthy: false };
     currentRuntimeHealthError = error?.message || String(error);
   }
 }
@@ -5754,6 +5754,7 @@ function renderRuntimeConfigurationPanel() {
               ${renderMetric("Visual storage", runtime?.visualAssetStorage?.ready ? "ready" : "missing", runtime?.visualAssetStorage?.bucket || "no bucket")}
               ${renderMetric("Repository health", health?.healthy ? "healthy" : health ? "failed" : "not checked", health?.latencyMs ? `${health.latencyMs}ms live probe` : "Normalized table probe")}
             </div>
+            ${health?.probe?.missingTables?.length ? `<div class="gate-list failed"><strong>Missing normalized tables</strong>${health.probe.missingTables.map((table) => `<span>${html(table)}</span>`).join("")}</div>` : ""}
             ${currentRuntimeHealthError ? `<p class="callout failed">${html(currentRuntimeHealthError)}</p>` : ""}
             <div class="readiness-list">
               ${checks

@@ -793,13 +793,13 @@ async function handleApi(request, response, pathname) {
     }
     const startedAt = Date.now();
     try {
-      const rows = await stateRepository.readNormalizedTable("lessons", { limit: 1 });
-      sendJson(response, 200, {
-        healthy: true,
+      const probe = await probeNormalizedRepository();
+      sendJson(response, probe.healthy ? 200 : 503, {
+        healthy: probe.healthy,
         checkedAt: new Date().toISOString(),
         latencyMs: Date.now() - startedAt,
         repository: stateRepository.status(),
-        probe: { table: "lessons", rowsReturned: rows.length }
+        probe
       });
     } catch (error) {
       sendJson(response, 503, {
@@ -807,7 +807,7 @@ async function handleApi(request, response, pathname) {
         checkedAt: new Date().toISOString(),
         latencyMs: Date.now() - startedAt,
         repository: stateRepository.status(),
-        probe: { table: "lessons", rowsReturned: 0 },
+        probe: { healthy: false, checkedTableCount: 0, missingTables: [], rowsReturned: 0 },
         error: "Repository health probe failed. Check server logs and DATABASE_URL configuration."
       });
     }
@@ -2661,20 +2661,30 @@ async function assertProductionStartup() {
     throw new Error("Production startup blocked: K12_REPOSITORY_MODE=postgres or supabase-rest is required.");
   }
   try {
-    const missingTables = [];
-    for (const tableId of normalizedRepositoryTableIds) {
-      try {
-        await stateRepository.readNormalizedTable(tableId, { limit: 1 });
-      } catch (error) {
-        missingTables.push(`${tableId}: ${error.message || "probe failed"}`);
-      }
-    }
-    if (missingTables.length) {
-      throw new Error(`Missing or unreadable normalized tables: ${missingTables.join(" | ")}`);
-    }
+    const probe = await probeNormalizedRepository();
+    if (!probe.healthy) throw new Error(`Missing or unreadable normalized tables: ${probe.missingTables.join(" | ")}`);
   } catch (error) {
     throw new Error(`Production startup blocked: normalized repository probe failed. ${error.message || "Check DATABASE_URL credentials and migration state."}`);
   }
+}
+
+async function probeNormalizedRepository() {
+  const missingTables = [];
+  let rowsReturned = 0;
+  for (const tableId of normalizedRepositoryTableIds) {
+    try {
+      const rows = await stateRepository.readNormalizedTable(tableId, { limit: 1 });
+      rowsReturned += rows.length;
+    } catch (error) {
+      missingTables.push(`${tableId}: ${error.message || "probe failed"}`);
+    }
+  }
+  return {
+    healthy: missingTables.length === 0,
+    checkedTableCount: normalizedRepositoryTableIds.length,
+    missingTables,
+    rowsReturned
+  };
 }
 
 const server = createServer(async (request, response) => {

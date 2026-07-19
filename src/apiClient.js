@@ -109,7 +109,10 @@ async function requestJson(path, options = {}, allowRefresh = true) {
 
   if (!response.ok) {
     const body = await response.json().catch(() => ({}));
-    throw new Error(body.error || `Request failed with ${response.status}`);
+    const error = new Error(body.error || `Request failed with ${response.status}`);
+    error.status = response.status;
+    error.payload = body;
+    throw error;
   }
 
   return response.json();
