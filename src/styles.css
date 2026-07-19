@@ -4719,6 +4719,136 @@ body {
   gap: 8px;
 }
 
+.algorithm-trace-widget,
+.water-cycle-widget {
+  position: relative;
+  overflow: hidden;
+}
+
+.algorithm-trace-widget::before,
+.water-cycle-widget::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  pointer-events: none;
+  border-radius: 18px;
+  background:
+    linear-gradient(90deg, rgba(69, 243, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255, 79, 216, 0.09) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(135deg, transparent, #000 18%, #000 82%, transparent);
+}
+
+.algorithm-trace-widget .evidence-board-card {
+  min-height: 128px;
+  border-color: rgba(69, 243, 255, 0.26);
+  background: linear-gradient(155deg, rgba(69, 243, 255, 0.1), rgba(255, 255, 255, 0.06));
+}
+
+.algorithm-trace-widget .evidence-board-card:nth-of-type(2) {
+  border-color: rgba(156, 255, 79, 0.3);
+}
+
+.algorithm-trace-widget .evidence-board-card:nth-of-type(3) {
+  border-color: rgba(255, 204, 79, 0.34);
+}
+
+.algorithm-trace-widget .evidence-board-card:nth-of-type(4) {
+  border-color: rgba(255, 79, 216, 0.34);
+}
+
+.algorithm-trace-widget .evidence-board-arrow {
+  min-width: 24px;
+  text-shadow: 0 0 14px rgba(255, 79, 216, 0.8);
+}
+
+.cer-board-widget {
+  align-items: stretch;
+}
+
+.cer-board-widget article {
+  min-height: 132px;
+  border-color: rgba(255, 204, 79, 0.22);
+  background: linear-gradient(155deg, rgba(255, 204, 79, 0.12), rgba(255, 255, 255, 0.06));
+}
+
+.cer-board-widget article:nth-child(3),
+.cer-board-widget article.active {
+  border-color: rgba(255, 79, 216, 0.42);
+}
+
+.water-cycle-widget .weather-map-board {
+  min-height: 184px;
+  background:
+    radial-gradient(circle at 18% 24%, rgba(255, 204, 79, 0.3), transparent 22%),
+    radial-gradient(circle at 72% 28%, rgba(69, 243, 255, 0.22), transparent 24%),
+    linear-gradient(180deg, rgba(69, 243, 255, 0.14), rgba(35, 102, 209, 0.16));
+}
+
+.water-cycle-widget .weather-map-board b {
+  width: 88px;
+  height: 88px;
+  border-color: #ffcc4f;
+  color: #ffcc4f;
+  box-shadow: 0 0 24px rgba(255, 204, 79, 0.26);
+  font-size: 28px;
+}
+
+.water-cycle-widget .weather-map-board strong.active {
+  border-color: #9cff4f;
+}
+
+.water-cycle-widget .evidence-lane span,
+.settlement-evidence-widget .evidence-lane span {
+  background: rgba(69, 243, 255, 0.1);
+}
+
+.settlement-evidence-widget .settlement-map-card {
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.09), rgba(69, 243, 255, 0.06));
+}
+
+.settlement-evidence-widget .settlement-map-card:nth-child(1) {
+  border-color: rgba(69, 243, 255, 0.32);
+}
+
+.settlement-evidence-widget .settlement-map-card:nth-child(2) {
+  border-color: rgba(156, 255, 79, 0.32);
+}
+
+.settlement-evidence-widget .settlement-map-card:nth-child(3) {
+  border-color: rgba(255, 204, 79, 0.36);
+}
+
+.settlement-evidence-widget .settlement-map-card:nth-child(4) {
+  border-color: rgba(255, 79, 216, 0.32);
+}
+
+@media (max-width: 760px) {
+  .evidence-board-track {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .evidence-board-arrow {
+    transform: rotate(90deg);
+  }
+
+  .settlement-map-grid,
+  .expression-machine-widget,
+  .cer-board-widget {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ratio-table-widget,
+  .weather-evidence-widget,
+  .migration-map-widget,
+  .theme-evidence-widget,
+  .settlement-evidence-widget,
+  .water-cycle-widget,
+  .algorithm-trace-widget {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .interactive-option {
   min-height: 58px;
   border: 2px solid rgba(24, 34, 50, 0.14);

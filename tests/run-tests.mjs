@@ -4360,12 +4360,30 @@ assert.ok(stylesSource.includes(".expression-machine-widget"), "styles should in
 assert.ok(stylesSource.includes(".weather-evidence-widget"), "styles should include the Grade 6 weather evidence widget");
 assert.ok(stylesSource.includes(".cer-board-widget"), "styles should include the Grade 6 CER board widget");
 assert.ok(stylesSource.includes(".migration-map-widget"), "styles should include the Grade 6 migration map widget");
+for (const expected of [
+  ".algorithm-trace-widget",
+  ".algorithm-trace-widget::before",
+  ".water-cycle-widget",
+  ".water-cycle-widget::before",
+  "mask-image: linear-gradient",
+  "grid-template-columns: minmax(0, 1fr);"
+]) {
+  assert.ok(stylesSource.includes(expected), `styles should include native semantic visual polish for ${expected}`);
+}
 assert.ok(stylesSource.includes(".confusion-router-card"), "styles should include the mythology confusion router card");
 assert.ok(stylesSource.includes(".tutor-diagnosis-panel"), "styles should include the tutor stuck-point diagnosis panel");
 assert.ok(stylesSource.includes(".tutor-hint-path"), "styles should include the tutor hint path");
 assert.ok(stylesSource.includes(".tutor-evidence-strip"), "styles should include the tutor XP evidence strip");
 assert.match(stylesSource, /\.batch-result[\s\S]*var\(--contrast-card\)/, "shared operational cards should use the neon contrast card background");
 assert.match(stylesSource, /\.batch-result\.passed[\s\S]*var\(--neon-lime\)/, "passed operational cards should use the neon success accent");
+for (const expected of [
+  "Trace one input in order",
+  "Reasoning is the bridge",
+  "Track the water as matter",
+  "Use geography as evidence"
+]) {
+  assert.ok(appSource.includes(expected), `app should include native semantic practice guidance for ${expected}`);
+}
 assert.match(appSource, /announceLearningMoment/, "student learning actions should expose a visible evidence celebration");
 assert.match(stylesSource, /\.learning-moment/, "student learning celebrations should have dedicated responsive styling");
 assert.ok(stylesSource.includes(".tutor-retry-panel"), "styles should include the tutor retry panel");
