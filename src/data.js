@@ -1881,7 +1881,8 @@ const basePilotLessons = [
     visual: {
       type: "weather-map",
       title: "Weather systems image",
-      caption: "A map-style weather visual with pressure zones, wind arrows, clouds, and temperature bands."
+      caption: "A map-style weather visual with pressure zones, wind arrows, clouds, and temperature bands.",
+      altText: "A weather map labels high and low pressure, wind arrows, clouds, and temperature bands used as evidence for a short-term forecast."
     },
     teachingSupport: {
       summary: "Weather predictions are evidence claims built from patterns in pressure, temperature, wind, and clouds.",

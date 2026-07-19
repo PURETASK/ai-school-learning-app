@@ -2043,7 +2043,7 @@ function renderLessonVisual(lesson) {
 
   return `
     <figure class="visual-prompt">
-      ${svgByType[lesson.visual.type] || svgByType["number-line"]}
+      ${svgByType[{ "algorithm-trace": "ai-system-map", "claim-evidence-reasoning": "story-map", "water-cycle-system": "ecosystem-model", "geography-choice-map": "community-map" }[lesson.visual.type] || lesson.visual.type] || svgByType["number-line"]}
       <figcaption>
         <strong>${html(lesson.visual.title)}</strong>
         <span>${html(lesson.visual.caption)}</span>
@@ -4985,7 +4985,8 @@ function getLessonInteractiveConfig(lesson) {
       retry: "Think about which structure controls information, not energy or boundaries."
     }
   };
-  return byVisualType[lesson.visual?.type] || byVisualType["number-line"];
+  const configType = { "algorithm-trace": "ai-system-map", "claim-evidence-reasoning": "story-map", "water-cycle-system": "ecosystem-model", "geography-choice-map": "community-map" }[lesson.visual?.type] || lesson.visual?.type;
+  return byVisualType[configType] || byVisualType["number-line"];
 }
 
 function renderInteractiveMiniModel(lesson, config, response) {

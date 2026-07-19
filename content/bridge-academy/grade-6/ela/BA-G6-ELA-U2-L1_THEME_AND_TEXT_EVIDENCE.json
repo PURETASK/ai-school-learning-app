@@ -46,6 +46,7 @@
     "retention": ["Retrieve the topic-versus-theme distinction after a delay."],
     "transfer": ["Use the same evidence test on an unfamiliar short narrative or film scene."]
   },
+  "visual": {"type":"claim-evidence-reasoning","title":"Theme evidence board","caption":"Claim -> evidence -> reasoning -> revise","altText":"A theme claim connects to a specific story detail, then to a because sentence that explains the connection and can be revised when evidence does not fit."},
   "visualSupports": [
     {"placement": "lesson-hero", "title": "The theme evidence board", "description": "A detective board connects repeated character choices to a message about people.", "altText": "Three story details connect by arrows to one theme message."},
     {"placement": "teaching-diagram", "title": "Claim to evidence to reasoning", "description": "A three-part chain shows that a detail is not proof until the reader explains the connection.", "altText": "A claim box points to an evidence box, which points to a reasoning box."},

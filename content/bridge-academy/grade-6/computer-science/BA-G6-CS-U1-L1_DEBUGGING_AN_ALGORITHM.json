@@ -46,6 +46,7 @@
     "retention": ["Retrieve the goal-trace-test-fix-retest loop after a delay."],
     "transfer": ["Debug a new algorithm, block-based program, or spreadsheet rule."]
   },
+  "visual": {"type":"algorithm-trace","title":"Algorithm trace board","caption":"Goal -> trace -> test -> fix -> retest","altText":"A debugging loop shows an input moving through numbered steps, stopping at the first mismatch, then retesting after one focused fix."},
   "visualSupports": [
     {"placement": "lesson-hero", "title": "The algorithm trace board", "description": "A row of numbered steps shows the input moving through an algorithm until the first mismatch is highlighted.", "altText": "Numbered algorithm steps connect input to output with the first incorrect step marked."},
     {"placement": "teaching-diagram", "title": "Goal, trace, test, fix, retest", "description": "A loop shows that a fix is only trusted after a new test confirms the intended output.", "altText": "A five-part loop connects goal, trace, test, fix, and retest."},

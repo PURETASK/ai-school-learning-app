@@ -613,6 +613,7 @@
   ],
   "prerequisiteRepairPaths": [{"id": "g6-water-states-repair", "trigger": "The learner cannot distinguish solid, liquid, and gas.", "action": "Repair states of matter with a particle model before returning to the cycle."}],
   "challengePaths": [{"id": "g6-water-impact-challenge", "trigger": "The learner explains connected water-cycle processes.", "action": "Predict how pavement, forest loss, drought, or a temperature shift changes runoff, evaporation, and storage."}],
+  "visual": {"type":"water-cycle-system","title":"Water cycle systems model","caption":"Energy drives changes while water moves among connected reservoirs","altText":"A systems diagram shows water moving among ocean, atmosphere, land, plants, and groundwater through evaporation, condensation, precipitation, runoff, infiltration, and transpiration."},
   "visualSupports": [
     {"placement": "lesson-hero", "title": "Water system panorama", "description": "A labeled landscape shows ocean, cloud, river, soil, plant, ice, and groundwater reservoirs.", "altText": "A landscape labels several places where water is stored."},
     {"placement": "teaching-diagram", "title": "Matter and energy loop", "description": "Arrows connect reservoirs to processes and label the energy or condition driving each change.", "altText": "Arrows show water moving among reservoirs with process and energy labels."},

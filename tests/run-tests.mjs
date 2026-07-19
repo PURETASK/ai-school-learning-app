@@ -493,6 +493,10 @@ const nativeBridgeRatiosLesson = pilotLessons.find((item) => item.id === "g6-mat
 const nativeBridgeElaLesson = pilotLessons.find((item) => item.id === "g6-ela-theme-text-evidence");
 const nativeBridgeSocialLesson = pilotLessons.find((item) => item.id === "g6-social-geography-early-humans");
 const nativeLearningAiLesson = pilotLessons.find((item) => item.id === "g6-learning-ai-build-test");
+const nativeVisualLessons = [nativeBridgeWeatherLesson, nativeBridgeRatiosLesson, nativeBridgeElaLesson, nativeBridgeSocialLesson].filter(Boolean);
+assert.equal(nativeVisualLessons.length, 4, "native Grade 6 visual exemplars should be present");
+assert.ok(nativeVisualLessons.every((lesson) => lesson.visual?.type), "native Grade 6 model lessons should declare a semantic visual type");
+assert.ok(nativeVisualLessons.every((lesson) => lesson.visual?.altText), "native Grade 6 model visuals should include accessible alt text");
 assert.equal(nativeBridgeRatiosLesson.schemaVersion, "3", "Grade 6 ratios exemplar should be a native V3 lesson");
 assert.equal(nativeBridgeRatiosLesson.lessonFamily, "skill_workshop", "Grade 6 ratios exemplar should use the skill workshop lesson family");
 assert.deepEqual(
@@ -2211,6 +2215,13 @@ assert.equal(restRepository.status().mode, "supabase-rest", "Supabase REST repos
 assert.equal(restRepository.status().durable, true, "Supabase REST repository should be marked durable");
 assert.deepEqual(await restRepository.readNormalizedTable("lessons", { limit: 1 }), [], "Supabase REST repository should read normalized tables through PostgREST");
 assert.ok(restRepositoryCalls[0].url.includes("/rest/v1/lessons"), "Supabase REST repository should target the normalized table endpoint");
+const restCallsBeforeFocusedWrite = restRepositoryCalls.length;
+await restRepository.writeLearningEvidence(state);
+const focusedRestWriteCalls = restRepositoryCalls.slice(restCallsBeforeFocusedWrite);
+assert.ok(focusedRestWriteCalls.some((call) => call.url.includes("/rest/v1/mastery_records")), "focused learning writes should upsert normalized evidence");
+assert.equal(focusedRestWriteCalls.some((call) => call.url.includes("app_state_snapshots")), false, "focused Supabase REST writes should not rewrite the broad snapshot");
+await restRepository.writeState(state);
+assert.equal(restRepositoryCalls.some((call) => call.url.includes("app_state_snapshots") && call.options?.method === "POST"), true, "explicit legacy state writes should retain the admin backup snapshot");
 const selectDraftSql = createNormalizedTableSelectSql("content_drafts", { limit: 7 });
 assert.match(selectDraftSql, /from public\."content_drafts"/, "normalized select SQL should target the requested table");
 assert.match(selectDraftSql, /limit 7/, "normalized select SQL should include a bounded limit");

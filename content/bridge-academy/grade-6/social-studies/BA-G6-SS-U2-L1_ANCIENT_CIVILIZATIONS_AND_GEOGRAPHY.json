@@ -46,6 +46,7 @@
     "retention": ["Retrieve the fact-versus-inference distinction and opportunity-constraint pair after a delay."],
     "transfer": ["Apply the map-evidence method to a different ancient or modern settlement."]
   },
+  "visual": {"type":"geography-choice-map","title":"Civilization map lab","caption":"Physical feature -> opportunity or constraint -> community choice","altText":"A map evidence model connects a river valley, landform, climate, or resource to an opportunity or constraint and then to a settlement choice."},
   "visualSupports": [
     {"placement": "lesson-hero", "title": "The civilization map lab", "description": "A layered map shows a river, floodplain, mountains, desert, and settlement sites.", "altText": "A map with a river valley, mountains, desert, resources, and a settlement marked."},
     {"placement": "teaching-diagram", "title": "Feature to choice chain", "description": "An arrow diagram connects a physical feature to an opportunity or constraint and then to a human choice.", "altText": "Physical feature leads to opportunity or constraint, which leads to a community choice."},

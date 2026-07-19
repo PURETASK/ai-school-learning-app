@@ -2766,7 +2766,7 @@ export class PostgresStateRepository {
     });
   }
 
-  async writeProjectedState(state, tableIds, { splitTables = false, syncTableIds = [] } = {}) {
+  async writeProjectedState(state, tableIds, { splitTables = false, syncTableIds = [], writeSnapshot = false } = {}) {
     const nextState = {
       ...mergeInitialState(state),
       persistence: {
@@ -2803,12 +2803,13 @@ export class PostgresStateRepository {
         await runPsql({ sql: cleanup.sql, env: this.env });
       }
     }
+    if (!writeSnapshot) return nextState;
     const raw = await runPsql({ sql, env: this.env });
     return mergeInitialState(raw ? JSON.parse(raw) : nextState);
   }
 
   async writeState(state) {
-    return this.writeProjectedState(state, normalizedRepositoryTableIds);
+    return this.writeProjectedState(state, normalizedRepositoryTableIds, { writeSnapshot: true });
   }
 
   async writeLearningEvidence(state) {
@@ -3003,7 +3004,7 @@ export class SupabaseRestStateRepository extends PostgresStateRepository {
     });
   }
 
-  async writeProjectedState(state, tableIds, { syncTableIds = [] } = {}) {
+  async writeProjectedState(state, tableIds, { syncTableIds = [], writeSnapshot = false } = {}) {
     const nextState = {
       ...mergeInitialState(state),
       persistence: {
@@ -3021,11 +3022,13 @@ export class SupabaseRestStateRepository extends PostgresStateRepository {
     for (const tableId of syncTableIds) {
       await this.deleteRowsNotIn(tableId, projection.tables[tableId] || []);
     }
-    await this.request("app_state_snapshots?on_conflict=id", {
-      method: "POST",
-      headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
-      body: [{ id: "current", payload: nextState, created_at: new Date().toISOString(), updated_at: new Date().toISOString() }]
-    });
+    if (writeSnapshot) {
+      await this.request("app_state_snapshots?on_conflict=id", {
+        method: "POST",
+        headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
+        body: [{ id: "current", payload: nextState, created_at: new Date().toISOString(), updated_at: new Date().toISOString() }]
+      });
+    }
     return nextState;
   }
 
