@@ -8488,6 +8488,46 @@ h4,
     linear-gradient(90deg, rgba(37, 217, 255, 0.08), rgba(255, 63, 180, 0.07));
 }
 
+/* Shared operational cards must keep readable contrast in the neon shell. */
+.batch-result,
+.import-job,
+.build-plan-grid article,
+.gate-list,
+.readiness-list {
+  color: var(--contrast-text);
+  background: var(--contrast-card);
+  border-color: var(--contrast-border);
+}
+
+.batch-result strong,
+.batch-result span,
+.batch-result small,
+.batch-result li,
+.import-job strong,
+.import-job span,
+.import-job small,
+.build-plan-grid article h3,
+.build-plan-grid article p,
+.build-plan-grid article small,
+.readiness-row strong,
+.readiness-row small {
+  color: var(--contrast-text);
+}
+
+.batch-result.passed,
+.import-job.imported {
+  border-left-color: var(--neon-lime);
+}
+
+.batch-result.failed,
+.import-job.rejected {
+  border-left-color: var(--neon-coral);
+}
+
+.gate-list span {
+  color: var(--contrast-muted);
+}
+
 .panel p,
 .panel li,
 .panel label,

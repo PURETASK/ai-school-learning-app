@@ -4230,6 +4230,8 @@ assert.ok(stylesSource.includes(".confusion-router-card"), "styles should includ
 assert.ok(stylesSource.includes(".tutor-diagnosis-panel"), "styles should include the tutor stuck-point diagnosis panel");
 assert.ok(stylesSource.includes(".tutor-hint-path"), "styles should include the tutor hint path");
 assert.ok(stylesSource.includes(".tutor-evidence-strip"), "styles should include the tutor XP evidence strip");
+assert.match(stylesSource, /\.batch-result[\s\S]*var\(--contrast-card\)/, "shared operational cards should use the neon contrast card background");
+assert.match(stylesSource, /\.batch-result\.passed[\s\S]*var\(--neon-lime\)/, "passed operational cards should use the neon success accent");
 assert.ok(stylesSource.includes(".tutor-retry-panel"), "styles should include the tutor retry panel");
 assert.ok(stylesSource.includes(".retry-after-hint-field"), "styles should include the tutor retry textarea");
 assert.ok(stylesSource.includes(".adaptive-reteach-card"), "styles should include the adaptive reteach card");
