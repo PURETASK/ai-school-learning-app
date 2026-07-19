@@ -946,6 +946,38 @@ function getRepositoryMasteryAggregate(learnerIds = []) {
   };
 }
 
+function getRepositoryTutorAggregate(learnerIds = []) {
+  const entries = learnerIds.map((learnerId) => getRepositoryTutorEventSummary(learnerId));
+  if (!learnerIds.length || entries.some((entry) => entry.source !== "learner-scoped")) {
+    return { source: "unavailable", available: false, total: 0, feedback: 0, helped: 0, truthReviewed: 0, truthAverage: 0, needsTruthReview: 0 };
+  }
+  const totals = entries.reduce(
+    (summary, entry) => {
+      const data = entry.summary || {};
+      const reviewed = Number(data.truthReviewed || 0);
+      return {
+        total: summary.total + Number(data.total || 0),
+        feedback: summary.feedback + Number(data.feedback || 0),
+        helped: summary.helped + Number(data.helped || 0),
+        truthReviewed: summary.truthReviewed + reviewed,
+        truthScoreTotal: summary.truthScoreTotal + Number(data.truthAverage || 0) * reviewed,
+        needsTruthReview: summary.needsTruthReview + Number(data.needsTruthReview || 0)
+      };
+    },
+    { total: 0, feedback: 0, helped: 0, truthReviewed: 0, truthScoreTotal: 0, needsTruthReview: 0 }
+  );
+  return {
+    source: "learner-scoped repository",
+    available: true,
+    total: totals.total,
+    feedback: totals.feedback,
+    helped: totals.helped,
+    truthReviewed: totals.truthReviewed,
+    truthAverage: totals.truthReviewed ? Math.round((totals.truthScoreTotal / totals.truthReviewed) * 10) / 10 : 0,
+    needsTruthReview: totals.needsTruthReview
+  };
+}
+
 function applyRepositoryLessonMastery(lesson, learnerId = "") {
   const catalogLesson = getRepositoryCatalogLesson(learnerId, lesson?.id || "");
   const catalogStatus = getRepositoryLearningCatalogStatus({ learnerId });
@@ -6300,6 +6332,7 @@ function renderParentView() {
   const tutorQuality = getTutorQualityDashboard(state);
   const learnerInsights = getHouseholdLearnerInsights(state, scope);
   const repositoryMastery = getRepositoryMasteryAggregate(learnerIds);
+  const repositoryTutor = getRepositoryTutorAggregate(learnerIds);
   const visibleSummary = repositoryMastery.available
     ? { ...summary, averageMastery: repositoryMastery.averageMastery, mastered: repositoryMastery.mastered, needsReview: repositoryMastery.needsReview }
     : summary;
@@ -6401,8 +6434,8 @@ function renderParentView() {
         ${renderMetric("Recall due", recallDueCount, repositoryRetentionRows.length ? `${retentionNeedsReteach} reteach` : "Retention schedule")}
         ${renderMetric("Joy", telemetry.averageJoy, "Affect check-ins")}
         ${renderMetric("Frustration", telemetry.averageFrustration, "Lower is better")}
-        ${renderMetric("Tutor truth", tutorQuality.truthReviewed ? `${tutorQuality.truthAverage}/5` : "n/a", "Fact-check score")}
-        ${renderMetric("AI review", tutorQuality.needsTruthReview, "Needs staff check")}
+        ${renderMetric("Tutor truth", repositoryTutor.available ? `${repositoryTutor.truthAverage}/5` : tutorQuality.truthReviewed ? `${tutorQuality.truthAverage}/5` : "n/a", repositoryTutor.available ? "Scoped tutor events" : "Fact-check score")}
+        ${renderMetric("AI review", repositoryTutor.available ? repositoryTutor.needsTruthReview : tutorQuality.needsTruthReview, repositoryTutor.available ? "Scoped tutor events" : "Needs staff check")}
       </div>
     </section>
 
