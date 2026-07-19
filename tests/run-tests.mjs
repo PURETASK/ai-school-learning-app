@@ -3174,6 +3174,27 @@ const blockedGiftCardPlan = createGiftCardFulfillmentPlan({
   recipientName: "Local Parent"
 });
 assert.equal(blockedGiftCardPlan.accepted, false, "gift-card fulfillment should block without explicit configuration");
+const budgetBlockedGiftCardPlan = createGiftCardFulfillmentPlan({
+  request: approvedReward.result.request,
+  state: {
+    ...approvedReward.state,
+    rewardApprovals: [
+      ...(approvedReward.state.rewardApprovals || []),
+      { id: "prior-gift-card", fulfillment: { status: "fulfilled", amountCents: 600, requestedAt: new Date().toISOString() } }
+    ]
+  },
+  env: {
+    GIFT_CARD_FULFILLMENT_ENABLED: "true",
+    GIFT_CARD_PROVIDER: "manual",
+    GIFT_CARD_DEFAULT_CENTS: "500",
+    GIFT_CARD_MAX_CENTS: "1000",
+    GIFT_CARD_DAILY_BUDGET_CENTS: "1000"
+  },
+  recipientEmail: "parent@example.test",
+  recipientName: "Local Parent"
+});
+assert.equal(budgetBlockedGiftCardPlan.accepted, false, "gift-card fulfillment should block when cumulative daily budget would be exceeded");
+assert.match(budgetBlockedGiftCardPlan.blockers.join(" "), /daily gift-card budget/i, "budget blocker should explain the cumulative spend limit");
 const manualGiftCard = await fulfillGiftCardReward({
   request: approvedReward.result.request,
   state: approvedReward.state,

@@ -22,6 +22,7 @@ $env:GIFT_CARD_PROVIDER="manual"
 $env:GIFT_CARD_DEFAULT_CENTS="1000"
 $env:GIFT_CARD_MAX_CENTS="1000"
 $env:GIFT_CARD_DAILY_LIMIT="5"
+$env:GIFT_CARD_DAILY_BUDGET_CENTS="5000"
 $env:GIFT_CARD_CURRENCY="USD"
 ```
 
@@ -79,5 +80,6 @@ Successful fulfillment changes the reward request to `redeemed`, adds a `gift_ca
 - Fulfillment is parent/admin only.
 - Gift-card amounts are capped by `GIFT_CARD_MAX_CENTS`.
 - Daily sends are capped by `GIFT_CARD_DAILY_LIMIT`.
+- Cumulative daily spend is capped by `GIFT_CARD_DAILY_BUDGET_CENTS`.
 - Live provider mode requires an explicit `GIFT_CARD_ALLOW_LIVE_PROVIDER=true`.
 - Provider API keys, funding source ids, and product ids stay server-only.

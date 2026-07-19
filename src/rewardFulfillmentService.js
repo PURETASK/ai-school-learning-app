@@ -21,6 +21,15 @@ function requestedToday(fulfillment = {}) {
   return new Date(parsed).toISOString().slice(0, 10) === todayKey();
 }
 
+function fulfilledTodayCents(approvals = []) {
+  return approvals.reduce((total, approval) => {
+    const fulfillment = approval.fulfillment || {};
+    const status = String(fulfillment.status || "").toLowerCase();
+    if (!requestedToday(fulfillment) || ["failed", "rejected"].includes(status)) return total;
+    return total + Math.max(0, Math.round(Number(fulfillment.amountCents || 0)));
+  }, 0);
+}
+
 export function isGiftCardRewardRequest(request = {}) {
   const text = `${request.rewardTitle || ""} ${request.rewardBenefit || ""}`.toLowerCase();
   return text.includes("gift card") || /\$\s*\d+/.test(text);
@@ -47,6 +56,10 @@ export function getGiftCardFulfillmentConfig(env = {}) {
     dailyLimit: Math.max(0, Math.floor(numberFromEnv(env.GIFT_CARD_DAILY_LIMIT, 5))),
     maxAmountCents: Math.max(100, Math.floor(numberFromEnv(env.GIFT_CARD_MAX_CENTS, 1000))),
     defaultAmountCents: Math.max(100, Math.floor(numberFromEnv(env.GIFT_CARD_DEFAULT_CENTS, 1000))),
+    dailyBudgetCents: Math.max(
+      100,
+      Math.floor(numberFromEnv(env.GIFT_CARD_DAILY_BUDGET_CENTS, 5 * Math.max(100, Math.floor(numberFromEnv(env.GIFT_CARD_MAX_CENTS, 1000)))))
+    ),
     tremendous: {
       baseUrl: tremendousBaseUrl,
       apiKeyConfigured: Boolean(env.TREMENDOUS_API_KEY),
@@ -83,6 +96,7 @@ export function getGiftCardFulfillmentReadiness(env = {}) {
     provider: config.provider,
     mode: config.mode,
     dailyLimit: config.dailyLimit,
+    dailyBudgetCents: config.dailyBudgetCents,
     maxAmountCents: config.maxAmountCents,
     defaultAmountCents: config.defaultAmountCents,
     currencyCode: config.currencyCode,
@@ -98,6 +112,7 @@ export function createGiftCardFulfillmentPlan({ request = {}, state = {}, env = 
   const config = getGiftCardFulfillmentConfig(env);
   const amountCents = getGiftCardAmountCents(request, env);
   const fulfilledToday = (state.rewardApprovals || []).filter((approval) => requestedToday(approval.fulfillment)).length;
+  const fulfilledTodayCentsTotal = fulfilledTodayCents(state.rewardApprovals || []);
   const blockers = [];
 
   if (!request.id) blockers.push("Reward request is required.");
@@ -107,6 +122,9 @@ export function createGiftCardFulfillmentPlan({ request = {}, state = {}, env = 
   if (!config.enabled) blockers.push("Gift-card fulfillment is disabled.");
   if (fulfilledToday >= config.dailyLimit) blockers.push(`Daily gift-card fulfillment limit reached: ${fulfilledToday}/${config.dailyLimit}.`);
   if (amountCents > config.maxAmountCents) blockers.push(`Gift-card amount ${amountCents} cents exceeds ${config.maxAmountCents} cent limit.`);
+  if (fulfilledTodayCentsTotal + amountCents > config.dailyBudgetCents) {
+    blockers.push(`Daily gift-card budget would be exceeded: ${fulfilledTodayCentsTotal + amountCents}/${config.dailyBudgetCents} cents after this request.`);
+  }
   if (!String(recipientEmail || "").includes("@")) blockers.push("Parent recipient email is required.");
   if (!String(recipientName || "").trim()) blockers.push("Recipient name is required.");
 
@@ -123,6 +141,8 @@ export function createGiftCardFulfillmentPlan({ request = {}, state = {}, env = 
     recipientEmail: String(recipientEmail || "").trim(),
     recipientName: String(recipientName || "").trim(),
     fulfilledToday,
+    fulfilledTodayCents: fulfilledTodayCentsTotal,
+    dailyBudgetCents: config.dailyBudgetCents,
     config,
     readiness
   };
