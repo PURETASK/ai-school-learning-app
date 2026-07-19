@@ -113,6 +113,7 @@ import {
   updateGroupMission,
   getContentAuthoringSummary,
   getContentBatchReviewState,
+  getContentPipelineWorkflowAudit,
   getContentDraftCompletenessReview,
   getContentDraftTruthReview,
   getAppViewContractSummary,
@@ -2711,6 +2712,7 @@ function getContentBatchPublicationPanelStates() {
     const publications = (state.contentBatchPublications || []).filter((publication) => publication.sourceBatchId === sourceBatchId);
     const latestPublication = review.publication || publications[0] || null;
     const publishedLessons = (state.publishedLessons || []).filter((lesson) => lesson.sourceBatchId === sourceBatchId);
+    const workflowAudit = getContentPipelineWorkflowAudit(state, sourceBatchId);
     const approved = ["approved", "published", "partial"].includes(review.status);
     const published = review.status === "published" || (publishedLessons.length === review.totalLessons && review.totalLessons > 0);
     return {
@@ -2719,6 +2721,7 @@ function getContentBatchPublicationPanelStates() {
       publications,
       latestPublication,
       publishedLessons,
+      workflowAudit,
       approved,
       published,
       reviewReady: review.totalLessons > 0,
@@ -2778,6 +2781,11 @@ function renderBridgeBatchPublicationPanel() {
         ${renderMetric("Latest", batch.latestPublication?.status || "None", "Batch result")}
       </div>
       <p class="callout">This action does not bypass review. It sends every manager-approved lesson in this batch through the individual content publication gate, including truth approval, evidence checks, completeness, and visual rules.</p>
+      <div class="batch-workflow-checks" aria-label="Content workflow verification">
+        <div><span>Quality</span><strong class="${batch.passed ? "passed" : "failed"}">${batch.passed ? "Pass" : "Blocked"}</strong></div>
+        <div><span>Manager approval</span><strong class="${batch.workflowAudit.checks.managerApproval ? "passed" : "failed"}">${batch.workflowAudit.checks.managerApproval ? "Verified" : "Pending"}</strong></div>
+        <div><span>Publication loop</span><strong class="${batch.workflowAudit.passed ? "passed" : "failed"}">${batch.workflowAudit.passed ? "Verified" : "Pending"}</strong></div>
+      </div>
       ${renderBatchPublicationResult(batch.sourceBatchId)}
       ${
         batch.latestPublication
