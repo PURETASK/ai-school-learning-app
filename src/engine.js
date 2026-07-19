@@ -5188,6 +5188,7 @@ function xpForEvent(state = {}, event = {}) {
   if (event.type === "phase_completed") return 8;
   if (event.type === "group_artifact_submitted") return 45;
   if (event.type === "teacher_intervention_recorded") return 10;
+  if (event.type === "adventure_mode_selected") return 0;
   if (event.type === "quiz_completed") {
     const score = Number(event.value?.score || 0);
     return event.value?.passed ? baseXp + Math.round(score * 0.2) : Math.max(25, Math.round(baseXp * 0.25));
@@ -5755,8 +5756,75 @@ export function getStudentEngagementProfile(state = {}, learnerId = "", now = ne
   };
 }
 
+/**
+ * Gives a learner meaningful choice in how to enter the same learning target.
+ * Choice changes the first move, not the mastery standard. Selecting a mode is
+ * logged for personalization, while XP still requires learning evidence.
+ */
+export function getLearningAdventure(state = {}, learnerId = "", now = new Date()) {
+  const learner = getLearnerById(state, learnerId);
+  if (!learner) return { learnerId: "", dateKey: engagementDateKey(now), selectedModeId: "", modes: [] };
+  const dateKey = engagementDateKey(now);
+  const events = (state.learningEvents || []).filter((event) => event.learnerId === learner.id);
+  const todaySelection = events
+    .filter((event) => event.type === "adventure_mode_selected" && engagementDateKey(engagementEventDate(event)) === dateKey)
+    .sort((left, right) => Date.parse(engagementEventDate(right)) - Date.parse(engagementEventDate(left)))[0];
+  const nextLesson = lessonsForLearner(state, learner).find((lesson) => Number(state.mastery?.[lesson.id]?.score || 0) < Number(lesson.masteryThreshold || 80)) || lessonsForLearner(state, learner)[0] || null;
+  const subject = subjectLabels[nextLesson?.subject] || "today's subject";
+  const modes = [
+    {
+      id: "builder",
+      icon: "BUILD",
+      title: "Build it",
+      prompt: `Use a model, widget, or diagram to make ${subject} visible before you solve it.`,
+      evidence: "Interactive attempt or labeled model",
+      action: "lesson",
+      actionLabel: "Open the model",
+      color: "cyan"
+    },
+    {
+      id: "detective",
+      icon: "SCAN",
+      title: "Investigate it",
+      prompt: "Look for the clue, pattern, or misconception that would explain what is happening.",
+      evidence: "Reasoning note or misconception repair",
+      action: "lesson",
+      actionLabel: "Find the clue",
+      color: "pink"
+    },
+    {
+      id: "creator",
+      icon: "MAKE",
+      title: "Create it",
+      prompt: "Draw, design, or explain your own example so the idea belongs to you.",
+      evidence: "Original example, explanation, or transfer proof",
+      action: "lesson",
+      actionLabel: "Make an example",
+      color: "lime"
+    },
+    {
+      id: "coach",
+      icon: "COACH",
+      title: "Coach it",
+      prompt: "Tell the tutor what you would teach a friend, then ask for one strategic hint.",
+      evidence: "Plain-text explanation and tutor retry",
+      action: "ai",
+      actionLabel: "Coach with tutor",
+      color: "gold"
+    }
+  ];
+  return {
+    learnerId: learner.id,
+    dateKey,
+    lessonId: nextLesson?.id || "",
+    subject,
+    selectedModeId: todaySelection?.value?.modeId || "",
+    modes: modes.map((mode) => ({ ...mode, selected: mode.id === todaySelection?.value?.modeId }))
+  };
+}
+
 export function recordStudentEngagementAction(state = {}, { learnerId = "", lessonId = "", type = "", value = {} } = {}) {
-  const allowedTypes = new Set(["lesson_started", "affect_checkin_submitted", "interactive_widget_attempted", "phase_completed"]);
+  const allowedTypes = new Set(["lesson_started", "affect_checkin_submitted", "interactive_widget_attempted", "phase_completed", "adventure_mode_selected"]);
   if (!learnerId || !allowedTypes.has(type)) return state;
   const today = engagementDateKey(new Date());
   const duplicate = (state.learningEvents || []).some(
@@ -5764,7 +5832,7 @@ export function recordStudentEngagementAction(state = {}, { learnerId = "", less
       event.learnerId === learnerId &&
       event.lessonId === lessonId &&
       event.type === type &&
-      (type !== "phase_completed" || event.value?.phase === value?.phase) &&
+      ((type !== "phase_completed" && type !== "adventure_mode_selected") || (event.value?.phase === value?.phase && event.value?.modeId === value?.modeId)) &&
       engagementDateKey(engagementEventDate(event)) === today
   );
   return duplicate ? state : logLearningEvent(state, { learnerId, lessonId, type, value });

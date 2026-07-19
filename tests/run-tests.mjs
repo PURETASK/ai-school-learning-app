@@ -69,6 +69,7 @@ import {
   getLearningTelemetry,
   getLearnerLevelProfile,
   getStudentEngagementProfile,
+  getLearningAdventure,
   getLearnerSubjectProgress,
   mergeRepositoryLearningEvents,
   getLearnerClassSession,
@@ -3440,6 +3441,18 @@ assert.ok(engagement.missions.some((mission) => mission.id === "transfer"), "eng
 assert.equal(engagement.rewardTrack.level, getLearnerLevelProfile(engagementState, "avery").level, "engagement profile should expose the learner reward level");
 assert.ok(engagement.rewardTrack.nextReward.title, "engagement profile should expose the next mastery reward");
 assert.ok(engagement.rewardTrack.progressPercent >= 0, "engagement profile should expose reward progress");
+const adventure = getLearningAdventure(engagementState, "avery", engagementNow);
+assert.equal(adventure.modes.length, 4, "learning adventure should offer four evidence-based entry modes");
+assert.ok(adventure.modes.some((mode) => mode.id === "builder" && mode.action === "lesson"), "learning adventure should offer a visual build route");
+assert.ok(adventure.modes.some((mode) => mode.id === "coach" && mode.action === "ai"), "learning adventure should offer a tutor coaching route");
+const selectedAdventure = recordStudentEngagementAction(engagementState, {
+  learnerId: "avery",
+  lessonId: lesson.id,
+  type: "adventure_mode_selected",
+  value: { modeId: "creator" }
+});
+assert.equal(getLearningAdventure(selectedAdventure, "avery", engagementNow).selectedModeId, "creator", "learning adventure should remember the learner's daily route");
+assert.equal(getLearnerLevelProfile(selectedAdventure, "avery").totalXp, getLearnerLevelProfile(engagementState, "avery").totalXp, "choosing an adventure route should not award XP by itself");
 const duplicateEngagement = recordStudentEngagementAction(engagementState, {
   learnerId: "avery",
   lessonId: lesson.id,

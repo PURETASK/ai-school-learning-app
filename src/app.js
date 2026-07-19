@@ -53,6 +53,7 @@ import {
   getLearningTelemetry,
   getLearnerLevelProfile,
   getStudentEngagementProfile,
+  getLearningAdventure,
   getLearnerSubjectProgress,
   getHouseholdLearnerInsights,
   getAgentCommandCenter,
@@ -3447,6 +3448,36 @@ function renderStudentEngagementBoard(learner, lesson, levelProfile) {
   `;
 }
 
+function renderLearningAdventurePanel(learner, lesson) {
+  const adventure = getLearningAdventure(state, learner.id);
+  if (!adventure.modes.length) return "";
+  const selected = adventure.modes.find((mode) => mode.selected);
+  return `
+    <section class="panel wide-panel learning-adventure-panel" aria-label="Choose your learning adventure">
+      <div class="adventure-heading">
+        <div>
+          <p class="eyebrow">Choose your entry point</p>
+          <h2>How do you want to crack today&apos;s challenge?</h2>
+          <p>${selected ? `You picked <strong>${html(selected.title)}</strong>. The target stays the same, but the first move fits your brain today.` : "You choose the first move. The app still checks the same real understanding at the end."}</p>
+        </div>
+        <div class="adventure-lockup" aria-label="Learning choice principle"><span>CHOICE</span><strong>≠</strong><span>LOWER STANDARD</span></div>
+      </div>
+      <div class="adventure-grid">
+        ${adventure.modes.map((mode) => `
+          <article class="adventure-card ${html(mode.color)} ${mode.selected ? "selected" : ""}">
+            <div class="adventure-card-top"><span class="adventure-icon">${html(mode.icon)}</span>${mode.selected ? `<span class="adventure-selected">Selected</span>` : `<span class="adventure-xp">Evidence earns XP</span>`}</div>
+            <h3>${html(mode.title)}</h3>
+            <p>${html(mode.prompt)}</p>
+            <small>Proof: ${html(mode.evidence)}</small>
+            <button class="small-button adventure-action" data-adventure-mode="${html(mode.id)}" data-adventure-lesson="${html(adventure.lessonId || lesson?.id || "")}" data-adventure-view="${html(mode.action)}">${html(mode.actionLabel)}</button>
+          </article>
+        `).join("")}
+      </div>
+      <p class="adventure-note"><span aria-hidden="true">◆</span> Pick the route that feels interesting. Mastery comes from what you can explain, use, recall, and transfer.</p>
+    </section>
+  `;
+}
+
 function renderClassSessionSteps(session) {
   return `
     <div class="class-step-rail" aria-label="Class session steps">
@@ -3865,6 +3896,7 @@ function renderStudentView() {
     })}
     ${renderProductLearningFlow({ learner, lesson: selectedPlan, levelProfile })}
     ${renderStudentEngagementBoard(learner, selectedPlan, levelProfile)}
+    ${renderLearningAdventurePanel(learner, selectedPlan)}
     ${renderSpecialAiLessonShowcase()}
     ${renderStudentLaunchPanel(learner, selectedPlan, levelProfile)}
     ${renderChildLevelDashboard(learner, levelProfile, subjectProgress)}
@@ -8798,6 +8830,7 @@ app.addEventListener("click", (event) => {
   const academyButton = event.target.closest("[data-academy]");
   const gradeButton = event.target.closest("[data-grade]");
   const lessonButton = event.target.closest("[data-lesson]");
+  const adventureButton = event.target.closest("[data-adventure-mode]");
   const answerButton = event.target.closest("[data-answer]");
   const interactiveButton = event.target.closest("[data-interactive-widget]");
   const phaseCompleteButton = event.target.closest("[data-phase-complete]");
@@ -8945,6 +8978,25 @@ app.addEventListener("click", (event) => {
       value: { source: "mission-board" }
     });
     persistNow();
+    shouldRender = true;
+  }
+
+  if (adventureButton) {
+    playUiSound("switch");
+    const learnerId = currentSession?.studentId || currentLearner()?.id || "";
+    const lessonId = adventureButton.dataset.adventureLesson || state.selectedLessonId || "";
+    state = recordStudentEngagementAction(state, {
+      learnerId,
+      lessonId,
+      type: "adventure_mode_selected",
+      value: { modeId: adventureButton.dataset.adventureMode, source: "learning-adventure" }
+    });
+    state = { ...state, selectedLessonId: lessonId };
+    persistNow();
+    announceLearningMoment(`Adventure selected: ${adventureButton.dataset.adventureMode}.`, "success", {
+      next: adventureButton.dataset.adventureView === "ai" ? "Tell the tutor what you would teach a friend." : "Open the lesson and collect evidence."
+    });
+    activeView = adventureButton.dataset.adventureView === "ai" ? "ai" : "lesson";
     shouldRender = true;
   }
 
