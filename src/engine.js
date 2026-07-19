@@ -5517,6 +5517,131 @@ export function getLearnerLevelProfile(state = {}, learnerId = "") {
   };
 }
 
+function engagementDateKey(value, fallback = "") {
+  const parsed = value instanceof Date ? value : new Date(value || "");
+  if (Number.isNaN(parsed.getTime())) return fallback;
+  return parsed.toISOString().slice(0, 10);
+}
+
+function engagementEventDate(event = {}) {
+  return event.occurredAt || event.createdAt || event.timestamp || "";
+}
+
+/**
+ * Converts learning evidence into a small daily game loop. The rewards are
+ * attached to learning actions, not time spent or repeated clicking.
+ */
+export function getStudentEngagementProfile(state = {}, learnerId = "", now = new Date()) {
+  const learner = getLearnerById(state, learnerId);
+  if (!learner) {
+    return {
+      learnerId: "",
+      dateKey: engagementDateKey(now),
+      streak: 0,
+      todayXp: 0,
+      combo: 0,
+      missions: [],
+      completedMissions: 0,
+      totalMissions: 0,
+      celebration: "Choose a learner to begin a mission."
+    };
+  }
+
+  const dateKey = engagementDateKey(now);
+  const events = (state.learningEvents || []).filter((event) => event.learnerId === learner.id);
+  const todayEvents = events.filter((event) => engagementDateKey(engagementEventDate(event)) === dateKey);
+  const hasToday = (type, predicate = () => true) => todayEvents.some((event) => event.type === type && predicate(event));
+  const lessons = lessonsForLearner(state, learner);
+  const nextLesson = lessons.find((lesson) => Number(state.mastery?.[lesson.id]?.score || 0) < Number(lesson.masteryThreshold || 80)) || lessons[0] || null;
+  const lessonId = nextLesson?.id || state.selectedLessonId || "";
+  const missionDefinitions = [
+    {
+      id: "launch",
+      icon: "01",
+      title: "Open the portal",
+      description: "Start one lesson and discover today’s question.",
+      xp: 10,
+      done: hasToday("lesson_started"),
+      actionLabel: "Enter lesson",
+      action: "lesson",
+      lessonId
+    },
+    {
+      id: "model",
+      icon: "02",
+      title: "Build a model",
+      description: "Try the interactive board, sorter, or lab widget.",
+      xp: 30,
+      done: hasToday("interactive_widget_attempted", (event) => Boolean(event.value?.correct)),
+      actionLabel: "Try the widget",
+      action: "lesson",
+      lessonId
+    },
+    {
+      id: "tutor",
+      icon: "03",
+      title: "Name the stuck point",
+      description: "Tell the tutor exactly what is confusing, then use one hint.",
+      xp: 50,
+      done: hasToday("scratchpad_tutor_reviewed", (event) => Boolean(event.value?.diagnosisReady)),
+      actionLabel: "Ask tutor",
+      action: "ai",
+      lessonId
+    },
+    {
+      id: "prove",
+      icon: "04",
+      title: "Prove your thinking",
+      description: "Finish a checkpoint and read the reasoning behind your result.",
+      xp: 100,
+      done: hasToday("quiz_completed", (event) => Boolean(event.value?.passed)),
+      actionLabel: "Take checkpoint",
+      action: "lesson",
+      lessonId
+    }
+  ];
+  const completedMissions = missionDefinitions.filter((mission) => mission.done).length;
+  const todayXp = todayEvents.reduce((sum, event) => sum + xpForEvent(state, event), 0);
+  const activeDates = new Set(
+    events.map((event) => engagementDateKey(engagementEventDate(event))).filter(Boolean)
+  );
+  let streak = 0;
+  const cursor = new Date(now);
+  while (activeDates.has(engagementDateKey(cursor))) {
+    streak += 1;
+    cursor.setUTCDate(cursor.getUTCDate() - 1);
+  }
+  const combo = Math.min(4, completedMissions);
+  const celebration = completedMissions === missionDefinitions.length
+    ? "Full mission clear. Your brain has evidence, not just activity."
+    : completedMissions > 0
+      ? `${completedMissions} mission${completedMissions === 1 ? "" : "s"} cleared. Keep the combo alive.`
+      : "Your first mission is waiting. Start small, then build momentum.";
+
+  return {
+    learnerId: learner.id,
+    dateKey,
+    streak,
+    todayXp: normalizeXp(todayXp),
+    combo,
+    missions: missionDefinitions,
+    completedMissions,
+    totalMissions: missionDefinitions.length,
+    celebration,
+    nextMission: missionDefinitions.find((mission) => !mission.done) || null
+  };
+}
+
+export function recordStudentEngagementAction(state = {}, { learnerId = "", lessonId = "", type = "", value = {} } = {}) {
+  const allowedTypes = new Set(["lesson_started", "affect_checkin_submitted", "interactive_widget_attempted"]);
+  if (!learnerId || !allowedTypes.has(type)) return state;
+  const today = engagementDateKey(new Date());
+  const duplicate = (state.learningEvents || []).some(
+    (event) => event.learnerId === learnerId && event.lessonId === lessonId && event.type === type && engagementDateKey(engagementEventDate(event)) === today
+  );
+  return duplicate ? state : logLearningEvent(state, { learnerId, lessonId, type, value });
+}
+
 function learnerCourseSubjects(learner = {}) {
   const academy = findAcademy(learner.academyId);
   const grade = academy.grades.find((item) => String(item.grade) === String(learner.grade)) || academy.grades[0];
@@ -9660,7 +9785,7 @@ export function submitTutorFeedback(state, logId, feedback, note = "") {
           learningEvents: [
             {
               id: `event-${Date.now()}`,
-              learnerId: "avery",
+              learnerId: reviewedLog.learnerId || reviewedLog.studentId || "",
               lessonId,
               type: "tutor_feedback_submitted",
               detail: normalizedFeedback,

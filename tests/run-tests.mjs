@@ -66,6 +66,7 @@ import {
   getLessonTeachingSupport,
   getLearningTelemetry,
   getLearnerLevelProfile,
+  getStudentEngagementProfile,
   getLearnerSubjectProgress,
   getLearnerClassSession,
   getHouseholdLearnerInsights,
@@ -137,6 +138,7 @@ import {
   markScratchpadTutorReviewed,
   submitTutorHintRetry,
   recordInteractiveResponse,
+  recordStudentEngagementAction,
   createParentManagedChildAccount,
   createEmailVerificationRequest,
   createPasswordResetRequest,
@@ -3302,6 +3304,27 @@ assert.ok(averyLevelProfile.totalXp >= lesson.xp, "quiz completion should increa
 assert.ok(averyLevelProfile.progressPercent >= 0, "level profile should include progress toward the next level");
 const averySubjectProgress = getLearnerSubjectProgress(state, "avery");
 assert.ok(averySubjectProgress.some((subject) => subject.subject === "math" && subject.subjectXp > 0), "subject progress should include math XP");
+const engagementNow = new Date("2026-07-19T12:00:00.000Z");
+let engagementState = {
+  ...state,
+  learningEvents: [
+    { id: "engagement-start", learnerId: "avery", lessonId: lesson.id, type: "lesson_started", occurredAt: "2026-07-19T09:00:00.000Z", value: {} },
+    { id: "engagement-widget", learnerId: "avery", lessonId: lesson.id, type: "interactive_widget_attempted", occurredAt: "2026-07-19T09:05:00.000Z", value: { correct: true } },
+    { id: "engagement-yesterday", learnerId: "avery", lessonId: lesson.id, type: "lesson_started", occurredAt: "2026-07-18T09:00:00.000Z", value: {} },
+    ...(state.learningEvents || [])
+  ]
+};
+const engagement = getStudentEngagementProfile(engagementState, "avery", engagementNow);
+assert.equal(engagement.streak >= 2, true, "engagement profile should calculate consecutive learning days");
+assert.equal(engagement.completedMissions >= 2, true, "engagement profile should convert learning evidence into cleared missions");
+assert.equal(engagement.nextMission.id, "tutor", "engagement profile should prioritize the next evidence-producing mission");
+const duplicateEngagement = recordStudentEngagementAction(engagementState, {
+  learnerId: "avery",
+  lessonId: lesson.id,
+  type: "lesson_started",
+  value: { source: "mission-board" }
+});
+assert.equal(duplicateEngagement.learningEvents.length, engagementState.learningEvents.length, "daily engagement actions should not award duplicate start evidence");
 
 state = updateLessonScratchpad(state, {
   learnerId: "avery",

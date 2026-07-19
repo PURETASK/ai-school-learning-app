@@ -9032,3 +9032,115 @@ body {
 html {
   color-scheme: dark;
 }
+
+.engagement-board {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(13, 22, 48, .98), rgba(34, 17, 62, .96)),
+    radial-gradient(circle at 12% 0%, rgba(47, 229, 255, .22), transparent 34%);
+  border: 1px solid rgba(71, 230, 255, .42);
+  box-shadow: 0 18px 60px rgba(14, 7, 40, .42), inset 0 1px 0 rgba(255, 255, 255, .08);
+}
+
+.engagement-board::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .25;
+  background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(135deg, black, transparent 64%);
+}
+
+.engagement-board > * { position: relative; z-index: 1; }
+
+.engagement-board-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.engagement-board-head h2 { margin: 0 0 8px; color: #fff; }
+.engagement-board-head p:not(.eyebrow) { max-width: 620px; color: #b9c7e8; margin: 0; }
+
+.engagement-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(88px, 1fr));
+  gap: 8px;
+  min-width: 300px;
+}
+
+.engagement-stats div {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(5, 7, 19, .62);
+  border: 1px solid rgba(255, 255, 255, .12);
+}
+
+.engagement-stats span, .engagement-stats strong { display: block; }
+.engagement-stats span { font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; color: #8ea4ce; }
+.engagement-stats strong { margin-top: 6px; color: #fff; font-size: 1.1rem; }
+
+.engagement-progress {
+  height: 10px;
+  margin: 22px 0 16px;
+  border-radius: 99px;
+  overflow: hidden;
+  background: rgba(255,255,255,.12);
+}
+
+.engagement-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #34e5ff, #ff56bc, #ffd35a);
+  box-shadow: 0 0 18px rgba(52, 229, 255, .65);
+  transition: width .5s ease;
+}
+
+.mission-deck {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.mission-card {
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(9, 13, 34, .8);
+  border: 1px solid rgba(145, 166, 222, .2);
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.mission-card:hover, .mission-card.mission-next { transform: translateY(-3px); border-color: rgba(52, 229, 255, .7); background: rgba(18, 28, 60, .92); }
+.mission-card.mission-done { border-color: rgba(87, 239, 171, .45); background: rgba(16, 52, 58, .52); }
+.mission-icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 11px; color: #08101e; background: #61e7ff; font-weight: 900; }
+.mission-card:nth-child(2) .mission-icon { background: #ff65bc; }
+.mission-card:nth-child(3) .mission-icon { background: #a7f36d; }
+.mission-card:nth-child(4) .mission-icon { background: #ffd45e; }
+.mission-card-copy { flex: 1; }
+.mission-card-copy > span { color: #8ea4ce; font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; }
+.mission-card-copy h3 { margin: 5px 0 6px; color: #fff; font-size: 1.05rem; }
+.mission-card-copy p { margin: 0; color: #b9c7e8; font-size: .86rem; line-height: 1.45; }
+.mission-action { align-self: flex-start; }
+.mission-status { color: #79f0b3; font-size: .7rem; letter-spacing: .12em; }
+.engagement-footnote { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 16px; color: #94a7cf; font-size: .78rem; }
+.engagement-footnote span::before { content: "//"; color: #ff65bc; margin-right: 7px; }
+
+@media (max-width: 900px) {
+  .mission-deck { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 620px) {
+  .engagement-board-head { flex-direction: column; }
+  .engagement-stats { width: 100%; min-width: 0; }
+  .mission-deck { grid-template-columns: 1fr; }
+  .mission-card { min-height: 0; }
+}

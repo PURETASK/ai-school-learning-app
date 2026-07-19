@@ -45,10 +45,12 @@ import {
   getTeacherClassMonitor,
   updateLessonScratchpad,
   recordInteractiveResponse,
+  recordStudentEngagementAction,
   requestRewardApproval,
   createScratchpadTutorPrompt,
   getLearningTelemetry,
   getLearnerLevelProfile,
+  getStudentEngagementProfile,
   getLearnerSubjectProgress,
   getHouseholdLearnerInsights,
   getAgentCommandCenter,
@@ -3191,6 +3193,54 @@ function renderChildLevelDashboard(learner, levelProfile, subjectProgress) {
   `;
 }
 
+function renderStudentEngagementBoard(learner, lesson) {
+  const engagement = getStudentEngagementProfile(state, learner.id);
+  const nextMission = engagement.nextMission;
+  return `
+    <section class="panel wide-panel engagement-board" aria-label="Daily learning missions">
+      <div class="engagement-board-head">
+        <div>
+          <p class="eyebrow">Daily mission deck</p>
+          <h2>Make your brain the main character</h2>
+          <p>${html(engagement.celebration)}</p>
+        </div>
+        <div class="engagement-stats" aria-label="Learning momentum">
+          <div><span>Streak</span><strong>${engagement.streak} day${engagement.streak === 1 ? "" : "s"}</strong></div>
+          <div><span>Today</span><strong>+${engagement.todayXp} XP</strong></div>
+          <div><span>Combo</span><strong>${engagement.combo}/${engagement.totalMissions}</strong></div>
+        </div>
+      </div>
+      <div class="engagement-progress" aria-label="Daily mission progress">
+        <span style="width:${Math.round((engagement.completedMissions / Math.max(1, engagement.totalMissions)) * 100)}%"></span>
+      </div>
+      <div class="mission-deck">
+        ${engagement.missions.map((mission) => {
+          const targetLessonId = mission.lessonId || lesson?.id || state.selectedLessonId;
+          const targetView = mission.action === "ai" ? "ai" : "lesson";
+          return `
+            <article class="mission-card ${mission.done ? "mission-done" : mission.id === nextMission?.id ? "mission-next" : ""}">
+              <div class="mission-icon">${html(mission.icon)}</div>
+              <div class="mission-card-copy">
+                <span>${mission.done ? "Cleared" : `+${mission.xp} XP`}</span>
+                <h3>${html(mission.title)}</h3>
+                <p>${html(mission.description)}</p>
+              </div>
+              ${mission.done
+                ? `<strong class="mission-status">READY</strong>`
+                : `<button class="small-button mission-action" data-lesson="${html(targetLessonId)}" data-view="${targetView}">${html(mission.actionLabel)}</button>`}
+            </article>
+          `;
+        }).join("")}
+      </div>
+      <div class="engagement-footnote">
+        <span>XP is earned for evidence</span>
+        <span>Misses open a retry path</span>
+        <span>Mastery unlocks meaningful rewards</span>
+      </div>
+    </section>
+  `;
+}
+
 function renderClassSessionSteps(session) {
   return `
     <div class="class-step-rail" aria-label="Class session steps">
@@ -3603,6 +3653,7 @@ function renderStudentView() {
       ]
     })}
     ${renderProductLearningFlow({ learner, lesson: selectedPlan, levelProfile })}
+    ${renderStudentEngagementBoard(learner, selectedPlan)}
     ${renderSpecialAiLessonShowcase()}
     ${renderStudentLaunchPanel(learner, selectedPlan, levelProfile)}
     ${renderChildLevelDashboard(learner, levelProfile, subjectProgress)}
@@ -8498,7 +8549,14 @@ app.addEventListener("click", (event) => {
 
   if (lessonButton) {
     playUiSound("switch");
-    state = { ...state, selectedLessonId: lessonButton.dataset.lesson };
+    const learnerId = currentSession?.studentId || currentLearner()?.id || "";
+    const lessonId = lessonButton.dataset.lesson;
+    state = recordStudentEngagementAction({ ...state, selectedLessonId: lessonId }, {
+      learnerId,
+      lessonId,
+      type: "lesson_started",
+      value: { source: "mission-board" }
+    });
     persistNow();
     shouldRender = true;
   }
