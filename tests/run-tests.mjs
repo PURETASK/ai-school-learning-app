@@ -4143,6 +4143,8 @@ assert.ok(serverSource.includes("accounts: []"), "Anonymous auth sessions should
 assert.ok(serverSource.includes("A provider refresh token is required."), "provider refresh should reject missing refresh tokens");
 assert.ok(serverSource.includes("const refreshedSession = await getRequestSessionAsync"), "provider refresh should verify refreshed JWT claims");
 assert.ok(serverSource.includes("stateRepository.isSessionRevoked(refreshedSession)"), "provider refresh should enforce app-level session revocation");
+assert.ok(serverSource.includes("for (const tableId of normalizedRepositoryTableIds)"), "production startup should probe every normalized repository table");
+assert.ok(serverSource.includes("Missing or unreadable normalized tables"), "production startup should report normalized migration gaps");
 assert.ok(serverSource.includes("supabaseSignOut({ accessToken: provider.accessToken }).catch(() => {})"), "revoked refresh sessions should be terminated at the provider when possible");
 assert.ok(serverSource.includes("if (body.revokeAll) await supabaseSignOut({ accessToken });"), "current-session revocation must not call Supabase global logout");
 assert.ok(apiClientSource.includes("setRefreshToken(\"\");\n}"), "local sign-out should clear the refresh token as well as the access token");

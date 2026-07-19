@@ -13,7 +13,7 @@ This guide turns the current prototype gaps into an exact production build proce
 
 The goal is to move from a local JSON-backed prototype to a production-grade K-12 learning product without weakening the privacy, review, and learning-science rules already established.
 
-Runtime verification must distinguish configured environment variables from a reachable repository. Authenticated school-admin and platform-admin sessions can call `GET /api/runtime/health`; the endpoint probes the normalized `lessons` table, returns latency and repository mode, and intentionally omits credentials and raw database errors from the response. A configuration screen showing `DATABASE_URL=configured` is not sufficient evidence that Postgres is serving requests.
+Runtime verification must distinguish configured environment variables from a reachable repository. Authenticated school-admin and platform-admin sessions can call `GET /api/runtime/health`; the endpoint probes the normalized repository and returns latency and repository mode while intentionally omitting credentials and raw database errors from the response. Production startup also probes every normalized repository table and fails closed with the missing table names, so a deployment cannot serve requests while learner-evidence tables are absent. A configuration screen showing `DATABASE_URL=configured` is not sufficient evidence that Postgres is serving requests.
 
 The commercial priority is now a school-sellable product, with Bridge Academy grades 6-8 as the first classroom wedge. Parent/Homeschool Mode remains supported, but production readiness must include teacher, class, roster, school-admin, reporting, and class-session workflows.
 

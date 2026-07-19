@@ -79,7 +79,7 @@ import { formatSchoolReportSnapshotsCsv } from "../src/schoolReports.js";
 import { generateOpenAiImage } from "../src/openaiImageService.js";
 import { generateOpenAiTutorResponse, getOpenAiTutorReadiness } from "../src/openaiTutorService.js";
 import { fulfillGiftCardReward, getGiftCardFulfillmentReadiness } from "../src/rewardFulfillmentService.js";
-import { createNormalizedStateUpsertSql, createStateRepository, learnerProfileRepositoryTableIds, learningEvidenceRepositoryTableIds } from "../src/repository.js";
+import { createNormalizedStateUpsertSql, createStateRepository, learnerProfileRepositoryTableIds, learningEvidenceRepositoryTableIds, normalizedRepositoryTableIds } from "../src/repository.js";
 import { uploadVisualAssetToSupabaseStorage } from "../src/visualAssetStorageService.js";
 import { fetchApprovedSourceAudit } from "../src/liveSourceAudit.js";
 import { loadEnvFile } from "../src/env.js";
@@ -2661,9 +2661,19 @@ async function assertProductionStartup() {
     throw new Error("Production startup blocked: K12_REPOSITORY_MODE=postgres or supabase-rest is required.");
   }
   try {
-    await stateRepository.readNormalizedTable("lessons", { limit: 1 });
+    const missingTables = [];
+    for (const tableId of normalizedRepositoryTableIds) {
+      try {
+        await stateRepository.readNormalizedTable(tableId, { limit: 1 });
+      } catch (error) {
+        missingTables.push(`${tableId}: ${error.message || "probe failed"}`);
+      }
+    }
+    if (missingTables.length) {
+      throw new Error(`Missing or unreadable normalized tables: ${missingTables.join(" | ")}`);
+    }
   } catch (error) {
-    throw new Error(`Production startup blocked: normalized Postgres probe failed. ${error.message || "Check DATABASE_URL credentials."}`);
+    throw new Error(`Production startup blocked: normalized repository probe failed. ${error.message || "Check DATABASE_URL credentials and migration state."}`);
   }
 }
 
