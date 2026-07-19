@@ -1922,6 +1922,7 @@ const postgresRuntimeStatus = getRuntimeConfigurationStatus({
   OPENAI_API_KEY: "test-key"
 });
 assert.equal(postgresRuntimeStatus.ready, true, "configured Postgres/Supabase runtime should pass readiness");
+assert.equal(postgresRuntimeStatus.authLiveVerified, false, "provider configuration must not count as live auth verification");
 assert.equal(postgresRuntimeStatus.checks.find((check) => check.id === "database-url").passed, true, "runtime status should pass database check with DATABASE_URL");
 assert.equal(postgresRuntimeStatus.checks.find((check) => check.id === "visual-storage").passed, true, "runtime status should pass visual storage check with bucket config");
 const supabaseRestRuntimeStatus = getRuntimeConfigurationStatus({
@@ -1965,6 +1966,9 @@ assert.notEqual(configuredProductAudit.categories.find((item) => item.id === "ru
 assert.equal(configuredProductAudit.categories.find((item) => item.id === "database").status, "blocked", "database audit should require a live repository probe instead of trusting URL presence");
 const verifiedProductAudit = getProductCompletenessAudit(state, { ...postgresRuntimeStatus, databaseVerified: true });
 assert.equal(verifiedProductAudit.categories.find((item) => item.id === "database").status, "complete", "database audit should pass after a live repository probe is recorded");
+assert.equal(verifiedProductAudit.categories.find((item) => item.id === "auth").status, "in-progress", "auth audit should remain incomplete until a live claims check is recorded");
+const liveAuthProductAudit = getProductCompletenessAudit(state, { ...postgresRuntimeStatus, authLiveVerified: true, databaseVerified: true });
+assert.equal(liveAuthProductAudit.categories.find((item) => item.id === "auth").status, "complete", "auth audit should pass after live claims verification is recorded");
 assert.equal(estimateImageCostCents({ model: "gpt-image-2", size: "1024x1024", quality: "medium" }), 5.3, "image cost estimate should use configured model/size/quality");
 const blockedImagePlan = createImageGenerationPlan({
   prompt: "Generate a learning diagram",

@@ -771,6 +771,8 @@ AUTH_EMAIL_REDIRECT_TO=https://your-app.example.com/
 AUTH_PASSWORD_RESET_REDIRECT_TO=https://your-app.example.com/
 ```
 
+Provider configuration is not proof that production identity works. After a staging integration test has exercised verified claims, email verification, password reset, parent-child linking, and session revocation, record that evidence explicitly with `AUTH_LIVE_VERIFIED=true` for the readiness audit. Never set this flag merely because the environment variables exist.
+
 The server now verifies Supabase bearer JWT signatures against the configured JWKS endpoint, validates issuer/audience/expiry/email verification/role claims, and rejects local HMAC session tokens in production by default. Signup, sign-in, verification resend/confirmation, password-reset request/update, refresh-token rotation, and current-session logout have provider-backed REST contracts. The API client stores the provider refresh token for automatic access-token renewal. Authorization roles must be provisioned in Supabase `app_metadata` or resolved from the normalized `users` table; editable `user_metadata` is never used for authorization.
 
 The local password and action-token flows remain available only for development preview. Provider logout now writes current-session or revoke-before records through the repository, and every authenticated request checks normalized `session_revocations`. This enforcement still requires the production migration and valid database credentials to be active.

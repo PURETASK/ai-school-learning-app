@@ -4502,6 +4502,7 @@ export function getRuntimeConfigurationStatus(env = {}) {
   const supabaseJwksConfigured = Boolean(env.SUPABASE_JWKS_URL);
   const durableRepository = ["postgres", "supabase-rest"].includes(repositoryMode);
   const authProviderConfigured = isProductionAuthProviderConfigured(env);
+  const authLiveVerified = ["1", "true", "yes", "verified"].includes(String(env.AUTH_LIVE_VERIFIED || "").toLowerCase());
   const authReadiness = getProductionAuthReadiness(env);
   const authBlockers = [...(authReadiness.blockers || []), ...(authReadiness.missing || []).map((item) => `Missing ${item}.`)];
   const openAiImage = getOpenAiImageReadiness(env);
@@ -4534,6 +4535,7 @@ export function getRuntimeConfigurationStatus(env = {}) {
     supabaseSecretConfigured,
     supabaseJwksConfigured,
     authProviderConfigured,
+    authLiveVerified,
     authReadiness,
     openAiImage,
     openAiTutor,
@@ -4724,7 +4726,7 @@ export function getProductCompletenessAudit(state = createInitialState(), env = 
   const databaseConfigured = runtime.databaseConnectionConfigured ?? runtime.databaseConfigured;
   const databaseBlocked = !databaseConfigured || !durableRepository;
   const liveDatabaseHealthy = runtime.databaseVerified === true || runtime.liveHealth?.healthy === true;
-  const productionAuthReady = runtime.authProviderConfigured && runtime.authReadiness?.passed;
+  const productionAuthReady = runtime.authProviderConfigured && runtime.authReadiness?.passed && runtime.authLiveVerified === true;
   const categories = [
     {
       id: "views",
@@ -4744,8 +4746,8 @@ export function getProductCompletenessAudit(state = createInitialState(), env = 
       id: "auth",
       title: "Production identity and role claims",
       status: auditStatus(productionAuthReady),
-      evidence: `${auth.accountCount} local accounts; ${auth.verifiedAccounts} verified; provider=${runtime.authReadiness?.provider || "not-configured"}.`,
-      nextStep: productionAuthReady ? "Run role/claim integration tests against the provider." : "Connect Supabase Auth or another provider with verified role/session claims."
+      evidence: `${auth.accountCount} local accounts; ${auth.verifiedAccounts} verified; provider=${runtime.authReadiness?.provider || "not-configured"}; liveClaims=${runtime.authLiveVerified ? "verified" : "not verified"}.`,
+      nextStep: productionAuthReady ? "Keep role, email-verification, reset, and revocation integration tests in deployment gates." : runtime.authProviderConfigured && runtime.authReadiness?.passed ? "Run and record a live provider claims, email lifecycle, and session revocation integration check with AUTH_LIVE_VERIFIED=true." : "Connect Supabase Auth or another provider with verified role/session claims."
     },
     {
       id: "database",

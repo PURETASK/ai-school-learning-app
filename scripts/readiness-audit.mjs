@@ -25,6 +25,7 @@ const report = {
     databaseConnectionConfigured: runtime.databaseConnectionConfigured,
     authProviderConfigured: runtime.authProviderConfigured,
     authClaimsConfigurationReady: Boolean(runtime.authReadiness?.passed),
+    authLiveVerified: runtime.authLiveVerified === true,
     openAiImagesConfigured: Boolean(runtime.openAiImage?.ready),
     openAiTutorConfigured: Boolean(runtime.openAiTutor?.ready),
     visualStorageConfigured: Boolean(runtime.visualAssetStorage?.ready),
