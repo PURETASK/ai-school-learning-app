@@ -909,6 +909,21 @@ function getRepositoryCatalogLesson(learnerId = "", lessonId = "") {
   return catalog?.lessons?.find((item) => item.id === lessonId) || null;
 }
 
+function getRepositoryPhaseSummary(learnerId = "") {
+  const scopedCatalog = learnerId ? repositoryLearningCatalogsByLearner[learnerId] : null;
+  const catalog = scopedCatalog || repositoryLearningCatalog;
+  if (!catalog) return { source: "unavailable", lessons: 0, clearedLessons: 0, phases: 0, latest: null };
+  const lessons = (catalog.lessons || []).filter((lesson) => lesson.completedPhaseCount > 0);
+  const phaseCompletions = lessons.flatMap((lesson) => lesson.phaseCompletions || []);
+  return {
+    source: scopedCatalog ? "learner-scoped repository" : "global repository",
+    lessons: (catalog.lessons || []).length,
+    clearedLessons: lessons.length,
+    phases: phaseCompletions.length,
+    latest: phaseCompletions[0] || null
+  };
+}
+
 function getRepositoryTutorEventSummary(learnerId = "") {
   const scopedEvents = learnerId ? repositoryTutorEventsByLearner[learnerId] : null;
   const source = scopedEvents || repositoryTutorEvents;
@@ -5830,6 +5845,7 @@ function renderParentLearnerInsights(insights) {
             const repositoryRewards = getRepositoryRewardApprovalSummary(insight.learner.id);
             const repositoryPortfolio = getRepositoryPortfolioEvidenceSummary(insight.learner.id);
             const repositoryStatus = getRepositoryLearningCatalogStatus({ learnerId: insight.learner.id });
+            const repositoryPhases = getRepositoryPhaseSummary(insight.learner.id);
             return `
               <article class="parent-insight-card">
                 <div class="insight-card-head">
@@ -5927,6 +5943,17 @@ function renderParentLearnerInsights(insights) {
                         : "No catalog-backed quiz or mastery evidence has been read for this child yet."
                   )}</p>
                   <small>${html(`${repositoryQuizMastery.quizPassed}/${repositoryQuizMastery.quizAttempts} quiz attempt(s) passed, ${repositoryQuizMastery.mastered}/${repositoryQuizMastery.masteryRecords} mastery record(s) mastered`)}</small>
+                </div>
+                <div class="student-evidence-box ${repositoryPhases.phases ? "" : "muted-box"}">
+                  <strong>Repository Nexus phases</strong>
+                  <p>${html(
+                    repositoryPhases.phases
+                      ? `${repositoryPhases.phases} phase move(s) cleared across ${repositoryPhases.clearedLessons} lesson(s).`
+                      : repositoryStatus.error
+                        ? `Learner-scoped catalog read failed: ${repositoryStatus.error}`
+                        : "No catalog-backed phase completion evidence has been read for this child yet."
+                  )}</p>
+                  <small>${html(`${repositoryPhases.clearedLessons}/${repositoryPhases.lessons} catalog lesson(s) have phase evidence from ${repositoryPhases.source}`)}</small>
                 </div>
                 <div class="student-evidence-box ${repositoryRewards.summary.total ? "" : "muted-box"}">
                   <strong>Repository reward approvals</strong>

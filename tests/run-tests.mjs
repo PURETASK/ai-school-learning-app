@@ -4035,6 +4035,8 @@ for (const expected of [
   "Nexus phase(s) cleared from scoped catalog evidence.",
   "masterySource",
   "repositoryCatalogAvailable",
+  "getRepositoryPhaseSummary",
+  "Repository Nexus phases",
   "repositoryRewardApprovalForLesson",
   "getRepositoryLessonEvidence",
   "refreshLearningActionReadModels",
