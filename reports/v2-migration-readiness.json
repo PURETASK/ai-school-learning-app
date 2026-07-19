@@ -1,0 +1,211 @@
+{
+  "generatedAt": "2026-07-19T10:30:32.337Z",
+  "root": "C:\\Users\\onlyw\\Documents\\ai school",
+  "status": "migration-required",
+  "passed": false,
+  "summary": {
+    "pilotLessons": 8,
+    "nativeV3Pilots": 5,
+    "validNativeV3Pilots": 5,
+    "adaptedPilots": 3,
+    "contentFiles": 16,
+    "seedLessonFiles": 16,
+    "contentVersions": {
+      "2.0": 16
+    }
+  },
+  "checks": [
+    {
+      "id": "v3-contracts",
+      "label": "V3 schemas and validators are present",
+      "passed": true,
+      "detail": "5 V3 schemas are registered.",
+      "blocking": true
+    },
+    {
+      "id": "native-v3-exemplars",
+      "label": "At least three native V3 exemplars validate",
+      "passed": true,
+      "detail": "5/5 pilot records are native V3 and valid.",
+      "blocking": true
+    },
+    {
+      "id": "v2-compatibility-adapter",
+      "label": "V2 lessons remain explicitly adapted",
+      "passed": true,
+      "detail": "3 pilot records still require the V2 adapter.",
+      "blocking": true
+    },
+    {
+      "id": "active-phase-rendering",
+      "label": "The player renders active phases in authored order",
+      "passed": true,
+      "detail": "Student player references the V3 render model and active phase sequence.",
+      "blocking": true
+    },
+    {
+      "id": "empty-phase-omission",
+      "label": "Empty V3 phases are omitted",
+      "passed": true,
+      "detail": "Renderable phase modules require a non-empty student action.",
+      "blocking": true
+    },
+    {
+      "id": "legacy-content-inventory",
+      "label": "On-disk legacy content is accounted for",
+      "passed": true,
+      "detail": "16 content files and 16 seed lesson files were inventoried.",
+      "blocking": true
+    },
+    {
+      "id": "native-content-files",
+      "label": "On-disk content includes native V3 lesson files",
+      "passed": false,
+      "detail": "0/16 on-disk content files currently declare schemaVersion 3.",
+      "blocking": true
+    },
+    {
+      "id": "production-data-gate",
+      "label": "Runtime keeps production fail-closed until database mode is ready",
+      "passed": true,
+      "detail": "Production mode must not silently use JSON fallback.",
+      "blocking": true
+    }
+  ],
+  "nativePilotResults": [
+    {
+      "id": "g3-fractions-number-line",
+      "title": "Fractions on a Number Line",
+      "academy": "foundation",
+      "gradeLevel": "3",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g6-math-ratios-unit-rates",
+      "title": "Ratio Quest: Build a Better Deal",
+      "academy": "bridge",
+      "gradeLevel": "6",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g6-earth-systems-weather",
+      "title": "Reading Weather Patterns",
+      "academy": "bridge",
+      "gradeLevel": "6",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g9-biology-cells",
+      "title": "Cell Structure and Function",
+      "academy": "scholar",
+      "gradeLevel": "9",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g6-learning-ai-build-test",
+      "title": "Learning AI",
+      "academy": "bridge",
+      "gradeLevel": "6",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    }
+  ],
+  "nextActions": [
+    "On-disk content includes native V3 lesson files"
+  ],
+  "releaseRule": "Do not expand student-facing content production until the V3 exemplars, adapter/player checks, review gate, and on-disk content migration are verified."
+}
