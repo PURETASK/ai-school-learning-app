@@ -66,7 +66,7 @@ async function persistVisualAssetViaRest(asset) {
     license: asset.license || "",
     credit: asset.credit || "",
     status: asset.status || "review",
-    approved_by_user_id: asset.approvedByUserId || "",
+    approved_by_user_id: asset.approvedByUserId || null,
     approved_at: asset.approvedAt || null,
     created_at: asset.createdAt && Number.isFinite(Date.parse(asset.createdAt)) ? new Date(asset.createdAt).toISOString() : new Date().toISOString(),
     updated_at: new Date().toISOString()
@@ -95,7 +95,18 @@ loadEnvFile({ root: resolve(process.cwd()) });
 process.env.K12_REPOSITORY_TIMEOUT_MS ||= "60000";
 
 const repository = createStateRepository({ root: resolve(process.cwd()), env: process.env });
-const state = { ...createInitialState(), ...(await repository.readState()) };
+let persistedState = {};
+let repositoryReadError = "";
+try {
+  persistedState = await repository.readState();
+} catch (error) {
+  if (!hasSupabaseRestConfig()) throw error;
+  repositoryReadError = "Normalized repository read was unavailable; visual generation is using the local seed catalog and will attempt Supabase REST persistence.";
+}
+const state = { ...createInitialState(), ...persistedState };
+if (repositoryReadError) {
+  log({ accepted: false, step: "repository-read", warning: repositoryReadError });
+}
 const audit = getVisualLearningAgentAudit(state);
 const requestedSlotId = argValue("slot");
 const approve = !hasFlag("no-approve");
@@ -218,41 +229,55 @@ if (!slot) {
         nextState = updateVisualAssetStatus(nextState, assetId, "approved");
       }
       const finalAsset = nextState.visualAssets.find((asset) => asset.id === assetId);
-      let persistence = { accepted: true, mode: "repository" };
+      let repositoryError = "";
+      let restPersistence = null;
+      let persistence = { accepted: false, mode: "none" };
       try {
         await repository.writeVisualWorkflow(nextState);
-        if (hasSupabaseRestConfig()) {
-          const mirror = await persistVisualAssetViaRest(finalAsset);
-          persistence = {
-            accepted: mirror.accepted,
-            mode: "repository+supabase-rest",
-            restStatus: mirror.status || null,
-            error: mirror.error || ""
-          };
-          if (!mirror.accepted) {
-            process.exitCode = 4;
-          }
-        }
       } catch (error) {
-        const fallback = await persistVisualAssetViaRest(finalAsset);
+        repositoryError = error.message || String(error);
+      }
+
+      if (hasSupabaseRestConfig()) {
+        restPersistence = await persistVisualAssetViaRest(finalAsset);
+      }
+
+      if (restPersistence?.accepted && repositoryError) {
         persistence = {
-          accepted: fallback.accepted,
+          accepted: true,
           mode: "supabase-rest-fallback",
-          error: fallback.error || error.message
+          repositoryError,
+          restStatus: restPersistence.status || null
         };
-        if (!fallback.accepted) {
-          throw error;
-        }
+      } else if (restPersistence?.accepted) {
+        persistence = {
+          accepted: true,
+          mode: "repository+supabase-rest",
+          restStatus: restPersistence.status || null
+        };
+      } else if (!repositoryError) {
+        persistence = { accepted: true, mode: "repository" };
+      } else {
+        persistence = {
+          accepted: false,
+          mode: "persistence-failed",
+          repositoryError,
+          restError: restPersistence?.error || "Supabase REST persistence was not configured."
+        };
+        process.exitCode = 4;
       }
       log({
-        accepted: true,
+        accepted: persistence.accepted,
         step: "persisted-production-visual",
         assetId,
         status: finalAsset.status,
         storageStatus: finalAsset.storageStatus,
         storagePublicUrl: finalAsset.storagePublicUrl,
         reviewChecklistCount: finalAsset.reviewChecklist?.length || 0,
-        persistence
+        persistence,
+        next: persistence.accepted
+          ? "The asset is stored in the review queue. Approve it in Manager Review before student-facing publication."
+          : "The image was generated but not persisted. Fix the persistence errors and rerun the workflow."
       });
     }
     }
