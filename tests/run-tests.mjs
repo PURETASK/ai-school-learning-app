@@ -238,6 +238,7 @@ import {
   createNormalizedTableDeleteMissingSql,
   createNormalizedTableSelectSql,
   createStateRepository,
+  SupabaseRestStateRepository,
   assignmentRepositoryTableIds,
   lessonScratchpadRepositoryTableIds,
   learningCatalogRepositoryTableIds,
@@ -1858,9 +1859,21 @@ const postgresRuntimeStatus = getRuntimeConfigurationStatus({
 assert.equal(postgresRuntimeStatus.ready, true, "configured Postgres/Supabase runtime should pass readiness");
 assert.equal(postgresRuntimeStatus.checks.find((check) => check.id === "database-url").passed, true, "runtime status should pass database check with DATABASE_URL");
 assert.equal(postgresRuntimeStatus.checks.find((check) => check.id === "visual-storage").passed, true, "runtime status should pass visual storage check with bucket config");
+const supabaseRestRuntimeStatus = getRuntimeConfigurationStatus({
+  NODE_ENV: "production",
+  K12_REPOSITORY_MODE: "supabase-rest",
+  SUPABASE_URL: "https://hqsydwjcpcammmfftyqi.supabase.co",
+  SUPABASE_PUBLISHABLE_KEY: "publishable",
+  SUPABASE_SECRET_KEY: "secret",
+  SUPABASE_JWKS_URL: "https://hqsydwjcpcammmfftyqi.supabase.co/auth/v1/.well-known/jwks.json",
+  VISUAL_ASSET_STORAGE_BUCKET: "k12-visual-assets",
+  OPENAI_API_KEY: "test-key"
+});
+assert.equal(supabaseRestRuntimeStatus.ready, true, "Supabase REST should be accepted as a durable production repository mode");
+assert.equal(supabaseRestRuntimeStatus.databaseConnectionConfigured, true, "Supabase REST should count server URL and secret as the durable database connection");
 const brokenProductionRuntimeStatus = getRuntimeConfigurationStatus({ NODE_ENV: "production" });
 assert.equal(brokenProductionRuntimeStatus.ready, false, "production runtime should fail without database and auth provider config");
-assert.ok(brokenProductionRuntimeStatus.blockers.some((blocker) => /DATABASE_URL/.test(blocker)), "production runtime should report missing DATABASE_URL");
+assert.ok(brokenProductionRuntimeStatus.blockers.some((blocker) => /durable database connection|DATABASE_URL/.test(blocker)), "production runtime should report a missing durable database connection");
 const scopedIsolation = isolateStateForStrictLearnerScope({
   learners: [{ id: "private-learner" }],
   localAccounts: [{ id: "private-account" }],
@@ -2102,6 +2115,22 @@ assert.doesNotMatch(reviewCleanup.sql, /delete from public\."content_drafts"/, "
 const jsonRepositoryStatus = createStateRepository({ root: process.cwd(), env: {} }).status();
 assert.equal(jsonRepositoryStatus.mode, "json", "repository should default to JSON fallback mode");
 assert.equal(jsonRepositoryStatus.normalizedTables, normalizedRepositoryTableIds.length, "repository status should expose normalized table coverage");
+const restRepositoryCalls = [];
+const restRepository = new SupabaseRestStateRepository({
+  env: { SUPABASE_URL: "https://example.supabase.co", SUPABASE_SECRET_KEY: "server-secret" },
+  fetchImpl: async (url, options) => {
+    restRepositoryCalls.push({ url, options });
+    return {
+      ok: true,
+      status: 200,
+      text: async () => url.includes("app_state_snapshots") ? JSON.stringify([{ payload: {} }]) : JSON.stringify([])
+    };
+  }
+});
+assert.equal(restRepository.status().mode, "supabase-rest", "Supabase REST repository should report its durable mode");
+assert.equal(restRepository.status().durable, true, "Supabase REST repository should be marked durable");
+assert.deepEqual(await restRepository.readNormalizedTable("lessons", { limit: 1 }), [], "Supabase REST repository should read normalized tables through PostgREST");
+assert.ok(restRepositoryCalls[0].url.includes("/rest/v1/lessons"), "Supabase REST repository should target the normalized table endpoint");
 const selectDraftSql = createNormalizedTableSelectSql("content_drafts", { limit: 7 });
 assert.match(selectDraftSql, /from public\."content_drafts"/, "normalized select SQL should target the requested table");
 assert.match(selectDraftSql, /limit 7/, "normalized select SQL should include a bounded limit");
@@ -4106,7 +4135,7 @@ assert.ok(appSource.includes("repositoryBootstrap?.catalog || null"), "scoped ca
 const serverSource = readFileSync("scripts/serve.mjs", "utf8");
 const apiClientSource = readFileSync("src/apiClient.js", "utf8");
 assert.ok(serverSource.includes('const postgresRepository = stateRepository.status().mode === "postgres"'), "Postgres requests should identify normalized repository mode");
-assert.ok(serverSource.includes("const normalizedSecurity = postgresRepository ? await stateRepository.readAccountSecurity"), "Postgres auth session should read normalized account security");
+assert.ok(serverSource.includes("const normalizedSecurity = durableRepository ? await stateRepository.readAccountSecurity"), "Durable repository auth session should read normalized account security");
 assert.ok(serverSource.includes("accounts: []"), "Anonymous auth sessions should not expose account records");
 assert.ok(serverSource.includes("A provider refresh token is required."), "provider refresh should reject missing refresh tokens");
 assert.ok(serverSource.includes("const refreshedSession = await getRequestSessionAsync"), "provider refresh should verify refreshed JWT claims");

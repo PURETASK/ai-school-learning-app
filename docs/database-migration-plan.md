@@ -63,7 +63,7 @@ $env:NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="..."
 npm run supabase:check
 ```
 
-The preflight checks project reachability, JWKS reachability, direct database TCP connectivity, and whether `DATABASE_URL` is configured. It does not print keys or passwords.
+The preflight checks project reachability, JWKS reachability, direct database TCP connectivity, and whether `DATABASE_URL` is configured. When `K12_REPOSITORY_MODE=supabase-rest`, it instead probes every normalized repository table through Supabase PostgREST and reports missing tables. It does not print keys or passwords.
 
 To export normalized seed data from the current prototype state contract:
 

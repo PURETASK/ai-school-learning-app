@@ -2,6 +2,7 @@ import { spawn } from "node:child_process";
 import { request } from "node:https";
 import { Socket } from "node:net";
 import { loadEnvFile } from "../src/env.js";
+import { normalizedRepositoryTableIds } from "../src/repository.js";
 
 loadEnvFile();
 
@@ -121,6 +122,23 @@ function runPsql(sql) {
   });
 }
 
+async function runSupabaseRestProbe() {
+  const secretKey = String(process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
+  if (!supabaseUrl || !secretKey) return { ok: false, missingTables: [], error: "SUPABASE_URL and SUPABASE_SECRET_KEY are not configured" };
+  const headers = { apikey: secretKey, Authorization: `Bearer ${secretKey}` };
+  const checks = await Promise.all(normalizedRepositoryTableIds.map(async (tableId) => {
+    try {
+      const response = await fetch(`${supabaseUrl}/rest/v1/${tableId}?select=*&limit=1`, { headers });
+      return { tableId, ok: response.ok, status: response.status, error: response.ok ? "" : (await response.text()).slice(0, 240) };
+    } catch (error) {
+      return { tableId, ok: false, status: 0, error: sanitize(error.message) };
+    }
+  }));
+  const missingTables = checks.filter((check) => check.status === 404).map((check) => check.tableId);
+  const errors = checks.filter((check) => !check.ok && check.status !== 404).map((check) => `${check.tableId}: ${check.error}`);
+  return { ok: missingTables.length === 0 && errors.length === 0, missingTables, errors };
+}
+
 const supabaseUrl = normalizeBaseUrl(process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL);
 const projectRef = projectRefFromUrl(supabaseUrl);
 const jwksUrl = process.env.SUPABASE_JWKS_URL || (supabaseUrl ? `${supabaseUrl}/auth/v1/.well-known/jwks.json` : "");
@@ -128,24 +146,30 @@ const authHealthUrl = supabaseUrl ? `${supabaseUrl}/auth/v1/health` : "";
 const databaseUrl = databaseUrlParts(process.env.DATABASE_URL);
 const dbHost = process.env.SUPABASE_DB_HOST || databaseUrl.host || (projectRef ? `db.${projectRef}.supabase.co` : "");
 const dbPort = Number(process.env.SUPABASE_DB_PORT || databaseUrl.port || 5432);
+const repositoryMode = String(process.env.K12_REPOSITORY_MODE || (process.env.DATABASE_URL ? "postgres" : "json")).toLowerCase();
 
-const [projectCheck, jwksCheck, tcpCheck, psqlCheck] = await Promise.all([
+const [projectCheck, jwksCheck, tcpCheck, psqlCheck, restCheck] = await Promise.all([
   checkHttps(authHealthUrl, { clientErrorsReachable: true }),
   checkHttps(jwksUrl),
   checkTcp(dbHost, dbPort),
-  runPsql("select current_database() || ':' || current_user;")
+  repositoryMode === "supabase-rest" ? Promise.resolve({ ok: false, output: "", error: "Skipped because Supabase REST repository mode is selected." }) : runPsql("select current_database() || ':' || current_user;"),
+  repositoryMode === "supabase-rest" ? runSupabaseRestProbe() : Promise.resolve({ ok: false, missingTables: [], errors: [], error: "Skipped because Postgres repository mode is selected." })
 ]);
 
 const psqlError = psqlCheck.error.toLowerCase();
 const authenticationFailed = psqlError.includes("password authentication failed") || psqlError.includes("authentication failed");
 const next =
-  bool(process.env.DATABASE_URL) && psqlCheck.ok
+  repositoryMode === "supabase-rest" && restCheck.ok
+    ? "Supabase PostgREST can reach every normalized repository table. Run the application health probe and keep db:apply/db:verify for migration changes."
+    : repositoryMode === "supabase-rest" && restCheck.missingTables?.length
+      ? `Supabase PostgREST is reachable, but the normalized migration is incomplete. Apply the migration; missing tables include ${restCheck.missingTables.slice(0, 5).join(", ")}.`
+      : bool(process.env.DATABASE_URL) && psqlCheck.ok
     ? "Run npm run db:apply, then npm run db:verify."
     : bool(process.env.DATABASE_URL) && authenticationFailed
       ? "The database host is reachable, but PostgreSQL rejected the password. Reset the Supabase database password, update DATABASE_URL in .env, then rerun npm run supabase:check."
       : bool(process.env.DATABASE_URL) && !tcpCheck.ok
         ? "The database URL is set, but the host/port is not reachable from this network. Use the Supabase Session Pooler URI or enable the IPv4 add-on."
-        : "Set DATABASE_URL to postgresql://postgres:<database-password>@<host>:5432/postgres before applying SQL.";
+        : "Set DATABASE_URL to postgresql://postgres:<database-password>@<host>:5432/postgres before applying SQL, or select K12_REPOSITORY_MODE=supabase-rest with server-only Supabase credentials.";
 
 const summary = {
   supabaseUrlConfigured: bool(supabaseUrl),
@@ -162,8 +186,11 @@ const summary = {
   dbUsernameConfigured: bool(databaseUrl.username),
   dbTcpReachable: tcpCheck.ok,
   databaseUrlConfigured: bool(process.env.DATABASE_URL),
+  repositoryMode,
   psqlQuerySucceeded: psqlCheck.ok,
   psqlQueryResult: psqlCheck.ok ? psqlCheck.output : "",
+  supabaseRestQuerySucceeded: restCheck.ok,
+  supabaseRestMissingTables: restCheck.missingTables || [],
   next
 };
 
@@ -172,6 +199,6 @@ console.log(JSON.stringify(summary, null, 2));
 if (projectCheck.error) console.error(`projectError=${projectCheck.error}`);
 if (jwksCheck.error) console.error(`jwksError=${jwksCheck.error}`);
 if (tcpCheck.error && !tcpCheck.ok) console.error(`dbTcpError=${tcpCheck.error}`);
-if (psqlCheck.error && bool(process.env.DATABASE_URL)) console.error(`psqlError=${psqlCheck.error}`);
+if (psqlCheck.error && bool(process.env.DATABASE_URL) && repositoryMode !== "supabase-rest") console.error(`psqlError=${psqlCheck.error}`);
 
-if (bool(process.env.DATABASE_URL) && !psqlCheck.ok) process.exitCode = 1;
+if (repositoryMode === "supabase-rest" ? !restCheck.ok : bool(process.env.DATABASE_URL) && !psqlCheck.ok) process.exitCode = 1;

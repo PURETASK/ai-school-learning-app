@@ -14,6 +14,7 @@ The server now has a production-facing integration layer:
 - Local preview falls back to `K12_DEFAULT_ROLE=platform-admin` when not in production.
 - State reads/writes go through a repository interface instead of direct server file calls.
 - `K12_REPOSITORY_MODE=postgres` switches persistence to PostgreSQL through `DATABASE_URL` and `psql`.
+- `K12_REPOSITORY_MODE=supabase-rest` switches normalized reads and writes to the server-side Supabase PostgREST API. This is a durable database mode for deployments where a `psql` connection is unavailable; it still requires `SUPABASE_URL` and the server-only `SUPABASE_SECRET_KEY`.
 - OpenAI image generation is routed through server-side checks for API key, prompt size, daily limit, estimated cost, and human review.
 - Gift-card fulfillment is routed through a parent/admin server gateway with manual and Tremendous-compatible modes, amount caps, daily caps, and no stored redemption codes.
 - Tutor asks and tutor feedback now go through server routes that enforce session claims, learner consent, and `ai_tutor_events` write permissions before writing the repository.

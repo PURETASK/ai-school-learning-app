@@ -2886,7 +2886,164 @@ export class PostgresStateRepository {
   }
 }
 
+function supabaseRestConfig(env = {}) {
+  const supabaseUrl = String(env.SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL || "").trim().replace(/\/+$/, "");
+  const secretKey = String(env.SUPABASE_SECRET_KEY || env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
+  if (!supabaseUrl || !secretKey) {
+    throw new Error("Supabase REST repository requires SUPABASE_URL and SUPABASE_SECRET_KEY.");
+  }
+  return { supabaseUrl, secretKey };
+}
+
+function restTableMeta(tableId) {
+  const table = productionDataModel.find((item) => item.id === tableId);
+  if (!table) throw new Error(`Unknown production table: ${tableId}`);
+  if (!normalizedRepositoryTableIds.includes(table.id)) {
+    throw new Error(`Table is not exposed through the normalized repository: ${tableId}`);
+  }
+  return table;
+}
+
+function normalizeRestRow(table, row = {}) {
+  const foreignKeys = new Set((table.foreignKeys || []).map((relation) => relation.column));
+  return Object.fromEntries(
+    table.columns
+      .filter((column) => row[column] !== undefined)
+      .map((column) => {
+        let value = row[column];
+        if (value === "" && (foreignKeys.has(column) || isTemporalColumn(column))) value = null;
+        if (isTemporalColumn(column) && typeof value === "string" && Number.isNaN(Date.parse(value))) value = null;
+        return [column, value];
+      })
+  );
+}
+
+export class SupabaseRestStateRepository extends PostgresStateRepository {
+  constructor({ env, fetchImpl = fetch }) {
+    super({ env });
+    this.mode = "supabase-rest";
+    this.fetchImpl = fetchImpl;
+  }
+
+  status() {
+    const config = supabaseRestConfig(this.env);
+    return {
+      mode: this.mode,
+      configured: Boolean(config.supabaseUrl && config.secretKey),
+      durable: true,
+      provider: "supabase-postgrest",
+      table: "public.app_state_snapshots",
+      normalizedTables: normalizedRepositoryTableIds.length
+    };
+  }
+
+  async request(path, { method = "GET", body, headers = {} } = {}) {
+    const { supabaseUrl, secretKey } = supabaseRestConfig(this.env);
+    const response = await this.fetchImpl(`${supabaseUrl}/rest/v1/${path}`, {
+      method,
+      headers: {
+        apikey: secretKey,
+        Authorization: `Bearer ${secretKey}`,
+        ...(body === undefined ? {} : { "Content-Type": "application/json" }),
+        ...headers
+      },
+      ...(body === undefined ? {} : { body: JSON.stringify(body) })
+    });
+    const text = await response.text();
+    let parsed = null;
+    try {
+      parsed = text ? JSON.parse(text) : null;
+    } catch {
+      parsed = text;
+    }
+    if (!response.ok) {
+      const detail = typeof parsed === "string" ? parsed : parsed?.message || parsed?.error || text;
+      throw new Error(`Supabase REST ${method} ${path} failed with HTTP ${response.status}: ${detail}`);
+    }
+    return parsed;
+  }
+
+  async readState() {
+    const rows = await this.request("app_state_snapshots?select=payload&id=eq.current&order=updated_at.desc&limit=1");
+    return mergeInitialState(rows?.[0]?.payload || {});
+  }
+
+  async readNormalizedTable(tableId, options = {}) {
+    const table = restTableMeta(tableId);
+    const limit = normalizedLimit(options.limit || 100);
+    const query = new URLSearchParams({ select: "*", order: `${table.primaryKey}.asc`, limit: String(limit) });
+    return (await this.request(`${table.id}?${query.toString()}`)) || [];
+  }
+
+  async upsertRows(tableId, rows = []) {
+    const table = restTableMeta(tableId);
+    const normalizedRows = rows.map((row) => normalizeRestRow(table, row)).filter((row) => row[table.primaryKey]);
+    for (let index = 0; index < normalizedRows.length; index += 100) {
+      await this.request(`${table.id}?on_conflict=${encodeURIComponent(table.primaryKey)}`, {
+        method: "POST",
+        headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
+        body: normalizedRows.slice(index, index + 100)
+      });
+    }
+  }
+
+  async deleteRowsNotIn(tableId, rows = []) {
+    const table = restTableMeta(tableId);
+    const ids = [...new Set(rows.map((row) => row?.[table.primaryKey]).filter(Boolean))];
+    const filter = ids.length
+      ? `not.in.(${ids.map((id) => encodeURIComponent(String(id))).join(",")})`
+      : "not.is.null";
+    await this.request(`${table.id}?${encodeURIComponent(table.primaryKey)}=${filter}`, {
+      method: "DELETE",
+      headers: { Prefer: "return=minimal" }
+    });
+  }
+
+  async writeProjectedState(state, tableIds, { syncTableIds = [] } = {}) {
+    const nextState = {
+      ...mergeInitialState(state),
+      persistence: {
+        ...(state?.persistence || {}),
+        source: "supabase-rest",
+        syncedAt: new Date().toISOString(),
+        lastError: null
+      },
+      persistedAt: new Date().toISOString()
+    };
+    const projection = createProductionSeedProjection(nextState);
+    for (const tableId of tableIds) {
+      await this.upsertRows(tableId, projection.tables[tableId] || []);
+    }
+    for (const tableId of syncTableIds) {
+      await this.deleteRowsNotIn(tableId, projection.tables[tableId] || []);
+    }
+    await this.request("app_state_snapshots?on_conflict=id", {
+      method: "POST",
+      headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
+      body: [{ id: "current", payload: nextState, created_at: new Date().toISOString(), updated_at: new Date().toISOString() }]
+    });
+    return nextState;
+  }
+
+  async writeAccountProvisioning(state, accountId = "") {
+    const provisioning = createAccountProvisioningRows(state, accountId);
+    if (!provisioning.account) throw new Error(`Account ${accountId} was not found for targeted persistence.`);
+    for (const [tableId, rows] of Object.entries(provisioning.rowsByTable)) await this.upsertRows(tableId, rows);
+    return { mode: this.mode, accountId: provisioning.account.id, tableIds: Object.keys(provisioning.rowsByTable) };
+  }
+
+  async writeSessionRevocation(state, revocationId = "") {
+    const revocation = createSessionRevocationRows(state, revocationId);
+    if (!revocation.revocation) throw new Error("Session revocation was not found for targeted persistence.");
+    await this.upsertRows("session_revocations", revocation.rowsByTable.session_revocations || []);
+    return { mode: this.mode, revocation: revocation.revocation, tableIds: ["session_revocations"] };
+  }
+}
+
 export function createStateRepository({ root, env = process.env }) {
+  if (env.K12_REPOSITORY_MODE === "supabase-rest") {
+    return new SupabaseRestStateRepository({ root, env });
+  }
   if (env.K12_REPOSITORY_MODE === "postgres" || (!env.K12_REPOSITORY_MODE && env.DATABASE_URL)) {
     return new PostgresStateRepository({ env });
   }

@@ -104,6 +104,7 @@ const root = resolve(process.cwd());
 loadEnvFile({ root });
 const port = Number(process.env.PORT || 4173);
 const stateRepository = createStateRepository({ root, env: process.env });
+const isDurableRepository = () => ["postgres", "supabase-rest"].includes(stateRepository.status().mode);
 const isProductionRuntime = () => ["production", "prod"].includes(String(process.env.APP_ENV || process.env.NODE_ENV || "").toLowerCase());
 const configuredAuthProvider = () => String(
   process.env.AUTH_PROVIDER || ((process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL) ? "supabase" : "")
@@ -335,7 +336,7 @@ function writeJsonResponse(response, status, payload) {
 }
 
 function sanitizeScopedApiPayload(payload, session = {}) {
-  if (stateRepository.status().mode !== "postgres" || !["student", "parent", "teacher"].includes(session.role)) return payload;
+  if (!isDurableRepository() || !["student", "parent", "teacher"].includes(session.role)) return payload;
   if (!payload || typeof payload !== "object" || Array.isArray(payload) || !("state" in payload)) return payload;
   const { state, ...scopedPayload } = payload;
   return scopedPayload;
@@ -534,7 +535,7 @@ async function repositoryCanAccessLearner(session, learnerId = "") {
 }
 
 async function readRepositoryLearnerAccess(session, state, learnerId) {
-  if (stateRepository.status().mode !== "postgres") return getLearnerAccess(state, learnerId);
+  if (!isDurableRepository()) return getLearnerAccess(state, learnerId);
   const profile = await readRepositoryLearnerScope(session, learnerId);
   const learner = profile.learners.find((item) => item.id === learnerId);
   if (!learner) return { active: false, aiAllowed: false, blockedReasons: ["Learner access is not in this session's scope."] };
@@ -627,7 +628,7 @@ async function canTeacherAccessLearner(state = {}, session = {}, learnerId = "")
   if (!normalizedLearnerId) return false;
   if (["school-admin", "platform-admin"].includes(session.role)) return true;
   if (session.role !== "teacher" || !session.teacherId) return false;
-  if (stateRepository.status().mode === "postgres") return repositoryCanAccessLearner(session, normalizedLearnerId);
+  if (isDurableRepository()) return repositoryCanAccessLearner(session, normalizedLearnerId);
   return (state.classSections || []).some(
     (section) => section.teacherId === session.teacherId && (section.studentIds || []).includes(normalizedLearnerId)
   );
@@ -813,14 +814,15 @@ async function handleApi(request, response, pathname) {
     return true;
   }
   const postgresRepository = stateRepository.status().mode === "postgres";
-  const authState = postgresRepository ? {} : await ensureStateFile();
+  const durableRepository = isDurableRepository();
+  const authState = durableRepository ? {} : await ensureStateFile();
   const repositorySessionRevoked = session.authenticated ? await stateRepository.isSessionRevoked(session) : false;
   if (isSessionRevoked(authState, session) || repositorySessionRevoked) {
     session = revokedSession(session);
   }
 
   if (request.method === "GET" && pathname === "/api/auth/session") {
-    const normalizedSecurity = postgresRepository ? await stateRepository.readAccountSecurity({ limit: 10000 }) : null;
+    const normalizedSecurity = durableRepository ? await stateRepository.readAccountSecurity({ limit: 10000 }) : null;
     const security = normalizedSecurity
       ? (() => {
           const scoped = session.authenticated
@@ -1239,7 +1241,7 @@ async function handleApi(request, response, pathname) {
       // request middleware enforce the current session without killing other devices.
       if (body.revokeAll) await supabaseSignOut({ accessToken });
       const revoked = await queueStateMutation(async () => {
-        const state = stateRepository.status().mode === "postgres" ? { sessionRevocations: [] } : await ensureStateFile();
+        const state = durableRepository ? { sessionRevocations: [] } : await ensureStateFile();
         const result = revokeAccountSession(state, {
           userId: targetUserId,
           sessionId: body.sessionId || session.sessionId || "",
@@ -2655,8 +2657,8 @@ async function assertProductionStartup() {
   if (!runtime.ready) {
     throw new Error(`Production startup blocked: ${runtime.blockers.join(" ")}`);
   }
-  if (stateRepository.status().mode !== "postgres") {
-    throw new Error("Production startup blocked: K12_REPOSITORY_MODE=postgres is required.");
+  if (!isDurableRepository()) {
+    throw new Error("Production startup blocked: K12_REPOSITORY_MODE=postgres or supabase-rest is required.");
   }
   try {
     await stateRepository.readNormalizedTable("lessons", { limit: 1 });

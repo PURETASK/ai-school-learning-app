@@ -4489,7 +4489,9 @@ export function getRuntimeConfigurationStatus(env = {}) {
   const supabaseUrlConfigured = Boolean(env.SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL);
   const supabasePublishableConfigured = Boolean(env.SUPABASE_PUBLISHABLE_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
   const supabaseSecretConfigured = Boolean(env.SUPABASE_SECRET_KEY);
+  const supabaseRestConfigured = supabaseUrlConfigured && supabaseSecretConfigured;
   const supabaseJwksConfigured = Boolean(env.SUPABASE_JWKS_URL);
+  const durableRepository = ["postgres", "supabase-rest"].includes(repositoryMode);
   const authProviderConfigured = isProductionAuthProviderConfigured(env);
   const authReadiness = getProductionAuthReadiness(env);
   const authBlockers = [...(authReadiness.blockers || []), ...(authReadiness.missing || []).map((item) => `Missing ${item}.`)];
@@ -4500,8 +4502,9 @@ export function getRuntimeConfigurationStatus(env = {}) {
   const warnings = [];
 
   if (repositoryMode === "postgres" && !databaseConfigured) blockers.push("DATABASE_URL is required for Postgres repository mode.");
-  if (productionMode && repositoryMode !== "postgres") blockers.push("Production runtime must use K12_REPOSITORY_MODE=postgres.");
-  if (productionMode && !databaseConfigured) blockers.push("Production runtime must configure DATABASE_URL.");
+  if (repositoryMode === "supabase-rest" && !supabaseRestConfigured) blockers.push("SUPABASE_URL and SUPABASE_SECRET_KEY are required for Supabase REST repository mode.");
+  if (productionMode && !durableRepository) blockers.push("Production runtime must use K12_REPOSITORY_MODE=postgres or supabase-rest.");
+  if (productionMode && !databaseConfigured && !supabaseRestConfigured) blockers.push("Production runtime must configure a durable database connection.");
   if (productionMode && !authProviderConfigured) blockers.push("Production runtime must configure Supabase or another trusted auth provider.");
   if (authProviderConfigured && !authReadiness.passed) blockers.push(...authBlockers);
   if (!openAiImage.ready) warnings.push("OpenAI image generation is not ready; image prompts stay review-only until OPENAI_API_KEY and image settings are configured.");
@@ -4516,6 +4519,7 @@ export function getRuntimeConfigurationStatus(env = {}) {
     productionMode,
     repositoryMode,
     databaseConfigured,
+    databaseConnectionConfigured: databaseConfigured || (repositoryMode === "supabase-rest" && supabaseRestConfigured),
     supabaseUrlConfigured,
     supabasePublishableConfigured,
     supabaseSecretConfigured,
@@ -4531,16 +4535,16 @@ export function getRuntimeConfigurationStatus(env = {}) {
       {
         id: "repository-mode",
         label: "Repository mode",
-        passed: repositoryMode === "postgres" ? databaseConfigured : !productionMode,
+        passed: repositoryMode === "postgres" ? databaseConfigured : repositoryMode === "supabase-rest" ? supabaseRestConfigured : !productionMode,
         value: repositoryMode,
-        detail: repositoryMode === "postgres" ? "Postgres selected." : "JSON fallback selected."
+        detail: repositoryMode === "postgres" ? "Postgres selected." : repositoryMode === "supabase-rest" ? "Supabase PostgREST selected." : "JSON fallback selected."
       },
       {
         id: "database-url",
         label: "Database URL",
-        passed: databaseConfigured,
-        value: databaseConfigured ? "configured" : "missing",
-        detail: "Required before applying migrations, seeding Supabase, or running production runtime."
+        passed: databaseConfigured || (repositoryMode === "supabase-rest" && supabaseRestConfigured),
+        value: databaseConfigured ? "configured" : repositoryMode === "supabase-rest" && supabaseRestConfigured ? "supabase-rest" : "missing",
+        detail: repositoryMode === "supabase-rest" ? "Supabase REST credentials are required for durable normalized reads and writes." : "Required before applying migrations, seeding Supabase, or running production runtime."
       },
       {
         id: "supabase-auth",
@@ -4707,7 +4711,9 @@ export function getProductCompletenessAudit(state = createInitialState(), env = 
   const dataModel = getProductionDataModelReadiness(state);
   const contentReviewQueue = (state.contentDrafts || []).filter((draft) => draft.status === "review" || draft.publicationBlocked).length;
   const corePilotReady = pilotQuality.scaleUnlocked && published.total >= 6 && published.withVisualSupports >= 6 && published.withQuiz >= 6;
-  const databaseBlocked = !runtime.databaseConfigured || runtime.repositoryMode !== "postgres";
+  const durableRepository = ["postgres", "supabase-rest"].includes(runtime.repositoryMode);
+  const databaseConfigured = runtime.databaseConnectionConfigured ?? runtime.databaseConfigured;
+  const databaseBlocked = !databaseConfigured || !durableRepository;
   const liveDatabaseHealthy = runtime.databaseVerified === true || runtime.liveHealth?.healthy === true;
   const productionAuthReady = runtime.authProviderConfigured && runtime.authReadiness?.passed;
   const categories = [
@@ -4721,9 +4727,9 @@ export function getProductCompletenessAudit(state = createInitialState(), env = 
     {
       id: "runtime",
       title: "Runtime configuration",
-      status: auditStatus(runtime.ready && runtime.repositoryMode === "postgres", databaseBlocked),
-      evidence: `Repository=${runtime.repositoryMode}; database=${runtime.databaseConfigured ? "configured" : "missing"}; OpenAI=${runtime.openAiImage.ready ? "ready" : "review-only"}.`,
-      nextStep: databaseBlocked ? "Add DATABASE_URL and K12_REPOSITORY_MODE=postgres, then apply and verify the Supabase migration." : "Keep production runtime checks visible in Setup/Admin."
+      status: auditStatus(runtime.ready && durableRepository, databaseBlocked),
+      evidence: `Repository=${runtime.repositoryMode}; database=${databaseConfigured ? "configured" : "missing"}; OpenAI=${runtime.openAiImage.ready ? "ready" : "review-only"}.`,
+      nextStep: databaseBlocked ? "Configure K12_REPOSITORY_MODE=postgres with DATABASE_URL or K12_REPOSITORY_MODE=supabase-rest with Supabase URL and secret, then verify the normalized repository." : "Keep production runtime checks visible in Setup/Admin."
     },
     {
       id: "auth",
@@ -4735,10 +4741,10 @@ export function getProductCompletenessAudit(state = createInitialState(), env = 
     {
       id: "database",
       title: "Database migration and normalized repository",
-      status: auditStatus(migration.passed && dataModel.passed && runtime.databaseConfigured && liveDatabaseHealthy, !runtime.databaseConfigured || (runtime.repositoryMode === "postgres" && !liveDatabaseHealthy)),
-      evidence: `${dataModel.schema.tableCount} tables modeled; migration ${migration.passed ? "ready" : "not ready"}; DB ${runtime.databaseConfigured ? "configured" : "missing"}; live probe ${liveDatabaseHealthy ? "passed" : "not verified"}.`,
-      nextStep: !runtime.databaseConfigured
-        ? "Paste DATABASE_URL into the server environment before applying SQL."
+      status: auditStatus(migration.passed && dataModel.passed && databaseConfigured && liveDatabaseHealthy, !databaseConfigured || (durableRepository && !liveDatabaseHealthy)),
+      evidence: `${dataModel.schema.tableCount} tables modeled; migration ${migration.passed ? "ready" : "not ready"}; DB ${databaseConfigured ? "configured" : "missing"}; live probe ${liveDatabaseHealthy ? "passed" : "not verified"}.`,
+      nextStep: !databaseConfigured
+        ? "Configure a durable Postgres or Supabase REST repository before applying or verifying the migration."
         : liveDatabaseHealthy
           ? "Keep db:verify in deployment checks after every migration."
           : "Run npm run supabase:check, repair DATABASE_URL credentials, then apply and verify the migration."

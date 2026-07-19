@@ -280,7 +280,7 @@ writeAuditEvent(input)
 
 ### Acceptance Criteria
 
-- `APP_ENV=production` fails startup if `DATABASE_URL` is missing.
+- `APP_ENV=production` fails startup unless a durable repository is configured: `K12_REPOSITORY_MODE=postgres` with `DATABASE_URL`, or `K12_REPOSITORY_MODE=supabase-rest` with `SUPABASE_URL` and `SUPABASE_SECRET_KEY`.
 - Production mode does not write to `data/app-state.json`.
 - Catalog reads come from normalized lessons/activities/quizzes/progress tables.
 - Quiz completion writes submitted answers, attempts, progress, mastery, recall schedules, and learning events through a scoped repository route.
