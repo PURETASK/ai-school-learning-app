@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "2.0",
+  "schemaVersion": "3",
   "id": "FA-G3-ELA-U2-L1",
   "title": "Finding the Main Idea",
   "academy": "foundation",
@@ -561,6 +561,22 @@
     ],
     "extensionRule": "Unlock at 90+ mastery or teacher/parent assignment; still schedule Memory Vault review."
   },
+  "lessonFamily": "reasoning_lab",
+  "secondaryLessonFamily": "concept_launch",
+  "activePhases": ["orient", "model", "deconstruct", "practice", "reason", "prove", "remember", "transfer", "adapt"],
+  "targetLearningStates": ["acquiring", "developing", "accurate", "secure"],
+  "successCriteria": ["I can say what the text is mostly about.", "I can name the most important details.", "I can explain how the details support the main idea.", "I can summarize without adding a new opinion."],
+  "outcomes": {"knowledge": ["The main idea is the most important message or point."], "capability": ["Choose important details and write a short summary."], "reasoning": ["Separate a central detail from an interesting but less important detail."], "retention": ["Recall the main-idea test after a delay."], "transfer": ["Find the main idea in a new story, article, or video."]},
+  "phaseModules": [{"phase":"orient","title":"Notice what matters","studentAction":"Look at the title and pictures and predict what the text may teach.","successCheck":"I can make a prediction and name my clue."},{"phase":"model","title":"Watch a reader find the point","studentAction":"Follow a think-aloud that connects repeated details to the main idea.","successCheck":"I can point to the detail that supports the point."},{"phase":"deconstruct","title":"Sort important details","studentAction":"Sort details into helps the main idea, interesting, or unrelated.","successCheck":"I can explain why one detail matters more."},{"phase":"practice","title":"Build the meaning map","studentAction":"Place the title, main idea, and supporting details on a reading map.","successCheck":"The details fit the same central idea."},{"phase":"reason","title":"Explain the connection","studentAction":"Use because to explain how one detail supports the main idea.","successCheck":"My explanation connects detail to point."},{"phase":"prove","title":"Show what you know","studentAction":"Answer the reading questions and write a short evidence-based summary.","successCheck":"My summary stays focused on the text."},{"phase":"remember","title":"Retrieve the reader test","studentAction":"Return later and name the main-idea questions without seeing the map.","successCheck":"I can recall the test independently."},{"phase":"transfer","title":"Read a new text","studentAction":"Find the main idea in a new short text and defend it with two details.","successCheck":"The strategy works in a new text."},{"phase":"adapt","title":"Repair or extend","studentAction":"If the idea is too broad, narrow it; if secure, write a title for the text.","successCheck":"My next move fits my evidence."}],
+  "proofTasks": [{"proof":"recall","prompt":"Explain what the main idea is.","independentRequired":true},{"proof":"explain","prompt":"Explain why one detail supports the main idea.","independentRequired":true},{"proof":"perform","prompt":"Find the main idea and summarize a new text.","independentRequired":true},{"proof":"retain","prompt":"Retrieve the main-idea test after a delay.","independentRequired":true},{"proof":"transfer","prompt":"Apply the strategy to a new article or story.","independentRequired":true}],
+  "requiredMasteryProofs": ["recall", "explain", "perform", "retain", "transfer"],
+  "feedbackRules": [{"diagnosisCode":"detail-not-point","result":"The learner chooses an interesting detail instead of the central idea.","hint":"Ask which detail helps explain the whole text.","action":"Return to the detail sort."},{"diagnosisCode":"summary-opinion","result":"The summary adds an opinion that the text does not support.","hint":"Retell the important point and details only.","action":"Use the summary frame."}],
+  "reteachPaths": [{"id":"g3-main-idea-reteach","trigger":"The learner cannot choose important details.","action":"Use three short details and ask which one connects to the title and most of the text."}],
+  "prerequisiteRepairPaths": [{"id":"g3-main-idea-reading-repair","trigger":"The learner cannot retell the text sequence.","action":"Read a shorter passage, sequence three events, then name what they show together."}],
+  "challengePaths": [{"id":"g3-main-idea-challenge","trigger":"The learner supports a main idea independently.","action":"Compare two possible main ideas and explain which one fits more details."}],
+  "visualSupports": [{"placement":"lesson-hero","title":"Main-idea spotlight","description":"A reading page highlights repeated clues that point to one central message.","altText":"Repeated text clues point toward one main idea."},{"placement":"teaching-diagram","title":"Detail-to-idea map","description":"Arrows connect supporting details to the central idea.","altText":"Several detail boxes connect to one main-idea box."},{"placement":"interactive-widget","title":"Detail sorter","description":"The learner sorts details by how strongly they support the main idea.","altText":"A keyboard-sortable list groups important and less important details."},{"placement":"misconception-repair","title":"Interesting or important?","description":"A comparison shows an exciting detail beside a detail that supports the whole text.","altText":"An interesting detail is contrasted with a central supporting detail."},{"placement":"memory-vault","title":"Reader test cue","description":"Ask what is mostly about, which details repeat, and what they show together.","altText":"Three questions cue retrieval of the main-idea strategy."}],
+  "contentStatus":"pilot_ready",
+  "version":"3.0.0-foundation-grade3-main-idea",
   "mastery": {
     "bands": [
       {

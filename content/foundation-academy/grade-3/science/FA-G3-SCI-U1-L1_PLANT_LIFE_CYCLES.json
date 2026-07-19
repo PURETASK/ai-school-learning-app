@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "2.0",
+  "schemaVersion": "3",
   "id": "FA-G3-SCI-U1-L1",
   "title": "Plant Life Cycles",
   "academy": "foundation",
@@ -562,6 +562,22 @@
     ],
     "extensionRule": "Unlock at 90+ mastery or teacher/parent assignment; still schedule Memory Vault review."
   },
+  "lessonFamily": "inquiry_investigation",
+  "secondaryLessonFamily": "concept_launch",
+  "activePhases": ["orient", "model", "deconstruct", "practice", "reason", "prove", "remember", "transfer", "adapt"],
+  "targetLearningStates": ["acquiring", "developing", "accurate", "secure"],
+  "successCriteria": ["I can put plant life-cycle stages in order.", "I can describe what changes at each stage.", "I can use a model to explain how plant needs support growth.", "I can compare two plant life cycles."],
+  "outcomes": {"knowledge":["Plants change through connected life-cycle stages."],"capability":["Build and explain a labeled life-cycle model."],"reasoning":["Connect plant needs and structures to changes across the cycle."],"retention":["Recall the life-cycle sequence after a delay."],"transfer":["Use the model to explain a new plant or growing condition."]},
+  "phaseModules": [{"phase":"orient","title":"Meet a seed","studentAction":"Observe a seed or plant image and predict what it needs to change.","successCheck":"I can name a question about growth."},{"phase":"model","title":"Watch the cycle","studentAction":"Follow a labeled model from seed to mature plant and back to new seeds.","successCheck":"I can point to each stage."},{"phase":"deconstruct","title":"Name the changes","studentAction":"Sort plant structures, needs, and stage descriptions.","successCheck":"I can connect a change to its stage."},{"phase":"practice","title":"Build the life-cycle wheel","studentAction":"Place stage cards in order and add one need or feature to each.","successCheck":"The cycle has a sensible sequence and labels."},{"phase":"reason","title":"Explain growth","studentAction":"Use evidence from the model to explain how water, light, and structures support a stage.","successCheck":"I connect need, structure, and change."},{"phase":"prove","title":"Show the cycle","studentAction":"Answer questions and explain a new plant life-cycle diagram.","successCheck":"I can use the model without copying a sentence."},{"phase":"remember","title":"Retrieve the wheel","studentAction":"Rebuild the stage sequence after a delay.","successCheck":"I can recall the order and one feature."},{"phase":"transfer","title":"Compare plants","studentAction":"Compare this cycle with a different plant or growing condition.","successCheck":"I notice what stays the same and what changes."},{"phase":"adapt","title":"Repair or extend","studentAction":"Fix a missing stage or predict what happens when one need changes.","successCheck":"My next move matches the evidence."}],
+  "proofTasks":[{"proof":"recall","prompt":"Name the plant life-cycle stages in order.","independentRequired":true},{"proof":"explain","prompt":"Explain how one plant need supports growth.","independentRequired":true},{"proof":"perform","prompt":"Build and explain a new life-cycle model.","independentRequired":true},{"proof":"retain","prompt":"Reconstruct the cycle after a delay.","independentRequired":true},{"proof":"transfer","prompt":"Compare a new plant or growing condition.","independentRequired":true}],
+  "requiredMasteryProofs":["recall","explain","perform","retain","transfer"],
+  "feedbackRules":[{"diagnosisCode":"stage-order","result":"The learner cannot order the life-cycle stages.","hint":"Find the stage where the plant begins and trace what changes next.","action":"Return to the cycle wheel."},{"diagnosisCode":"needs-list-only","result":"The learner lists needs without connecting them to growth.","hint":"Say what the need helps the plant do.","action":"Use the need-structure-change frame."}],
+  "reteachPaths":[{"id":"g3-plant-cycle-reteach","trigger":"The learner cannot sequence the stages.","action":"Use four picture cards and one observable change per card before adding vocabulary."}],
+  "prerequisiteRepairPaths":[{"id":"g3-plant-observation-repair","trigger":"The learner cannot identify basic plant parts.","action":"Review root, stem, leaf, flower, and seed with a labeled plant model."}],
+  "challengePaths":[{"id":"g3-plant-cycle-challenge","trigger":"The learner explains the cycle independently.","action":"Predict how less light or water could affect one stage and defend the prediction."}],
+  "visualSupports":[{"placement":"lesson-hero","title":"Plant life-cycle wheel","description":"A bright labeled wheel shows stages, changes, and plant needs.","altText":"A circular diagram labels plant life-cycle stages."},{"placement":"teaching-diagram","title":"Need to change map","description":"Arrows connect water, light, structures, and growth changes.","altText":"Arrows connect plant needs to structures and changes."},{"placement":"interactive-widget","title":"Build-a-cycle cards","description":"The learner orders stage cards and adds a label to each.","altText":"Keyboard-sortable stage cards form a labeled cycle."},{"placement":"misconception-repair","title":"Cycle or straight line?","description":"A comparison shows a repeating cycle rather than a one-way list.","altText":"A repeating cycle is contrasted with a line that stops at the adult plant."},{"placement":"memory-vault","title":"Seed-to-seed cue","description":"A retrieval cue asks what changes from seed to plant and back to seed.","altText":"A seed-to-seed question cues the cycle sequence."}],
+  "contentStatus":"pilot_ready",
+  "version":"3.0.0-foundation-grade3-plant-cycles",
   "mastery": {
     "bands": [
       {

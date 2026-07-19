@@ -276,7 +276,8 @@ const v2V3MigrationReport = buildMigrationReadinessReport({ root: process.cwd() 
 assert.equal(v2V3MigrationReport.summary.contentFiles, 21, "migration report should inventory legacy and native on-disk content files");
 assert.equal(v2V3MigrationReport.summary.seedLessonFiles, 16, "migration report should inventory the 16 seed lesson files");
 assert.equal(v2V3MigrationReport.summary.nativeV3Pilots, 5, "migration report should identify the five native V3 pilot exemplars");
-assert.ok(v2V3MigrationReport.checks.some((item) => item.id === "native-content-files" && !item.passed), "migration report should expose the remaining on-disk V3 migration gap");
+assert.ok(v2V3MigrationReport.checks.some((item) => item.id === "native-content-files" && item.passed), "migration report should confirm all on-disk content is native V3");
+assert.equal(v2V3MigrationReport.status, "ready", "migration report should be ready after the complete on-disk V3 migration");
 assert.equal(getNativeV3ExemplarRecords().length, 5, "native V3 export should expose all five authored exemplars");
 
 const totals = getCurriculumTotals();

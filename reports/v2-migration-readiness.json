@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-19T11:05:30.906Z",
+  "generatedAt": "2026-07-19T11:14:00.285Z",
   "root": "C:\\Users\\onlyw\\Documents\\ai school",
-  "status": "migration-required",
-  "passed": false,
+  "status": "ready",
+  "passed": true,
   "summary": {
     "pilotLessons": 8,
     "nativeV3Pilots": 5,
@@ -11,8 +11,7 @@
     "contentFiles": 21,
     "seedLessonFiles": 16,
     "contentVersions": {
-      "3": 12,
-      "2.0": 9
+      "3": 21
     }
   },
   "checks": [
@@ -61,8 +60,8 @@
     {
       "id": "native-content-files",
       "label": "All on-disk content is native V3",
-      "passed": false,
-      "detail": "12/21 on-disk content files currently declare schemaVersion 3.",
+      "passed": true,
+      "detail": "21/21 on-disk content files currently declare schemaVersion 3.",
       "blocking": true
     },
     {
@@ -205,8 +204,6 @@
       ]
     }
   ],
-  "nextActions": [
-    "All on-disk content is native V3"
-  ],
+  "nextActions": [],
   "releaseRule": "Do not expand student-facing content production until the V3 exemplars, adapter/player checks, review gate, and on-disk content migration are verified."
 }
