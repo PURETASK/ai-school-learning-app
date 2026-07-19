@@ -59,6 +59,8 @@ function validateNativePilot(lesson) {
 export function buildMigrationReadinessReport({ root = defaultRoot } = {}) {
   const contentFiles = readJsonFiles(path.join(root, "content"));
   const seedFiles = readJsonFiles(path.join(root, "seed-lessons", "lessons", "json"));
+  const nativeContentRoot = path.join(root, "content", "native-v3") + path.sep;
+  const legacyContentFiles = contentFiles.filter((item) => !item.file.startsWith(nativeContentRoot));
   const nativePilots = pilotLessons.filter((lesson) => lesson.schemaVersion === "3");
   const adaptedPilots = pilotLessons.filter((lesson) => lesson.schemaVersion !== "3");
   const nativePilotResults = nativePilots.map(validateNativePilot);
@@ -103,13 +105,13 @@ export function buildMigrationReadinessReport({ root = defaultRoot } = {}) {
     check(
       "legacy-content-inventory",
       "On-disk legacy content is accounted for",
-      contentFiles.length > 0 && seedFiles.length === contentFiles.length && Object.keys(contentVersions).every((version) => version !== "invalid-json"),
-      `${contentFiles.length} content files and ${seedFiles.length} seed lesson files were inventoried.`
+      legacyContentFiles.length > 0 && seedFiles.length === legacyContentFiles.length && Object.keys(contentVersions).every((version) => version !== "invalid-json"),
+      `${legacyContentFiles.length} legacy content files and ${seedFiles.length} seed lesson files were inventoried; ${contentFiles.length - legacyContentFiles.length} native V3 files are tracked separately.`
     ),
     check(
       "native-content-files",
-      "On-disk content includes native V3 lesson files",
-      contentFiles.some((item) => item.value?.schemaVersion === "3"),
+      "All on-disk content is native V3",
+      contentFiles.length > 0 && contentFiles.every((item) => item.value?.schemaVersion === "3"),
       `${contentVersions["3"] || 0}/${contentFiles.length} on-disk content files currently declare schemaVersion 3.`
     ),
     check(

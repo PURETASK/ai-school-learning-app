@@ -1,0 +1,350 @@
+{
+  "id": "g9-biology-cells",
+  "academyId": "scholar",
+  "grade": "9",
+  "subject": "science",
+  "courseTitle": "Biology",
+  "unitTitle": "Cells",
+  "title": "Cell Structure and Function",
+  "objective": "Explain how major cell structures support life processes.",
+  "standards": [
+    "ngss"
+  ],
+  "estimatedMinutes": 35,
+  "masteryThreshold": 80,
+  "xp": 180,
+  "visual": {
+    "type": "cell-diagram",
+    "title": "Cell systems image",
+    "caption": "A labeled cell diagram that connects structures to jobs: information, energy, transport, and protection."
+  },
+  "teachingSupport": {
+    "summary": "Cell structures are easier to remember when they are linked to jobs in a living system.",
+    "description": "Learners analyze a diagram, diagnose a cell failure, and defend which structure explains the evidence.",
+    "diagramCallouts": [
+      {
+        "title": "Information",
+        "body": "The nucleus stores instructions that guide cell activity."
+      },
+      {
+        "title": "Energy",
+        "body": "Mitochondria transfer energy that cells can use for work."
+      },
+      {
+        "title": "Boundary",
+        "body": "The cell membrane controls movement into and out of the cell."
+      }
+    ],
+    "helperNotes": [
+      "Sort organelles by job category before memorizing names.",
+      "Use claim-evidence-reasoning for every cell failure diagnosis.",
+      "Compare plant and animal cells by structure and function, not only appearance."
+    ],
+    "commonMisunderstandings": [
+      {
+        "mistake": "Memorizing organelle names without knowing the job.",
+        "fix": "Ask what would break in the cell if that structure stopped working."
+      },
+      {
+        "mistake": "Confusing cell wall and cell membrane.",
+        "fix": "Compare support/protection with controlled movement across a boundary."
+      }
+    ],
+    "confusionPrompt": "Write whether you are stuck on organelle names, jobs, evidence, or comparing plant and animal cells."
+  },
+  "funTasks": [
+    "Run a cell city simulation where each role must keep the cell alive for three rounds.",
+    "Build a claim-evidence-reasoning card for one organelle failure.",
+    "Design a before/after image showing how a plant cell differs from an animal cell."
+  ],
+  "groupHomework": {
+    "title": "Organelle emergency room",
+    "groupSize": "3-5 learners",
+    "roles": [
+      "Systems doctor",
+      "Evidence analyst",
+      "Diagram designer",
+      "Skeptic",
+      "Presenter"
+    ],
+    "sharedOutcome": "Diagnose a mystery cell failure and present the evidence trail.",
+    "parentRole": "Ask the team to explain why their diagnosis fits the evidence."
+  },
+  "retentionChecks": [
+    "24-hour organelle sort",
+    "Seven-day transfer case",
+    "One-month biology spiral review"
+  ],
+  "reward": "Unlock the Systems Biologist badge after the transfer case, not just the first quiz.",
+  "sections": {
+    "warmup": "Compare a cell to a city system and name three jobs that must happen.",
+    "teach": "Organelles perform specialized functions: the nucleus stores genetic instructions, mitochondria transfer energy, and membranes regulate movement.",
+    "guidedPractice": "Match organelles to evidence-based function statements.",
+    "independentPractice": "Analyze a cell diagram and explain what happens if one structure fails.",
+    "activity": "Build a labeled model with a claim-evidence-reasoning note.",
+    "reteach": "Sort organelles by job category: information, energy, transport, structure.",
+    "challenge": "Compare plant and animal cells using three structural differences."
+  },
+  "quiz": [
+    {
+      "id": "g9-cells-q1",
+      "prompt": "Which structure controls what enters and leaves the cell?",
+      "choices": [
+        "Cell membrane",
+        "Nucleus",
+        "Ribosome",
+        "Vacuole"
+      ],
+      "answerIndex": 0,
+      "explanation": "The cell membrane regulates movement into and out of the cell."
+    },
+    {
+      "id": "g9-cells-q2",
+      "prompt": "Which organelle is most directly tied to energy transfer?",
+      "choices": [
+        "Mitochondrion",
+        "Nucleus",
+        "Cell wall",
+        "Golgi body"
+      ],
+      "answerIndex": 0,
+      "explanation": "Mitochondria are the major site of cellular energy transfer."
+    }
+  ],
+  "studentFacing": {
+    "mission": "Diagnose a living system by matching cell structures to the jobs they perform.",
+    "whyItMatters": "Biology becomes easier when names connect to jobs and evidence, not memorized labels.",
+    "bigIdea": "Cell structures support life processes by handling information, energy, transport, boundaries, and building.",
+    "modelSteps": [
+      "Sort each structure by job category.",
+      "Ask what would fail if that structure stopped working.",
+      "Use claim, evidence, and reasoning to defend the diagnosis."
+    ],
+    "example": "If a cell cannot control what enters or leaves, the membrane is the strongest suspect.",
+    "nonExample": "Knowing the word mitochondrion is not enough; you need to connect it to energy transfer evidence.",
+    "quickCheck": "For each organelle, say the job and one sign that the job failed.",
+    "studentSummary": "Cell parts are system tools; each structure matters because of the job it performs.",
+    "tutorHandoff": "Tell the tutor if you are stuck on names, jobs, evidence, or plant-vs-animal comparisons."
+  },
+  "schemaVersion": "3",
+  "academy": "scholar",
+  "gradeLevel": "9",
+  "course": "Biology",
+  "unitId": "cell-structure-and-function",
+  "lessonNumber": 1,
+  "lessonFamily": "inquiry_investigation",
+  "secondaryLessonFamily": "reasoning_lab",
+  "activePhases": [
+    "orient",
+    "model",
+    "deconstruct",
+    "practice",
+    "reason",
+    "prove",
+    "remember",
+    "transfer",
+    "adapt"
+  ],
+  "targetLearningStates": [
+    "acquiring",
+    "developing",
+    "accurate",
+    "secure"
+  ],
+  "learningObjective": "Explain how major cell structures support life processes.",
+  "successCriteria": [
+    "I can connect a cell structure to a life-process job.",
+    "I can use evidence from a diagram or case to diagnose a failed structure.",
+    "I can distinguish a plausible function claim from a memorized label.",
+    "I can transfer the structure-function model to plant, animal, or engineered-cell evidence."
+  ],
+  "essentialQuestion": "How can structure-function evidence explain what a cell can and cannot do?",
+  "standardsTags": [
+    "ngss"
+  ],
+  "thinkingSkillTags": [
+    "structure-function",
+    "systems-thinking",
+    "claim-evidence-reasoning",
+    "model-based-inference",
+    "transfer"
+  ],
+  "vocabularyTerms": [
+    "organelle",
+    "nucleus",
+    "membrane",
+    "mitochondrion",
+    "ribosome",
+    "cytoplasm",
+    "structure-function"
+  ],
+  "prerequisiteSkillIds": [
+    "read-labeled-diagram",
+    "identify-evidence",
+    "write-claim-evidence-reasoning"
+  ],
+  "outcomes": {
+    "knowledge": [
+      "Cell structures have specialized jobs that support information, energy, transport, boundaries, and construction.",
+      "A structure-function explanation is stronger when it connects a failure pattern to a specific job."
+    ],
+    "capability": [
+      "Diagnose a cell-system failure from diagram and case evidence.",
+      "Construct and defend a structure-function explanation."
+    ],
+    "reasoning": [
+      "Infer the most likely failed structure from what the cell can no longer do."
+    ],
+    "retention": [
+      "Retrieve organelle jobs through mixed cases rather than isolated label recall."
+    ],
+    "transfer": [
+      "Apply the structure-function model to a changed cell type or designed biological system."
+    ]
+  },
+  "phaseModules": [
+    {
+      "phase": "orient",
+      "title": "Read the system",
+      "studentAction": "List the life jobs a cell must perform and predict what evidence would reveal a failure.",
+      "visualSupport": "Cell systems map organized by information, energy, boundary, and construction.",
+      "successCheck": "I can name a job before naming an organelle."
+    },
+    {
+      "phase": "model",
+      "title": "Connect structure to job",
+      "studentAction": "Trace one organelle from its structure to its job and the evidence of that job.",
+      "visualSupport": "Labeled cell diagram with job callouts.",
+      "successCheck": "The explanation includes structure, job, and evidence."
+    },
+    {
+      "phase": "deconstruct",
+      "title": "Separate label from reason",
+      "studentAction": "Sort statements into structure, function, evidence, or unsupported guess.",
+      "successCheck": "I can identify what a claim still needs to prove."
+    },
+    {
+      "phase": "practice",
+      "title": "Diagnose a case",
+      "studentAction": "Use a case card and cell model to identify the most likely failed structure.",
+      "visualSupport": "Case-to-organelle evidence board.",
+      "successCheck": "I can cite at least two relevant clues."
+    },
+    {
+      "phase": "reason",
+      "title": "Defend the diagnosis",
+      "studentAction": "Write or speak a claim-evidence-reasoning explanation and compare an alternative diagnosis.",
+      "successCheck": "My reasoning explains why the evidence fits better than the alternative."
+    },
+    {
+      "phase": "prove",
+      "title": "Show biological understanding",
+      "studentAction": "Analyze a new diagram and defend one structure-function conclusion independently.",
+      "successCheck": "The proof uses evidence, not only vocabulary."
+    },
+    {
+      "phase": "remember",
+      "title": "Mixed organelle retrieval",
+      "studentAction": "After a delay, match jobs to structures in a mixed set and explain one match.",
+      "successCheck": "I can retrieve the job when the order and context change."
+    },
+    {
+      "phase": "transfer",
+      "title": "Design a better cell",
+      "studentAction": "Apply structure-function reasoning to a plant cell comparison or an engineered cell with a new job.",
+      "successCheck": "I can predict a structural requirement and defend it."
+    },
+    {
+      "phase": "adapt",
+      "title": "Choose evidence support",
+      "studentAction": "Decide whether the next step is a diagram sort, prerequisite repair, alternate model, or challenge case.",
+      "successCheck": "I can name the evidence gap that controls my next move."
+    }
+  ],
+  "proofTasks": [
+    {
+      "proof": "recall",
+      "prompt": "Retrieve three organelle jobs after a delay.",
+      "independentRequired": true
+    },
+    {
+      "proof": "explain",
+      "prompt": "Explain one structure-function relationship with evidence.",
+      "independentRequired": true
+    },
+    {
+      "proof": "perform",
+      "prompt": "Diagnose a cell failure from a new case card.",
+      "independentRequired": true
+    },
+    {
+      "proof": "retain",
+      "prompt": "Complete a mixed Memory Vault organelle review.",
+      "independentRequired": true
+    },
+    {
+      "proof": "transfer",
+      "prompt": "Predict a structural feature for an engineered cell and defend the prediction.",
+      "independentRequired": true
+    }
+  ],
+  "requiredMasteryProofs": [
+    "recall",
+    "explain",
+    "perform",
+    "retain",
+    "transfer"
+  ],
+  "feedbackRules": [
+    {
+      "diagnosisCode": "label_without_job",
+      "result": "The learner named a structure without explaining its function.",
+      "hint": "Ask what would stop working if the structure failed.",
+      "action": "Route to structure-job-evidence sorting."
+    },
+    {
+      "diagnosisCode": "membrane_wall_confusion",
+      "result": "The learner treated boundary support and controlled movement as the same job.",
+      "hint": "Compare protection and shape with selective movement across a boundary.",
+      "action": "Route to alternate boundary model and retry."
+    },
+    {
+      "diagnosisCode": "weak_evidence_link",
+      "result": "The learner cited a clue without explaining why it supports the claim.",
+      "hint": "Add the because sentence between the evidence and the function.",
+      "action": "Route to CER frame before a new diagnosis."
+    }
+  ],
+  "reteachPaths": [
+    {
+      "id": "g9-biology-cells-reteach",
+      "trigger": "The learner can name structures but cannot connect them to evidence.",
+      "action": "Sort organelles by job, model one structure-function chain, then retry a smaller case."
+    }
+  ],
+  "prerequisiteRepairPaths": [
+    {
+      "id": "g9-biology-cells-prerequisite",
+      "trigger": "The learner cannot read the diagram or identify evidence.",
+      "action": "Repair diagram-reading and claim-evidence-reasoning skills before organelle diagnosis."
+    }
+  ],
+  "challengePaths": [
+    {
+      "id": "g9-biology-cells-challenge",
+      "trigger": "The learner independently diagnoses changed cases.",
+      "action": "Compare plant and animal cells or design a structure for a novel biological function."
+    }
+  ],
+  "parentTeacherNotes": "Keep the lesson evidence-driven. A vocabulary-perfect response without a defensible structure-function explanation should remain below transferable mastery.",
+  "accessibilityNotes": [
+    "Provide a text-based description of every diagram and a keyboard-completable sort.",
+    "Do not rely on color alone for organelle categories.",
+    "Allow oral CER explanation or labeled drawing when writing mechanics are not the target."
+  ],
+  "safetyNotes": [
+    "Keep biological examples classroom-safe and do not imply medical diagnosis from cell analogies."
+  ],
+  "contentStatus": "pilot_ready",
+  "version": "3.0.0-scholar-cells-exemplar"
+}

@@ -270,12 +270,14 @@ import {
 } from "../src/nexusV3.js";
 import { parseRosterCsv } from "../src/roster.js";
 import { buildMigrationReadinessReport } from "../scripts/report-v2-migration-readiness.mjs";
+import { getNativeV3ExemplarRecords } from "../scripts/export-native-v3-exemplars.mjs";
 
 const v2V3MigrationReport = buildMigrationReadinessReport({ root: process.cwd() });
-assert.equal(v2V3MigrationReport.summary.contentFiles, 16, "migration report should inventory the 16 canonical on-disk content files");
+assert.equal(v2V3MigrationReport.summary.contentFiles, 21, "migration report should inventory legacy and native on-disk content files");
 assert.equal(v2V3MigrationReport.summary.seedLessonFiles, 16, "migration report should inventory the 16 seed lesson files");
 assert.equal(v2V3MigrationReport.summary.nativeV3Pilots, 5, "migration report should identify the five native V3 pilot exemplars");
 assert.ok(v2V3MigrationReport.checks.some((item) => item.id === "native-content-files" && !item.passed), "migration report should expose the remaining on-disk V3 migration gap");
+assert.equal(getNativeV3ExemplarRecords().length, 5, "native V3 export should expose all five authored exemplars");
 
 const totals = getCurriculumTotals();
 

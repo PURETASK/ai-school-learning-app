@@ -1,0 +1,587 @@
+{
+  "id": "g6-learning-ai-build-test",
+  "academyId": "bridge",
+  "grade": "6",
+  "subject": "computer-science",
+  "courseTitle": "AI And App Building",
+  "unitTitle": "Learning AI, Building Apps, And Testing Projects",
+  "title": "Learning AI",
+  "objective": "Explain core AI terms, describe frontend and backend responsibilities, write useful AI prompts, and use a bug-testing loop on a small app idea.",
+  "standards": [
+    "k12cs"
+  ],
+  "estimatedMinutes": 36,
+  "masteryThreshold": 80,
+  "xp": 190,
+  "contentStatus": "special_showcase",
+  "showcase": {
+    "label": "Featured special lesson",
+    "reason": "Launches AI literacy as a hands-on builder class instead of a passive lecture.",
+    "priority": 1
+  },
+  "definitionCards": [
+    {
+      "term": "Artificial intelligence",
+      "definition": "Software that can generate or classify outputs from patterns, prompts, and context. It can help, but it can be wrong."
+    },
+    {
+      "term": "Prompt",
+      "definition": "The instruction you give AI. Strong prompts include role, goal, audience, constraints, examples, and definition of done."
+    },
+    {
+      "term": "Context",
+      "definition": "Information the AI can use for the task. Context should never include passwords or private student information."
+    },
+    {
+      "term": "Hallucination",
+      "definition": "A confident-sounding AI output that is false, unsupported, or made up."
+    },
+    {
+      "term": "Frontend",
+      "definition": "The screens, buttons, forms, visuals, sounds, and interactions the user sees and uses."
+    },
+    {
+      "term": "Backend",
+      "definition": "The server-side logic that checks permissions, runs rules, stores data, and connects tools."
+    },
+    {
+      "term": "API",
+      "definition": "A controlled doorway that lets one software part ask another software part for data or an action."
+    },
+    {
+      "term": "Database",
+      "definition": "An organized place where the app stores records such as accounts, lessons, quiz attempts, progress, and reviews."
+    },
+    {
+      "term": "AI agent",
+      "definition": "An AI-driven helper that can follow a goal through steps, but only inside approved permissions, tool limits, logs, and review gates."
+    },
+    {
+      "term": "Tool call",
+      "definition": "A controlled action an AI or app asks a tool to perform, such as searching, saving a file, reading data, or generating an image."
+    },
+    {
+      "term": "Version control",
+      "definition": "A way to track project changes so builders can compare versions, fix mistakes, and understand what changed."
+    },
+    {
+      "term": "Environment variable",
+      "definition": "A secret or setting kept outside the code, such as an API key, database URL, or feature flag."
+    },
+    {
+      "term": "Log",
+      "definition": "A record of what happened in the app, useful for finding bugs, checking safety, and understanding failures."
+    },
+    {
+      "term": "Cost limit",
+      "definition": "A rule that controls how much a paid AI or tool feature can spend before it needs approval."
+    },
+    {
+      "term": "Test case",
+      "definition": "A specific check that says what you did, what should happen, and whether the app passed."
+    },
+    {
+      "term": "Bug report",
+      "definition": "A clear note with expected result, actual result, steps to reproduce, clues, and retest result."
+    },
+    {
+      "term": "Deployment",
+      "definition": "Putting a project somewhere real users can open it, with the right environment variables and safety checks."
+    },
+    {
+      "term": "Accessibility",
+      "definition": "Designing so people can use the app with keyboards, screen readers, readable contrast, captions, and clear labels."
+    }
+  ],
+  "builderPath": [
+    {
+      "title": "Define the learner goal",
+      "body": "Say who the app helps, what problem it solves, and what success looks like."
+    },
+    {
+      "title": "Ask AI like a builder",
+      "body": "Give role, audience, task, constraints, examples, output format, and a checklist."
+    },
+    {
+      "title": "Map the system",
+      "body": "Separate visible screens from backend jobs, API requests, database records, agent/tool boundaries, and review gates."
+    },
+    {
+      "title": "Test before trusting",
+      "body": "Run normal cases, edge cases, privacy checks, accessibility checks, and factual checks."
+    },
+    {
+      "title": "Debug and improve",
+      "body": "Reproduce the bug, isolate the cause, check logs, fix one thing, retest, and explain what changed."
+    },
+    {
+      "title": "Launch with guardrails",
+      "body": "Check environment variables, permissions, cost limits, review gates, logs, rollback plan, and user feedback."
+    }
+  ],
+  "visual": {
+    "type": "ai-system-map",
+    "title": "AI builder system map",
+    "caption": "A neon flow map showing student idea, prompt, AI model, frontend, backend, database, tests, bug reports, and final project.",
+    "altText": "A diagram connects a student's goal to a prompt, AI model output, frontend screen, backend server, database, tests, and bug fix loop.",
+    "generationPrompt": "Create a bold cyber-neon Grade 6 computer science teaching diagram for a lesson called Learning AI. Show a student goal flowing into a prompt, AI model, output review, frontend screen, backend API, database, approved agent/tool boundary, test checklist, logs, bug loop, and final project. Use short readable labels only, high contrast, no real children, no private data, no logos, and classroom-safe imagery."
+  },
+  "teachingSupport": {
+    "summary": "AI is not magic: it is one tool inside a human-led build, test, and review process.",
+    "description": "The app teaches students to understand AI vocabulary, talk to AI with clear prompts, separate frontend from backend work, and test projects before trusting them.",
+    "diagramCallouts": [
+      {
+        "title": "Prompt and context",
+        "body": "A prompt tells the AI the role, goal, constraints, examples, and output format. Context is the information the AI can use."
+      },
+      {
+        "title": "Frontend and backend",
+        "body": "The frontend is what the user sees and clicks. The backend handles data, rules, accounts, APIs, and storage."
+      },
+      {
+        "title": "Test and debug loop",
+        "body": "Good builders reproduce the bug, isolate the cause, fix one thing, retest, and write down what changed."
+      },
+      {
+        "title": "Agent and tool boundary",
+        "body": "AI agents and tools need permission limits, cost limits, logs, and human review before they can affect a real project."
+      }
+    ],
+    "helperNotes": [
+      "Do not let students paste private names, addresses, passwords, or personal records into AI tools.",
+      "Require students to define done before asking AI for help: audience, goal, constraints, and success checklist.",
+      "Have students test AI output with small examples, edge cases, and a plain-language bug report.",
+      "Teach students that API keys, database URLs, and passwords belong in environment variables, not in public code or prompts.",
+      "When an AI agent uses a tool, require a permission, cost, log, and human-review checkpoint before trusting the result."
+    ],
+    "commonMisunderstandings": [
+      {
+        "mistake": "Thinking AI always knows the truth.",
+        "fix": "Teach that AI predicts useful text and can be wrong. Factual claims need source checks or tests."
+      },
+      {
+        "mistake": "Thinking frontend and backend are the same thing.",
+        "fix": "Use a restaurant metaphor: frontend is the menu and table service; backend is the kitchen, inventory, and order system."
+      },
+      {
+        "mistake": "Asking AI vague questions and accepting the first answer.",
+        "fix": "Use a prompt checklist and ask for alternatives, assumptions, tests, and possible bugs."
+      },
+      {
+        "mistake": "Testing only the happy path.",
+        "fix": "Check normal cases, weird inputs, missing data, permission mistakes, mobile layout, keyboard use, and whether the bug comes back."
+      },
+      {
+        "mistake": "Forgetting that apps need launch and maintenance.",
+        "fix": "Teach that real projects need environment variables, deployment checks, logs, error reports, backups, and a plan for user feedback."
+      },
+      {
+        "mistake": "Thinking AI agents can safely use every tool automatically.",
+        "fix": "Teach tool boundaries: the agent needs permission, limited access, cost controls, logs, and a human review gate for important actions."
+      }
+    ],
+    "confusionPrompt": "Write the exact part that is confusing: AI definitions, prompt writing, frontend, backend, API, database, agents, tool calls, testing, debugging, safety, costs, logs, or checking if the AI is wrong."
+  },
+  "funTasks": [
+    "Run a prompt battle: compare a weak AI prompt with a strong one and vote on which gives better help.",
+    "Design a tiny app map with three frontend screens, two backend jobs, one database record, and three tests.",
+    "Create an agent boundary card: what the agent can read, what it can change, what it costs, what gets logged, and who approves it.",
+    "Create a bug report card: what happened, what you expected, steps to reproduce, and one possible cause.",
+    "Run a red-team check: find one privacy risk, one hallucination risk, one accessibility risk, and one edge-case bug.",
+    "Ship a launch checklist with environment variables, test cases, rollback plan, and user feedback question."
+  ],
+  "groupHomework": {
+    "title": "AI builder crew",
+    "groupSize": "3-5 learners",
+    "roles": [
+      "Prompt engineer",
+      "Frontend designer",
+      "Backend mapper",
+      "Bug hunter",
+      "Safety reviewer"
+    ],
+    "sharedOutcome": "Submit a one-page AI app blueprint with a prompt, screen sketch, backend/API map, agent/tool boundary, test checklist, bug report, and safety rule.",
+    "parentRole": "Ask the learner to explain what the AI did, what the human checked, and what private information should never be shared."
+  },
+  "retentionChecks": [
+    "Next-day AI vocabulary recall",
+    "Three-day frontend/backend sorting challenge",
+    "Seven-day prompt revision and bug-test transfer"
+  ],
+  "reward": "Earn the AI Builder badge after revising a prompt, explaining the app system, and passing the bug-test challenge.",
+  "sections": {
+    "warmup": "Look at two AI prompts. Choose which one is more useful and explain why.",
+    "teach": "AI tools can generate suggestions from prompts and context. A builder still decides the goal, protects private information, checks the output, and tests the project. The frontend is the visible user experience. The backend stores data, runs rules, and connects services through APIs.",
+    "guidedPractice": "Sort cards into AI terms, frontend parts, backend parts, tool/agent boundaries, and testing actions. Then revise one weak prompt into a stronger builder prompt.",
+    "independentPractice": "Design a tiny study-helper app. List what the learner sees, what the backend stores, what AI helps with, what tool boundary protects users, and three tests before launch.",
+    "activity": "Use the AI Builder Map to connect prompt -> AI output -> frontend screen -> backend API -> database -> approved tool call -> test -> bug fix.",
+    "reteach": "Use the restaurant metaphor: frontend is what customers see, backend is the kitchen/order system, and AI is a helper that still needs a manager.",
+    "challenge": "Write a prompt that asks AI to find bugs in a project, then critique the AI's answer with a test checklist, privacy check, accessibility check, and launch checklist."
+  },
+  "quiz": [
+    {
+      "id": "g6-ai-q1",
+      "prompt": "Which prompt is most useful for getting AI help?",
+      "choices": [
+        "You are helping a Grade 6 student. Explain APIs with a restaurant metaphor, give one example, and ask one check question.",
+        "Make it better.",
+        "Do my project.",
+        "Tell me everything about computers."
+      ],
+      "answerIndex": 0,
+      "explanation": "The best prompt gives role, audience, goal, format, and a clear definition of useful output."
+    },
+    {
+      "id": "g6-ai-q2",
+      "prompt": "In a web app, which part is usually frontend work?",
+      "choices": [
+        "The buttons and screens the user sees",
+        "The private database password",
+        "The server rule that checks permissions",
+        "The stored account records"
+      ],
+      "answerIndex": 0,
+      "explanation": "Frontend work is the visible interface: screens, buttons, forms, layout, and user interactions."
+    },
+    {
+      "id": "g6-ai-q3",
+      "prompt": "What should you do before trusting an AI-generated answer or code change?",
+      "choices": [
+        "Test it and check important claims",
+        "Assume it is always correct",
+        "Paste private passwords so it has context",
+        "Skip debugging if it sounds confident"
+      ],
+      "answerIndex": 0,
+      "explanation": "AI can be useful and still wrong. Builders test outputs, verify important claims, and protect private data."
+    },
+    {
+      "id": "g6-ai-q4",
+      "prompt": "Which bug report is strongest?",
+      "choices": [
+        "When I click Start, the lesson page stays blank. I expected the lesson to open. Steps: sign in, go to Child, click Start.",
+        "It is broken.",
+        "The app is bad.",
+        "Fix this now."
+      ],
+      "answerIndex": 0,
+      "explanation": "A useful bug report says what happened, what was expected, and the steps to reproduce it."
+    },
+    {
+      "id": "g6-ai-q5",
+      "prompt": "What is the safest way to let an AI agent use a paid image tool in a school app?",
+      "choices": [
+        "Give it a clear task, cost limit, content rules, log, and human approval before publishing",
+        "Let it generate unlimited images without review",
+        "Give it every password so it has more context",
+        "Publish the first image immediately if it looks cool"
+      ],
+      "answerIndex": 0,
+      "explanation": "Real AI tools need boundaries: permission, cost controls, safety checks, logs, and review before students see the result."
+    }
+  ],
+  "parentTeacherNotes": "Use this as a school-sellable AI literacy class: students learn definitions through a system map, build a tiny app blueprint, ask AI responsibly, test outputs, and revise with evidence.",
+  "accessibilityNotes": [
+    "Provide all technical terms as definition cards with short labels and examples.",
+    "Let learners submit the app blueprint as text, drawing, or oral explanation.",
+    "Do not rely only on neon color to distinguish AI, frontend, backend, database, and testing roles."
+  ],
+  "safetyNotes": [
+    "Students must not paste passwords, addresses, real student records, or private family information into AI tools.",
+    "AI suggestions require human review, factual checks, and tests before project use."
+  ],
+  "version": "3.0.0-special-ai-showcase",
+  "studentFacing": {
+    "mission": "Train like an AI builder: explain what AI is, design a tiny app, talk to the AI clearly, then test for bugs.",
+    "whyItMatters": "Students are already using AI tools. This lesson turns AI from magic into a system they can question, build with, and check safely.",
+    "bigIdea": "AI can help you think, draft, code, and debug, but the human still defines the goal, checks the facts, protects private information, and tests the result.",
+    "modelSteps": [
+      "Name the system parts: user, prompt, AI model, context, output, frontend, backend, API, database, test.",
+      "Write a clear prompt with role, goal, constraints, examples, and what a good answer should include.",
+      "Build a tiny app plan: what the user sees, what data is stored, what the server does, and how you will test it.",
+      "Run the bug loop: reproduce, isolate, fix, retest, and explain what changed."
+    ],
+    "example": "A good AI request says: You are helping a Grade 6 student. Explain APIs using a restaurant-order metaphor, then give one tiny coding example and one check-for-understanding question.",
+    "nonExample": "A weak AI request says: Make my app better. It gives no goal, user, constraints, or definition of done.",
+    "quickCheck": "Before trusting an AI answer, ask: Does it answer my goal, make factual claims I should verify, expose private data, or need a test?",
+    "studentSummary": "AI is a tool in a build process. Strong builders ask clearly, test carefully, and stay responsible for the final work.",
+    "tutorHandoff": "Tell the tutor if you are stuck on AI vocabulary, frontend/backend, writing prompts, APIs, databases, tests, bugs, or checking AI output."
+  },
+  "schemaVersion": "3",
+  "academy": "bridge",
+  "gradeLevel": "6",
+  "course": "AI And App Building",
+  "unitId": "learning-ai-building-apps-testing-projects",
+  "lessonNumber": 1,
+  "lessonFamily": "project_studio",
+  "secondaryLessonFamily": "concept_launch",
+  "activePhases": [
+    "orient",
+    "model",
+    "deconstruct",
+    "practice",
+    "reason",
+    "prove",
+    "remember",
+    "transfer",
+    "adapt"
+  ],
+  "targetLearningStates": [
+    "acquiring",
+    "developing",
+    "accurate",
+    "secure"
+  ],
+  "learningObjective": "Explain core AI terms, describe frontend and backend responsibilities, write useful AI prompts, and use a bug-testing loop on a small app idea.",
+  "successCriteria": [
+    "I can explain AI as a tool that predicts useful output from prompts and context.",
+    "I can separate frontend, backend, API, and database responsibilities in a small app.",
+    "I can write a strong AI prompt with role, goal, constraints, examples, and success criteria.",
+    "I can test AI output with a bug report, privacy check, fact check, and retest loop.",
+    "I can name when an AI agent, tool call, log, environment variable, or human review gate is needed."
+  ],
+  "essentialQuestion": "How can I use AI like a responsible builder instead of treating it like magic?",
+  "standardsTags": [
+    "k12cs"
+  ],
+  "thinkingSkillTags": [
+    "ai-literacy",
+    "system-design",
+    "prompt-engineering",
+    "debugging",
+    "privacy-safety",
+    "human-review"
+  ],
+  "vocabularyTerms": [
+    "artificial intelligence",
+    "prompt",
+    "context",
+    "model",
+    "hallucination",
+    "frontend",
+    "backend",
+    "API",
+    "database",
+    "AI agent",
+    "tool call",
+    "version control",
+    "environment variable",
+    "log",
+    "cost limit",
+    "debugging",
+    "test case",
+    "bug report",
+    "deployment",
+    "accessibility",
+    "privacy"
+  ],
+  "prerequisiteSkillIds": [
+    "read-short-technical-definition",
+    "write-clear-question",
+    "sort-system-parts",
+    "explain-expected-vs-actual"
+  ],
+  "outcomes": {
+    "knowledge": [
+      "AI tools generate likely outputs from prompts, context, and training patterns; they can be helpful and wrong.",
+      "Frontend is the visible interface; backend stores data, enforces rules, and connects services.",
+      "APIs are controlled ways for software parts to request or send information.",
+      "Agents can plan and use approved tools, but they need permissions, logs, cost limits, and human review gates.",
+      "Testing checks whether the project does what it is supposed to do before people rely on it."
+    ],
+    "capability": [
+      "Write a builder prompt with role, goal, constraints, examples, and definition of done.",
+      "Map a tiny app into frontend screens, backend jobs, API calls, database records, agent/tool boundaries, and tests.",
+      "Create a useful bug report with expected result, actual result, reproduction steps, logs or clues, and one possible cause."
+    ],
+    "reasoning": [
+      "Decide which AI outputs need fact-checking, safety review, privacy filtering, or code testing.",
+      "Explain why the human is still responsible for the final project even when AI helped create it.",
+      "Decide whether a task should be done by the user, the app, an AI tutor, an agent, a backend service, or a human reviewer."
+    ],
+    "retention": [
+      "Recall AI builder vocabulary and the reproduce -> isolate -> fix -> retest bug loop after a delay."
+    ],
+    "transfer": [
+      "Use the same AI builder process on a new class project, website idea, or learning-tool prototype."
+    ]
+  },
+  "phaseModules": [
+    {
+      "phase": "orient",
+      "title": "Enter AI builder mode",
+      "studentAction": "Pick one app idea and write what the app should help a real learner do.",
+      "successCheck": "The learner starts with a human goal instead of asking AI for a random answer."
+    },
+    {
+      "phase": "model",
+      "title": "See the AI builder system",
+      "studentAction": "Read the map from goal to prompt, AI output, frontend, backend, agent/tool boundary, database, test loop, and final project.",
+      "teacherModel": "AI is one tool inside the system. The builder defines the goal, checks the output, protects privacy, and tests the result.",
+      "visualSupport": "A neon flow map showing student idea, prompt, AI model, frontend, backend, database, tests, bug reports, and final project.",
+      "successCheck": "The learner can point to the human decision points and software parts."
+    },
+    {
+      "phase": "deconstruct",
+      "title": "Break down the parts",
+      "studentAction": "Sort each card into AI term, frontend part, backend part, data part, testing action, or safety check.",
+      "teacherModel": "A good builder names the part before trying to fix or improve it.",
+      "successCheck": "The learner can explain why a login screen, permission rule, API route, and bug test are different jobs."
+    },
+    {
+      "phase": "practice",
+      "title": "Build a tiny app blueprint",
+      "studentAction": "Choose the strongest prompt, then sketch one screen, one backend job, one data record, one safe AI/tool boundary, and one test.",
+      "teacherModel": "Sort cards into AI terms, frontend parts, backend parts, tool/agent boundaries, and testing actions. Then revise one weak prompt into a stronger builder prompt.",
+      "successCheck": "The learner produces a small system map instead of a vague app idea."
+    },
+    {
+      "phase": "reason",
+      "title": "Check the AI instead of trusting it",
+      "studentAction": "Write which part of the AI output needs a fact check, privacy check, accessibility check, or bug test.",
+      "teacherModel": "Confidence is not proof. The answer has to survive a check.",
+      "successCheck": "The learner names at least one verification move before using AI output."
+    },
+    {
+      "phase": "prove",
+      "title": "Complete the AI builder checkpoint",
+      "studentAction": "Answer the prompt, frontend/backend, AI safety, and bug-report questions independently.",
+      "successCheck": "The learner proves current understanding without final-answer help."
+    },
+    {
+      "phase": "remember",
+      "title": "Store the builder loop",
+      "studentAction": "Return later to recall: goal -> prompt -> review -> build -> test -> debug -> retest.",
+      "successCheck": "Delayed recall is scheduled before durable mastery is claimed."
+    },
+    {
+      "phase": "transfer",
+      "title": "Use AI on a new project",
+      "studentAction": "Apply the same process to a different class project: write a prompt, map the system, test the output, and revise.",
+      "successCheck": "The learner transfers AI builder thinking to a new project instead of memorizing terms only."
+    },
+    {
+      "phase": "adapt",
+      "title": "Choose the next builder move",
+      "studentAction": "If vocabulary is weak, use the glossary; if the system map is weak, rebuild the frontend/backend split; if testing is weak, write a better bug report.",
+      "successCheck": "The app routes help based on the exact stuck point."
+    }
+  ],
+  "proofTasks": [
+    {
+      "proof": "recall",
+      "prompt": "Define prompt, model, frontend, backend, API, database, test case, and bug report in student-friendly words.",
+      "independentRequired": true
+    },
+    {
+      "proof": "explain",
+      "prompt": "Explain why AI output must be checked before it becomes part of a real project.",
+      "independentRequired": true
+    },
+    {
+      "proof": "perform",
+      "prompt": "Create a tiny app blueprint with prompt, frontend, backend, data, safe agent/tool boundary, tests, and privacy rule.",
+      "independentRequired": true
+    },
+    {
+      "proof": "retain",
+      "prompt": "After a delay, recall the AI builder loop and debugging loop without looking back.",
+      "independentRequired": true
+    },
+    {
+      "proof": "transfer",
+      "prompt": "Use the same AI builder process on a new website, study tool, or class project idea.",
+      "independentRequired": true
+    }
+  ],
+  "requiredMasteryProofs": [
+    "recall",
+    "explain",
+    "perform",
+    "retain",
+    "transfer"
+  ],
+  "feedbackRules": [
+    {
+      "diagnosisCode": "ai_magic_thinking",
+      "result": "The learner treats AI as always correct or automatically creative.",
+      "hint": "Ask what the human goal is and what check would prove the output is useful.",
+      "action": "Return to the human-review step and require a fact, safety, or test check."
+    },
+    {
+      "diagnosisCode": "frontend_backend_blur",
+      "result": "The learner mixes visible interface work with server/data/security work.",
+      "hint": "Ask whether the user sees it directly or whether it happens behind the scenes.",
+      "action": "Use the restaurant metaphor and sort each part into menu/table, kitchen, order system, or storage."
+    },
+    {
+      "diagnosisCode": "weak_debug_report",
+      "result": "The learner says it is broken without expected result, actual result, or reproduction steps.",
+      "hint": "Use the bug card: expected, actual, steps, clue, retest.",
+      "action": "Rewrite the bug report before trying another fix."
+    },
+    {
+      "diagnosisCode": "unsafe_agent_or_tool_use",
+      "result": "The learner wants an AI agent or tool to act without clear permission, cost limit, or review.",
+      "hint": "Ask what the tool can access, what it may change, what it costs, and who reviews the result.",
+      "action": "Add a tool boundary card with permission, log, cost limit, and human approval before launch."
+    }
+  ],
+  "reteachPaths": [
+    {
+      "id": "g6-ai-glossary-reteach",
+      "trigger": "The learner cannot define or sort AI/app-building terms.",
+      "action": "Use definition cards and the system map before asking for another project plan."
+    },
+    {
+      "id": "g6-ai-debug-loop-reteach",
+      "trigger": "The learner cannot describe a test or bug report.",
+      "action": "Use one broken-button scenario and fill expected, actual, steps, clue, fix, and retest."
+    },
+    {
+      "id": "g6-ai-agent-tool-boundary-reteach",
+      "trigger": "The learner treats AI agents or tool calls as unlimited helpers.",
+      "action": "Sort tasks into human-only, AI suggestion, approved tool call, backend service, and manager review."
+    }
+  ],
+  "prerequisiteRepairPaths": [
+    {
+      "id": "g6-ai-clear-question-repair",
+      "trigger": "The learner asks a vague AI question with no goal or success criteria.",
+      "action": "Repair prompt writing with the frame: role, audience, task, constraints, example, definition of done."
+    }
+  ],
+  "challengePaths": [
+    {
+      "id": "g6-ai-red-team-challenge",
+      "trigger": "The learner can map the system and test output independently.",
+      "action": "Ask the learner to red-team the app idea for privacy, hallucination, accessibility, and edge-case bugs."
+    }
+  ],
+  "memoryPlan": {
+    "defaultIntervals": [
+      "day-0",
+      "day-1",
+      "day-3",
+      "day-7"
+    ],
+    "reviewModes": [
+      "define",
+      "sort",
+      "debug",
+      "transfer"
+    ],
+    "priorityItems": [
+      "prompt checklist",
+      "frontend/backend/API/database split",
+      "agent/tool boundary",
+      "human review",
+      "bug loop"
+    ]
+  },
+  "transferTask": {
+    "title": "AI app launch card",
+    "prompt": "Submit a one-page AI app blueprint with a prompt, screen sketch, backend/API map, agent/tool boundary, test checklist, bug report, and safety rule.",
+    "individualAccountability": "Each learner submits one prompt, one system-map part, one agent/tool boundary, one test, and one safety check."
+  }
+}

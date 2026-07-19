@@ -13,6 +13,8 @@
     "storage:setup": "node scripts/setup-visual-storage.mjs",
     "visual:generate-one": "node scripts/generate-production-visual.mjs",
     "content:import:bridge6": "node scripts/import-bridge-grade6.mjs",
+    "content:export:v3": "node scripts/export-native-v3-exemplars.mjs",
+    "content:validate": "node scripts/validate-lessons.mjs",
     "migration:report": "node scripts/report-v2-migration-readiness.mjs",
     "supabase:check": "node scripts/check-supabase-connection.mjs",
     "graph:extract": "python -m graphify update . --force --no-cluster",

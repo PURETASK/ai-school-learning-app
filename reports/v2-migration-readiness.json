@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-19T10:30:32.337Z",
+  "generatedAt": "2026-07-19T10:36:51.948Z",
   "root": "C:\\Users\\onlyw\\Documents\\ai school",
   "status": "migration-required",
   "passed": false,
@@ -8,9 +8,10 @@
     "nativeV3Pilots": 5,
     "validNativeV3Pilots": 5,
     "adaptedPilots": 3,
-    "contentFiles": 16,
+    "contentFiles": 21,
     "seedLessonFiles": 16,
     "contentVersions": {
+      "3": 5,
       "2.0": 16
     }
   },
@@ -54,14 +55,14 @@
       "id": "legacy-content-inventory",
       "label": "On-disk legacy content is accounted for",
       "passed": true,
-      "detail": "16 content files and 16 seed lesson files were inventoried.",
+      "detail": "16 legacy content files and 16 seed lesson files were inventoried; 5 native V3 files are tracked separately.",
       "blocking": true
     },
     {
       "id": "native-content-files",
-      "label": "On-disk content includes native V3 lesson files",
+      "label": "All on-disk content is native V3",
       "passed": false,
-      "detail": "0/16 on-disk content files currently declare schemaVersion 3.",
+      "detail": "5/21 on-disk content files currently declare schemaVersion 3.",
       "blocking": true
     },
     {
@@ -205,7 +206,7 @@
     }
   ],
   "nextActions": [
-    "On-disk content includes native V3 lesson files"
+    "All on-disk content is native V3"
   ],
   "releaseRule": "Do not expand student-facing content production until the V3 exemplars, adapter/player checks, review gate, and on-disk content migration are verified."
 }
