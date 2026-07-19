@@ -684,12 +684,16 @@ function learnerMasterySnapshot(learner) {
   const placement = state.placementResults?.[learner.id];
   const recall = (state.retentionSchedules || []).find((item) => item.learnerId === learner.id);
   const tutorEvidence = getTutorReflectionEvidence(state, learner.id, selected?.id || "");
+  const remembered = (repositoryLesson?.phaseCompletions || []).filter((item) => item.phase === "remember").length;
+  const transferred = (repositoryLesson?.phaseCompletions || []).filter((item) => item.phase === "transfer").length;
 
   return {
     lesson: selected,
     mastery,
     masterySource: repositoryCatalogAvailable ? "learner-scoped repository" : "local lesson fallback",
     phaseCompletions: repositoryCatalogAvailable ? repositoryLesson.phaseCompletions || [] : [],
+    retentionProofs: { remembered, transferred },
+    retentionStatus: transferred ? "Transfer proven" : remembered ? "Recall captured" : recall ? "Recall scheduled" : "Retention evidence needed",
     placement,
     recall,
     tutorEvidence
@@ -7317,6 +7321,7 @@ function renderTeacherView() {
                 <h3>${html(learner.name)}</h3>
                 <p>Grade ${html(learner.grade)} | ${html(learner.schedule)}</p>
                 <small>${html(`${snapshot.masterySource} | ${snapshot.phaseCompletions.length} Nexus phase(s) cleared`)}</small>
+                <small>${html(`${snapshot.retentionStatus} | ${snapshot.retentionProofs.remembered} recall, ${snapshot.retentionProofs.transferred} transfer`)}</small>
                 <small>${html(snapshot.placement?.supportPlan || "Run placement to build a support plan.")}</small>
                 <small>${html(snapshot.tutorEvidence.latestQualified ? `Tutor stuck point: ${snapshot.tutorEvidence.latestQualified.label}` : "No diagnosed tutor reflection for this lesson yet.")}</small>
                 <div class="mini-progress" aria-label="${html(`${learner.name} mastery ${snapshot.mastery.score}%`)}">
