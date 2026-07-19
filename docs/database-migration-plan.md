@@ -108,18 +108,18 @@ The seed command uses conflict-safe upserts, so it can refresh the current pilot
 
 ## Live Supabase Status
 
-The migration has been applied to the connected Supabase database and verified with:
+The repository contains a generated migration, but the connected Supabase database is not currently treated as verified. Run the following only after `DATABASE_URL` has been tested with the current database password:
 
 ```bash
 npm run db:verify
 ```
 
-Latest verification result:
+```bash
+npm run supabase:check
+npm run db:apply
+npm run db:verify
+```
 
-- `actualTables=45`
-- `missingTables=none`
-- `rlsEnabled=33`
-- `policies=96`
-- `ready=true`
+`npm run readiness:strict` must not be described as passing until the live probe and database verification succeed. Configuration readiness, a reachable Supabase project URL, and a generated SQL migration are not proof that the remote schema is applied.
 
 The migration generator also handles partial earlier schema attempts by repairing empty-table column types before recreating foreign keys, indexes, comments, and RLS policies. It only removes inbound foreign-key constraints automatically when the child table is empty; otherwise it raises a manual repair error.

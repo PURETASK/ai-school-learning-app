@@ -84,7 +84,7 @@ The app can now preserve state outside the browser and has a basic content-autho
 - Gift-card fulfillment has a provider gateway, but production still needs real provider credentials, finance/legal review, fraud controls, and live-provider dry runs before enabling real money movement.
 - Authoring now stores rich lesson body structure, but it is still an operational editor rather than a polished curriculum-studio workflow.
 - Published draft records now convert into normalized lesson/activity/quiz/progress rows and open in the existing learner lesson player; the learning catalog, content draft, visual asset, AI tutor event, manager review, and audit-event read routes are live.
-- The production schema has been applied to the connected Supabase database and verified with `npm run db:verify`.
+- The production schema migration is generated and ready to apply. Do not call the remote database production-ready until `npm run supabase:check`, `npm run db:apply`, and `npm run db:verify` all succeed against the intended Supabase project.
 
 ## Next Foundation Step
 

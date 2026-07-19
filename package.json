@@ -19,6 +19,8 @@
     "content:gate": "node scripts/verify-content-quality-gate.mjs",
     "migration:report": "node scripts/report-v2-migration-readiness.mjs",
     "supabase:check": "node scripts/check-supabase-connection.mjs",
+    "readiness:audit": "node scripts/readiness-audit.mjs",
+    "readiness:strict": "node scripts/readiness-audit.mjs --strict",
     "graph:extract": "python -m graphify update . --force --no-cluster",
     "graph:tree": "graphify tree --graph graphify-out/graph.json --output graphify-out/GRAPH_TREE.html --root . --label \"Nexus Learning OS\"",
     "graph:query": "graphify query \"show the student lesson-to-mastery workflow\" --graph graphify-out/graph.json --budget 1200",
