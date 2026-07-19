@@ -171,6 +171,7 @@ import {
   createActionTokenRecord,
   createPasswordRecord,
   createSessionToken,
+  getSessionSecret,
   getRequestSession,
   getRequestSessionAsync,
   hashActionToken,
@@ -1421,6 +1422,12 @@ assert.equal(
 );
 
 const secret = "test-session-secret";
+assert.equal(
+  getSessionSecret({ APP_ENV: "development", NODE_ENV: "production" }),
+  "local-dev-session-secret",
+  "development APP_ENV should allow local session signing even when NODE_ENV is production-like"
+);
+assert.equal(getSessionSecret({ APP_ENV: "production" }), "", "production APP_ENV requires an explicit session secret");
 const token = createSessionToken({ role: "teacher", scope: "assigned", userId: "user-teacher-1", teacherId: "teacher-1" }, secret);
 const verifiedClaims = verifySessionToken(token, secret);
 assert.equal(verifiedClaims.role, "teacher", "signed auth token should preserve role claims");

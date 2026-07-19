@@ -44,7 +44,9 @@ function sessionTtlMs(env = process.env) {
 }
 
 export function getSessionSecret(env = process.env) {
-  return env.AUTH_SESSION_SECRET || (env.NODE_ENV !== "production" ? "local-dev-session-secret" : "");
+  const runtimeMode = String(env.APP_ENV || env.NODE_ENV || "").trim().toLowerCase();
+  const isProduction = runtimeMode === "production" || runtimeMode === "prod";
+  return env.AUTH_SESSION_SECRET || (!isProduction ? "local-dev-session-secret" : "");
 }
 
 function defaultSession(env = process.env) {
