@@ -1991,6 +1991,53 @@ function renderLessonVisual(lesson) {
         <text x="380" y="24" text-anchor="middle" font-size="18" font-weight="900" fill="#ffffff">Learning AI means building, checking, and improving a system.</text>
       </svg>
     `,
+    "algorithm-trace": `
+      <svg viewBox="0 0 760 300" role="img" aria-label="${commonLabel}">
+        <defs>
+          <linearGradient id="algorithmTraceBg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#061329"></stop>
+            <stop offset="50%" stop-color="#151042"></stop>
+            <stop offset="100%" stop-color="#32092f"></stop>
+          </linearGradient>
+          <filter id="traceGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur"></feGaussianBlur>
+            <feMerge><feMergeNode in="blur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+          </filter>
+        </defs>
+        <rect width="760" height="300" rx="22" fill="url(#algorithmTraceBg)"></rect>
+        <g opacity="0.2" stroke="#25d9ff" stroke-width="1">
+          ${Array.from({ length: 11 }, (_, index) => `<line x1="${70 + index * 62}" y1="32" x2="${70 + index * 62}" y2="268"></line>`).join("")}
+          ${Array.from({ length: 5 }, (_, index) => `<line x1="48" y1="${58 + index * 46}" x2="712" y2="${58 + index * 46}"></line>`).join("")}
+        </g>
+        <text x="44" y="44" font-size="20" font-weight="900" fill="#ffffff">Debug the path, not your memory</text>
+        <g stroke="#25d9ff" stroke-width="5" fill="none" filter="url(#traceGlow)">
+          <path d="M94 142 H206"></path>
+          <path d="M274 142 H386"></path>
+          <path d="M454 142 H566"></path>
+          <path d="M624 142 C668 142 688 176 664 208 C642 238 594 232 574 204"></path>
+        </g>
+        ${[
+          [52, 94, "#25d9ff", "1", "Input", "Try one test case"],
+          [210, 94, "#9cff4f", "2", "Trace", "Follow each step"],
+          [388, 94, "#ffcc4f", "3", "Mismatch", "Find first wrong output"],
+          [566, 94, "#ff4fd8", "4", "Fix + retest", "Change one rule"]
+        ]
+          .map(
+            ([x, y, color, step, title, body]) => `
+              <g>
+                <rect x="${x}" y="${y}" width="142" height="96" rx="18" fill="rgba(255,255,255,0.08)" stroke="${color}" stroke-width="3"></rect>
+                <circle cx="${x + 28}" cy="${y + 28}" r="18" fill="${color}"></circle>
+                <text x="${x + 28}" y="${y + 35}" text-anchor="middle" font-size="18" font-weight="900" fill="#061329">${step}</text>
+                <text x="${x + 74}" y="${y + 34}" text-anchor="middle" font-size="18" font-weight="900" fill="#ffffff">${title}</text>
+                <text x="${x + 74}" y="${y + 66}" text-anchor="middle" font-size="13" font-weight="800" fill="${color}">${body}</text>
+              </g>
+            `
+          )
+          .join("")}
+        <rect x="78" y="226" width="604" height="44" rx="14" fill="rgba(255,255,255,0.08)" stroke="#ffffff" stroke-opacity="0.22"></rect>
+        <text x="380" y="254" text-anchor="middle" font-size="16" font-weight="900" fill="#ffffff">Student move: say the first exact step where expected output and actual output split.</text>
+      </svg>
+    `,
     "story-map": `
       <svg viewBox="0 0 640 210" role="img" aria-label="${commonLabel}">
         <rect width="640" height="210" rx="8" fill="#fff4f1"></rect>
@@ -2010,6 +2057,44 @@ function renderLessonVisual(lesson) {
         </g>
       </svg>
     `,
+    "claim-evidence-reasoning": `
+      <svg viewBox="0 0 760 300" role="img" aria-label="${commonLabel}">
+        <defs>
+          <linearGradient id="cerBg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fff4f1"></stop>
+            <stop offset="100%" stop-color="#e9f8ff"></stop>
+          </linearGradient>
+        </defs>
+        <rect width="760" height="300" rx="22" fill="url(#cerBg)"></rect>
+        <text x="46" y="44" font-size="22" font-weight="900" fill="#172033">Theme proof board</text>
+        <text x="46" y="70" font-size="14" font-weight="800" fill="#4867b1">A strong theme is a message proved by story evidence and explained with reasoning.</text>
+        <g stroke="#172033" stroke-width="4" fill="none">
+          <path d="M178 154 H284"></path>
+          <path d="M430 154 H536"></path>
+          <path d="M610 188 C610 230 496 236 392 214 C284 192 172 206 150 238"></path>
+        </g>
+        ${[
+          [48, 104, 132, "#25d9ff", "Claim", "The message the story suggests"],
+          [286, 104, 142, "#ffcc4f", "Evidence", "A precise choice, line, or event"],
+          [538, 104, 150, "#ff4fd8", "Reasoning", "Because this shows..."],
+          [76, 218, 160, "#9cff4f", "Revise", "If evidence does not fit, adjust the claim"]
+        ]
+          .map(
+            ([x, y, width, color, title, body]) => `
+              <g>
+                <rect x="${x}" y="${y}" width="${width}" height="84" rx="16" fill="#ffffff" stroke="${color}" stroke-width="4"></rect>
+                <text x="${x + width / 2}" y="${y + 32}" text-anchor="middle" font-size="19" font-weight="900" fill="#172033">${title}</text>
+                <foreignObject x="${x + 14}" y="${y + 42}" width="${width - 28}" height="34">
+                  <div xmlns="http://www.w3.org/1999/xhtml" style="font: 800 12px Arial; color:#172033; text-align:center; line-height:1.25">${body}</div>
+                </foreignObject>
+              </g>
+            `
+          )
+          .join("")}
+        <rect x="318" y="218" width="358" height="46" rx="14" fill="#172033"></rect>
+        <text x="497" y="247" text-anchor="middle" font-size="16" font-weight="900" fill="#ffffff">Student move: write the missing because sentence.</text>
+      </svg>
+    `,
     "ecosystem-model": `
       <svg viewBox="0 0 640 210" role="img" aria-label="${commonLabel}">
         <rect width="640" height="210" rx="8" fill="#edf8f2"></rect>
@@ -2022,6 +2107,45 @@ function renderLessonVisual(lesson) {
         <path d="M296 114 C334 106 360 112 382 124" fill="none" stroke="#172033" stroke-width="4"></path>
         <path d="M438 156 C400 184 284 184 230 158" fill="none" stroke="#4867b1" stroke-width="4"></path>
         <text x="58" y="168" font-size="20" font-weight="800" fill="#172033">Sun -> plants -> animals -> soil cycle</text>
+      </svg>
+    `,
+    "water-cycle-system": `
+      <svg viewBox="0 0 760 300" role="img" aria-label="${commonLabel}">
+        <defs>
+          <linearGradient id="waterCycleSky" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#dff7ff"></stop>
+            <stop offset="62%" stop-color="#ecfbff"></stop>
+            <stop offset="100%" stop-color="#d7f1e7"></stop>
+          </linearGradient>
+        </defs>
+        <rect width="760" height="300" rx="22" fill="url(#waterCycleSky)"></rect>
+        <path d="M0 230 C120 198 214 226 324 204 C468 174 566 212 760 184 V300 H0 Z" fill="#62c58b"></path>
+        <path d="M0 246 C120 220 252 242 360 222 C500 196 628 222 760 204 V300 H0 Z" fill="#2366d1" opacity="0.8"></path>
+        <circle cx="92" cy="72" r="34" fill="#ffcc4f"></circle>
+        <g fill="#ffffff" stroke="#172033" stroke-width="3">
+          <ellipse cx="354" cy="70" rx="64" ry="26"></ellipse>
+          <ellipse cx="410" cy="78" rx="58" ry="24"></ellipse>
+          <ellipse cx="300" cy="84" rx="52" ry="22"></ellipse>
+        </g>
+        <g stroke="#172033" stroke-width="4" fill="none">
+          <path d="M226 214 C190 158 202 118 266 92"></path>
+          <path d="M496 104 C546 138 560 178 526 214"></path>
+          <path d="M620 218 C584 252 472 260 378 246"></path>
+          <path d="M338 110 C326 144 332 168 366 194"></path>
+        </g>
+        <g fill="#25d9ff">
+          ${[328, 362, 396, 430, 464].map((x, index) => `<path d="M${x} ${118 + (index % 2) * 8} C${x - 8} ${134 + (index % 2) * 8} ${x - 8} ${146 + (index % 2) * 8} ${x} ${154 + (index % 2) * 8} C${x + 8} ${146 + (index % 2) * 8} ${x + 8} ${134 + (index % 2) * 8} ${x} ${118 + (index % 2) * 8}Z"></path>`).join("")}
+        </g>
+        ${[
+          [154, 166, "Evaporation", "#ff4fd8"],
+          [318, 42, "Condensation", "#4867b1"],
+          [446, 158, "Precipitation", "#25d9ff"],
+          [572, 250, "Runoff", "#172033"],
+          [282, 250, "Infiltration", "#2f8f83"]
+        ]
+          .map(([x, y, label, color]) => `<rect x="${x - 58}" y="${y - 18}" width="116" height="28" rx="14" fill="#ffffff" stroke="${color}" stroke-width="3"></rect><text x="${x}" y="${y + 2}" text-anchor="middle" font-size="12" font-weight="900" fill="#172033">${label}</text>`)
+          .join("")}
+        <text x="380" y="286" text-anchor="middle" font-size="15" font-weight="900" fill="#ffffff">Student move: track matter and energy separately, then explain the system loop.</text>
       </svg>
     `,
     "community-map": `
@@ -2038,12 +2162,48 @@ function renderLessonVisual(lesson) {
         <text x="44" y="42" font-size="22" font-weight="900" fill="#172033">N</text>
         <path d="M54 52 l0 42 m-18 -22 l36 0" stroke="#172033" stroke-width="4"></path>
       </svg>
+    `,
+    "geography-choice-map": `
+      <svg viewBox="0 0 760 300" role="img" aria-label="${commonLabel}">
+        <defs>
+          <linearGradient id="geoMapBg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fff0c9"></stop>
+            <stop offset="48%" stop-color="#e6f6dc"></stop>
+            <stop offset="100%" stop-color="#daf5ff"></stop>
+          </linearGradient>
+        </defs>
+        <rect width="760" height="300" rx="22" fill="url(#geoMapBg)"></rect>
+        <path d="M86 0 C142 64 112 130 176 300" fill="none" stroke="#2366d1" stroke-width="28"></path>
+        <path d="M0 206 C146 178 236 206 368 178 C510 148 612 168 760 138" fill="none" stroke="#9b7343" stroke-width="14"></path>
+        <path d="M490 42 L558 154 L422 154 Z" fill="#8b8f9c" stroke="#172033" stroke-width="4"></path>
+        <path d="M544 40 L624 166 L466 166 Z" fill="#a8adb8" stroke="#172033" stroke-width="4"></path>
+        <rect x="222" y="118" width="132" height="88" rx="16" fill="#ffffff" stroke="#25d9ff" stroke-width="4"></rect>
+        <text x="288" y="148" text-anchor="middle" font-size="18" font-weight="900" fill="#172033">Settlement?</text>
+        <text x="288" y="176" text-anchor="middle" font-size="12" font-weight="900" fill="#4867b1">water + soil</text>
+        <text x="288" y="194" text-anchor="middle" font-size="12" font-weight="900" fill="#e85d4f">flood risk</text>
+        ${[
+          [72, 42, "River", "resource", "#2366d1"],
+          [536, 188, "Mountain", "barrier", "#6f5aa6"],
+          [398, 238, "Route", "trade", "#c9942c"],
+          [130, 242, "Soil", "farming", "#2f8f83"]
+        ]
+          .map(([x, y, title, body, color]) => `
+            <g>
+              <circle cx="${x}" cy="${y}" r="24" fill="#ffffff" stroke="${color}" stroke-width="4"></circle>
+              <text x="${x}" y="${y + 5}" text-anchor="middle" font-size="11" font-weight="900" fill="#172033">${title}</text>
+              <text x="${x}" y="${y + 42}" text-anchor="middle" font-size="12" font-weight="900" fill="${color}">${body}</text>
+            </g>
+          `)
+          .join("")}
+        <rect x="438" y="218" width="250" height="44" rx="14" fill="#172033"></rect>
+        <text x="563" y="246" text-anchor="middle" font-size="15" font-weight="900" fill="#ffffff">Student move: name one benefit, one risk, then decide.</text>
+      </svg>
     `
   };
 
   return `
     <figure class="visual-prompt">
-      ${svgByType[{ "algorithm-trace": "ai-system-map", "claim-evidence-reasoning": "story-map", "water-cycle-system": "ecosystem-model", "geography-choice-map": "community-map" }[lesson.visual.type] || lesson.visual.type] || svgByType["number-line"]}
+      ${svgByType[lesson.visual.type] || svgByType["number-line"]}
       <figcaption>
         <strong>${html(lesson.visual.title)}</strong>
         <span>${html(lesson.visual.caption)}</span>
@@ -4930,6 +5090,66 @@ function getLessonInteractiveConfig(lesson) {
   }
 
   const byVisualType = {
+    "algorithm-trace": {
+      widgetId: "algorithm-trace-debug-loop",
+      title: "Trace the first bug",
+      prompt: "A program expects 12 but shows 10 after step 3. What should you check first?",
+      options: ["Step 3, because it is the first mismatch", "The app logo", "A random later step", "Change every step at once"],
+      correctValue: "Step 3, because it is the first mismatch",
+      success: "Correct. Debugging starts at the first place where expected and actual results split.",
+      retry: "Not yet. Trace the path in order and stop at the first mismatch before changing anything.",
+      boardZones: [
+        { label: "Input", value: "Use one test case" },
+        { label: "Trace", value: "Follow each step" },
+        { label: "Mismatch", value: "Find first wrong output" },
+        { label: "Retest", value: "Change one rule" }
+      ]
+    },
+    "claim-evidence-reasoning": {
+      widgetId: "cer-theme-proof-board",
+      title: "Build the proof chain",
+      prompt: "Which sentence is reasoning instead of only evidence?",
+      options: ["The character returns the money", "This proves the theme because the choice shows honesty is hard but important", "Page 4", "The story has two friends"],
+      correctValue: "This proves the theme because the choice shows honesty is hard but important",
+      success: "Correct. Reasoning explains how the evidence proves the claim.",
+      retry: "Try again. Evidence names what happened; reasoning explains why that detail proves the message.",
+      boardZones: [
+        { label: "Claim", value: "The theme message" },
+        { label: "Evidence", value: "A story detail" },
+        { label: "Reasoning", value: "Because this shows..." },
+        { label: "Revise", value: "Fix weak links" }
+      ]
+    },
+    "water-cycle-system": {
+      widgetId: "water-cycle-system-loop",
+      title: "Track water through the system",
+      prompt: "Which answer tracks matter and energy correctly?",
+      options: ["Sun energy helps liquid water evaporate into the atmosphere", "Clouds create brand-new water", "Runoff means water disappears", "Condensation happens only underground"],
+      correctValue: "Sun energy helps liquid water evaporate into the atmosphere",
+      success: "Correct. Water moves between reservoirs while energy drives the phase changes.",
+      retry: "Not yet. Separate the matter, which is water, from the energy that drives changes.",
+      boardZones: [
+        { label: "Energy", value: "Sun drives change" },
+        { label: "Reservoir", value: "Ocean, air, land" },
+        { label: "Process", value: "Evaporate, condense, fall" },
+        { label: "Evidence", value: "Track where water went" }
+      ]
+    },
+    "geography-choice-map": {
+      widgetId: "geography-choice-map-lab",
+      title: "Make the settlement choice",
+      prompt: "Which claim uses geography as evidence?",
+      options: ["The river valley is useful because water and fertile soil help farming, but floods are a risk", "People settled there because the map is colorful", "Mountains never affect movement", "The longest label is always the answer"],
+      correctValue: "The river valley is useful because water and fertile soil help farming, but floods are a risk",
+      success: "Correct. The claim connects a physical feature to a human benefit and tradeoff.",
+      retry: "Not yet. A geography claim should connect place, human need, benefit, and risk.",
+      boardZones: [
+        { label: "Feature", value: "River, mountain, soil" },
+        { label: "Benefit", value: "Food, water, route" },
+        { label: "Tradeoff", value: "Flood, barrier, conflict" },
+        { label: "Decision", value: "Settle, adapt, move" }
+      ]
+    },
     "number-line": {
       widgetId: "fraction-number-line-target",
       title: "Tap where one half belongs",
@@ -4985,8 +5205,7 @@ function getLessonInteractiveConfig(lesson) {
       retry: "Think about which structure controls information, not energy or boundaries."
     }
   };
-  const configType = { "algorithm-trace": "ai-system-map", "claim-evidence-reasoning": "story-map", "water-cycle-system": "ecosystem-model", "geography-choice-map": "community-map" }[lesson.visual?.type] || lesson.visual?.type;
-  return byVisualType[configType] || byVisualType["number-line"];
+  return byVisualType[lesson.visual?.type] || byVisualType["number-line"];
 }
 
 function renderInteractiveMiniModel(lesson, config, response) {

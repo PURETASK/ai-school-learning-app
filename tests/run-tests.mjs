@@ -497,6 +497,15 @@ const nativeVisualLessons = [nativeBridgeWeatherLesson, nativeBridgeRatiosLesson
 assert.equal(nativeVisualLessons.length, 4, "native Grade 6 visual exemplars should be present");
 assert.ok(nativeVisualLessons.every((lesson) => lesson.visual?.type), "native Grade 6 model lessons should declare a semantic visual type");
 assert.ok(nativeVisualLessons.every((lesson) => lesson.visual?.altText), "native Grade 6 model visuals should include accessible alt text");
+const nativeVisualRendererSource = readFileSync(new URL("../src/app.js", import.meta.url), "utf8");
+for (const visualType of ["algorithm-trace", "claim-evidence-reasoning", "water-cycle-system", "geography-choice-map"]) {
+  assert.ok(nativeVisualRendererSource.includes(`"${visualType}": \``), `lesson player should render native visual type ${visualType}`);
+}
+assert.ok(nativeVisualRendererSource.includes("algorithm-trace-debug-loop"), "algorithm trace lessons should use a matching debug interaction");
+assert.ok(nativeVisualRendererSource.includes("cer-theme-proof-board"), "claim-evidence-reasoning lessons should use a matching proof interaction");
+assert.ok(nativeVisualRendererSource.includes("water-cycle-system-loop"), "water-cycle lessons should use a matching system interaction");
+assert.ok(nativeVisualRendererSource.includes("geography-choice-map-lab"), "geography map lessons should use a matching settlement interaction");
+assert.ok(!nativeVisualRendererSource.includes(`{ "algorithm-trace": "ai-system-map", "claim-evidence-reasoning": "story-map", "water-cycle-system": "ecosystem-model", "geography-choice-map": "community-map" }`), "semantic Grade 6 visuals should not be aliased to generic diagrams");
 assert.equal(nativeBridgeRatiosLesson.schemaVersion, "3", "Grade 6 ratios exemplar should be a native V3 lesson");
 assert.equal(nativeBridgeRatiosLesson.lessonFamily, "skill_workshop", "Grade 6 ratios exemplar should use the skill workshop lesson family");
 assert.deepEqual(
