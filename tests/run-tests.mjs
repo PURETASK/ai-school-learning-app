@@ -3107,6 +3107,7 @@ const bridgeNativeLessonPaths = [
   "../content/bridge-academy/grade-6/computer-science/BA-G6-CS-U1-L1_DEBUGGING_AN_ALGORITHM.json",
   "../content/bridge-academy/grade-6/ela/BA-G6-ELA-U2-L1_THEME_AND_TEXT_EVIDENCE.json",
   "../content/bridge-academy/grade-6/math/BA-G6-MATH-U1-L1_UNDERSTANDING_RATIOS.json",
+  "../content/bridge-academy/grade-6/math/BA-G6-MATH-U1-L2_EXPRESSIONS_AND_VARIABLES.json",
   "../content/bridge-academy/grade-6/science/BA-G6-SCI-U2-L1_WATER_CYCLE_SYSTEMS.json",
   "../content/bridge-academy/grade-6/social-studies/BA-G6-SS-U2-L1_ANCIENT_CIVILIZATIONS_AND_GEOGRAPHY.json"
 ];
@@ -3118,14 +3119,14 @@ const bridgeNativeValidation = validateLessonBatch(bridgeNativeBatch);
 assert.equal(bridgeNativeValidation.accepted, true, "native Bridge Grade 6 batch should pass the compatibility adapter and quality gate");
 assert.deepEqual(
   bridgeNativeValidation.lessons.map((lesson) => lesson.subject).sort(),
-  ["computer-science", "ela", "math", "science", "social-studies"],
+  ["computer-science", "ela", "math", "math", "science", "social-studies"],
   "native Bridge batch should normalize source subject labels"
 );
 assert.ok(bridgeNativeValidation.lessons.every((lesson) => lesson.quizQuestions.length >= 10), "native Bridge lessons should preserve their quiz banks");
 assert.ok(bridgeNativeValidation.lessons.every((lesson) => lesson.visualSupports.length >= 3), "native Bridge lessons should receive hero, diagram, and tutor visuals");
 assert.ok(bridgeNativeValidation.lessons.every((lesson) => lesson.groupHomework), "Bridge lessons should include structured group homework");
 const bridgeNativeImport = importLessonBatch(state, bridgeNativeBatch);
-assert.equal(bridgeNativeImport.result.imported, 5, "native Bridge batch should create five reviewable drafts");
+assert.equal(bridgeNativeImport.result.imported, 6, "native Bridge batch should create six reviewable drafts");
 assert.equal(bridgeNativeImport.state.contentDrafts[0].sourceBatchId, bridgeNativeBatch.sourceBatchId, "native batch id should be stable for review and publication");
 assert.ok(
   bridgeNativeImport.state.contentDrafts.filter((draft) => draft.sourceBatchId === bridgeNativeBatch.sourceBatchId).every((draft) => draft.sourceLessonId),
@@ -3140,7 +3141,7 @@ assert.equal(getManagerReviewDossier(bridgeNativeImport.state, nativeBatchReview
 const nativeBatchProjection = getPlatformSeedProjection(bridgeNativeImport.state);
 const nativeBatchProjectionRow = nativeBatchProjection.tables.content_batch_reviews.find((row) => row.source_batch_id === bridgeNativeBatch.sourceBatchId);
 assert.ok(nativeBatchProjectionRow, "native imported batches should be represented in the normalized content batch review projection");
-assert.equal(nativeBatchProjectionRow.total_lessons, 5, "normalized native batch review should preserve the imported lesson count");
+assert.equal(nativeBatchProjectionRow.total_lessons, 6, "normalized native batch review should preserve the imported lesson count");
 assert.equal(nativeBatchProjectionRow.grade, "A", "normalized native batch review should use the grader-backed A quality grade");
 assert.equal(nativeBatchProjectionRow.passed, true, "normalized native batch review should preserve the batch quality gate result");
 assert.ok(
@@ -3149,7 +3150,7 @@ assert.ok(
 );
 const approvedNativeBatch = resolveAgentReviewItem(bridgeNativeImport.state, nativeBatchReviewItem.id, "approve");
 assert.equal(approvedNativeBatch.result.accepted, true, "manager should be able to approve a native imported batch");
-assert.equal(approvedNativeBatch.result.affectedDrafts, 5, "native batch approval should update every imported draft");
+assert.equal(approvedNativeBatch.result.affectedDrafts, 6, "native batch approval should update every imported draft");
 assert.ok(
   approvedNativeBatch.state.contentDrafts.filter((draft) => draft.sourceBatchId === bridgeNativeBatch.sourceBatchId).every((draft) => draft.batchReviewStatus === "approved"),
   "native batch approval should stamp every draft with the batch decision"
@@ -3157,7 +3158,7 @@ assert.ok(
 const reimportedNativeBatch = importLessonBatch(bridgeNativeImport.state, bridgeNativeBatch);
 assert.equal(
   reimportedNativeBatch.state.contentDrafts.filter((draft) => draft.sourceBatchId === bridgeNativeBatch.sourceBatchId).length,
-  5,
+  6,
   "re-importing a deterministic native batch should replace its drafts instead of duplicating them"
 );
 for (const draft of bridgeNativeImport.state.contentDrafts.filter((item) => item.sourceBatchId === bridgeNativeBatch.sourceBatchId)) {
