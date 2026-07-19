@@ -924,6 +924,28 @@ function getRepositoryPhaseSummary(learnerId = "") {
   };
 }
 
+function getRepositoryMasteryAggregate(learnerIds = []) {
+  const catalogs = learnerIds.map((learnerId) => repositoryLearningCatalogsByLearner[learnerId]).filter(Boolean);
+  if (!learnerIds.length || catalogs.length !== learnerIds.length) {
+    return { source: "unavailable", available: false, averageMastery: 0, mastered: 0, needsReview: 0, scoredLessons: 0, phaseSignals: 0 };
+  }
+  const lessons = catalogs.flatMap((catalog) => catalog.lessons || []);
+  const scoredLessons = lessons.filter((lesson) => lesson.mastery && Number.isFinite(Number(lesson.mastery.score)));
+  const averageMastery = scoredLessons.length
+    ? Math.round(scoredLessons.reduce((sum, lesson) => sum + Number(lesson.mastery.score || 0), 0) / scoredLessons.length)
+    : 0;
+  const mastered = scoredLessons.filter((lesson) => lesson.mastery.status === "mastered" || Number(lesson.mastery.score || 0) >= 80).length;
+  return {
+    source: "learner-scoped repository",
+    available: true,
+    averageMastery,
+    mastered,
+    needsReview: Math.max(0, scoredLessons.length - mastered),
+    scoredLessons: scoredLessons.length,
+    phaseSignals: lessons.reduce((sum, lesson) => sum + Number(lesson.completedPhaseCount || 0), 0)
+  };
+}
+
 function getRepositoryTutorEventSummary(learnerId = "") {
   const scopedEvents = learnerId ? repositoryTutorEventsByLearner[learnerId] : null;
   const source = scopedEvents || repositoryTutorEvents;
@@ -6249,6 +6271,10 @@ function renderParentView() {
   const telemetry = getLearningTelemetry(state, scope);
   const tutorQuality = getTutorQualityDashboard(state);
   const learnerInsights = getHouseholdLearnerInsights(state, scope);
+  const repositoryMastery = getRepositoryMasteryAggregate(learnerIds);
+  const visibleSummary = repositoryMastery.available
+    ? { ...summary, averageMastery: repositoryMastery.averageMastery, mastered: repositoryMastery.mastered, needsReview: repositoryMastery.needsReview }
+    : summary;
   const linkedLearnerNames = new Set(linkedLearners.map((learner) => learner.name));
   const repositoryAssignmentRows = learnerIds.flatMap((learnerId) => getRepositoryAssignmentSummary(learnerId).assignments);
   const repositoryRetentionRows = learnerIds.flatMap((learnerId) => getRepositoryRetentionScheduleSummary(learnerId).schedules);
@@ -6277,7 +6303,7 @@ function renderParentView() {
       primaryAction: { label: "Setup family", view: "setup" },
       secondaryAction: { label: "Review tutor", view: "ai" },
       stats: [
-        { label: "Average mastery", value: `${summary.averageMastery}%`, detail: `${summary.needsReview} need review` },
+        { label: "Average mastery", value: `${visibleSummary.averageMastery}%`, detail: `${visibleSummary.needsReview} need review` },
         { label: "Recall due", value: recallDueCount, detail: repositoryRetentionRows.length ? "Repository spaced retrieval" : "Spaced retrieval" },
         { label: "Children", value: learnerInsights.length, detail: "Linked learner accounts" }
       ]
@@ -6338,9 +6364,10 @@ function renderParentView() {
         <button class="secondary-button" data-reset>Reset local pilot data</button>
       </div>
       <div class="metric-grid">
-        ${renderMetric("Average mastery", `${summary.averageMastery}%`, "Across pilot lessons")}
-        ${renderMetric("Mastered", summary.mastered, "Ready for challenge")}
-        ${renderMetric("Needs review", summary.needsReview, "Reteach recommended")}
+        ${renderMetric("Average mastery", `${visibleSummary.averageMastery}%`, repositoryMastery.available ? "Scoped catalog evidence" : "Across pilot lessons")}
+        ${renderMetric("Mastered", visibleSummary.mastered, "Ready for challenge")}
+        ${renderMetric("Needs review", visibleSummary.needsReview, "Reteach recommended")}
+        ${renderMetric("Phase evidence", repositoryMastery.phaseSignals, repositoryMastery.available ? "Scoped catalog" : "Awaiting repository read")}
         ${renderMetric("Attendance streak", `${summary.attendanceStreak} days`, "Learning consistency")}
         ${renderMetric("Consent", summary.consentReady ? "Ready" : "Blocked", `${summary.consentMissing} missing`)}
         ${renderMetric("Recall due", recallDueCount, repositoryRetentionRows.length ? `${retentionNeedsReteach} reteach` : "Retention schedule")}
