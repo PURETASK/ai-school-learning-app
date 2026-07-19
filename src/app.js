@@ -39,6 +39,8 @@ import {
   getLessonExperience,
   getLessonTeachingSupport,
   getLessonScratchpad,
+  getNexusPhaseProgress,
+  completeNexusPhase,
   getInteractiveResponse,
   getLearnerClassSession,
   getRewardApprovalQueue,
@@ -4437,14 +4439,16 @@ function renderNexusLessonPhaseSequence(lesson, answers, result, experience, sup
   const validationLabel = playerModel.validation.passed ? "Contract ready" : "Needs contract repair";
   const modules = playerModel.modules;
   const repositoryEvidence = getRepositoryLessonEvidence(learnerId, lesson.id);
-  const completedPhases = new Set(
-    repositoryEvidence.phaseEvidenceSource === "learner-scoped repository"
-      ? repositoryEvidence.phaseCompletions.map((item) => item.phase).filter(Boolean)
-      : (state.learningEvents || [])
-          .filter((event) => event.learnerId === learnerId && event.lessonId === lesson.id && event.type === "phase_completed")
-          .map((event) => event.value?.phase)
-          .filter(Boolean)
-  );
+  const repositoryCompletedPhases = repositoryEvidence.phaseEvidenceSource === "learner-scoped repository"
+    ? repositoryEvidence.phaseCompletions.map((item) => item.phase).filter(Boolean)
+    : [];
+  const phaseProgress = getNexusPhaseProgress(state, learnerId, lesson.id, {
+    completedPhases: repositoryCompletedPhases,
+    scratchpad: repositoryEvidence.scratchpad,
+    quizResult: repositoryEvidence.quizResult,
+    interactiveResponse: repositoryEvidence.interactiveResponse
+  });
+  const completedPhases = new Set([...phaseProgress.completedPhases, ...repositoryCompletedPhases]);
   return `
     <section class="nexus-phase-player" aria-label="Nexus V3 lesson phases">
       <div class="section-head">
@@ -4479,6 +4483,14 @@ function renderNexusLessonPhaseSequence(lesson, answers, result, experience, sup
         ${modules
           .map((module, index) => {
             const action = renderNexusPhaseAction(module, lesson, learnerId, scratchpad, answers, result);
+            const phaseState = phaseProgress.phases.find((item) => item.phase === module.phase) || {
+              done: false,
+              ready: index === 0,
+              locked: index > 0,
+              reason: "Complete the previous evidence move first."
+            };
+            const phaseDone = completedPhases.has(module.phase) || phaseState.done;
+            const phaseLocked = !phaseDone && !phaseState.ready;
             return `
               <article class="nexus-phase-card ${html(nexusPhaseTone[module.phase] || "blue")}" data-nexus-phase="${html(module.phase)}">
                 <div class="nexus-phase-index">
@@ -4492,10 +4504,10 @@ function renderNexusLessonPhaseSequence(lesson, answers, result, experience, sup
                   ${module.visualSupport ? `<small>${html(module.visualSupport)}</small>` : ""}
                   ${module.successCheck ? `<div class="nexus-success-check"><strong>Check yourself</strong><span>${html(module.successCheck)}</span></div>` : ""}
                   ${action ? `<div class="nexus-phase-action">${action}</div>` : ""}
-                  <div class="nexus-phase-completion ${completedPhases.has(module.phase) ? "complete" : ""}">
-                    <span>${completedPhases.has(module.phase) ? "Evidence recorded" : "Finished this move?"}</span>
-                    <button class="small-button" type="button" data-phase-complete="${html(module.phase)}" data-lesson-id="${html(lesson.id)}" ${completedPhases.has(module.phase) ? "disabled" : ""}>
-                      ${completedPhases.has(module.phase) ? "Phase cleared" : "Clear phase +8 XP"}
+                  <div class="nexus-phase-completion ${phaseDone ? "complete" : phaseLocked ? "locked" : ""}">
+                    <span>${phaseDone ? "Evidence recorded" : phaseLocked ? html(phaseState.reason) : "Ready for this move"}</span>
+                    <button class="small-button" type="button" data-phase-complete="${html(module.phase)}" data-lesson-id="${html(lesson.id)}" ${phaseDone || phaseLocked ? "disabled" : ""} title="${html(phaseDone ? "This phase is already complete" : phaseState.reason)}">
+                      ${phaseDone ? "Phase cleared" : phaseLocked ? "Locked until ready" : "Clear phase +8 XP"}
                     </button>
                   </div>
                 </div>
@@ -8862,27 +8874,34 @@ app.addEventListener("click", (event) => {
     const lessonId = phaseCompleteButton.dataset.lessonId || currentLesson()?.id || "";
     const learnerId = currentSession?.studentId || currentLearner()?.id || "";
     const phase = phaseCompleteButton.dataset.phaseComplete || "";
-    state = recordStudentEngagementAction({ ...state, selectedLessonId: lessonId }, {
+    const completed = completeNexusPhase({ ...state, selectedLessonId: lessonId }, {
       learnerId,
       lessonId,
-      type: "phase_completed",
-      value: { phase, source: "nexus-phase-player" }
+      phase
     });
-    saveState(state);
-    playUiSound("success");
-    announceLearningMoment(`Phase cleared: ${phase.replaceAll("-", " ")} · +8 XP`, "success");
-    postLessonPhase({ lessonId, learnerId, phase })
-      .then(async ({ state: persisted }) => {
-        state = mergePersistedState(state, persisted);
-        await refreshLearningActionReadModels();
-        saveState(state);
-        render();
-      })
-      .catch((error) => {
-        state = markPersistenceError(state, error);
-        render();
-      });
-    shouldRender = true;
+    if (!completed.result.accepted) {
+      playUiSound("blocked");
+      announceLearningMoment(completed.result.reason || "Complete the evidence move first.", "retry");
+      shouldRender = true;
+    } else {
+      state = completed.state;
+      saveState(state);
+      playUiSound("success");
+      announceLearningMoment(`Phase cleared: ${phase.replaceAll("-", " ")} · +8 XP`, "success");
+      postLessonPhase({ lessonId, learnerId, phase })
+        .then(async ({ state: persisted, result }) => {
+          state = mergePersistedState(state, persisted);
+          await refreshLearningActionReadModels();
+          saveState(state);
+          if (result && !result.accepted) announceLearningMoment(result.reason || "Phase evidence was not accepted.", "retry");
+          render();
+        })
+        .catch((error) => {
+          state = markPersistenceError(state, error);
+          render();
+        });
+      shouldRender = true;
+    }
   }
 
   if (scratchpadReviewButton) {

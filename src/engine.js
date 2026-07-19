@@ -48,6 +48,7 @@ import {
 } from "./artifactGrader.js";
 import { exportRosterCsv, parseRosterCsv, rosterImportContract } from "./roster.js";
 import { getViewContractSummary } from "./viewContract.js";
+import { adaptV2LessonToNexusV3, getRenderableNexusPhaseModules } from "./nexusV3.js";
 
 export {
   createRevisionBrief,
@@ -5686,6 +5687,90 @@ export function recordStudentEngagementAction(state = {}, { learnerId = "", less
       engagementDateKey(engagementEventDate(event)) === today
   );
   return duplicate ? state : logLearningEvent(state, { learnerId, lessonId, type, value });
+}
+
+function nexusLessonForProgress(lesson = {}) {
+  return lesson.schemaVersion === "3" ? lesson : adaptV2LessonToNexusV3(lesson);
+}
+
+function phaseEvidenceReady(state = {}, learnerId = "", lessonId = "", phase = "", evidence = {}) {
+  const scratchpad = evidence.scratchpad || getLessonScratchpad(state, learnerId, lessonId);
+  if (phase === "practice") {
+    const interactive = evidence.interactiveResponse || Object.values(state.interactiveResponses?.[learnerId]?.[lessonId] || {})[0] || null;
+    return Boolean(interactive?.value || scratchpad.firstStep);
+  }
+  if (phase === "reason") return Boolean(scratchpad.explanation || scratchpad.confusion);
+  if (phase === "prove") return Boolean(evidence.quizResult || state.quizResults?.[lessonId] || (state.learningEvents || []).some((event) => event.learnerId === learnerId && event.lessonId === lessonId && event.type === "quiz_completed"));
+  return true;
+}
+
+export function getNexusPhaseProgress(state = {}, learnerId = "", lessonId = "", options = {}) {
+  const lesson = findLessonInState(state, lessonId || state.selectedLessonId);
+  const nexusLesson = nexusLessonForProgress(lesson);
+  const modules = getRenderableNexusPhaseModules(nexusLesson);
+  const completed = new Set([
+    ...(options.completedPhases || []),
+    ...(state.learningEvents || [])
+      .filter((event) => event.learnerId === learnerId && event.lessonId === lesson.id && event.type === "phase_completed")
+      .map((event) => event.value?.phase)
+      .filter(Boolean)
+  ]);
+  const phases = modules.map((module, index) => {
+    const done = completed.has(module.phase);
+    const previousDone = modules.slice(0, index).every((item) => completed.has(item.phase));
+    const evidenceReady = phaseEvidenceReady(state, learnerId, lesson.id, module.phase, options);
+    const ready = !done && previousDone && evidenceReady;
+    const reason = done
+      ? "Evidence already recorded."
+      : !previousDone
+        ? `Finish ${modules.find((item, previousIndex) => previousIndex < index && !completed.has(item.phase))?.phase || "the previous phase"} first.`
+        : !evidenceReady
+          ? module.phase === "practice"
+            ? "Try the interactive model or write your first step before clearing practice."
+            : module.phase === "reason"
+              ? "Write your reasoning or exact confusion before clearing this phase."
+              : module.phase === "prove"
+                ? "Submit the checkpoint before clearing the prove phase."
+                : "Complete the evidence task before clearing this phase."
+          : "Ready for your next move.";
+    return { phase: module.phase, index, done, ready, locked: !done && !ready, reason };
+  });
+  return {
+    lessonId: lesson.id,
+    activePhases: modules.map((module) => module.phase),
+    completedPhases: phases.filter((phase) => phase.done).map((phase) => phase.phase),
+    nextPhase: phases.find((phase) => phase.ready)?.phase || null,
+    phases
+  };
+}
+
+export function completeNexusPhase(state = {}, { learnerId = "", lessonId = "", phase = "" } = {}) {
+  const progress = getNexusPhaseProgress(state, learnerId, lessonId);
+  const target = progress.phases.find((item) => item.phase === phase);
+  if (!target) {
+    return { state, result: { accepted: false, reason: "That phase is not active in this lesson." } };
+  }
+  if (target.done) {
+    return { state, result: { accepted: false, reason: "That phase has already been cleared." } };
+  }
+  if (!target.ready) {
+    return { state, result: { accepted: false, reason: target.reason, nextPhase: progress.nextPhase } };
+  }
+  const nextState = recordStudentEngagementAction(state, {
+    learnerId,
+    lessonId: progress.lessonId,
+    type: "phase_completed",
+    value: { phase, source: "nexus-phase-player" }
+  });
+  return {
+    state: nextState,
+    result: {
+      accepted: true,
+      phase,
+      nextPhase: getNexusPhaseProgress(nextState, learnerId, progress.lessonId).nextPhase,
+      summary: `${phase} phase cleared. Continue to the next evidence move.`
+    }
+  };
 }
 
 function learnerCourseSubjects(learner = {}) {

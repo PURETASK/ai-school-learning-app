@@ -19,6 +19,7 @@ import {
   attachTutorProviderResponse,
   canAccessRepositoryAction,
   completeLessonQuiz,
+  completeNexusPhase,
   createEmailVerificationRequest,
   createParentManagedChildAccount,
   registerProviderAccount,
@@ -2069,16 +2070,21 @@ async function handleApi(request, response, pathname) {
       const lesson = findLessonInState(state, lessonId);
       const learnerId = String(body.learnerId || (session.role === "student" ? session.studentId : learnerIdForLesson(lesson)));
       requireLearningEvidenceAccess(session, state, learnerId);
-      const nextState = recordStudentEngagementAction(state, {
-        learnerId,
-        lessonId,
-        type: "phase_completed",
-        value: { phase, source: "nexus-phase-player" }
-      });
-      const persisted = await writeLearningEvidence(nextState);
+      const completed = completeNexusPhase(state, { learnerId, lessonId, phase });
+      if (!completed.result.accepted) {
+        return {
+          state,
+          phase,
+          recorded: false,
+          result: completed.result,
+          repository: stateRepository.status()
+        };
+      }
+      const persisted = await writeLearningEvidence(completed.state);
       return {
         state: persisted,
         phase,
+        result: completed.result,
         recorded: persisted.learningEvents?.some((event) => event.learnerId === learnerId && event.lessonId === lessonId && event.type === "phase_completed" && event.value?.phase === phase),
         repository: stateRepository.status()
       };

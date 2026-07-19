@@ -61,6 +61,8 @@ import {
   getLearnerAccess,
   getLessonExperience,
   getLessonScratchpad,
+  getNexusPhaseProgress,
+  completeNexusPhase,
   getInteractiveResponse,
   getLearnerInteractiveSkillEvidence,
   getLessonTeachingSupport,
@@ -576,6 +578,32 @@ for (const [lesson, label] of [
   );
   assert.deepEqual(lesson.requiredMasteryProofs, ["recall", "explain", "perform", "retain", "transfer"], `${label} should require the full evidence path`);
 }
+let phaseGateState = createInitialState();
+const phaseGateLearnerId = "maya";
+const phaseGateLessonId = nativeBridgeRatiosLesson.id;
+assert.equal(getNexusPhaseProgress(phaseGateState, phaseGateLearnerId, phaseGateLessonId).nextPhase, "orient", "A new lesson should begin at the orient phase");
+const blockedPractice = completeNexusPhase(phaseGateState, { learnerId: phaseGateLearnerId, lessonId: phaseGateLessonId, phase: "practice" });
+assert.equal(blockedPractice.result.accepted, false, "Practice should not be clearable before earlier phases and evidence");
+for (const phase of ["orient", "model", "deconstruct"]) {
+  const completed = completeNexusPhase(phaseGateState, { learnerId: phaseGateLearnerId, lessonId: phaseGateLessonId, phase });
+  assert.equal(completed.result.accepted, true, `${phase} should be clearable in order`);
+  phaseGateState = completed.state;
+}
+const missingPracticeEvidence = completeNexusPhase(phaseGateState, { learnerId: phaseGateLearnerId, lessonId: phaseGateLessonId, phase: "practice" });
+assert.equal(missingPracticeEvidence.result.accepted, false, "Practice should require an interactive attempt or first-step evidence");
+phaseGateState = updateLessonScratchpad(phaseGateState, { learnerId: phaseGateLearnerId, lessonId: phaseGateLessonId, firstStep: "I compare the two quantities before calculating." });
+phaseGateState = completeNexusPhase(phaseGateState, { learnerId: phaseGateLearnerId, lessonId: phaseGateLessonId, phase: "practice" }).state;
+const missingReasonEvidence = completeNexusPhase(phaseGateState, { learnerId: phaseGateLearnerId, lessonId: phaseGateLessonId, phase: "reason" });
+assert.equal(missingReasonEvidence.result.accepted, false, "Reason should require student explanation or confusion evidence");
+phaseGateState = updateLessonScratchpad(phaseGateState, { learnerId: phaseGateLearnerId, lessonId: phaseGateLessonId, explanation: "The unit rate compares one unit so the comparison stays fair." });
+phaseGateState = completeNexusPhase(phaseGateState, { learnerId: phaseGateLearnerId, lessonId: phaseGateLessonId, phase: "reason" }).state;
+const missingProofEvidence = completeNexusPhase(phaseGateState, { learnerId: phaseGateLearnerId, lessonId: phaseGateLessonId, phase: "prove" });
+assert.equal(missingProofEvidence.result.accepted, false, "Prove should require a submitted checkpoint");
+const phaseGateAnswers = Object.fromEntries(nativeBridgeRatiosLesson.quiz.map((question) => [question.id, question.answerIndex]));
+phaseGateState = completeLessonQuiz(phaseGateState, phaseGateLessonId, phaseGateAnswers, { learnerId: phaseGateLearnerId });
+const completedProof = completeNexusPhase(phaseGateState, { learnerId: phaseGateLearnerId, lessonId: phaseGateLessonId, phase: "prove" });
+assert.equal(completedProof.result.accepted, true, "A submitted checkpoint should unlock the prove phase");
+assert.equal(getNexusPhaseProgress(completedProof.state, phaseGateLearnerId, phaseGateLessonId).nextPhase, "remember", "After prove, the next phase should be delayed recall");
 const adaptedPilotLesson = adaptV2LessonToNexusV3(pilotLessons.find((item) => item.id === "g3-ela-main-idea-evidence"));
 assert.equal(adaptedPilotLesson.schemaVersion, "v2-adapted", "V2 adapter should label adapted lessons instead of pretending they are native V3");
 assert.equal(adaptedPilotLesson.academy, "foundation", "V2 adapter should infer Foundation Academy from a grade 3 lesson");
