@@ -5642,6 +5642,28 @@ export function getStudentEngagementProfile(state = {}, learnerId = "", now = ne
       actionLabel: "Take checkpoint",
       action: "lesson",
       lessonId
+    },
+    {
+      id: "remember",
+      icon: "05",
+      title: "Open the Memory Vault",
+      description: "Recall the idea without looking, then capture what your brain can retrieve.",
+      xp: 25,
+      done: hasToday("phase_completed", (event) => event.value?.phase === "remember"),
+      actionLabel: "Recall it",
+      action: "lesson",
+      lessonId
+    },
+    {
+      id: "transfer",
+      icon: "06",
+      title: "Enter the Transfer Portal",
+      description: "Use the idea in a new situation and prove it travels beyond this lesson.",
+      xp: 35,
+      done: hasToday("phase_completed", (event) => event.value?.phase === "transfer"),
+      actionLabel: "Apply it",
+      action: "lesson",
+      lessonId
     }
   ];
   const completedMissions = missionDefinitions.filter((mission) => mission.done).length;
@@ -5655,7 +5677,7 @@ export function getStudentEngagementProfile(state = {}, learnerId = "", now = ne
     streak += 1;
     cursor.setUTCDate(cursor.getUTCDate() - 1);
   }
-  const combo = Math.min(4, completedMissions);
+  const combo = Math.min(missionDefinitions.length, completedMissions);
   const celebration = completedMissions === missionDefinitions.length
     ? "Full mission clear. Your brain has evidence, not just activity."
     : completedMissions > 0

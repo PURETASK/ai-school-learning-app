@@ -3427,6 +3427,9 @@ const engagement = getStudentEngagementProfile(engagementState, "avery", engagem
 assert.equal(engagement.streak >= 2, true, "engagement profile should calculate consecutive learning days");
 assert.equal(engagement.completedMissions >= 2, true, "engagement profile should convert learning evidence into cleared missions");
 assert.equal(engagement.nextMission.id, "tutor", "engagement profile should prioritize the next evidence-producing mission");
+assert.equal(engagement.totalMissions, 6, "engagement profile should include recall and transfer missions");
+assert.ok(engagement.missions.some((mission) => mission.id === "remember"), "engagement profile should expose a Memory Vault mission");
+assert.ok(engagement.missions.some((mission) => mission.id === "transfer"), "engagement profile should expose a transfer mission");
 assert.equal(engagement.rewardTrack.level, getLearnerLevelProfile(engagementState, "avery").level, "engagement profile should expose the learner reward level");
 assert.ok(engagement.rewardTrack.nextReward.title, "engagement profile should expose the next mastery reward");
 assert.ok(engagement.rewardTrack.progressPercent >= 0, "engagement profile should expose reward progress");
