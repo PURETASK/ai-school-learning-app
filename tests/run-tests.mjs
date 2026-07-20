@@ -311,6 +311,20 @@ assert.deepEqual(Object.keys(viewIcons), appViewIds, "view icons should cover ev
 assert.deepEqual(allowedViewsByRole["school-admin"], appViewIds, "school admin should access the complete app surface");
 assert.deepEqual(allowedViewsByRole["platform-admin"], appViewIds, "platform admin should access the complete app surface");
 assert.deepEqual(allowedViewsByRole.student, ["student", "lesson", "ai"], "student access should stay limited to learner-facing pages");
+const tutorialAppSource = readFileSync("src/app.js", "utf8");
+const tutorialStyleSource = readFileSync("src/styles.css", "utf8");
+for (const tutorialId of ["child", "parent", "teacher", "school"]) {
+  assert.ok(tutorialAppSource.includes(`id: "${tutorialId}"`), `${tutorialId} tutorial should be defined in the role tutorial model`);
+  assert.ok(tutorialAppSource.includes(`renderRoleTutorialRail("${tutorialId}")`), `${tutorialId} role page should render its tutorial rail`);
+  assert.ok(tutorialStyleSource.includes(`.tutorial-${tutorialId}`), `${tutorialId} tutorial should have a visual style hook`);
+}
+assert.ok(tutorialAppSource.includes("function renderAcademyTutorialCenter"), "setup view should expose the role tutorial center");
+assert.ok(tutorialAppSource.includes("Each tutorial follows the real product workflow"), "tutorial center should explain that tutorials map to real workflows");
+assert.ok(tutorialAppSource.includes("lesson progress") && tutorialAppSource.includes("quiz attempt") && tutorialAppSource.includes("tutor event"), "child tutorial should name the student evidence created by the app");
+assert.ok(tutorialAppSource.includes("child account link") && tutorialAppSource.includes("reward decision"), "parent tutorial should name account-link and reward workflows");
+assert.ok(tutorialAppSource.includes("class session status") && tutorialAppSource.includes("intervention record"), "teacher tutorial should name class-session and intervention workflows");
+assert.ok(tutorialAppSource.includes("school profile") && tutorialAppSource.includes("school report"), "school tutorial should name school setup and reporting workflows");
+assert.ok(tutorialStyleSource.includes(".tutorial-grid") && tutorialStyleSource.includes(".tutorial-mini-track"), "tutorial UI should include full and compact role layouts");
 
 const frameworkIds = standardsFrameworks.map((framework) => framework.id);
 for (const id of ["ccss-ela", "ccss-math", "ngss", "c3", "shape", "k12cs", "arts", "sel"]) {
@@ -3485,7 +3499,7 @@ const selectedAdventure = recordStudentEngagementAction(engagementState, {
   learnerId: "avery",
   lessonId: lesson.id,
   type: "adventure_mode_selected",
-  value: { modeId: "creator" }
+  value: { modeId: "creator", occurredAt: engagementNow.toISOString() }
 });
 assert.equal(getLearningAdventure(selectedAdventure, "avery", engagementNow).selectedModeId, "creator", "learning adventure should remember the learner's daily route");
 assert.equal(getLearnerLevelProfile(selectedAdventure, "avery").totalXp, getLearnerLevelProfile(engagementState, "avery").totalXp, "choosing an adventure route should not award XP by itself");
@@ -3493,14 +3507,14 @@ const duplicateEngagement = recordStudentEngagementAction(engagementState, {
   learnerId: "avery",
   lessonId: lesson.id,
   type: "lesson_started",
-  value: { source: "mission-board" }
+  value: { source: "mission-board", occurredAt: engagementNow.toISOString() }
 });
 assert.equal(duplicateEngagement.learningEvents.length, engagementState.learningEvents.length, "daily engagement actions should not award duplicate start evidence");
 const phaseStarted = recordStudentEngagementAction(engagementState, {
   learnerId: "avery",
   lessonId: lesson.id,
   type: "phase_completed",
-  value: { phase: "model", source: "nexus-phase-player" }
+  value: { phase: "model", source: "nexus-phase-player", occurredAt: engagementNow.toISOString() }
 });
 assert.equal(phaseStarted.learningEvents[0].type, "phase_completed", "Nexus phase completion should create learning evidence");
 assert.equal(phaseStarted.learningEvents[0].value.phase, "model", "phase evidence should preserve the completed phase");
@@ -3508,14 +3522,14 @@ const duplicatePhase = recordStudentEngagementAction(phaseStarted, {
   learnerId: "avery",
   lessonId: lesson.id,
   type: "phase_completed",
-  value: { phase: "model", source: "nexus-phase-player" }
+  value: { phase: "model", source: "nexus-phase-player", occurredAt: engagementNow.toISOString() }
 });
 assert.equal(duplicatePhase.learningEvents.length, phaseStarted.learningEvents.length, "a phase should not award duplicate same-day XP");
 const secondPhase = recordStudentEngagementAction(duplicatePhase, {
   learnerId: "avery",
   lessonId: lesson.id,
   type: "phase_completed",
-  value: { phase: "practice", source: "nexus-phase-player" }
+  value: { phase: "practice", source: "nexus-phase-player", occurredAt: engagementNow.toISOString() }
 });
 assert.equal(secondPhase.learningEvents.length, duplicatePhase.learningEvents.length + 1, "different phases should each create evidence");
 const phaseEvidenceRepository = createStateRepository({ root: `${process.env.TEMP || "C:\\tmp"}\\k12-learning-phase-catalog-test`, env: {} });

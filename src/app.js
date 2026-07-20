@@ -675,6 +675,242 @@ function renderExperienceSwitchboard({ eyebrow, title, items }) {
   `;
 }
 
+const roleTutorials = [
+  {
+    id: "child",
+    label: "Child",
+    audience: "Student account",
+    title: "Attend class inside the app",
+    promise: "The app teaches directly with visuals, checks confusion, gives tutor help, and awards XP for proof of learning.",
+    startView: "student",
+    steps: [
+      {
+        label: "Enter",
+        title: "Land on the mission board",
+        body: "See level, subject worlds, today's mission, next reward, class session, and the first app-led lesson."
+      },
+      {
+        label: "Choose",
+        title: "Pick a subject world",
+        body: "Open Math Lab, Discovery Lab, Story Studio, Code Garage, or another subject path with a clear next skill."
+      },
+      {
+        label: "Learn",
+        title: "Watch the lesson teach",
+        body: "Move through V3 phases: hook, visual model, guided try, interactive practice, quiz, reteach/challenge, and Memory Vault."
+      },
+      {
+        label: "Ask",
+        title: "Write what is confusing",
+        body: "The tutor asks for the exact stuck point, diagnoses the misunderstanding, then gives hints, diagrams, examples, or first-principles prompts."
+      },
+      {
+        label: "Earn",
+        title: "Prove mastery and unlock rewards",
+        body: "XP comes from quizzes, projects, tutor reflection, experiments, and delayed recall, not from just clicking through screens."
+      }
+    ],
+    creates: ["lesson progress", "quiz attempt", "scratchpad evidence", "tutor event", "XP/reward request"],
+    success: "Student finishes a lesson, understands what was confusing, earns XP, and knows the next mission."
+  },
+  {
+    id: "parent",
+    label: "Parent",
+    audience: "Family owner",
+    title: "Create and guide child accounts",
+    promise: "Parents start the household, create child logins, monitor learning evidence, and approve mastery-tied rewards.",
+    startView: "setup",
+    steps: [
+      {
+        label: "Create",
+        title: "Sign up as the parent first",
+        body: "Set household identity, consent, child data rules, and adult visibility before a student account is opened."
+      },
+      {
+        label: "Link",
+        title: "Create the child username",
+        body: "Add grade, academy, username, password, accommodations, and parent-child link without storing the child password locally."
+      },
+      {
+        label: "Assign",
+        title: "Pick the next learning path",
+        body: "Use strengths, weak skills, recall due, and tutor notes to suggest lessons or ask for a diagnostic placement."
+      },
+      {
+        label: "Review",
+        title: "Read the evidence",
+        body: "Check quiz scores, mastery, Memory Vault, tutor reflections, portfolio items, and where the child is struggling."
+      },
+      {
+        label: "Reward",
+        title: "Approve earned benefits",
+        body: "Approve or reject XP rewards, track fulfillment, and keep gift-card style benefits under adult control."
+      }
+    ],
+    creates: ["child account link", "consent state", "assignment intent", "reward decision", "parent progress review"],
+    success: "Parent can explain exactly what the child learned, where they need help, and what reward is approved."
+  },
+  {
+    id: "teacher",
+    label: "Teacher",
+    audience: "Classroom instructor",
+    title: "Launch and monitor a class session",
+    promise: "Teachers run a classroom block where the app teaches, students respond, and the teacher focuses on intervention.",
+    startView: "teacher",
+    steps: [
+      {
+        label: "Plan",
+        title: "Open the teaching studio",
+        body: "Review assigned learners, target lesson, visual readiness, group homework roles, and likely misconceptions."
+      },
+      {
+        label: "Launch",
+        title: "Start the class session",
+        body: "Send students into the app-led lesson while the teacher dashboard tracks status, help signals, and mastery."
+      },
+      {
+        label: "Watch",
+        title: "Monitor confusion live",
+        body: "See who is ready, active, stuck, or needs help from quiz results, tutor events, scratchpad text, and phase evidence."
+      },
+      {
+        label: "Intervene",
+        title: "Assign reteach or challenge",
+        body: "Use first-principles prompts, visual repair, group missions, or extension tasks based on the student's actual evidence."
+      },
+      {
+        label: "Close",
+        title: "Review exit proof",
+        body: "Check quiz, reflection, group artifact, and Memory Vault schedule before marking the session ready for reporting."
+      }
+    ],
+    creates: ["class session status", "intervention record", "group mission evidence", "teacher review", "report signal"],
+    success: "Teacher sees who learned, who is stuck, and which action to take next without re-teaching blindly."
+  },
+  {
+    id: "school",
+    label: "School",
+    audience: "School admin",
+    title: "Deploy the academy as a school product",
+    promise: "School admins configure rosters, classes, implementation gates, reporting, privacy scope, and pilot readiness.",
+    startView: "school",
+    steps: [
+      {
+        label: "Setup",
+        title: "Create the school structure",
+        body: "Confirm school profile, teacher assignments, class sections, schedule, and Bridge Academy pilot scope."
+      },
+      {
+        label: "Roster",
+        title: "Import or enroll learners",
+        body: "Use CSV import or manual enrollment to create class-scoped learner records and pending invitations."
+      },
+      {
+        label: "Verify",
+        title: "Check launch readiness",
+        body: "Review auth, repository, privacy, visual/content gates, teacher access, and student data scope before a pilot."
+      },
+      {
+        label: "Report",
+        title: "Export progress evidence",
+        body: "Download rosters and school report snapshots for leaders, pilots, compliance review, and procurement conversations."
+      },
+      {
+        label: "Improve",
+        title: "Feed findings into review gates",
+        body: "Use student outcomes, teacher notes, tutor issues, and visual gaps to request revisions before scaling."
+      }
+    ],
+    creates: ["school profile", "class roster", "class sections", "school report", "implementation review"],
+    success: "School can run a scoped pilot with roles, rosters, reports, and review gates instead of a loose demo."
+  }
+];
+
+function renderRoleTutorialCard(tutorial, compact = false) {
+  return `
+    <article class="tutorial-card tutorial-${html(tutorial.id)} ${compact ? "compact" : ""}">
+      <div class="tutorial-card-head">
+        <span>${html(tutorial.audience)}</span>
+        <strong>${html(tutorial.label)}</strong>
+      </div>
+      <h3>${html(tutorial.title)}</h3>
+      <p>${html(tutorial.promise)}</p>
+      ${compact ? "" : `
+        <ol class="tutorial-step-list">
+          ${tutorial.steps
+            .map(
+              (step, index) => `
+                <li>
+                  <span>${index + 1}</span>
+                  <div>
+                    <strong>${html(step.label)}: ${html(step.title)}</strong>
+                    <p>${html(step.body)}</p>
+                  </div>
+                </li>
+              `
+            )
+            .join("")}
+        </ol>
+        <div class="tutorial-output-row">
+          ${tutorial.creates.map((item) => `<span>${html(item)}</span>`).join("")}
+        </div>
+      `}
+      <div class="tutorial-card-foot">
+        <small>${html(tutorial.success)}</small>
+        <button class="small-button" data-view="${html(tutorial.startView)}">${html(compact ? "Open tutorial path" : "Start this path")}</button>
+      </div>
+    </article>
+  `;
+}
+
+function renderRoleTutorialRail(roleId) {
+  const tutorial = roleTutorials.find((item) => item.id === roleId);
+  if (!tutorial) return "";
+  return `
+    <section class="panel wide-panel role-tutorial-rail tutorial-${html(roleId)}">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">${html(tutorial.label)} tutorial</p>
+          <h2>${html(tutorial.title)}</h2>
+        </div>
+        <span class="status-pill">Guided path</span>
+      </div>
+      <div class="tutorial-mini-track" aria-label="${html(tutorial.label)} tutorial steps">
+        ${tutorial.steps
+          .map(
+            (step, index) => `
+              <article>
+                <span>${String(index + 1).padStart(2, "0")}</span>
+                <strong>${html(step.label)}</strong>
+                <p>${html(step.title)}</p>
+              </article>
+            `
+          )
+          .join("")}
+      </div>
+      <p class="tutorial-success-note">${html(tutorial.success)}</p>
+    </section>
+  `;
+}
+
+function renderAcademyTutorialCenter() {
+  return `
+    <section class="panel wide-panel tutorial-center" id="roleTutorials">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Interactive tutorials</p>
+          <h2>Learn how each account uses the academy</h2>
+          <small>Each tutorial follows the real product workflow, the screens the user sees, and the evidence the system saves.</small>
+        </div>
+        <span class="status-pill">4 role paths</span>
+      </div>
+      <div class="tutorial-grid">
+        ${roleTutorials.map((tutorial) => renderRoleTutorialCard(tutorial)).join("")}
+      </div>
+    </section>
+  `;
+}
+
 function learnerMasterySnapshot(learner) {
   const lessons = getTodayPlan(state).filter((lesson) => lesson.academyId === learner.academyId || String(lesson.grade) === String(learner.grade));
   const selected = lessons[0] || getTodayPlan(state)[0];
@@ -4054,6 +4290,7 @@ function renderStudentView() {
         { label: "Next reward", value: `L${levelProfile.nextReward.level}`, detail: levelProfile.nextReward.title }
       ]
     })}
+    ${renderRoleTutorialRail("child")}
     ${renderProductLearningFlow({ learner, lesson: selectedPlan, levelProfile })}
     ${renderStudentEngagementBoard(learner, selectedPlan, levelProfile)}
     ${renderLearningAdventurePanel(learner, selectedPlan)}
@@ -6292,6 +6529,7 @@ function renderSetupView() {
 
   return renderShell(`
     ${renderAccountAccessPanel()}
+    ${renderAcademyTutorialCenter()}
     ${renderRuntimeConfigurationPanel()}
     ${renderChildAccountCreator()}
 
@@ -6861,6 +7099,7 @@ function renderParentView() {
         { label: "Children", value: learnerInsights.length, detail: "Linked learner accounts" }
       ]
     })}
+    ${renderRoleTutorialRail("parent")}
     ${
       hasStrictLearnerScope() && !learnerInsights.length
         ? `<section class="panel wide-panel empty-role-state">
@@ -7407,6 +7646,7 @@ function renderSchoolAdminView() {
         { label: "Sessions", value: summary.activeSessions, detail: "Class blocks" }
       ]
     })}
+    ${renderRoleTutorialRail("school")}
 
     <section class="panel wide-panel school-ops-panel">
       <div class="section-head">
@@ -7594,6 +7834,7 @@ function renderTeacherView() {
         { label: "Tutor review", value: tutorQuality.needsTruthReview, detail: "Need fact-check" }
       ]
     })}
+    ${renderRoleTutorialRail("teacher")}
 
     ${renderTeacherClassroomCommand()}
 

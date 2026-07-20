@@ -5826,7 +5826,8 @@ export function getLearningAdventure(state = {}, learnerId = "", now = new Date(
 export function recordStudentEngagementAction(state = {}, { learnerId = "", lessonId = "", type = "", value = {} } = {}) {
   const allowedTypes = new Set(["lesson_started", "affect_checkin_submitted", "interactive_widget_attempted", "phase_completed", "adventure_mode_selected"]);
   if (!learnerId || !allowedTypes.has(type)) return state;
-  const today = engagementDateKey(new Date());
+  const occurredAt = value?.occurredAt || value?.timestamp || new Date();
+  const today = engagementDateKey(occurredAt);
   const duplicate = (state.learningEvents || []).some(
     (event) =>
       event.learnerId === learnerId &&
@@ -5835,7 +5836,7 @@ export function recordStudentEngagementAction(state = {}, { learnerId = "", less
       ((type !== "phase_completed" && type !== "adventure_mode_selected") || (event.value?.phase === value?.phase && event.value?.modeId === value?.modeId)) &&
       engagementDateKey(engagementEventDate(event)) === today
   );
-  return duplicate ? state : logLearningEvent(state, { learnerId, lessonId, type, value });
+  return duplicate ? state : logLearningEvent(state, { learnerId, lessonId, type, value, occurredAt });
 }
 
 function nexusLessonForProgress(lesson = {}) {
@@ -6094,7 +6095,7 @@ export function logLearningEvent(state, event) {
     lessonId: event.lessonId,
     type: event.type,
     value: event.value || {},
-    occurredAt: new Date().toLocaleString()
+    occurredAt: event.occurredAt ? new Date(event.occurredAt).toISOString() : new Date().toISOString()
   };
 
   return {
