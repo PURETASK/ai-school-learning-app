@@ -270,6 +270,16 @@ let learningMomentTimer = null;
 const soundPreferenceKey = "k12-learning-ui-sound-enabled";
 const storedSoundPreference = globalThis.localStorage?.getItem?.(soundPreferenceKey);
 let uiSoundEnabled = storedSoundPreference !== "false";
+const tutorialProgressKey = "k12-learning-role-tutorial-progress";
+let tutorialProgress = (() => {
+  try {
+    return JSON.parse(globalThis.localStorage?.getItem?.(tutorialProgressKey) || "{}") || {};
+  } catch {
+    return {};
+  }
+})();
+let activeTutorialRoleId = null;
+let tutorialFocusAfterRender = null;
 let scratchpadSyncTimer = null;
 
 function announceLearningMoment(message, tone = "success", options = {}) {
@@ -826,88 +836,213 @@ const roleTutorials = [
   }
 ];
 
-function renderRoleTutorialCard(tutorial, compact = false) {
-  return `
-    <article class="tutorial-card tutorial-${html(tutorial.id)} ${compact ? "compact" : ""}">
-      <div class="tutorial-card-head">
-        <span>${html(tutorial.audience)}</span>
-        <strong>${html(tutorial.label)}</strong>
+const tutorialRoleDesigns = {
+  child: {
+    code: "PLAYER 01",
+    model: "Quest map",
+    screens: [
+      ["Child Home / Mission Board", "student", "Start with the highlighted mission. It already combines class work, recall due, and the next useful skill.", "You can name today's mission, its XP, and what happens after it."],
+      ["Child Home / Subject Worlds", "student", "Choose the recommended world for class work, or one marked Ready for independent practice.", "A subject world opens with one clear next lesson."],
+      ["Lesson Player / Active Phase", "lesson", "Inspect, move, sort, answer, or explain inside the active phase. Save its evidence before advancing.", "The phase records a model choice, explanation, practice result, or mastery proof."],
+      ["Tutor / Confusion Lab", "ai", "Describe the exact step that stopped making sense and what you tried. Ask for a hint, picture, example, or first-principles explanation.", "You can explain the stuck point and try a new strategy."],
+      ["Lesson Player / Mastery Check", "lesson", "Submit the quiz and explanation honestly. A retry opens reteach; a strong result opens challenge and delayed recall.", "XP is tied to saved learning evidence and the next mission is visible."]
+    ]
+  },
+  parent: {
+    code: "GUIDE 02",
+    model: "Family link",
+    screens: [
+      ["Setup / Parent Account", "setup", "Use an adult email, verify it, review consent, and keep account recovery private.", "The household has a verified adult owner and protected session."],
+      ["Setup / Create Child", "setup", "Confirm grade and academy, add only needed accommodations, and give the child separate credentials.", "The child signs in separately and appears only under linked adults."],
+      ["Parent Home / Suggested Next Steps", "parent", "Use evidence before assigning more work. Prefer one targeted reteach or recall task over a long list.", "The child receives a specific mission connected to actual evidence."],
+      ["Parent Home / Learning Evidence", "parent", "Compare recent performance with delayed recall and transfer. One quiz is a signal, not durable mastery.", "You can name one strength, one stuck point, and the recommended support."],
+      ["Parent Home / Reward Approvals", "parent", "Approve rewards only after the evidence requirement is met, with budgets and fulfillment under adult control.", "Every reward has a reason, evidence link, owner, and status."]
+    ]
+  },
+  teacher: {
+    code: "COACH 03",
+    model: "Live class console",
+    screens: [
+      ["Teacher Studio / Session Plan", "teacher", "Confirm the lesson, approved visual, standard, group roles, and likely misconception before learners enter.", "The session has a target, ready assets, assigned learners, and an intervention plan."],
+      ["Teacher Studio / Class Session", "teacher", "Launch one scoped session and let the app handle direct instruction while you observe and conference.", "Every learner has a visible Ready, Active, Stuck, or Complete state."],
+      ["Teacher Studio / Live Monitor", "teacher", "Sort by help signal and inspect evidence before interrupting. Time alone does not diagnose confusion.", "You can separate productive struggle from a learner who needs intervention."],
+      ["Teacher Studio / Intervention Queue", "teacher", "Choose the smallest action matching the diagnosed error: visual repair, hint, example, group role, or challenge.", "The intervention names evidence, strategy, owner, and expected outcome."],
+      ["Teacher Studio / Session Closeout", "teacher", "Check individual proof as well as group work, then schedule reteach, challenge, or delayed recall.", "The report shows mastery status and a next action for every learner."]
+    ]
+  },
+  school: {
+    code: "OPS 04",
+    model: "Deployment blueprint",
+    screens: [
+      ["School Console / Organization", "school", "Start with a named pilot owner, grade, subject, class section, dates, and success criteria.", "School, classes, owners, schedule, and pilot target are defined."],
+      ["School Console / Rosters", "school", "Validate a small import first, resolve duplicates, and verify teacher-class links before invitations.", "Every learner belongs to the correct school, class, grade, and teacher scope."],
+      ["School Console / Readiness Gates", "school", "Treat failed gates as blockers with owners. Do not launch with demo auth, unapproved content, or unverified data boundaries.", "Required gates pass and every remaining risk has an owner and date."],
+      ["School Console / Reports", "school", "Use scoped reports for decisions and export only the minimum student data required for the audience.", "Leaders can read adoption, learning evidence, interventions, and unresolved risks."],
+      ["School Console / Pilot Review", "school", "Turn each finding into an owned revision with evidence and acceptance criteria before expanding.", "The next rollout decision is supported by evidence."]
+    ]
+  }
+};
+
+roleTutorials.forEach((tutorial) => {
+  const design = tutorialRoleDesigns[tutorial.id];
+  tutorial.code = design.code;
+  tutorial.model = design.model;
+  tutorial.steps = tutorial.steps.map((step, index) => ({
+    ...step,
+    screen: design.screens[index][0],
+    view: design.screens[index][1],
+    properUse: design.screens[index][2],
+    successSignal: design.screens[index][3]
+  }));
+});
+
+function persistTutorialProgress() {
+  globalThis.localStorage?.setItem?.(tutorialProgressKey, JSON.stringify(tutorialProgress));
+}
+
+function tutorialProgressFor(roleId) {
+  const raw = tutorialProgress[roleId] || {};
+  const tutorial = roleTutorials.find((item) => item.id === roleId);
+  const maxStep = Math.max(0, (tutorial?.steps.length || 1) - 1);
+  return {
+    currentStep: Math.max(0, Math.min(maxStep, Number(raw.currentStep) || 0)),
+    completed: Boolean(raw.completed),
+    visited: Array.isArray(raw.visited) ? raw.visited : []
+  };
+}
+
+function renderTutorialRoleVisual(tutorial, activeStep) {
+  const progress = tutorialProgressFor(tutorial.id);
+  if (tutorial.id === "child") {
+    return `
+      <div class="tutorial-role-visual child-quest-map" aria-label="Student quest tutorial map">
+        <div class="quest-map-head"><span>LEVEL 01</span><strong>${html(activeStep.label)} mission</strong></div>
+        <div class="quest-map-path">
+          ${tutorial.steps.map((step, index) => `<span class="${index < progress.currentStep || progress.completed ? "done" : ""} ${index === progress.currentStep ? "active" : ""}">${index + 1}<small>${html(step.label)}</small></span>`).join("")}
+        </div>
+        <div class="quest-map-xp"><span style="width:${progress.completed ? 100 : ((progress.currentStep + 1) / tutorial.steps.length) * 100}%"></span></div>
+        <small>Learn the controls. Complete the route. Start your first mission.</small>
       </div>
+    `;
+  }
+  if (tutorial.id === "parent") {
+    return `
+      <div class="tutorial-role-visual parent-family-link" aria-label="Parent and child account connection model">
+        <div><span>01</span><strong>Parent account</strong><small>Consent + control</small></div><i></i>
+        <div><span>02</span><strong>Child profile</strong><small>Separate sign-in</small></div><i></i>
+        <div><span>03</span><strong>Learning evidence</strong><small>Progress + support</small></div>
+        <p>Adult controls protect the child account without taking over the child's learning.</p>
+      </div>
+    `;
+  }
+  if (tutorial.id === "teacher") {
+    const signals = [["READY", 92], ["ACTIVE", 74], ["STUCK", 43], ["EVIDENCE", 81]];
+    return `
+      <div class="tutorial-role-visual teacher-live-console" aria-label="Teacher live class signal console">
+        <div class="teacher-console-head"><span>LIVE CLASS</span><strong>24 learners</strong></div>
+        ${signals.map(([label, width], index) => `<div class="teacher-signal ${index === progress.currentStep % signals.length ? "active" : ""}"><span>${label}</span><i><b style="width:${width}%"></b></i><strong>${width}%</strong></div>`).join("")}
+        <p>Observe the evidence first. Intervene where the signal explains why.</p>
+      </div>
+    `;
+  }
+  return `
+    <div class="tutorial-role-visual school-blueprint" aria-label="School deployment blueprint">
+      <div class="blueprint-coordinate">PILOT / BRIDGE-06</div>
+      ${["Organization + roles", "Classes + rosters", "Safety + quality gates", "Reports + improvement"].map((label, index) => `<div class="blueprint-layer ${index <= progress.currentStep ? "active" : ""}"><span>0${index + 1}</span><strong>${html(label)}</strong><small>${index <= progress.currentStep ? "online" : "queued"}</small></div>`).join("")}
+      <p>Build the operating structure before expanding the deployment.</p>
+    </div>
+  `;
+}
+
+function renderRoleTutorialCard(tutorial) {
+  const progress = tutorialProgressFor(tutorial.id);
+  return `
+    <article class="tutorial-card tutorial-${html(tutorial.id)}">
+      <div class="tutorial-card-head">
+        <span>${html(tutorial.code)}</span>
+        <strong>${progress.completed ? "Complete" : html(tutorial.model)}</strong>
+      </div>
+      <p class="tutorial-card-audience">${html(tutorial.audience)}</p>
       <h3>${html(tutorial.title)}</h3>
       <p>${html(tutorial.promise)}</p>
-      ${compact ? "" : `
-        <ol class="tutorial-step-list">
-          ${tutorial.steps
-            .map(
-              (step, index) => `
-                <li>
-                  <span>${index + 1}</span>
-                  <div>
-                    <strong>${html(step.label)}: ${html(step.title)}</strong>
-                    <p>${html(step.body)}</p>
-                  </div>
-                </li>
-              `
-            )
-            .join("")}
-        </ol>
-        <div class="tutorial-output-row">
-          ${tutorial.creates.map((item) => `<span>${html(item)}</span>`).join("")}
-        </div>
-      `}
+      <div class="tutorial-card-preview" aria-hidden="true">
+        ${tutorial.steps.map((step, index) => `<span class="${index <= progress.currentStep ? "active" : ""}"><b>0${index + 1}</b>${html(step.label)}</span>`).join("")}
+      </div>
       <div class="tutorial-card-foot">
-        <small>${html(tutorial.success)}</small>
-        <button class="small-button" data-view="${html(tutorial.startView)}">${html(compact ? "Open tutorial path" : "Start this path")}</button>
+        <small>${progress.completed ? "Tutorial complete. Replay it any time." : `${progress.currentStep + 1} of ${tutorial.steps.length} steps explored`}</small>
+        <button class="small-button tutorial-launch-button" data-tutorial-open="${html(tutorial.id)}">${progress.completed ? "Replay module" : "Launch module"}</button>
       </div>
     </article>
   `;
 }
 
-function renderRoleTutorialRail(roleId) {
-  const tutorial = roleTutorials.find((item) => item.id === roleId);
-  if (!tutorial) return "";
+function renderInteractiveTutorialModule(tutorial, embedded = false) {
+  const progress = tutorialProgressFor(tutorial.id);
+  const step = tutorial.steps[progress.currentStep];
+  const isLast = progress.currentStep === tutorial.steps.length - 1;
   return `
-    <section class="panel wide-panel role-tutorial-rail tutorial-${html(roleId)}">
-      <div class="section-head">
+    <section class="panel wide-panel role-tutorial-module tutorial-${html(tutorial.id)} ${embedded ? "embedded" : ""}" id="tutorial-${html(tutorial.id)}">
+      <div class="tutorial-module-head">
         <div>
-          <p class="eyebrow">${html(tutorial.label)} tutorial</p>
+          <p class="eyebrow">${html(tutorial.code)} / ${html(tutorial.audience)}</p>
           <h2>${html(tutorial.title)}</h2>
+          <p>${html(tutorial.promise)}</p>
         </div>
-        <span class="status-pill">Guided path</span>
+        <div class="tutorial-module-status">
+          <span>${progress.completed ? "Route complete" : `Step ${progress.currentStep + 1} / ${tutorial.steps.length}`}</span>
+          <strong>${html(tutorial.model)}</strong>
+        </div>
       </div>
-      <div class="tutorial-mini-track" aria-label="${html(tutorial.label)} tutorial steps">
-        ${tutorial.steps
-          .map(
-            (step, index) => `
-              <article>
-                <span>${String(index + 1).padStart(2, "0")}</span>
-                <strong>${html(step.label)}</strong>
-                <p>${html(step.title)}</p>
-              </article>
-            `
-          )
-          .join("")}
+      <div class="tutorial-module-stage">
+        ${renderTutorialRoleVisual(tutorial, step)}
+        <div class="tutorial-active-step" aria-live="polite">
+          <span class="tutorial-step-kicker">0${progress.currentStep + 1} / ${html(step.label)}</span>
+          <h3>${html(step.title)}</h3>
+          <p class="tutorial-step-body">${html(step.body)}</p>
+          <dl class="tutorial-use-guide">
+            <div><dt>Where to go</dt><dd>${html(step.screen)}</dd></div>
+            <div><dt>Use it properly</dt><dd>${html(step.properUse)}</dd></div>
+            <div><dt>Ready when</dt><dd>${html(step.successSignal)}</dd></div>
+          </dl>
+          <button class="primary-button tutorial-screen-button" data-tutorial-visit="${html(tutorial.id)}" data-view="${html(step.view)}">Open ${html(step.screen)}</button>
+        </div>
       </div>
-      <p class="tutorial-success-note">${html(tutorial.success)}</p>
+      <nav class="tutorial-step-nav" aria-label="${html(tutorial.label)} tutorial steps">
+        ${tutorial.steps.map((item, index) => `<button class="${index === progress.currentStep ? "active" : ""} ${index < progress.currentStep || progress.completed ? "done" : ""}" data-tutorial-step="${index}" data-tutorial-role="${html(tutorial.id)}" aria-current="${index === progress.currentStep ? "step" : "false"}"><span>0${index + 1}</span><strong>${html(item.label)}</strong><small>${html(item.title)}</small></button>`).join("")}
+      </nav>
+      <div class="tutorial-module-footer">
+        <button class="small-button" data-tutorial-move="previous" data-tutorial-role="${html(tutorial.id)}" ${progress.currentStep === 0 ? "disabled" : ""}>Back</button>
+        <p><strong>Finish line:</strong> ${html(tutorial.success)}</p>
+        ${isLast
+          ? `<button class="primary-button" data-tutorial-complete="${html(tutorial.id)}">${progress.completed ? "Completed" : "Complete tutorial"}</button>`
+          : `<button class="primary-button" data-tutorial-move="next" data-tutorial-role="${html(tutorial.id)}">Next step</button>`}
+      </div>
     </section>
   `;
 }
 
+function renderRoleTutorialRail(roleId) {
+  const tutorial = roleTutorials.find((item) => item.id === roleId);
+  return tutorial ? renderInteractiveTutorialModule(tutorial, true) : "";
+}
+
 function renderAcademyTutorialCenter() {
+  const selectedTutorial = roleTutorials.find((item) => item.id === activeTutorialRoleId);
   return `
     <section class="panel wide-panel tutorial-center" id="roleTutorials">
       <div class="section-head">
         <div>
-          <p class="eyebrow">Interactive tutorials</p>
-          <h2>Learn how each account uses the academy</h2>
-          <small>Each tutorial follows the real product workflow, the screens the user sees, and the evidence the system saves.</small>
+          <p class="eyebrow">Academy orientation deck</p>
+          <h2>Four roles. Four different ways to use the academy.</h2>
+          <small>Each module teaches the real screens, correct workflow, evidence created, and finish condition for that account.</small>
         </div>
-        <span class="status-pill">4 role paths</span>
+        <span class="status-pill">Interactive / 4 modules</span>
       </div>
       <div class="tutorial-grid">
         ${roleTutorials.map((tutorial) => renderRoleTutorialCard(tutorial)).join("")}
       </div>
     </section>
+    ${selectedTutorial ? renderInteractiveTutorialModule(selectedTutorial) : ""}
   `;
 }
 
@@ -9274,6 +9409,12 @@ function render() {
   if (currentSession) activeView = getAuthorizedView(activeView, currentSession);
   app.innerHTML = renderers[activeView]();
   drawLearningMap();
+  if (tutorialFocusAfterRender) {
+    const tutorialTarget = document.querySelector(`#tutorial-${tokenClass(tutorialFocusAfterRender)}`);
+    tutorialTarget?.scrollIntoView?.({ behavior: "smooth", block: "start" });
+    tutorialTarget?.querySelector?.("[aria-current='step']")?.focus?.({ preventScroll: true });
+    tutorialFocusAfterRender = null;
+  }
 }
 
 function drawLearningMap() {
@@ -9393,7 +9534,86 @@ app.addEventListener("click", (event) => {
   const signOutButton = event.target.closest("[data-signout]");
   const revokeSessionButton = event.target.closest("[data-revoke-session]");
   const soundToggleButton = event.target.closest("[data-sound-toggle]");
+  const tutorialOpenButton = event.target.closest("[data-tutorial-open]");
+  const tutorialStepButton = event.target.closest("[data-tutorial-step]");
+  const tutorialMoveButton = event.target.closest("[data-tutorial-move]");
+  const tutorialCompleteButton = event.target.closest("[data-tutorial-complete]");
+  const tutorialVisitButton = event.target.closest("[data-tutorial-visit]");
   let shouldRender = false;
+
+  if (tutorialOpenButton) {
+    const roleId = tutorialOpenButton.dataset.tutorialOpen;
+    const existing = tutorialProgressFor(roleId);
+    activeTutorialRoleId = roleId;
+    tutorialProgress = {
+      ...tutorialProgress,
+      [roleId]: {
+        ...existing,
+        currentStep: existing.completed ? 0 : existing.currentStep,
+        completed: existing.completed ? false : existing.completed
+      }
+    };
+    persistTutorialProgress();
+    tutorialFocusAfterRender = roleId;
+    playUiSound("switch");
+    shouldRender = true;
+  }
+
+  if (tutorialStepButton) {
+    const roleId = tutorialStepButton.dataset.tutorialRole;
+    const existing = tutorialProgressFor(roleId);
+    activeTutorialRoleId = roleId;
+    tutorialProgress = {
+      ...tutorialProgress,
+      [roleId]: { ...existing, currentStep: Number(tutorialStepButton.dataset.tutorialStep) || 0 }
+    };
+    persistTutorialProgress();
+    playUiSound("tap");
+    shouldRender = true;
+  }
+
+  if (tutorialMoveButton) {
+    const roleId = tutorialMoveButton.dataset.tutorialRole;
+    const tutorial = roleTutorials.find((item) => item.id === roleId);
+    const existing = tutorialProgressFor(roleId);
+    const direction = tutorialMoveButton.dataset.tutorialMove === "previous" ? -1 : 1;
+    const nextStep = Math.max(0, Math.min((tutorial?.steps.length || 1) - 1, existing.currentStep + direction));
+    activeTutorialRoleId = roleId;
+    tutorialProgress = { ...tutorialProgress, [roleId]: { ...existing, currentStep: nextStep } };
+    persistTutorialProgress();
+    playUiSound("switch");
+    shouldRender = true;
+  }
+
+  if (tutorialVisitButton) {
+    const roleId = tutorialVisitButton.dataset.tutorialVisit;
+    const existing = tutorialProgressFor(roleId);
+    const tutorial = roleTutorials.find((item) => item.id === roleId);
+    const screen = tutorial?.steps[existing.currentStep]?.screen || "tutorial screen";
+    activeTutorialRoleId = roleId;
+    tutorialProgress = {
+      ...tutorialProgress,
+      [roleId]: { ...existing, visited: [...new Set([...existing.visited, existing.currentStep])] }
+    };
+    persistTutorialProgress();
+    announceLearningMoment(`${screen} opened from the ${tutorial?.label || roleId} tutorial.`, "success", {
+      next: "Use the highlighted workflow, then return to the tutorial for the next step."
+    });
+    shouldRender = true;
+  }
+
+  if (tutorialCompleteButton) {
+    const roleId = tutorialCompleteButton.dataset.tutorialComplete;
+    const existing = tutorialProgressFor(roleId);
+    const tutorial = roleTutorials.find((item) => item.id === roleId);
+    tutorialProgress = { ...tutorialProgress, [roleId]: { ...existing, completed: true } };
+    persistTutorialProgress();
+    playUiSound("success");
+    announceLearningMoment(`${tutorial?.label || roleId} academy tutorial complete.`, "success", {
+      next: tutorial?.success || "Use the role home to begin."
+    });
+    shouldRender = true;
+  }
 
   if (soundToggleButton) {
     const nextSoundState = !uiSoundEnabled;

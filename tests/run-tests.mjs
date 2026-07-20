@@ -319,12 +319,20 @@ for (const tutorialId of ["child", "parent", "teacher", "school"]) {
   assert.ok(tutorialStyleSource.includes(`.tutorial-${tutorialId}`), `${tutorialId} tutorial should have a visual style hook`);
 }
 assert.ok(tutorialAppSource.includes("function renderAcademyTutorialCenter"), "setup view should expose the role tutorial center");
-assert.ok(tutorialAppSource.includes("Each tutorial follows the real product workflow"), "tutorial center should explain that tutorials map to real workflows");
+assert.ok(tutorialAppSource.includes("function renderInteractiveTutorialModule"), "role tutorials should render as interactive modules");
+assert.ok(tutorialAppSource.includes("Each module teaches the real screens"), "tutorial center should explain that modules map to real screens and workflows");
+assert.ok(tutorialAppSource.includes("data-tutorial-step") && tutorialAppSource.includes("data-tutorial-move") && tutorialAppSource.includes("data-tutorial-complete"), "tutorial modules should support step navigation and completion");
+assert.ok(tutorialAppSource.includes("data-tutorial-visit") && tutorialAppSource.includes("Use it properly") && tutorialAppSource.includes("Ready when"), "tutorial steps should open real screens and teach correct use");
+assert.ok(tutorialAppSource.includes("tutorialProgressKey") && tutorialAppSource.includes("persistTutorialProgress"), "tutorial progress should persist between page renders");
 assert.ok(tutorialAppSource.includes("lesson progress") && tutorialAppSource.includes("quiz attempt") && tutorialAppSource.includes("tutor event"), "child tutorial should name the student evidence created by the app");
 assert.ok(tutorialAppSource.includes("child account link") && tutorialAppSource.includes("reward decision"), "parent tutorial should name account-link and reward workflows");
 assert.ok(tutorialAppSource.includes("class session status") && tutorialAppSource.includes("intervention record"), "teacher tutorial should name class-session and intervention workflows");
 assert.ok(tutorialAppSource.includes("school profile") && tutorialAppSource.includes("school report"), "school tutorial should name school setup and reporting workflows");
-assert.ok(tutorialStyleSource.includes(".tutorial-grid") && tutorialStyleSource.includes(".tutorial-mini-track"), "tutorial UI should include full and compact role layouts");
+for (const uniqueTutorialVisual of ["child-quest-map", "parent-family-link", "teacher-live-console", "school-blueprint"]) {
+  assert.ok(tutorialAppSource.includes(uniqueTutorialVisual), `${uniqueTutorialVisual} should have a dedicated role visualization`);
+  assert.ok(tutorialStyleSource.includes(`.${uniqueTutorialVisual}`), `${uniqueTutorialVisual} should have dedicated role styling`);
+}
+assert.ok(tutorialStyleSource.includes(".role-tutorial-module") && tutorialStyleSource.includes(".tutorial-step-nav"), "tutorial UI should include responsive interactive module layouts");
 
 const frameworkIds = standardsFrameworks.map((framework) => framework.id);
 for (const id of ["ccss-ela", "ccss-math", "ngss", "c3", "shape", "k12cs", "arts", "sel"]) {
