@@ -857,6 +857,10 @@ async function handleApi(request, response, pathname) {
   let session = await getRequestSessionAsync(request, process.env);
   const sendJson = (targetResponse, status, payload) =>
     writeJsonResponse(targetResponse, status, sanitizeScopedApiPayload(payload, session));
+  if (request.method === "GET" && pathname === "/api/health") {
+    writeJsonResponse(response, 200, { healthy: true, checkedAt: new Date().toISOString() });
+    return true;
+  }
   if (request.method === "GET" && pathname === "/api/runtime/health") {
     requireAuthenticated(session);
     if (!["school-admin", "platform-admin"].includes(session.role)) {
@@ -2865,7 +2869,7 @@ const server = createServer(async (request, response) => {
     try {
       const handled = await handleApi(request, response, pathname);
       if (!handled) {
-        sendJson(response, 404, { error: "API route not found" });
+        writeJsonResponse(response, 404, { error: "API route not found" });
       }
     } catch (error) {
       writeJsonResponse(response, error.status || 500, { error: error.message || "API error" });

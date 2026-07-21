@@ -313,8 +313,8 @@ assert.deepEqual(Object.keys(viewIcons), appViewIds, "view icons should cover ev
 assert.deepEqual(allowedViewsByRole["school-admin"], appViewIds, "school admin should access the complete app surface");
 assert.deepEqual(allowedViewsByRole["platform-admin"], appViewIds, "platform admin should access the complete app surface");
 assert.deepEqual(allowedViewsByRole.student, ["student", "lesson", "ai"], "student access should stay limited to learner-facing pages");
-const tutorialAppSource = readFileSync("src/app.js", "utf8");
-const tutorialStyleSource = readFileSync("src/styles.css", "utf8");
+const tutorialAppSource = readFileSync("src/app.js", "utf8").replace(/\r\n/g, "\n");
+const tutorialStyleSource = readFileSync("src/styles.css", "utf8").replace(/\r\n/g, "\n");
 for (const tutorialId of ["child", "parent", "teacher", "school"]) {
   assert.ok(tutorialAppSource.includes(`id: "${tutorialId}"`), `${tutorialId} tutorial should be defined in the role tutorial model`);
   assert.ok(tutorialAppSource.includes(`renderRoleTutorialRail("${tutorialId}")`), `${tutorialId} role page should render its tutorial rail`);
@@ -521,7 +521,7 @@ const nativeVisualLessons = [nativeBridgeWeatherLesson, nativeBridgeRatiosLesson
 assert.equal(nativeVisualLessons.length, 4, "native Grade 6 visual exemplars should be present");
 assert.ok(nativeVisualLessons.every((lesson) => lesson.visual?.type), "native Grade 6 model lessons should declare a semantic visual type");
 assert.ok(nativeVisualLessons.every((lesson) => lesson.visual?.altText), "native Grade 6 model visuals should include accessible alt text");
-const nativeVisualRendererSource = readFileSync(new URL("../src/app.js", import.meta.url), "utf8");
+const nativeVisualRendererSource = readFileSync(new URL("../src/app.js", import.meta.url), "utf8").replace(/\r\n/g, "\n");
 for (const visualType of ["algorithm-trace", "claim-evidence-reasoning", "water-cycle-system", "geography-choice-map"]) {
   assert.ok(nativeVisualRendererSource.includes(`"${visualType}": \``), `lesson player should render native visual type ${visualType}`);
 }
@@ -4195,7 +4195,7 @@ for (const expected of ["K-12 Learning App Suite", "Foundation Academy", "Bridge
   assert.ok(agentInstructions.includes(expected), `AGENTS.md should include ${expected}`);
 }
 
-const appSource = readFileSync("src/app.js", "utf8");
+const appSource = readFileSync("src/app.js", "utf8").replace(/\r\n/g, "\n");
 for (const expected of [
   "renderStudentTeachingSequence",
   "renderNexusLessonPhaseSequence",
@@ -4365,8 +4365,8 @@ assert.ok(appSource.includes('["student", "parent", "teacher", "school-admin"]')
 assert.ok(appSource.includes("broad snapshot fallback is disabled"), "school-admin hydration should never fall back to the broad snapshot");
 assert.ok(appSource.includes("repositoryBootstrap?.catalog || null"), "scoped catalog refresh should use bootstrap metadata before learner-specific reads");
 
-const serverSource = readFileSync("scripts/serve.mjs", "utf8");
-const apiClientSource = readFileSync("src/apiClient.js", "utf8");
+const serverSource = readFileSync("scripts/serve.mjs", "utf8").replace(/\r\n/g, "\n");
+const apiClientSource = readFileSync("src/apiClient.js", "utf8").replace(/\r\n/g, "\n");
 assert.ok(serverSource.includes('const postgresRepository = stateRepository.status().mode === "postgres"'), "Postgres requests should identify normalized repository mode");
 assert.ok(serverSource.includes("const normalizedSecurity = durableRepository ? await stateRepository.readAccountSecurity"), "Durable repository auth session should read normalized account security");
 assert.ok(serverSource.includes("accounts: []"), "Anonymous auth sessions should not expose account records");
@@ -4391,7 +4391,7 @@ assert.match(apiClientSource, /error\.payload = body/, "API errors should preser
 assert.match(appSource, /health\?\.probe\?\.missingTables/, "runtime UI should show missing normalized tables from health diagnostics");
 assert.ok(serverSource.includes("supabaseSignOut({ accessToken: provider.accessToken }).catch(() => {})"), "revoked refresh sessions should be terminated at the provider when possible");
 assert.ok(serverSource.includes("if (ownerRequest && body.revokeAll) await supabaseSignOut({ accessToken });"), "provider global logout must only use the current user's own token");
-assert.ok(apiClientSource.includes("setRefreshToken(\"\");\n}"), "local sign-out should clear the refresh token as well as the access token");
+assert.match(apiClientSource, /setRefreshToken\(""\);\r?\n}/, "local sign-out should clear the refresh token as well as the access token");
 for (const expected of [
   'pathname === "/api/bootstrap"',
   'pathname === "/api/runtime/health"',
@@ -4450,7 +4450,7 @@ for (const expected of ["refreshRuntimeHealth", "Repository health"]) {
 }
 assert.ok(apiClientSource.includes("fetchRuntimeHealth"), "api client should include the runtime health helper");
 
-const stylesSource = readFileSync("src/styles.css", "utf8");
+const stylesSource = readFileSync("src/styles.css", "utf8").replace(/\r\n/g, "\n");
 for (const expected of [
   "Production layout guard v2",
   ".topbar-controls",
@@ -4510,7 +4510,7 @@ assert.ok(apiClientSource.includes("/api/auth/security"), "API client should exp
 assert.ok(apiClientSource.includes("/api/system/state-dependencies"), "API client should expose the state dependency audit route");
 assert.ok(stylesSource.includes(".redesign-history-card"), "styles should include implemented redesign history cards");
 
-const repositorySource = readFileSync("src/repository.js", "utf8");
+const repositorySource = readFileSync("src/repository.js", "utf8").replace(/\r\n/g, "\n");
 assert.ok(repositorySource.includes("batchReview"), "repository review summary should count batch review items");
 const reportState = refreshSchoolReports({
   ...createInitialState(),
