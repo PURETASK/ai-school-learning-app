@@ -1,0 +1,76 @@
+services:
+  - type: web
+    name: nexus-learning-os
+    runtime: node
+    region: oregon
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_ENV
+        value: production
+      - key: K12_REPOSITORY_MODE
+        value: supabase-rest
+      - key: AUTH_PROVIDER
+        value: supabase
+      - key: AUTH_LIVE_VERIFIED
+        value: "true"
+      - key: AUTH_USE_SUPABASE_AUTH
+        value: "true"
+      - key: AUTH_REQUIRE_EMAIL_VERIFIED
+        value: "true"
+      - key: ALLOW_LOCAL_SESSION_TOKENS_IN_PRODUCTION
+        value: "false"
+      - key: ALLOW_DEV_AUTH_HEADERS
+        value: "false"
+      - key: SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false
+      - key: SUPABASE_JWKS_URL
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_IMAGE_ENABLED
+        value: "true"
+      - key: OPENAI_IMAGE_MODEL
+        value: gpt-image-2
+      - key: OPENAI_IMAGE_SIZE
+        value: 1024x1024
+      - key: OPENAI_IMAGE_QUALITY
+        value: medium
+      - key: OPENAI_IMAGE_DAILY_LIMIT
+        value: "12"
+      - key: OPENAI_IMAGE_MAX_COST_CENTS
+        value: "25"
+      - key: OPENAI_TUTOR_ENABLED
+        value: "true"
+      - key: OPENAI_TUTOR_MODEL
+        value: gpt-4.1-mini
+      - key: OPENAI_TUTOR_DAILY_LIMIT
+        value: "30"
+      - key: OPENAI_TUTOR_DAILY_TOKEN_LIMIT
+        value: "42000"
+      - key: OPENAI_TUTOR_MAX_INPUT_CHARS
+        value: "2200"
+      - key: OPENAI_TUTOR_MAX_OUTPUT_TOKENS
+        value: "700"
+      - key: OPENAI_TUTOR_MAX_REVISION_ATTEMPTS
+        value: "1"
+      - key: VISUAL_ASSET_STORAGE_BUCKET
+        value: k12-visual-assets
+      - key: AUTH_EMAIL_REDIRECT_TO
+        sync: false
+      - key: AUTH_PASSWORD_RESET_REDIRECT_TO
+        sync: false
+      - key: SUPABASE_CHILD_EMAIL_DOMAIN
+        sync: false

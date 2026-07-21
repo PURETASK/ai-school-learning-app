@@ -2,20 +2,20 @@
 
 ## Purpose
 
-This guide turns the current prototype gaps into an exact production build process. It covers five required workstreams:
+This guide turns the current prototype gaps into an exact production build process. For commercial sequencing it is subordinate to `docs/BRIDGE_GRADE_6_MATH_INTERVENTION_PRODUCT_CONTRACT.md`. It covers six required workstreams:
 
 1. Production identity and account lifecycle.
 2. Real database migration and repository-backed persistence.
 3. Manager review UI for live source findings.
 4. Safer live-source fetch handling for blocked or protected sources.
-5. Full K-12 lesson library expansion with richer visual and interactive teaching.
+5. The contracted 25-session Grade 6 Math track with richer visual and interactive teaching.
 6. School/Classroom Mode productization for a sellable middle-school class experience.
 
 The goal is to move from a local JSON-backed prototype to a production-grade K-12 learning product without weakening the privacy, review, and learning-science rules already established.
 
 Runtime verification must distinguish configured environment variables from a reachable repository. Authenticated school-admin and platform-admin sessions can call `GET /api/runtime/health`; the endpoint probes every normalized repository table and returns latency, checked-table coverage, and missing table names while intentionally omitting credentials and raw database errors from the response. Production startup uses the same complete probe and fails closed with the missing table names, so a deployment cannot serve requests while learner-evidence tables are absent. A configuration screen showing `DATABASE_URL=configured` is not sufficient evidence that Postgres is serving requests.
 
-The commercial priority is now a school-sellable product, with Bridge Academy grades 6-8 as the first classroom wedge. Parent/Homeschool Mode remains supported, but production readiness must include teacher, class, roster, school-admin, reporting, and class-session workflows.
+The commercial priority is the Bridge Academy Grade 6 Math Intervention Class: 25 sessions delivered over a 6-8 week pilot in 35-55 minute class periods. Parent/Homeschool Mode and the broader K-12 architecture remain supported, but they do not expand the active pilot scope.
 
 ## Non-Negotiable Requirements
 
@@ -473,18 +473,18 @@ The live source audit result should clearly show:
 - Student roles cannot see source-fetch internals.
 - Review queue distinguishes fetched evidence from blocked/manual evidence.
 
-## Workstream 5: Full K-12 Lesson Library And Richer Teaching
+## Workstream 5: Grade 6 Math Pilot Track And Richer Teaching
 
 ### Scope
 
-The platform should keep the full K-12 scope active:
+The platform should preserve the full K-12 architecture:
 
 - Foundation Academy: K-5.
 - Bridge Academy: 6-8.
 - Scholar Academy: 9-12.
 - All core subjects plus arts, health/PE, computer science, SEL/life skills, and career/college readiness.
 
-The generated lesson library is the planning layer. Student-facing lessons must be produced, reviewed, enriched, and published in batches.
+The active production commitment is exactly 25 Grade 6 Math intervention sessions. Additional grades, subjects, and full-library production remain deferred until the product contract's release gates pass. The generated lesson library remains a planning layer; student-facing lessons must be produced, reviewed, enriched, and published in controlled batches.
 
 ### Required Lesson Content
 
@@ -571,11 +571,11 @@ capstoneConnection, when relevant
 Use batch sizes that are small enough for review:
 
 ```txt
-Pilot batch: 6 lessons
-Review batch: 25 lessons
-Production batch: 100 lessons
-Grade-subject release: 250-500 lessons
-Full library target: 5,000-7,000 reviewed lessons
+Existing quality-gate batch: 6 lessons
+Contracted pilot track: 25 Grade 6 Math sessions
+Deferred production batch: 100 lessons
+Deferred grade-subject release: 250-500 lessons
+Deferred full library target: 5,000-7,000 reviewed lessons
 ```
 
 Each batch must include:
@@ -678,12 +678,11 @@ Record current behavior for:
 
 ### Phase 5: Content Scale
 
-1. Pick one grade-subject track.
-2. Build 25 reviewed lessons.
+1. Use the contracted Bridge Academy Grade 6 Math Intervention track.
+2. Build exactly 25 reviewed sessions.
 3. Run student/tutor UX review.
-4. Expand to 100 lessons.
-5. Add source and visual review dashboard metrics.
-6. Expand grade by grade.
+4. Add source and visual review dashboard metrics.
+5. Do not expand to 100 lessons or another grade/subject until the pilot release gates and change-control review pass.
 
 ### Phase 6: Launch Gate
 
@@ -698,7 +697,7 @@ Production launch is blocked until:
 - JSON persistence is disabled in production.
 - Manager review source findings flow works.
 - `403` and blocked-source handling works.
-- At least one grade-subject track has reviewed student-facing lessons.
+- The contracted 25-session Grade 6 Math track is reviewed, approved, published, and usable in the teacher sequence.
 - Accessibility, privacy, tutor safety, source review, and visual approval checks pass.
 
 ## Validation Commands
@@ -740,7 +739,7 @@ Verify browser console has zero errors.
 4. Add Source Findings review view in the Admin or Tools area.
 5. Change `403` live audit wording from completed extraction to blocked/manual-review status.
 6. Add allowlist alternate-source records.
-7. Produce the first 25-lesson reviewed Bridge Academy class-session batch for one middle-school subject track.
+7. Produce the contracted 25-session Bridge Academy Grade 6 Math Intervention track.
 8. Add visual/interactive task QA metrics to the content batch validator.
 9. Package teacher guide, school-admin setup guide, student guide, parent letter, and pilot QA checklist.
 10. Add OneRoster/Clever/ClassLink adapters only after the CSV contract and school permission tests are used in a staging pilot.

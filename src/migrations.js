@@ -465,6 +465,16 @@ as $$
     public.k12_app_claim('teacherId', 'teacher_id'),
     public.k12_app_claim('teacher_id', 'teacher_id')
   );
+$$;`,
+    `create or replace function public.k12_current_app_school_id()
+returns text
+language sql
+stable
+as $$
+  select coalesce(
+    public.k12_app_claim('schoolId', 'school_id'),
+    public.k12_app_claim('school_id', 'school_id')
+  );
 $$;`
   ];
 }
@@ -478,7 +488,8 @@ function settingExpression(name) {
     user_id: "k12_current_app_user_id",
     student_id: "k12_current_app_student_id",
     guardian_id: "k12_current_app_guardian_id",
-    teacher_id: "k12_current_app_teacher_id"
+    teacher_id: "k12_current_app_teacher_id",
+    school_id: "k12_current_app_school_id"
   };
   const helper = helperFunctions[name];
   return helper ? `(select public.${helper}())` : `public.k12_current_setting('app.${name}')`;
@@ -486,11 +497,56 @@ function settingExpression(name) {
 
 function createStudentScopePolicies(table) {
   if (!table.columns.includes("student_id")) return [];
+  const parentScope =
+    table.id === "guardian_student_links"
+      ? `exists (select 1 from public.${q("guardians")} g where g.${q("id")} = ${q(table.id)}.${q("guardian_id")} and g.${q("user_id")} = ${settingExpression("user_id")})`
+      : `exists (select 1 from public.${q("guardian_student_links")} gsl join public.${q("guardians")} g on g.${q("id")} = gsl.${q("guardian_id")} where gsl.${q("student_id")} = ${q(table.id)}.${q("student_id")} and gsl.${q("status")} = 'approved' and gsl.${q("revoked_at")} is null and g.${q("user_id")} = ${settingExpression("user_id")})`;
+  const teacherScope =
+    table.id === "enrollments"
+      ? `exists (select 1 from public.${q("teacher_class_assignments")} tca join public.${q("teachers")} t on t.${q("id")} = tca.${q("teacher_id")} where tca.${q("class_id")} = ${q(table.id)}.${q("class_id")} and tca.${q("status")} = 'active' and tca.${q("revoked_at")} is null and t.${q("user_id")} = ${settingExpression("user_id")})`
+      : `exists (select 1 from public.${q("enrollments")} e join public.${q("teacher_class_assignments")} tca on tca.${q("class_id")} = e.${q("class_id")} join public.${q("teachers")} t on t.${q("id")} = tca.${q("teacher_id")} where e.${q("student_id")} = ${q(table.id)}.${q("student_id")} and e.${q("status")} = 'active' and tca.${q("status")} = 'active' and tca.${q("revoked_at")} is null and t.${q("user_id")} = ${settingExpression("user_id")})`;
+  const schoolAdminScope =
+    table.id === "enrollments"
+      ? `exists (select 1 from public.${q("classes")} c join public.${q("school_staff_memberships")} ssm on ssm.${q("school_id")} = c.${q("school_id")} where c.${q("id")} = ${q(table.id)}.${q("class_id")} and ssm.${q("user_id")} = ${settingExpression("user_id")} and ssm.${q("school_id")} = ${settingExpression("school_id")} and ssm.${q("role")} = 'school-admin' and ssm.${q("status")} = 'active' and ssm.${q("revoked_at")} is null)`
+      : `exists (select 1 from public.${q("enrollments")} e join public.${q("classes")} c on c.${q("id")} = e.${q("class_id")} join public.${q("school_staff_memberships")} ssm on ssm.${q("school_id")} = c.${q("school_id")} where e.${q("student_id")} = ${q(table.id)}.${q("student_id")} and e.${q("status")} = 'active' and ssm.${q("user_id")} = ${settingExpression("user_id")} and ssm.${q("school_id")} = ${settingExpression("school_id")} and ssm.${q("role")} = 'school-admin' and ssm.${q("status")} = 'active' and ssm.${q("revoked_at")} is null)`;
   return [
     `create policy ${q(policyName(table.id, "student_select_own"))} on public.${q(table.id)} for select to authenticated using (${roleExpression("student")} and ${q("student_id")} = ${settingExpression("student_id")});`,
-    `create policy ${q(policyName(table.id, "parent_select_household"))} on public.${q(table.id)} for select to authenticated using (${roleExpression("parent")} and exists (select 1 from public.${q("student_guardians")} sg join public.${q("guardians")} g on g.${q("id")} = sg.${q("guardian_id")} where sg.${q("student_id")} = ${q(table.id)}.${q("student_id")} and g.${q("user_id")} = ${settingExpression("user_id")}));`,
-    `create policy ${q(policyName(table.id, "teacher_select_assigned"))} on public.${q(table.id)} for select to authenticated using (${roleExpression("teacher")} and exists (select 1 from public.${q("enrollments")} e join public.${q("classes")} c on c.${q("id")} = e.${q("class_id")} join public.${q("teachers")} t on t.${q("id")} = c.${q("teacher_id")} where e.${q("student_id")} = ${q(table.id)}.${q("student_id")} and t.${q("user_id")} = ${settingExpression("user_id")}));`
+    `create policy ${q(policyName(table.id, "parent_select_household"))} on public.${q(table.id)} for select to authenticated using (${roleExpression("parent")} and ${parentScope});`,
+    `create policy ${q(policyName(table.id, "teacher_select_assigned"))} on public.${q(table.id)} for select to authenticated using (${roleExpression("teacher")} and ${teacherScope});`,
+    `create policy ${q(policyName(table.id, "school_admin_select_school"))} on public.${q(table.id)} for select to authenticated using (${roleExpression("school-admin")} and ${schoolAdminScope});`
   ];
+}
+
+function activeSchoolMembershipExpression(schoolExpression, roles = ["school-admin"]) {
+  const roleList = roles.map((role) => `'${role}'`).join(", ");
+  return `exists (select 1 from public.${q("school_staff_memberships")} ssm where ssm.${q("school_id")} = ${schoolExpression} and ssm.${q("school_id")} = ${settingExpression("school_id")} and ssm.${q("user_id")} = ${settingExpression("user_id")} and ssm.${q("role")} in (${roleList}) and ssm.${q("status")} = 'active' and ssm.${q("revoked_at")} is null)`;
+}
+
+function createSchoolScopePolicies(table) {
+  const policies = [];
+  if (table.id === "school_staff_memberships") {
+    policies.push(
+      `create policy ${q(policyName(table.id, "self_select"))} on public.${q(table.id)} for select to authenticated using (${q("user_id")} = ${settingExpression("user_id")});`
+    );
+    return policies;
+  }
+  if (table.id === "schools") {
+    policies.push(
+      `create policy ${q(policyName(table.id, "staff_select_school"))} on public.${q(table.id)} for select to authenticated using (${activeSchoolMembershipExpression(`${q("schools")}.${q("id")}`, ["teacher", "school-admin"])});`
+    );
+    return policies;
+  }
+  if (table.columns.includes("school_id")) {
+    policies.push(
+      `create policy ${q(policyName(table.id, "school_admin_scope"))} on public.${q(table.id)} for all to authenticated using (${roleExpression("school-admin")} and ${activeSchoolMembershipExpression(`${q(table.id)}.${q("school_id")}`)}) with check (${roleExpression("school-admin")} and ${activeSchoolMembershipExpression(`${q(table.id)}.${q("school_id")}`)});`
+    );
+  }
+  if (table.columns.includes("class_id")) {
+    policies.push(
+      `create policy ${q(policyName(table.id, "school_admin_class_scope"))} on public.${q(table.id)} for all to authenticated using (${roleExpression("school-admin")} and exists (select 1 from public.${q("classes")} c where c.${q("id")} = ${q(table.id)}.${q("class_id")} and ${activeSchoolMembershipExpression(`c.${q("school_id")}`)})) with check (${roleExpression("school-admin")} and exists (select 1 from public.${q("classes")} c where c.${q("id")} = ${q(table.id)}.${q("class_id")} and ${activeSchoolMembershipExpression(`c.${q("school_id")}`)}));`
+    );
+  }
+  return policies;
 }
 
 function createGuardianScopePolicies(table) {
@@ -508,13 +564,7 @@ function createTeacherScopePolicies(table) {
 }
 
 function createOperationalPolicies(table) {
-  if (!["content_ops", "agent_ops", "ai_safety", "audit"].includes(table.area)) return [];
-  const staffRoles = ["teacher", "school-admin", "platform-admin"];
-  return [
-    `create policy ${q(policyName(table.id, "staff_operational_select"))} on public.${q(table.id)} for select to authenticated using (${staffRoles
-      .map(roleExpression)
-      .join(" or ")});`
-  ];
+  return [];
 }
 
 function createRlsStatements(table) {
@@ -534,14 +584,37 @@ function createRlsStatements(table) {
   if (table.id === "students") {
     statements.push(
       `create policy ${q(policyName(table.id, "student_self"))} on public.${q(table.id)} for select to authenticated using (${roleExpression("student")} and ${q("id")} = ${settingExpression("student_id")});`,
-      `create policy ${q(policyName(table.id, "parent_household"))} on public.${q(table.id)} for select to authenticated using (${roleExpression("parent")} and exists (select 1 from public.${q("student_guardians")} sg join public.${q("guardians")} g on g.${q("id")} = sg.${q("guardian_id")} where sg.${q("student_id")} = ${q("students")}.${q("id")} and g.${q("user_id")} = ${settingExpression("user_id")}));`
+      `create policy ${q(policyName(table.id, "parent_household"))} on public.${q(table.id)} for select to authenticated using (${roleExpression("parent")} and exists (select 1 from public.${q("guardian_student_links")} gsl join public.${q("guardians")} g on g.${q("id")} = gsl.${q("guardian_id")} where gsl.${q("student_id")} = ${q("students")}.${q("id")} and gsl.${q("status")} = 'approved' and gsl.${q("revoked_at")} is null and g.${q("user_id")} = ${settingExpression("user_id")}));`,
+      `create policy ${q(policyName(table.id, "school_admin_school"))} on public.${q(table.id)} for select to authenticated using (${roleExpression("school-admin")} and exists (select 1 from public.${q("enrollments")} e join public.${q("classes")} c on c.${q("id")} = e.${q("class_id")} where e.${q("student_id")} = ${q("students")}.${q("id")} and e.${q("status")} = 'active' and ${activeSchoolMembershipExpression(`c.${q("school_id")}`)}));`
+    );
+  }
+  if (table.id === "guardians") {
+    statements.push(
+      `create policy ${q(policyName(table.id, "parent_self"))} on public.${q(table.id)} for select to authenticated using (${roleExpression("parent")} and ${q("user_id")} = ${settingExpression("user_id")});`
+    );
+  }
+  if (table.id === "teachers") {
+    statements.push(
+      `create policy ${q(policyName(table.id, "teacher_self"))} on public.${q(table.id)} for select to authenticated using (${roleExpression("teacher")} and ${q("user_id")} = ${settingExpression("user_id")});`,
+      `create policy ${q(policyName(table.id, "school_admin_teachers"))} on public.${q(table.id)} for select to authenticated using (${roleExpression("school-admin")} and exists (select 1 from public.${q("school_staff_memberships")} target_membership where target_membership.${q("user_id")} = ${q("teachers")}.${q("user_id")} and target_membership.${q("school_id")} = ${settingExpression("school_id")} and target_membership.${q("status")} = 'active' and target_membership.${q("revoked_at")} is null and ${activeSchoolMembershipExpression(`target_membership.${q("school_id")}`)}));`
     );
   }
 
   statements.push(...createStudentScopePolicies(table));
   statements.push(...createGuardianScopePolicies(table));
   statements.push(...createTeacherScopePolicies(table));
+  statements.push(...createSchoolScopePolicies(table));
   statements.push(...createOperationalPolicies(table));
+  return statements;
+}
+
+function createGrantStatements(table) {
+  const statements = [`grant all privileges on table public.${q(table.id)} to service_role;`];
+  if (table.rls) {
+    statements.push(`grant select, insert, update, delete on table public.${q(table.id)} to authenticated;`);
+  } else {
+    statements.push(`grant select on table public.${q(table.id)} to anon, authenticated;`);
+  }
   return statements;
 }
 
@@ -554,7 +627,8 @@ export function generatePostgresMigration() {
   const statements = [
     "-- K-12 Learning Academies production schema foundation",
     "-- Generated from src/schema.js. Review before applying to production.",
-    "create extension if not exists pgcrypto;"
+    "create extension if not exists pgcrypto;",
+    "grant usage on schema public to anon, authenticated, service_role;"
   ];
 
   statements.push(...createAuthHelperStatements());
@@ -571,6 +645,7 @@ export function generatePostgresMigration() {
   for (const table of productionDataModel) statements.push(...createIndexStatements(table));
   for (const table of productionDataModel) statements.push(...createCommentStatements(table));
   for (const table of productionDataModel) statements.push(...createRlsStatements(table));
+  for (const table of productionDataModel) statements.push(...createGrantStatements(table));
 
   const sql = `${statements.join("\n\n")}\n`;
   const rlsPolicyCount = statements.filter((statement) => /^create policy /i.test(statement)).length;

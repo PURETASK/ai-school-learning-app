@@ -1,5 +1,7 @@
 # 15 — MVP Scope
 
+> **Scope note:** This document describes the representative Grade 3/6/9 learning-engine MVP preserved by `PROJECT_SOURCE_OF_TRUTH.md`. The active first sellable product is narrower and includes the teacher and school-admin capabilities required by `docs/BRIDGE_GRADE_6_MATH_INTERVENTION_PRODUCT_CONTRACT.md`. For commercial sequencing and pilot acceptance, the product contract controls.
+
 ## MVP Goal
 
 Prove the core learning engine with three representative grade levels and four core subjects.
@@ -19,7 +21,7 @@ Primary:
 - Student
 - Parent / Guardian
 
-Later:
+Not required to prove the original learner/guardian vertical slice, but required where assigned by the first-sellable-product contract:
 
 - Teacher
 - School Admin
@@ -63,16 +65,16 @@ Required:
 
 ---
 
-## Excluded From MVP
+## Excluded From The Original Learning-Engine Proof
 
 Do not build first:
 
-- full AI tutor
+- unrestricted or unreviewed AI tutor
 - open discussion boards
-- teacher classroom system
-- school admin system
+- teacher classroom features beyond the contracted Grade 6 Math pilot
+- school administration beyond pilot setup, roster, role, reporting, and compliance needs
 - mobile app
-- payments
+- automated billing, payments, gift cards, and cash-equivalent rewards
 - full K–12 curriculum
 - advanced content editor
 - public social features
@@ -148,7 +150,8 @@ The MVP is successful if:
 ## What This Document Must Lock
 
 - MVP = Grade 3, Grade 6, Grade 9; ELA/Reading, Math, Science, Social Studies.
-- Teacher, AI tutor, mobile, payments, school admin, and full K–12 are phase 2+.
+- The first commercial implementation is Bridge Academy Grade 6 Math Intervention Class; its limited teacher, school-admin, and guardrailed tutor workflows are active requirements.
+- Mobile, automated billing/payments, gift cards, additional sellable subjects/grades, and full K–12 content production remain deferred until the pilot contract passes.
 
 ## Implementation Requirements
 

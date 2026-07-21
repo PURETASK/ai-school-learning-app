@@ -25,6 +25,7 @@ import {
   registerProviderAccount,
   createSessionClaimsForAccount,
   createContentDraft,
+  createClassSession,
   createInitialState,
   createSchoolClass,
   findLessonInState,
@@ -55,6 +56,7 @@ import {
   resetLocalAccountPassword,
   registerLocalAccount,
   recordInteractiveResponse,
+  recordClassAttendance,
   recordStudentEngagementAction,
   recordTeacherIntervention,
   refreshSchoolReports,
@@ -338,7 +340,7 @@ function writeJsonResponse(response, status, payload) {
 }
 
 function sanitizeScopedApiPayload(payload, session = {}) {
-  if (!isDurableRepository() || !["student", "parent", "teacher"].includes(session.role)) return payload;
+  if (!isDurableRepository() || !["student", "parent", "teacher", "school-admin"].includes(session.role)) return payload;
   if (!payload || typeof payload !== "object" || Array.isArray(payload) || !("state" in payload)) return payload;
   const { state, ...scopedPayload } = payload;
   return scopedPayload;
@@ -379,10 +381,15 @@ function revokedSession(session = {}, reason = "Session has been revoked. Sign i
   };
 }
 
-function requireAuthOwnerOrAdmin(session, targetUserId = "") {
+async function requireAuthOwnerOrAdmin(session, targetUserId = "") {
   requireAuthenticated(session);
   if (!targetUserId || session.userId === targetUserId) return;
-  if (["school-admin", "platform-admin"].includes(session.role)) return;
+  if (session.role === "platform-admin") return;
+  if (session.role === "school-admin" && session.schoolId) {
+    const security = await stateRepository.readAccountSecurity({ limit: 10000 });
+    const scoped = scopeAccountSecurityForSession(security, session, {});
+    if ((scoped.accounts || []).some((account) => account.userId === targetUserId)) return;
+  }
   const error = new Error("Only the account owner or an admin can change this account security setting.");
   error.status = 403;
   throw error;
@@ -450,20 +457,65 @@ function scopeAccountSecurityForSession(accountSecurity = {}, session = {}, stat
       .forEach((student) => ownUserIds.add(student.userId || `user-${student.id}`));
     ownUserIds.add(session.userId);
   }
-  const scopedAccounts = ["school-admin"].includes(session.role)
-    ? accounts.filter((account) => ["student", "teacher", "parent", "school-admin"].includes(account.role))
-    : accounts.filter((account) => ownUserIds.has(account.userId));
+  if (session.role === "school-admin" && session.schoolId) {
+    const activeMembership = (accountSecurity.schoolStaffMemberships || []).some(
+      (membership) =>
+        (membership.school_id || membership.schoolId) === session.schoolId &&
+        (membership.user_id || membership.userId) === session.userId &&
+        (membership.role || "school-admin") === "school-admin" &&
+        (membership.status || "active") === "active" &&
+        !membership.revoked_at &&
+        !membership.revokedAt
+    );
+    if (!activeMembership) {
+      ownUserIds.add(session.userId);
+    } else {
+    const schoolClasses = (accountSecurity.classes || []).filter(
+      (item) => (item.school_id || item.schoolId) === session.schoolId
+    );
+    const schoolClassIds = new Set(schoolClasses.map((item) => item.id));
+    const schoolStudentIds = new Set(
+      (accountSecurity.enrollments || [])
+        .filter((enrollment) => schoolClassIds.has(enrollment.class_id || enrollment.classId))
+        .filter((enrollment) => (enrollment.status || "active") === "active")
+        .map((enrollment) => enrollment.student_id || enrollment.studentId)
+        .filter(Boolean)
+    );
+    const schoolTeacherIds = new Set(schoolClasses.map((item) => item.teacher_id || item.teacherId).filter(Boolean));
+    students
+      .filter((student) => schoolStudentIds.has(student.id))
+      .forEach((student) => ownUserIds.add(student.userId || `user-${student.id}`));
+    accounts
+      .filter((account) => schoolTeacherIds.has(account.teacherId) || account.schoolId === session.schoolId)
+      .forEach((account) => ownUserIds.add(account.userId));
+    const schoolGuardianIds = new Set(
+      [
+        ...(accountSecurity.guardianLinks || []),
+        ...(accountSecurity.studentGuardians || [])
+      ]
+        .filter((link) => schoolStudentIds.has(link.student_id || link.studentId))
+        .filter((link) => (link.status || "approved") === "approved" && !link.revoked_at && !link.revokedAt)
+        .map((link) => link.guardian_id || link.guardianId)
+        .filter(Boolean)
+    );
+    accounts
+      .filter((account) => schoolGuardianIds.has(account.guardianId))
+      .forEach((account) => ownUserIds.add(account.userId));
+    ownUserIds.add(session.userId);
+    }
+  }
+  const scopedAccounts = accounts.filter((account) => ownUserIds.has(account.userId));
   const scopedUserIds = new Set(scopedAccounts.map((account) => account.userId));
   const scopedStudents = students.filter((student) => scopedUserIds.has(student.userId));
-  const scopedRevocations = (accountSecurity.sessionRevocations || []).filter((item) => scopedUserIds.has(item.userId) || session.role === "school-admin");
+  const scopedRevocations = (accountSecurity.sessionRevocations || []).filter((item) => scopedUserIds.has(item.userId));
   const scopedAuthAuditEvents = (accountSecurity.authAuditEvents || []).filter(
-    (event) => scopedUserIds.has(event.targetUserId) || scopedUserIds.has(event.actorUserId) || session.role === "school-admin"
+    (event) => scopedUserIds.has(event.targetUserId) || scopedUserIds.has(event.actorUserId)
   );
   const scopedPendingEmailVerification = (accountSecurity.pendingEmailVerification || []).filter(
-    (event) => scopedUserIds.has(event.targetUserId) || scopedUserIds.has(event.actorUserId) || session.role === "school-admin"
+    (event) => scopedUserIds.has(event.targetUserId) || scopedUserIds.has(event.actorUserId)
   );
   const scopedPendingPasswordReset = (accountSecurity.pendingPasswordReset || []).filter(
-    (event) => scopedUserIds.has(event.targetUserId) || scopedUserIds.has(event.actorUserId) || session.role === "school-admin"
+    (event) => scopedUserIds.has(event.targetUserId) || scopedUserIds.has(event.actorUserId)
   );
   return {
     ...accountSecurity,
@@ -509,6 +561,21 @@ function requireClassroomStaff(session, tableId, operation = "write") {
   return requireRepositoryPermission(session, tableId, operation, repositoryScopeForRole(session));
 }
 
+function requireScopedClassAccess(session, state = {}, classSectionId = "") {
+  const classSection = (state.classSections || []).find((section) => section.id === classSectionId);
+  if (!classSection) {
+    const error = new Error("The class section was not found.");
+    error.status = 404;
+    throw error;
+  }
+  if (session.role === "platform-admin") return classSection;
+  if (session.role === "school-admin" && session.schoolId && classSection.schoolId === session.schoolId) return classSection;
+  if (session.role === "teacher" && session.teacherId && classSection.teacherId === session.teacherId) return classSection;
+  const error = new Error("This account is not assigned to the requested class section.");
+  error.status = 403;
+  throw error;
+}
+
 function requireSchoolAdmin(session, tableId, operation = "write") {
   requireAuthenticated(session);
   if (!["school-admin", "platform-admin"].includes(session.role)) {
@@ -525,13 +592,15 @@ async function readRepositoryLearnerScope(session, learnerId = "") {
     studentId: session.studentId || "",
     guardianId: session.guardianId || "",
     teacherId: session.teacherId || "",
+    schoolId: session.schoolId || "",
     learnerIds: learnerId ? [learnerId] : [],
     limit: 10000
   });
 }
 
 async function repositoryCanAccessLearner(session, learnerId = "") {
-  if (!learnerId || ["school-admin", "platform-admin"].includes(session.role)) return true;
+  if (!learnerId || session.role === "platform-admin") return true;
+  if (session.role === "school-admin" && !session.schoolId) return false;
   const profile = await readRepositoryLearnerScope(session, learnerId);
   return profile.learners.some((learner) => learner.id === learnerId && learner.status === "active");
 }
@@ -638,10 +707,11 @@ async function canTeacherAccessLearner(state = {}, session = {}, learnerId = "")
 
 async function requireLearnerReadAccess(session, state = {}, learnerId = "", label = "learner records") {
   requireAuthenticated(session);
-  if (!learnerId || ["school-admin", "platform-admin"].includes(session.role)) return;
+  if (!learnerId || session.role === "platform-admin") return;
   if (session.role === "student" && learnerId === session.studentId) return;
   if (session.role === "parent" && (await repositoryCanAccessLearner(session, learnerId))) return;
   if (session.role === "teacher" && (await canTeacherAccessLearner(state, session, learnerId))) return;
+  if (session.role === "school-admin" && (await repositoryCanAccessLearner(session, learnerId))) return;
   const error = new Error(`This session cannot read ${label} for the requested learner.`);
   error.status = 403;
   throw error;
@@ -661,6 +731,7 @@ async function readRoleScopedBootstrap(session) {
     studentId: session.studentId || "",
     guardianId: session.guardianId || "",
     teacherId: session.teacherId || "",
+    schoolId: session.schoolId || "",
     learnerIds: session.role === "student" && session.studentId ? [session.studentId] : [],
     limit: 10000
   });
@@ -860,6 +931,13 @@ async function handleApi(request, response, pathname) {
 
   if (request.method === "POST" && pathname === "/api/auth/signup") {
     const body = await readJsonBody(request);
+    const requestedRole = String(body.role || "parent").trim();
+    if (requestedRole !== "parent" || String(body.schoolId || "").trim()) {
+      const error = new Error("Public signup creates parent accounts only. Teacher and school staff accounts require a scoped invitation.");
+      error.status = 403;
+      throw error;
+    }
+    const publicRole = "parent";
     if (useProviderAuth()) {
       if (!String(process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim()) {
         const error = new Error("Provider signup requires SUPABASE_SECRET_KEY so the server can provision role claims securely.");
@@ -869,7 +947,7 @@ async function handleApi(request, response, pathname) {
       const provider = normalizeSupabaseAuthResponse(await supabaseSignUp({
         email: body.email,
         password: body.password,
-        role: body.role || "parent",
+        role: publicRole,
         displayName: body.displayName || body.name,
         redirectTo: body.redirectTo || process.env.AUTH_EMAIL_REDIRECT_TO
       }));
@@ -877,9 +955,9 @@ async function handleApi(request, response, pathname) {
         const state = await ensureStateFile();
         const registered = registerProviderAccount(state, {
           providerUser: provider.user,
-          role: body.role || "parent",
+          role: publicRole,
           displayName: body.displayName || body.name,
-          schoolId: body.schoolId || ""
+          schoolId: ""
         });
         if (!registered.result.accepted) return { state, result: registered.result };
         const claims = registered.result.sessionClaims;
@@ -914,6 +992,7 @@ async function handleApi(request, response, pathname) {
         refreshToken: claims.emailVerified ? provider.refreshToken : "",
         user: provider.user,
         account: provisioned.result.account,
+        result: provisioned.result,
         session: publicSessionSummary(providerSession)
       });
       return true;
@@ -923,7 +1002,7 @@ async function handleApi(request, response, pathname) {
     const payload = await queueStateMutation(async () => {
       const state = await ensureStateFile();
       const registered = registerLocalAccount(state, {
-        role: body.role,
+        role: publicRole,
         displayName: body.displayName,
         email: body.email,
         grade: body.grade,
@@ -983,6 +1062,21 @@ async function handleApi(request, response, pathname) {
         token: provider.accessToken,
         refreshToken: provider.refreshToken,
         user: normalizedUser.user,
+        result: {
+          accepted: true,
+          account: {
+            id: verifiedSession.accountId || verifiedSession.userId,
+            userId: verifiedSession.userId,
+            role: verifiedSession.role,
+            displayName: normalizedUser.user.userMetadata?.display_name || normalizedUser.user.email.split("@")[0],
+            email: normalizedUser.user.email,
+            emailVerified: normalizedUser.user.emailVerified,
+            studentId: verifiedSession.studentId || "",
+            guardianId: verifiedSession.guardianId || "",
+            teacherId: verifiedSession.teacherId || "",
+            schoolId: verifiedSession.schoolId || ""
+          }
+        },
         session: publicSessionSummary(verifiedSession)
       });
       return true;
@@ -1075,7 +1169,13 @@ async function handleApi(request, response, pathname) {
     const body = await readJsonBody(request);
     if (useProviderAuth()) {
       const result = await requestAuthProviderEmailVerification(body);
-      sendJson(response, 200, { accepted: true, provider: "supabase", ...result, session: publicSessionSummary(session) });
+      sendJson(response, 200, {
+        accepted: true,
+        provider: "supabase",
+        ...result,
+        result: { accepted: true, summary: result.message || "Verification email requested." },
+        session: publicSessionSummary(session)
+      });
       return true;
     }
     const verificationToken = createActionTokenRecord("verify");
@@ -1118,6 +1218,7 @@ async function handleApi(request, response, pathname) {
         token: provider.accessToken,
         refreshToken: provider.refreshToken,
         user: provider.user,
+        result: { accepted: true, summary: "Email verified." },
         session: publicSessionSummary(verifiedSession || {
           authenticated: false,
           productionAuth: true,
@@ -1156,7 +1257,13 @@ async function handleApi(request, response, pathname) {
     const body = await readJsonBody(request);
     if (useProviderAuth()) {
       await supabaseRequestPasswordReset({ email: body.email || body.login, redirectTo: body.redirectTo || process.env.AUTH_PASSWORD_RESET_REDIRECT_TO });
-      sendJson(response, 200, { accepted: true, provider: "supabase", message: "If the account exists, a password reset email has been sent.", session: publicSessionSummary(session) });
+      sendJson(response, 200, {
+        accepted: true,
+        provider: "supabase",
+        message: "If the account exists, a password reset email has been sent.",
+        result: { accepted: true, summary: "If the account exists, a password reset email has been sent." },
+        session: publicSessionSummary(session)
+      });
       return true;
     }
     const resetToken = createActionTokenRecord("reset");
@@ -1203,7 +1310,13 @@ async function handleApi(request, response, pathname) {
         revocation = revoked.result.revocation;
         await writeSessionRevocation(revoked.state, revocation.id);
       }
-      sendJson(response, 200, { accepted: true, provider: "supabase", message: "Password updated. Sign in again.", session: publicSessionSummary(revokedSession(session, "Password reset completed.")) });
+      sendJson(response, 200, {
+        accepted: true,
+        provider: "supabase",
+        message: "Password updated. Sign in again.",
+        result: { accepted: true, summary: "Password updated." },
+        session: publicSessionSummary(revokedSession(session, "Password reset completed."))
+      });
       return true;
     }
     const passwordRecord = createPasswordRecord(body.password || body.newPassword);
@@ -1231,9 +1344,10 @@ async function handleApi(request, response, pathname) {
     const body = await readJsonBody(request);
     if (useProviderAuth()) {
       const targetUserId = String(body.userId || session.userId || "");
-      requireAuthOwnerOrAdmin(session, targetUserId);
+      await requireAuthOwnerOrAdmin(session, targetUserId);
       const accessToken = String(body.accessToken || getBearerTokenFromRequest(request) || "");
-      if (!accessToken) {
+      const ownerRequest = targetUserId === session.userId;
+      if (ownerRequest && body.revokeAll && !accessToken) {
         const error = new Error("A provider access token is required to revoke the current session.");
         error.status = 401;
         throw error;
@@ -1241,7 +1355,7 @@ async function handleApi(request, response, pathname) {
       // Supabase's /logout endpoint revokes all refresh tokens for the user.
       // A local request must stay local: our session-revocation record and
       // request middleware enforce the current session without killing other devices.
-      if (body.revokeAll) await supabaseSignOut({ accessToken });
+      if (ownerRequest && body.revokeAll) await supabaseSignOut({ accessToken });
       const revoked = await queueStateMutation(async () => {
         const state = durableRepository ? { sessionRevocations: [] } : await ensureStateFile();
         const result = revokeAccountSession(state, {
@@ -1258,7 +1372,7 @@ async function handleApi(request, response, pathname) {
       return true;
     }
     const targetUserId = String(body.userId || session.userId || "");
-    requireAuthOwnerOrAdmin(session, targetUserId);
+    await requireAuthOwnerOrAdmin(session, targetUserId);
     const payload = await queueStateMutation(async () => {
       const state = await ensureStateFile();
       const revoked = revokeAccountSession(state, {
@@ -1581,6 +1695,8 @@ async function handleApi(request, response, pathname) {
     const body = await readJsonBody(request);
     const payload = await queueStateMutation(async () => {
       const state = await ensureStateFile();
+      const currentSession = (state.classSessions || []).find((item) => item.id === String(body.classSessionId || body.sessionId || ""));
+      requireScopedClassAccess(session, state, currentSession?.classSectionId || "");
       const updated = updateClassSessionStatus(state, body);
       if (!updated.result.accepted) {
         return { state, result: updated.result, repository: stateRepository.status() };
@@ -1590,6 +1706,48 @@ async function handleApi(request, response, pathname) {
         state: persisted,
         result: updated.result,
         monitor: getTeacherClassMonitor(persisted, body.classSectionId || ""),
+        repository: stateRepository.status()
+      };
+    });
+    sendJson(response, payload.result.accepted ? 200 : 400, payload);
+    return true;
+  }
+
+  if (request.method === "POST" && pathname === "/api/classroom/session") {
+    requireClassroomStaff(session, "class_sessions", "write");
+    requireRepositoryPermission(session, "group_missions", "write", repositoryScopeForRole(session));
+    const body = await readJsonBody(request);
+    const payload = await queueStateMutation(async () => {
+      const state = await ensureStateFile();
+      requireScopedClassAccess(session, state, String(body.classSectionId || body.classId || ""));
+      const created = createClassSession(state, body);
+      if (!created.result.accepted) return { state, result: created.result, repository: stateRepository.status() };
+      const persisted = await writeClassroomWorkflow(created.state);
+      return {
+        state: persisted,
+        result: created.result,
+        monitor: getTeacherClassMonitor(persisted, created.result.classSection.id, { allowFallback: false }),
+        repository: stateRepository.status()
+      };
+    });
+    sendJson(response, payload.result.accepted ? 200 : 400, payload);
+    return true;
+  }
+
+  if (request.method === "POST" && pathname === "/api/classroom/attendance") {
+    requireClassroomStaff(session, "attendance_records", "write");
+    const body = await readJsonBody(request);
+    const payload = await queueStateMutation(async () => {
+      const state = await ensureStateFile();
+      const currentSession = (state.classSessions || []).find((item) => item.id === String(body.classSessionId || body.sessionId || ""));
+      requireScopedClassAccess(session, state, currentSession?.classSectionId || "");
+      const recorded = recordClassAttendance(state, { ...body, recordedByUserId: session.userId || "" });
+      if (!recorded.result.accepted) return { state, result: recorded.result, repository: stateRepository.status() };
+      const persisted = await writeClassroomWorkflow(recorded.state);
+      return {
+        state: persisted,
+        result: recorded.result,
+        monitor: getTeacherClassMonitor(persisted, currentSession.classSectionId, { allowFallback: false }),
         repository: stateRepository.status()
       };
     });

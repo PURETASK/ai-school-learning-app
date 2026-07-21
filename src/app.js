@@ -21,6 +21,7 @@ import {
   addExperimentRun,
   addFamilyBenefit,
   completeLessonQuiz,
+  createClassSession,
   createSchoolClass,
   findAcademy,
   findLessonInState,
@@ -31,6 +32,7 @@ import {
   getEvidenceGuidanceSummary,
   getEvidenceImplementationPlan,
   getLessonEvidenceAudit,
+  getLessonCatalog,
   getExperimentDashboard,
   getLearnerAccess,
   getAuthSecuritySummary,
@@ -47,6 +49,7 @@ import {
   getTeacherClassMonitor,
   updateLessonScratchpad,
   recordInteractiveResponse,
+  recordClassAttendance,
   recordStudentEngagementAction,
   requestRewardApproval,
   createScratchpadTutorPrompt,
@@ -155,6 +158,8 @@ import {
   postClassroomArtifact,
   putClassroomMission,
   postClassSessionStatus,
+  postClassSession,
+  postClassAttendance,
   postTeacherIntervention,
   postSchoolClass,
   postSchoolEnrollment,
@@ -368,6 +373,10 @@ function learnerIdsForCurrentSession() {
 
 function hasStrictLearnerScope() {
   return ["student", "parent", "teacher"].includes(currentSession?.role || "");
+}
+
+function usesScopedProductionRuntime() {
+  return ["student", "parent", "teacher", "school-admin"].includes(currentSession?.role || "");
 }
 
 function learnerScopeOptions() {
@@ -2143,7 +2152,7 @@ async function hydrateFromServer() {
         repositoryLearningCatalogError = "Scoped learner bootstrap is unavailable; cached learner records are withheld.";
       }
     }
-    const scopedRepositoryPathReady = hasStrictLearnerScope() && Boolean(repositoryBootstrap?.catalog && repositoryBootstrap?.learnerProfiles);
+    const scopedRepositoryPathReady = usesScopedProductionRuntime() && Boolean(repositoryBootstrap?.catalog && repositoryBootstrap?.learnerProfiles);
     if (scopedRepositoryPathReady) {
       state = mergeRepositoryLearnerProfiles(state, repositoryBootstrap.learnerProfiles);
       state = mergeRepositoryLearningCatalog(state, repositoryBootstrap.catalog);
@@ -2152,6 +2161,10 @@ async function hydrateFromServer() {
       // bootstrap is unavailable. Isolate cached records before rendering.
       state = isolateStateForStrictLearnerScope(state);
       repositoryLearningCatalogError = "Scoped learner bootstrap is unavailable; cached learner records are withheld.";
+    } else if (usesScopedProductionRuntime()) {
+      // School administrators also stay on scoped bootstrap and school-operation
+      // reads. A failed bootstrap must never trigger broad snapshot hydration.
+      repositoryLearningCatalogError = "Scoped school bootstrap is unavailable; broad snapshot fallback is disabled.";
     } else {
       const persisted = await fetchPersistedState();
       state = mergePersistedState(state, persisted);
@@ -2171,7 +2184,7 @@ function persistNow() {
   saveState(state);
   // Learner-facing sessions use scoped feature writes. Navigation, selected answers,
   // and local-only UI choices must never fall back to the broad snapshot route.
-  if (hasStrictLearnerScope()) return;
+  if (usesScopedProductionRuntime()) return;
   if (syncInFlight) return;
   syncInFlight = true;
   putPersistedState(state)
@@ -6366,15 +6379,9 @@ function renderAccountAccessPanel() {
       }
       <div class="auth-security-grid">
         <form class="inline-form account-form auth-card primary-auth-card" id="signupForm">
-          <p class="form-note"><strong>Adults start here.</strong> Parent and teacher accounts must verify email before protected setup actions. Parents then create child usernames from this page.</p>
+          <p class="form-note"><strong>Families start here.</strong> A parent verifies their email, then creates protected child usernames. Teachers and school staff join through a school invitation.</p>
           <div class="account-form-grid">
-            <label>
-              Role
-              <select name="role">
-                <option value="parent">Parent</option>
-                <option value="teacher">Teacher</option>
-              </select>
-            </label>
+            <input name="role" type="hidden" value="parent" />
             <label>
               Name
               <input name="displayName" placeholder="Full name" />
@@ -7535,6 +7542,7 @@ function renderTeacherClassroomCommand() {
           <h3>Live monitor</h3>
           <div class="metric-grid single">
             ${renderMetric("Enrolled", monitor.metrics.enrolled, "Students in class")}
+            ${renderMetric("Present", monitor.metrics.present || 0, `${monitor.metrics.attendanceUnmarked || 0} unmarked`)}
             ${renderMetric("Needs help", monitor.metrics.needsHelp, "Confusion signals")}
             ${renderMetric("Mastered", monitor.metrics.mastered, "Met threshold")}
             ${renderMetric("Average", `${monitor.metrics.averageMastery}%`, "Class mastery")}
@@ -7588,17 +7596,24 @@ function renderTeacherClassroomCommand() {
                     <small>${html(item.adaptiveReteach?.diagnosisLabel ? `Targeted reteach: ${item.adaptiveReteach.diagnosisLabel} - ${item.adaptiveReteach.reteachMove}` : "No targeted reteach evidence yet.")}</small>
                     <small>${html(item.interactiveSkillEvidence?.[0] ? `Interactive: ${item.interactiveSkillEvidence[0].skillLabel} - ${item.interactiveSkillEvidence[0].status}` : "No interactive skill evidence yet.")}</small>
                     <small>${html(`${getRepositoryCatalogLesson(item.learner.id, monitor.lesson.id)?.completedPhaseCount || 0} Nexus phase(s) cleared from scoped catalog evidence.`)}</small>
+                    <small>${html(`Attendance: ${item.attendance?.status || "unmarked"}`)}</small>
                   </div>
                   <span>${html(item.status)}</span>
                   <b>${html(item.mastery.score || 0)}%</b>
-                  ${
-                    item.intervention
-                      ? `<div class="intervention-outcome-actions">
+                  <div class="roster-actions">
+                    <div class="attendance-actions" aria-label="Attendance for ${html(item.learner.name)}">
+                      <button class="small-button" data-attendance-session="${html(monitor.session.id)}" data-attendance-learner="${html(item.learner.id)}" data-attendance-status="present">Present</button>
+                      <button class="small-button muted-action" data-attendance-session="${html(monitor.session.id)}" data-attendance-learner="${html(item.learner.id)}" data-attendance-status="absent">Absent</button>
+                    </div>
+                    ${
+                      item.intervention
+                        ? `<div class="intervention-outcome-actions">
                           <button class="small-button" data-intervention-outcome="${html(item.intervention.id)}" data-outcome="worked">Worked</button>
                           <button class="small-button muted-action" data-intervention-outcome="${html(item.intervention.id)}" data-outcome="needs-redesign">Needs redesign</button>
                         </div>`
-                      : `<button class="small-button" data-record-intervention="${html(monitor.session.id)}" data-learner-id="${html(item.learner.id)}" data-targeted-reteach="${html(item.adaptiveReteach?.reteachMove || "")}">${item.adaptiveReteach?.diagnosisLabel ? "Assign targeted support" : "Intervene"}</button>`
-                  }
+                        : `<button class="small-button" data-record-intervention="${html(monitor.session.id)}" data-learner-id="${html(item.learner.id)}" data-targeted-reteach="${html(item.adaptiveReteach?.reteachMove || "")}">${item.adaptiveReteach?.diagnosisLabel ? "Assign targeted support" : "Intervene"}</button>`
+                    }
+                  </div>
                 </article>
               `
             )
@@ -7691,6 +7706,10 @@ function renderSchoolSetupPanel() {
   const selectedTeacherId = currentSession?.role === "teacher" && currentSession.teacherId ? currentSession.teacherId : teacherOptions[0]?.id || "teacher-demo-1";
   const classes = schoolOps.classes || [];
   const learners = schoolOps.learners || [];
+  const grade6MathClasses = classes.filter((section) => String(section.grade) === "6" && section.subject === "math");
+  const grade6MathLessons = getLessonCatalog(state).filter(
+    (lesson) => String(lesson.grade || lesson.gradeLevel) === "6" && lesson.subject === "math" && String(lesson.schemaVersion || "") === "3"
+  );
   return `
     <section class="panel wide-panel school-setup-panel">
       <div class="section-head">
@@ -7732,6 +7751,18 @@ function renderSchoolSetupPanel() {
           </select></label>
           <p class="form-note">Enrollment gives the learner a class scope. The student still signs in with their own child account.</p>
           <button class="secondary-button" type="submit" ${classes.length && learners.length ? "" : "disabled"}>Enroll learner</button>
+        </form>
+        <form class="school-session-form">
+          <label>Grade 6 Math class<select name="classSectionId" ${grade6MathClasses.length ? "" : "disabled"}>
+            ${grade6MathClasses.length ? grade6MathClasses.map((section) => `<option value="${html(section.id)}">${html(section.name)}</option>`).join("") : `<option>Create a Grade 6 Math class first</option>`}
+          </select></label>
+          <label>V3 lesson<select name="lessonId" ${grade6MathLessons.length ? "" : "disabled"}>
+            ${grade6MathLessons.length ? grade6MathLessons.map((lesson) => `<option value="${html(lesson.id)}">${html(lesson.title)}</option>`).join("") : `<option>No approved Grade 6 Math lessons</option>`}
+          </select></label>
+          <label>Period label<input name="periodLabel" placeholder="Intervention period" /></label>
+          <label>Class minutes<input name="durationMinutes" type="number" min="35" max="55" value="50" /></label>
+          <p class="form-note">The app turns the lesson's V3 phases into a timed class path and prepares attendance plus accountable group work.</p>
+          <button class="primary-button" type="submit" ${grade6MathClasses.length && grade6MathLessons.length ? "" : "disabled"}>Plan class session</button>
         </form>
       </div>
       <div class="school-roster-tools">
@@ -9516,6 +9547,7 @@ app.addEventListener("click", (event) => {
   const rewardRequestButton = event.target.closest("[data-request-reward]");
   const rewardDecisionButton = event.target.closest("[data-reward-decision]");
   const classSessionStatusButton = event.target.closest("[data-class-session-status]");
+  const attendanceButton = event.target.closest("[data-attendance-session]");
   const recordInterventionButton = event.target.closest("[data-record-intervention]");
   const resolveInterventionButton = event.target.closest("[data-resolve-intervention]");
   const interventionOutcomeButton = event.target.closest("[data-intervention-outcome]");
@@ -9979,6 +10011,34 @@ app.addEventListener("click", (event) => {
       })
       .catch((error) => {
         lastClassroomResult = { accepted: false, reason: error.message || "Class session status could not be persisted." };
+        state = markPersistenceError(state, error);
+        saveState(state);
+        render();
+      });
+    shouldRender = true;
+  }
+
+  if (attendanceButton) {
+    playUiSound("success");
+    const input = {
+      classSessionId: attendanceButton.dataset.attendanceSession,
+      learnerId: attendanceButton.dataset.attendanceLearner,
+      status: attendanceButton.dataset.attendanceStatus
+    };
+    const recorded = recordClassAttendance(state, input);
+    state = recorded.state;
+    lastClassroomResult = recorded.result;
+    saveState(state);
+    postClassAttendance(input)
+      .then(async ({ state: persisted, result }) => {
+        state = mergePersistedState(state, persisted);
+        lastClassroomResult = result;
+        await refreshRepositoryReadModels();
+        saveState(state);
+        render();
+      })
+      .catch((error) => {
+        lastClassroomResult = { accepted: false, reason: error.message || "Attendance could not be persisted." };
         state = markPersistenceError(state, error);
         saveState(state);
         render();
@@ -10601,6 +10661,37 @@ app.addEventListener("submit", (event) => {
       })
       .catch((error) => {
         lastSchoolResult = { accepted: false, reason: error.message || "Class section could not be persisted." };
+        state = markPersistenceError(state, error);
+        saveState(state);
+        render();
+      });
+    return;
+  }
+
+  if (event.target.matches(".school-session-form")) {
+    const input = {
+      classSectionId: String(form.get("classSectionId") || ""),
+      lessonId: String(form.get("lessonId") || ""),
+      periodLabel: String(form.get("periodLabel") || ""),
+      durationMinutes: Number(form.get("durationMinutes") || 50)
+    };
+    const created = createClassSession(state, input);
+    state = created.state;
+    lastSchoolResult = created.result;
+    saveState(state);
+    render();
+    if (!created.result.accepted) return;
+
+    postClassSession(input)
+      .then(async ({ state: persisted, result }) => {
+        state = mergePersistedState(state, persisted);
+        lastSchoolResult = result;
+        await refreshRepositoryReadModels();
+        saveState(state);
+        render();
+      })
+      .catch((error) => {
+        lastSchoolResult = { accepted: false, reason: error.message || "Class session could not be persisted." };
         state = markPersistenceError(state, error);
         saveState(state);
         render();

@@ -32,6 +32,7 @@ import {
   createPublishedLessonFromDraft,
   createAiTutorResponse,
   createInitialState,
+  createClassSession,
   createSchoolClass,
   createRevisionBrief,
   getSchoolRosterCsv,
@@ -78,6 +79,7 @@ import {
   getOnboardingStatus,
   getParentSummary,
   recordTeacherIntervention,
+  recordClassAttendance,
   enrollLearnerInSchoolClass,
   importSchoolRoster,
   canAccessRepositoryAction,
@@ -1222,6 +1224,24 @@ const enrolledSchoolLearner = enrollLearnerInSchoolClass(createdSchoolClass.stat
 });
 assert.equal(enrolledSchoolLearner.result.accepted, true, "school admin should be able to enroll a learner in a class");
 assert.deepEqual(enrolledSchoolLearner.result.classSection.studentIds, ["maya"], "enrollment should update the class roster");
+const plannedMathClassSession = createClassSession(enrolledSchoolLearner.state, {
+  id: "session-bridge-math-6b-ratios",
+  classSectionId: "class-bridge-math-6b",
+  lessonId: "g6-math-ratios-unit-rates",
+  durationMinutes: 50
+});
+assert.equal(plannedMathClassSession.result.accepted, true, "teacher should plan a class session from a matching native V3 lesson");
+assert.equal(plannedMathClassSession.result.session.steps.length, 9, "planned class session should use every active V3 phase");
+assert.equal(plannedMathClassSession.result.session.steps.reduce((sum, step) => sum + step.minutes, 0), 50, "phase timing should fit the requested class period");
+assert.ok(plannedMathClassSession.result.mission, "V3 group homework should become an accountable class mission");
+const markedMathAttendance = recordClassAttendance(plannedMathClassSession.state, {
+  classSessionId: "session-bridge-math-6b-ratios",
+  learnerId: "maya",
+  status: "present",
+  recordedByUserId: "user-teacher-demo"
+});
+assert.equal(markedMathAttendance.result.accepted, true, "teacher should record attendance for an enrolled learner");
+assert.equal(getTeacherClassMonitor(markedMathAttendance.state, "class-bridge-math-6b").metrics.present, 1, "teacher monitor should show recorded attendance");
 const schoolSetupProjection = getPlatformSeedProjection(enrolledSchoolLearner.state);
 assert.ok(
   schoolSetupProjection.tables.classes.some((item) => item.id === "class-bridge-math-6b"),
@@ -1231,6 +1251,9 @@ assert.ok(
   schoolSetupProjection.tables.enrollments.some((item) => item.class_id === "class-bridge-math-6b" && item.student_id === "maya"),
   "class enrollment should project into enrollments"
 );
+const plannedSessionProjection = getPlatformSeedProjection(markedMathAttendance.state);
+assert.ok(plannedSessionProjection.tables.class_sessions.some((item) => item.id === "session-bridge-math-6b-ratios"), "planned sessions should project into class_sessions");
+assert.ok(plannedSessionProjection.tables.attendance_records.some((item) => item.class_session_id === "session-bridge-math-6b-ratios" && item.status === "present"), "attendance should project into attendance_records");
 const parsedRoster = parseRosterCsv(
   "display_name,grade,class_id,student_id,username,email,accommodations\n\"Sam Lee\",6,class-bridge-math-6b,sam-lee,samlee,sam@example.edu,Planner prompts\nAlex Kim,6,class-bridge-math-6b,alex-kim,alexkim,alex@example.edu,"
 );
@@ -1412,6 +1435,8 @@ assert.match(platformMigration.sql, /create table if not exists public\."account
 assert.match(platformMigration.sql, /create table if not exists public\."guardian_student_links"/, "migration should create guardian-student lifecycle table");
 assert.match(platformMigration.sql, /create table if not exists public\."session_revocations"/, "migration should create session revocations table");
 assert.match(platformMigration.sql, /create table if not exists public\."teacher_class_assignments"/, "migration should create teacher assignment lifecycle table");
+assert.match(platformMigration.sql, /create table if not exists public\."attendance_records"/, "migration should create durable classroom attendance records");
+assert.match(platformMigration.sql, /create table if not exists public\."school_staff_memberships"/, "migration should create authoritative school staff memberships");
 assert.match(platformMigration.sql, /create table if not exists public\."auth_audit_events"/, "migration should create auth audit table");
 assert.match(platformMigration.sql, /alter table public\."students" add constraint "fk_students_user_id"/, "migration should add foreign keys after table creation");
 assert.match(platformMigration.sql, /create table if not exists public\."quiz_attempts"/, "migration should create quiz attempts table");
@@ -1439,6 +1464,14 @@ assert.match(platformMigration.sql, /create or replace function public\.k12_auth
 assert.match(platformMigration.sql, /auth\.jwt\(\)/, "migration should read trusted Supabase JWT claims when available");
 assert.match(platformMigration.sql, /app_metadata/, "migration should read authorization claims from app metadata");
 assert.match(platformMigration.sql, /k12_current_app_role\(\)/, "RLS policies should use normalized app-role claims");
+assert.match(platformMigration.sql, /k12_current_app_school_id\(\)/, "RLS policies should use the trusted school claim");
+assert.match(platformMigration.sql, /create policy "school_staff_memberships_self_select"/, "staff should be able to read only their own school membership directly");
+assert.match(platformMigration.sql, /create policy "classes_school_admin_scope"/, "school admins should be scoped to classes in their active school membership");
+assert.match(platformMigration.sql, /"guardian_student_links" gsl[\s\S]*gsl\."status" = 'approved'[\s\S]*gsl\."revoked_at" is null/, "parent access should require an active approved guardian lifecycle link");
+assert.match(platformMigration.sql, /"teacher_class_assignments" tca[\s\S]*tca\."status" = 'active'[\s\S]*tca\."revoked_at" is null/, "teacher access should require an active class assignment");
+assert.match(platformMigration.sql, /grant select, insert, update, delete on table public\."students" to authenticated/, "protected tables should have explicit Supabase Data API grants");
+assert.match(platformMigration.sql, /grant all privileges on table public\."students" to service_role/, "server repository access should have explicit service-role grants");
+assert.doesNotMatch(platformMigration.sql, /staff_operational_select/, "operational review and audit tables must not be globally readable by school staff");
 assert.match(platformMigration.sql, /for select to authenticated using/, "RLS select policies should specify the authenticated Postgres role");
 assert.match(platformMigration.sql, /for all to authenticated using/, "RLS write-capable policies should specify the authenticated Postgres role");
 assert.doesNotMatch(platformMigration.sql, /user_metadata/, "migration must not use user-editable metadata for authorization");
@@ -1633,6 +1666,16 @@ assert.equal(productionClaimsResult.session.productionAuth, true, "provider sess
 assert.equal(productionClaimsResult.session.emailVerified, true, "provider session should preserve email verification");
 assert.equal(productionClaimsResult.session.teacherId, "teacher-provider-1", "provider session should map teacher id");
 assert.equal(
+  createProductionSessionFromVerifiedClaims({ ...productionClaimsResult.session, iss: "", email_verified: true }, productionAuthEnv).accepted,
+  false,
+  "production auth should reject claims without a trusted issuer"
+);
+assert.equal(
+  createProductionSessionFromVerifiedClaims({ ...productionClaimsResult.session, iss: productionAuthEnv.AUTH_ISSUER, aud: productionAuthEnv.AUTH_AUDIENCE, email_verified: true }, productionAuthEnv).accepted,
+  false,
+  "production auth should reject claims without complete token lifetime metadata"
+);
+assert.equal(
   createProductionSessionFromVerifiedClaims({ ...productionClaimsResult.session, email_verified: false }, productionAuthEnv).accepted,
   false,
   "production auth should reject unverified email by default"
@@ -1655,6 +1698,8 @@ const trustedClaimsHeader = Buffer.from(
     email: "verified.parent@example.test",
     email_verified: true,
     sid: "provider-session-parent-1",
+    iat: nowSeconds,
+    exp: nowSeconds + 3600,
     app_metadata: {
       role: "parent",
       scope: "own-household",
@@ -1925,6 +1970,38 @@ const normalizedScopeSecurity = createAccountSecurityReadModel({
 assert.equal(normalizedScopeSecurity.studentGuardians.length, 1, "account security read model should preserve direct parent-child links");
 assert.equal(normalizedScopeSecurity.teacherClassAssignments.length, 1, "account security read model should preserve teacher assignments");
 assert.equal(normalizedScopeSecurity.enrollments.length, 1, "account security read model should preserve class enrollments");
+const schoolScopedProfiles = createLearnerProfileReadModel(
+  {
+    users: [
+      { id: "school-a-student-user", role: "student", email_verified: true },
+      { id: "school-b-student-user", role: "student", email_verified: true }
+    ],
+    students: [
+      { id: "school-a-student", user_id: "school-a-student-user", status: "active" },
+      { id: "school-b-student", user_id: "school-b-student-user", status: "active" }
+    ],
+    classes: [
+      { id: "school-a-class", school_id: "school-a", status: "active" },
+      { id: "school-b-class", school_id: "school-b", status: "active" }
+    ],
+    enrollments: [
+      { class_id: "school-a-class", student_id: "school-a-student", status: "active" },
+      { class_id: "school-b-class", student_id: "school-b-student", status: "active" }
+    ]
+  },
+  { role: "school-admin", schoolId: "school-a" }
+);
+assert.deepEqual(schoolScopedProfiles.learners.map((learner) => learner.id), ["school-a-student"], "school-admin profiles must exclude learners from other schools");
+const revokedParentProfiles = createLearnerProfileReadModel(
+  {
+    users: [{ id: "revoked-child-user", role: "student" }],
+    students: [{ id: "revoked-child", user_id: "revoked-child-user", status: "active" }],
+    student_guardians: [{ student_id: "revoked-child", guardian_id: "guardian-revoked" }],
+    guardian_student_links: [{ student_id: "revoked-child", guardian_id: "guardian-revoked", status: "revoked", revoked_at: "2026-07-20T00:00:00.000Z" }]
+  },
+  { role: "parent", guardianId: "guardian-revoked" }
+);
+assert.equal(revokedParentProfiles.learners.length, 0, "a revoked lifecycle link must override a legacy direct parent-child row");
 const targetedRevocation = createSessionRevocationRows({ sessionRevocations: [{ id: "revoke-1", userId: "user-1", sessionId: "session-1", reason: "test", createdAt: "2026-07-17T00:00:00.000Z" }] }, "revoke-1");
 assert.equal(targetedRevocation.rowsByTable.session_revocations[0].user_id, "user-1", "targeted revocation rows should map app claims to normalized columns");
 const repositoryRosterCsv = exportRepositoryRosterCsv({
@@ -1968,7 +2045,8 @@ assert.ok(stateDependencyAudit.focusedReadRoutes.includes("/api/rewards/approval
 assert.ok(stateDependencyAudit.focusedReadRoutes.includes("/api/tutor/events"), "state dependency audit should include tutor event read route");
 assert.ok(stateDependencyAudit.focusedWriteRoutes.includes("/api/learning/quiz"), "state dependency audit should include feature-specific learning writes");
 assert.ok(stateDependencyAudit.focusedWriteRoutes.includes("/api/learning/phase"), "state dependency audit should include persisted Nexus phase completion writes");
-assert.equal(stateDependencyAudit.summary.productionBlocker, true, "state dependency audit should keep broad state dependency as a production blocker");
+assert.equal(stateDependencyAudit.summary.productionBlocker, false, "platform-admin maintenance routes should not block scoped production roles");
+assert.deepEqual(stateDependencyAudit.summary.productionRolesUsingBroadSnapshot, [], "no production user role should depend on broad state hydration");
 const postgresRuntimeStatus = getRuntimeConfigurationStatus({
   DATABASE_URL: "postgresql://postgres:password@example.supabase.co:5432/postgres",
   K12_REPOSITORY_MODE: "postgres",
@@ -4283,6 +4361,8 @@ for (const expected of [
   assert.ok(appSource.includes(expected), `lesson player should include app-led student teaching surface: ${expected}`);
 }
 assert.ok(appSource.includes("A scoped session must not fall back to the broad snapshot"), "learner hydration should block broad snapshot fallback");
+assert.ok(appSource.includes('["student", "parent", "teacher", "school-admin"]'), "all production user roles should use scoped repository hydration");
+assert.ok(appSource.includes("broad snapshot fallback is disabled"), "school-admin hydration should never fall back to the broad snapshot");
 assert.ok(appSource.includes("repositoryBootstrap?.catalog || null"), "scoped catalog refresh should use bootstrap metadata before learner-specific reads");
 
 const serverSource = readFileSync("scripts/serve.mjs", "utf8");
@@ -4293,6 +4373,16 @@ assert.ok(serverSource.includes("accounts: []"), "Anonymous auth sessions should
 assert.ok(serverSource.includes("A provider refresh token is required."), "provider refresh should reject missing refresh tokens");
 assert.ok(serverSource.includes("const refreshedSession = await getRequestSessionAsync"), "provider refresh should verify refreshed JWT claims");
 assert.ok(serverSource.includes("stateRepository.isSessionRevoked(refreshedSession)"), "provider refresh should enforce app-level session revocation");
+assert.ok(serverSource.includes("Public signup creates parent accounts only"), "public signup must not create trusted teacher or school roles");
+assert.ok(serverSource.includes('const publicRole = "parent"'), "public signup role must be selected by the server");
+assert.ok(appSource.includes("Teachers and school staff join through a school invitation"), "signup UI should direct staff to invitation-based provisioning");
+assert.ok(serverSource.includes('if (session.role === "school-admin" && !session.schoolId) return false'), "school-admin learner access must require a trusted school id");
+assert.ok(serverSource.includes("await requireAuthOwnerOrAdmin(session, targetUserId)"), "administrative session revocation must run the scoped async ownership check");
+assert.ok(serverSource.includes('pathname === "/api/classroom/session"'), "server should expose class-session planning through a scoped endpoint");
+assert.ok(serverSource.includes('pathname === "/api/classroom/attendance"'), "server should expose attendance through a scoped endpoint");
+assert.ok(serverSource.includes("requireScopedClassAccess(session, state"), "classroom writes should verify the teacher or school scope against the target class");
+assert.ok(apiClientSource.includes('requestJson("/api/classroom/session"'), "client should persist newly planned class sessions");
+assert.ok(apiClientSource.includes('requestJson("/api/classroom/attendance"'), "client should persist classroom attendance");
 assert.ok(serverSource.includes("for (const tableId of normalizedRepositoryTableIds)"), "production startup should probe every normalized repository table");
 assert.ok(serverSource.includes("Missing or unreadable normalized tables"), "production startup should report normalized migration gaps");
 assert.ok(serverSource.includes("probeNormalizedRepository()"), "runtime health should use the complete normalized repository probe");
@@ -4300,7 +4390,7 @@ assert.ok(serverSource.includes("checkedTableCount: normalizedRepositoryTableIds
 assert.match(apiClientSource, /error\.payload = body/, "API errors should preserve structured diagnostics for operational surfaces");
 assert.match(appSource, /health\?\.probe\?\.missingTables/, "runtime UI should show missing normalized tables from health diagnostics");
 assert.ok(serverSource.includes("supabaseSignOut({ accessToken: provider.accessToken }).catch(() => {})"), "revoked refresh sessions should be terminated at the provider when possible");
-assert.ok(serverSource.includes("if (body.revokeAll) await supabaseSignOut({ accessToken });"), "current-session revocation must not call Supabase global logout");
+assert.ok(serverSource.includes("if (ownerRequest && body.revokeAll) await supabaseSignOut({ accessToken });"), "provider global logout must only use the current user's own token");
 assert.ok(apiClientSource.includes("setRefreshToken(\"\");\n}"), "local sign-out should clear the refresh token as well as the access token");
 for (const expected of [
   'pathname === "/api/bootstrap"',

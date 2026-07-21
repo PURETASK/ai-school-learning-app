@@ -11,12 +11,14 @@ export const normalizedRepositoryTableIds = [
   "subjects",
   "standards",
   "schools",
+  "school_staff_memberships",
   "teachers",
   "classes",
   "courses",
   "units",
   "lessons",
   "class_sessions",
+  "attendance_records",
   "group_missions",
   "group_artifacts",
   "teacher_interventions",
@@ -127,6 +129,7 @@ export const accountSecurityRepositoryTableIds = [
   "guardians",
   "teachers",
   "schools",
+  "school_staff_memberships",
   "classes",
   "enrollments",
   "student_guardians",
@@ -154,6 +157,7 @@ export const learnerProfileRepositoryTableIds = [
 export const contentWorkflowRepositoryTableIds = [
   "lessons",
   "class_sessions",
+  "attendance_records",
   "group_missions",
   "group_artifacts",
   "teacher_interventions",
@@ -170,6 +174,7 @@ export const contentWorkflowRepositoryTableIds = [
 
 export const classroomWorkflowRepositoryTableIds = [
   "class_sessions",
+  "attendance_records",
   "group_missions",
   "group_artifacts",
   "teacher_interventions",
@@ -177,7 +182,7 @@ export const classroomWorkflowRepositoryTableIds = [
   "learning_events"
 ];
 
-export const classroomEvidenceRepositoryTableIds = ["class_sessions", "group_missions", "group_artifacts", "teacher_interventions"];
+export const classroomEvidenceRepositoryTableIds = ["class_sessions", "attendance_records", "group_missions", "group_artifacts", "teacher_interventions"];
 
 export const classroomMonitorRepositoryTableIds = [
   "schools",
@@ -186,6 +191,7 @@ export const classroomMonitorRepositoryTableIds = [
   "enrollments",
   "lessons",
   "class_sessions",
+  "attendance_records",
   "group_missions",
   "group_artifacts",
   "teacher_interventions",
@@ -199,6 +205,7 @@ export const classroomStudentRepositoryTableIds = classroomMonitorRepositoryTabl
 
 export const schoolOperationsRepositoryTableIds = [
   "schools",
+  "school_staff_memberships",
   "users",
   "teachers",
   "students",
@@ -211,6 +218,7 @@ export const schoolOperationsRepositoryTableIds = [
 
 export const schoolOperationsReadRepositoryTableIds = [
   "schools",
+  "school_staff_memberships",
   "users",
   "teachers",
   "students",
@@ -404,10 +412,10 @@ export class JsonStateRepository {
   }
 
   async readClassroomEvidence(options = {}) {
-    const [sessionRows, missionRows, artifactRows, interventionRows] = await Promise.all(
+    const [sessionRows, attendanceRows, missionRows, artifactRows, interventionRows] = await Promise.all(
       classroomEvidenceRepositoryTableIds.map((tableId) => this.readNormalizedTable(tableId, { limit: options.limit || 10000 }))
     );
-    return createClassroomEvidenceReadModel({ sessionRows, missionRows, artifactRows, interventionRows }, options);
+    return createClassroomEvidenceReadModel({ sessionRows, attendanceRows, missionRows, artifactRows, interventionRows }, options);
   }
 
   async readClassroomMonitor(options = {}) {
@@ -1465,7 +1473,7 @@ export function normalizedTeacherInterventionRow(row = {}) {
 }
 
 export function createClassroomEvidenceReadModel(
-  { sessionRows = [], missionRows = [], artifactRows = [], interventionRows = [] } = {},
+  { sessionRows = [], attendanceRows = [], missionRows = [], artifactRows = [], interventionRows = [] } = {},
   { learnerId = "", classSessionId = "", lessonId = "", classSectionId = "" } = {}
 ) {
   const sessions = sessionRows
@@ -1492,6 +1500,19 @@ export function createClassroomEvidenceReadModel(
     .filter((intervention) => !lessonId || intervention.lessonId === lessonId)
     .filter((intervention) => !learnerId || intervention.learnerId === learnerId)
     .sort((left, right) => String(right.createdAt || "").localeCompare(String(left.createdAt || "")));
+  const attendance = attendanceRows
+    .map((row) => ({
+      id: row.id || "",
+      classSessionId: row.class_session_id || "",
+      learnerId: row.student_id || "",
+      status: row.status || "unmarked",
+      checkedInAt: row.checked_in_at || "",
+      recordedByUserId: row.recorded_by_user_id || "",
+      note: row.note || "",
+      updatedAt: row.updated_at || row.created_at || ""
+    }))
+    .filter((record) => !classSessionId || record.classSessionId === classSessionId)
+    .filter((record) => !learnerId || record.learnerId === learnerId);
 
   return {
     source: "normalized-repository",
@@ -1502,6 +1523,7 @@ export function createClassroomEvidenceReadModel(
       artifacts: artifacts.length,
       submittedArtifacts: artifacts.filter((artifact) => artifact.submitted).length,
       interventions: interventions.length,
+      attendanceMarked: attendance.filter((record) => record.status !== "unmarked").length,
       openInterventions: interventions.filter((intervention) => intervention.open).length,
       resolvedInterventions: interventions.filter((intervention) => !intervention.open).length
     },
@@ -1509,6 +1531,7 @@ export function createClassroomEvidenceReadModel(
     missions,
     artifacts,
     interventions,
+    attendance,
     latestArtifact: artifacts[0] || null,
     latestIntervention: interventions[0] || null
   };
@@ -1535,7 +1558,7 @@ function normalizedClassroomLessonRow(row = {}) {
     : null;
 }
 
-function createRepositoryLearnerStatus({ learner, lesson, mission, artifact, intervention, progress, mastery, scratchpad, interactiveSignals }) {
+function createRepositoryLearnerStatus({ learner, lesson, mission, artifact, intervention, attendance, progress, mastery, scratchpad, interactiveSignals }) {
   const score = Number(mastery?.score || 0);
   const threshold = Number(lesson?.masteryThreshold || 80);
   const confusion = scratchpad?.confusion || scratchpad?.first_step || scratchpad?.explanation || "";
@@ -1576,6 +1599,7 @@ function createRepositoryLearnerStatus({ learner, lesson, mission, artifact, int
           individualEvidence: ""
         },
     intervention: intervention || null,
+    attendance: attendance || null,
     interactiveSkillEvidence: interactiveSignals.slice(0, 3),
     adaptiveReteach: intervention?.open
       ? {
@@ -1604,7 +1628,7 @@ export function createClassroomMonitorReadModel(tables = {}, { classSectionId = 
       lesson: null,
       mission: null,
       learners: [],
-      metrics: { enrolled: 0, ready: 0, inProgress: 0, needsHelp: 0, teacherSupport: 0, submittedArtifacts: 0, mastered: 0, averageMastery: 0 },
+      metrics: { enrolled: 0, ready: 0, inProgress: 0, needsHelp: 0, teacherSupport: 0, submittedArtifacts: 0, present: 0, attendanceUnmarked: 0, mastered: 0, averageMastery: 0 },
       confusionHeatmap: [],
       adminReadiness: []
     };
@@ -1627,6 +1651,7 @@ export function createClassroomMonitorReadModel(tables = {}, { classSectionId = 
   const masteryRows = toArray(tables.mastery_records);
   const scratchpadRows = toArray(tables.lesson_scratchpads);
   const interactiveRows = toArray(tables.interactive_skill_evidence);
+  const attendanceRows = toArray(tables.attendance_records);
 
   const learners = toArray(tables.students)
     .filter((row) => classSection.studentIds.includes(row.id))
@@ -1653,12 +1678,23 @@ export function createClassroomMonitorReadModel(tables = {}, { classSectionId = 
           evidenceStrength: row.evidence_strength,
           updatedAt: row.updated_at
         }));
+      const attendance = attendanceRows.find(
+        (row) => row.student_id === learner.id && row.class_session_id === normalizedSession.id
+      ) || null;
       return createRepositoryLearnerStatus({
         learner,
         lesson,
         mission,
         artifact,
         intervention,
+        attendance: attendance
+          ? {
+              id: attendance.id,
+              status: attendance.status || "unmarked",
+              checkedInAt: attendance.checked_in_at || "",
+              note: attendance.note || ""
+            }
+          : null,
         progress,
         mastery,
         scratchpad,
@@ -1688,6 +1724,8 @@ export function createClassroomMonitorReadModel(tables = {}, { classSectionId = 
       needsHelp,
       teacherSupport,
       submittedArtifacts,
+      present: learners.filter((item) => ["present", "late"].includes(item.attendance?.status)).length,
+      attendanceUnmarked: learners.filter((item) => !item.attendance || item.attendance.status === "unmarked").length,
       mastered,
       averageMastery
     },
@@ -1908,6 +1946,13 @@ export function createSchoolOperationsReadModel(rowsByTable = {}, { schoolId = "
   const userById = new Map(users.map((user) => [user.id, user]));
   const schools = toArray(rowsByTable.schools).map(normalizedSchoolRow).filter((school) => !schoolId || school.id === schoolId);
   const selectedSchoolId = schoolId || schools[0]?.id || "";
+  const memberships = toArray(rowsByTable.school_staff_memberships).filter(
+    (membership) =>
+      (!selectedSchoolId || membership.school_id === selectedSchoolId) &&
+      (membership.status || "active") === "active" &&
+      !membership.revoked_at
+  );
+  const memberUserIds = new Set(memberships.map((membership) => membership.user_id).filter(Boolean));
   const enrollments = toArray(rowsByTable.enrollments);
   const assignmentClassIds = new Set(
     toArray(rowsByTable.teacher_class_assignments)
@@ -1926,7 +1971,8 @@ export function createSchoolOperationsReadModel(rowsByTable = {}, { schoolId = "
     .map((row) => normalizedSchoolLearnerRow(row, userById));
   const teachers = toArray(rowsByTable.teachers)
     .map((row) => normalizedSchoolTeacherRow(row, userById))
-    .filter((teacher) => !teacherId || teacher.id === teacherId);
+    .filter((teacher) => !teacherId || teacher.id === teacherId)
+    .filter((teacher) => !selectedSchoolId || memberUserIds.has(teacher.userId) || classes.some((section) => section.teacherId === teacher.id));
   const invitations = toArray(rowsByTable.account_invitations)
     .map(normalizedSchoolInvitationRow)
     .filter((invitation) => !classIds.size || !invitation.targetClassId || classIds.has(invitation.targetClassId));
@@ -1949,6 +1995,7 @@ export function createSchoolOperationsReadModel(rowsByTable = {}, { schoolId = "
       enrolledStudents: new Set(classes.flatMap((section) => section.studentIds)).size
     },
     school: schools[0] || null,
+    memberships,
     classes,
     learners,
     teachers,
@@ -2145,6 +2192,7 @@ export function createAccountSecurityReadModel(rowsByTable = {}, options = {}) {
   const students = toArray(rowsByTable.students);
   const guardians = toArray(rowsByTable.guardians);
   const teachers = toArray(rowsByTable.teachers);
+  const schoolStaffMemberships = toArray(rowsByTable.school_staff_memberships);
   const invitations = toArray(rowsByTable.account_invitations);
   const guardianLinks = toArray(rowsByTable.guardian_student_links);
   const studentGuardians = toArray(rowsByTable.student_guardians);
@@ -2217,6 +2265,7 @@ export function createAccountSecurityReadModel(rowsByTable = {}, options = {}) {
       displayName: row.display_name || "",
       organizationName: row.organization_name || ""
     })),
+    schoolStaffMemberships,
     pendingEmailVerification,
     pendingPasswordReset,
     sessionRevocations,
@@ -2245,7 +2294,15 @@ export function createLearnerProfileReadModel(rowsByTable = {}, options = {}) {
   const approvedLinks = toArray(rowsByTable.guardian_student_links).filter(
     (row) => row.student_id && row.guardian_id && (row.status || "approved") === "approved" && !row.revoked_at
   );
-  const allLinks = [...directLinks, ...approvedLinks];
+  const lifecyclePairs = new Set(
+    toArray(rowsByTable.guardian_student_links)
+      .filter((row) => row.student_id && row.guardian_id)
+      .map((row) => `${row.guardian_id}:${row.student_id}`)
+  );
+  const legacyLinksWithoutLifecycleRecord = directLinks.filter(
+    (row) => !lifecyclePairs.has(`${row.guardian_id}:${row.student_id}`)
+  );
+  const allLinks = [...approvedLinks, ...legacyLinksWithoutLifecycleRecord];
   const userById = new Map(users.map((row) => [row.id, row]));
   const guardianById = new Map(guardians.map((row) => [row.id, row]));
   const gradeById = new Map(gradeLevels.map((row) => [row.id, row]));
@@ -2266,12 +2323,21 @@ export function createLearnerProfileReadModel(rowsByTable = {}, options = {}) {
       if (assignedClassIds.has(enrollment.class_id)) allowedIds.add(enrollment.student_id);
     }
   }
+  if (role === "school-admin" && options.schoolId) {
+    const schoolClassIds = new Set(
+      classes.filter((row) => row.school_id === options.schoolId && (row.status || "active") !== "archived").map((row) => row.id)
+    );
+    for (const enrollment of enrollments) {
+      if (schoolClassIds.has(enrollment.class_id)) allowedIds.add(enrollment.student_id);
+    }
+  }
   if (!role && requestedIds.size) for (const id of requestedIds) allowedIds.add(id);
   if (requestedIds.size) {
     for (const id of [...allowedIds]) if (!requestedIds.has(id)) allowedIds.delete(id);
   }
 
-  const learnerRows = students.filter((row) => !allowedIds.size || allowedIds.has(row.id));
+  const roleRequiresExplicitScope = ["student", "parent", "teacher", "school-admin"].includes(role);
+  const learnerRows = students.filter((row) => (!roleRequiresExplicitScope && !allowedIds.size) || allowedIds.has(row.id));
   const learners = learnerRows.map((row) => {
     const user = userById.get(row.user_id) || {};
     const grade = gradeById.get(row.grade_level_id) || {};
@@ -2382,6 +2448,18 @@ export function createAccountProvisioningRows(state = {}, accountId = "") {
       organization_name: "Learning Academy",
       created_at: account.createdAt || timestamp,
       updated_at: account.updatedAt || timestamp
+    }];
+  }
+  if (["teacher", "school-admin"].includes(account.role) && account.schoolId) {
+    rowsByTable.school_staff_memberships = [{
+      id: `school-membership-${account.schoolId}-${account.userId || `user-${account.id}`}`.replace(/[^a-z0-9_-]/gi, "-"),
+      school_id: account.schoolId,
+      user_id: account.userId || `user-${account.id}`,
+      role: account.role,
+      status: account.status === "revoked" ? "revoked" : "active",
+      invited_by_user_id: account.invitedByUserId || "",
+      created_at: account.createdAt || timestamp,
+      revoked_at: account.status === "revoked" ? account.updatedAt || timestamp : ""
     }];
   }
 
@@ -2675,10 +2753,10 @@ export class PostgresStateRepository {
   }
 
   async readClassroomEvidence(options = {}) {
-    const [sessionRows, missionRows, artifactRows, interventionRows] = await Promise.all(
+    const [sessionRows, attendanceRows, missionRows, artifactRows, interventionRows] = await Promise.all(
       classroomEvidenceRepositoryTableIds.map((tableId) => this.readNormalizedTable(tableId, { limit: options.limit || 10000 }))
     );
-    return createClassroomEvidenceReadModel({ sessionRows, missionRows, artifactRows, interventionRows }, options);
+    return createClassroomEvidenceReadModel({ sessionRows, attendanceRows, missionRows, artifactRows, interventionRows }, options);
   }
 
   async readClassroomMonitor(options = {}) {

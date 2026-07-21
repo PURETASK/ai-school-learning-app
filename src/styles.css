@@ -8717,6 +8717,21 @@ body {
   text-align: center;
 }
 
+.roster-actions,
+.attendance-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.roster-actions {
+  flex-direction: column;
+  align-items: flex-end;
+}
+
 .academy-world-home {
   overflow: clip;
 }
