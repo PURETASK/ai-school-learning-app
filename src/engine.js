@@ -1911,6 +1911,7 @@ export function normalizeAppState(state = {}) {
     accountInvitations: merged.accountInvitations || [],
     classroomArtifacts: merged.classroomArtifacts || [],
     teacherInterventions: merged.teacherInterventions || [],
+    attendanceRecords: merged.attendanceRecords || [],
     aiLogs: (merged.aiLogs || []).map(normalizeAiLog),
     artifactReviewHistory: merged.artifactReviewHistory || []
   });
@@ -1943,7 +1944,7 @@ export function isolateStateForStrictLearnerScope(state = {}) {
   for (const key of [
     "learners", "localAccounts", "parentProfile", "consentRecords", "placementResults",
     "learningEvents", "retentionSchedules", "masteryBenefits", "affectCheckins", "experimentRuns",
-    "assignments", "schoolProfile", "classSections", "classSessions", "groupMissions",
+    "assignments", "schoolProfile", "classSections", "classSessions", "groupMissions", "attendanceRecords",
     "lessonScratchpads", "interactiveResponses", "rewardApprovals", "quizResults", "mastery",
     "aiLogs", "toolCallLogs", "accountInvitations", "emailVerificationRequests", "passwordResetRequests",
     "sessionRevocations", "contentDrafts", "contentImportJobs", "visualGenerationJobs",
@@ -2981,6 +2982,9 @@ function getLearnerClassStatus(state = {}, learner = {}, session = {}, lesson = 
   const artifact = mission ? findClassroomArtifact(state, mission.id, learner.id) : null;
   const intervention = findOpenTeacherIntervention(state, session?.id || "", learner.id);
   const adaptiveReteach = getAdaptiveReteachRecommendation(state, learner.id, lesson.id);
+  const attendance = (state.attendanceRecords || []).find(
+    (record) => record.classSessionId === session?.id && record.learnerId === learner.id
+  ) || null;
   const hasConfusion = Boolean(String(scratchpad.confusion || "").trim());
   const status = intervention
     ? "Teacher support"
@@ -3005,6 +3009,7 @@ function getLearnerClassStatus(state = {}, learner = {}, session = {}, lesson = 
     tutorSignal: hasConfusion ? "Student wrote a stuck point." : "No tutor flag yet.",
     confusion: scratchpad.confusion || "",
     adaptiveReteach,
+    attendance,
     artifact,
     intervention,
     levelProfile: getLearnerLevelProfile(state, learner.id)
@@ -3092,6 +3097,8 @@ export function getTeacherClassMonitor(state = {}, classSectionId = "", options 
       needsHelp,
       teacherSupport,
       submittedArtifacts,
+      present: learners.filter((item) => ["present", "late"].includes(item.attendance?.status)).length,
+      attendanceUnmarked: learners.filter((item) => !item.attendance || item.attendance.status === "unmarked").length,
       mastered,
       averageMastery
     },
@@ -3156,6 +3163,154 @@ function findClassSectionById(state = {}, classSectionId = "") {
 
 function findClassSectionForSession(state = {}, session = {}) {
   return findClassSectionById(state, session?.classSectionId || "");
+}
+
+const classPhaseMinuteWeights = {
+  orient: 5,
+  model: 8,
+  deconstruct: 6,
+  practice: 10,
+  reason: 6,
+  prove: 7,
+  remember: 2,
+  transfer: 4,
+  adapt: 2
+};
+
+function createTimedClassSteps(lesson = {}, durationMinutes = 50) {
+  const modules = Array.isArray(lesson.phaseModules) ? lesson.phaseModules.filter((module) => module?.phase) : [];
+  if (!modules.length) return [];
+  const totalWeight = modules.reduce((sum, module) => sum + Number(classPhaseMinuteWeights[module.phase] || 5), 0);
+  let assigned = 0;
+  return modules.map((module, index) => {
+    const minutes = index === modules.length - 1
+      ? Math.max(1, durationMinutes - assigned)
+      : Math.max(1, Math.round((Number(classPhaseMinuteWeights[module.phase] || 5) / totalWeight) * durationMinutes));
+    assigned += minutes;
+    return {
+      id: module.phase,
+      phase: module.phase,
+      label: module.title || module.phase,
+      minutes,
+      studentAction: module.studentAction || module.successCheck || "Complete this learning phase.",
+      successCheck: module.successCheck || "Show evidence before moving on.",
+      status: index === 0 ? "ready" : "locked"
+    };
+  });
+}
+
+export function createClassSession(state = {}, input = {}) {
+  const classSectionId = String(input.classSectionId || input.classId || "").trim();
+  const lessonId = String(input.lessonId || "").trim();
+  const classSection = findClassSectionById(state, classSectionId);
+  const lesson = findLessonInState(state, lessonId);
+  if (!classSection || !lesson) {
+    return { state, result: { accepted: false, reason: "Choose an existing class and published lesson." } };
+  }
+  if (String(classSection.grade) !== String(lesson.grade || lesson.gradeLevel) || classSection.subject !== lesson.subject) {
+    return { state, result: { accepted: false, reason: "The lesson grade and subject must match the class." } };
+  }
+  if (String(lesson.schemaVersion || "") !== "3" || !Array.isArray(lesson.activePhases) || !lesson.activePhases.length) {
+    return { state, result: { accepted: false, reason: "Class sessions require a native V3 lesson with active phases." } };
+  }
+
+  const durationMinutes = Math.max(35, Math.min(55, Number(input.durationMinutes || lesson.estimatedMinutes || 50)));
+  const id = String(input.id || `session-${classSection.id}-${lesson.id}-${Date.now()}`).replace(/[^a-z0-9_-]/gi, "-");
+  if ((state.classSessions || []).some((session) => session.id === id)) {
+    return { state, result: { accepted: false, reason: "A class session with this id already exists." } };
+  }
+  const now = new Date().toISOString();
+  const steps = createTimedClassSteps(lesson, durationMinutes);
+  const session = {
+    id,
+    classSectionId: classSection.id,
+    lessonId: lesson.id,
+    title: String(input.title || `${lesson.title} class session`).trim(),
+    status: "Ready to launch",
+    periodLabel: String(input.periodLabel || classSection.schedule || "Class period").trim(),
+    durationMinutes,
+    launchGoal: String(input.launchGoal || lesson.learningObjective || lesson.objective || "Complete the lesson and show mastery evidence.").trim(),
+    steps,
+    createdAt: now,
+    updatedAt: now
+  };
+  const group = lesson.groupHomework || {};
+  const mission = group.title
+    ? {
+        id: `mission-${id}`,
+        sessionId: id,
+        title: group.title,
+        groupSize: group.groupSize || "3-5 learners",
+        sharedArtifact: group.sharedOutcome || lesson.transferTask?.studentAction || "Create and explain one shared solution artifact.",
+        roles: Array.isArray(group.roles) ? group.roles : ["Facilitator", "Model builder", "Skeptic", "Presenter"],
+        individualEvidence: group.individualEvidence || "Each learner submits one explanation of their contribution and reasoning.",
+        teacherLookFor: group.teacherLookFor || "Every learner contributes evidence and can explain the group decision.",
+        status: "ready",
+        createdAt: now,
+        updatedAt: now
+      }
+    : null;
+  const attendanceRecords = (classSection.studentIds || []).map((studentId) => ({
+    id: `attendance-${id}-${studentId}`,
+    classSessionId: id,
+    learnerId: studentId,
+    status: "unmarked",
+    checkedInAt: "",
+    note: "",
+    createdAt: now,
+    updatedAt: now
+  }));
+  const updatedSection = { ...classSection, currentSessionId: id, status: "pilot-ready", updatedAt: now };
+  return {
+    state: {
+      ...state,
+      classSections: (state.classSections || []).map((section) => (section.id === classSection.id ? updatedSection : section)),
+      classSessions: [session, ...(state.classSessions || [])],
+      groupMissions: mission ? [mission, ...(state.groupMissions || [])] : state.groupMissions || [],
+      attendanceRecords: [...attendanceRecords, ...(state.attendanceRecords || [])]
+    },
+    result: {
+      accepted: true,
+      classSection: updatedSection,
+      session,
+      mission,
+      attendanceRecords,
+      summary: `${session.title} is ready for ${attendanceRecords.length} enrolled learner(s).`
+    }
+  };
+}
+
+const attendanceStatuses = new Set(["present", "late", "absent", "excused"]);
+
+export function recordClassAttendance(state = {}, input = {}) {
+  const classSessionId = String(input.classSessionId || input.sessionId || "").trim();
+  const learnerId = String(input.learnerId || input.studentId || "").trim();
+  const status = String(input.status || "").trim().toLowerCase();
+  const session = findClassSessionById(state, classSessionId);
+  const classSection = findClassSectionForSession(state, session);
+  if (!session || !classSection || !(classSection.studentIds || []).includes(learnerId)) {
+    return { state, result: { accepted: false, reason: "Attendance requires an enrolled learner and valid class session." } };
+  }
+  if (!attendanceStatuses.has(status)) {
+    return { state, result: { accepted: false, reason: "Attendance status must be present, late, absent, or excused." } };
+  }
+  const now = new Date().toISOString();
+  const id = `attendance-${session.id}-${learnerId}`;
+  const record = {
+    id,
+    classSessionId: session.id,
+    learnerId,
+    status,
+    checkedInAt: ["present", "late"].includes(status) ? now : "",
+    recordedByUserId: String(input.recordedByUserId || "").trim(),
+    note: String(input.note || "").trim().slice(0, 300),
+    createdAt: (state.attendanceRecords || []).find((item) => item.id === id)?.createdAt || now,
+    updatedAt: now
+  };
+  return {
+    state: { ...state, attendanceRecords: [record, ...(state.attendanceRecords || []).filter((item) => item.id !== id)] },
+    result: { accepted: true, attendance: record, summary: `${learnerId} marked ${status}.` }
+  };
 }
 
 export function updateClassSessionStatus(state = {}, input = {}) {
@@ -4722,10 +4877,8 @@ export function getStateDependencyAudit() {
     }
   ];
   const nextSlices = [
-    "Replace the remaining legacy state merge with bootstrap-provided role and learner identity summaries.",
-    "Move remaining optimistic saveState calls behind feature-specific write acknowledgements.",
-    "Remove student/parent/teacher dependence on broad local fallback once each dashboard has scoped read coverage.",
-    "Keep /api/state only as an admin/dev backup export until production launch, then disable it outside development."
+    "Keep feature-specific write acknowledgements and repository readback checks on every production workflow.",
+    "Keep /api/state only as a platform-admin migration/export tool, then disable it after the compatibility window."
   ];
   const focusedRouteCount = focusedReadRoutes.length + focusedWriteRoutes.length;
 
@@ -4741,10 +4894,12 @@ export function getStateDependencyAudit() {
       focusedRouteCount,
       legacySnapshotRoutes: legacySnapshotRoutes.length,
       migrationCoveragePercent: Math.round((focusedRouteCount / (focusedRouteCount + legacySnapshotRoutes.length)) * 100),
-      productionBlocker: true
+      productionRolesUsingBroadSnapshot: [],
+      legacyAdminMaintenanceOnly: true,
+      productionBlocker: false
     },
     releaseRule:
-      "Production runtime should not depend on broad /api/state for student, parent, or teacher workflows. Keep replacing it with scoped read/write routes before launch."
+      "Student, parent, teacher, and school-admin runtime must use scoped bootstrap and feature routes. Broad /api/state is platform-admin maintenance compatibility only."
   };
 }
 

@@ -330,6 +330,20 @@ export async function postClassSessionStatus(payload) {
   });
 }
 
+export async function postClassSession(payload) {
+  return requestJson("/api/classroom/session", {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+}
+
+export async function postClassAttendance(payload) {
+  return requestJson("/api/classroom/attendance", {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+}
+
 export async function postClassroomArtifact(payload) {
   return requestJson("/api/classroom/artifact", {
     method: "POST",

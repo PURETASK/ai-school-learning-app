@@ -432,13 +432,13 @@ Local preview uses JSON fallback. Production mode uses PostgreSQL-compatible mig
 11. Continue replacing snapshot reads with normalized database reads; the learning catalog/progress, content draft, visual asset, and AI tutor event routes are live, and remaining routes include review decisions and audit events.
 12. Connect real auth and role claims.
 13. Apply the database migration to a live database.
-14. Keep OpenAI image generation behind server-side cost limits and human review, and configure gift-card fulfillment provider credentials only after parent/admin controls are verified.
+14. Keep OpenAI image generation behind server-side cost limits and human review. Gift-card fulfillment remains deferred by the first-sellable-product contract.
 15. Add external identity, deployment, monitoring, and integration tests.
 16. Run controlled learning experiments and keep only variants that improve retention without increasing frustration.
 
-For the exact production execution plan for identity, real database persistence, manager review of live source findings, protected-source fetch handling, and full K-12 lesson-library expansion, use [Production Readiness Build Guide](production-readiness-build-guide.md).
+For the exact production execution plan for identity, real database persistence, manager review of live source findings, protected-source fetch handling, and the contracted Grade 6 Math track, use [Production Readiness Build Guide](production-readiness-build-guide.md).
 
-For the school-sellable class product direction, use [School And Classroom Product Plan](school-class-product-plan.md).
+For controlling commercial scope and release acceptance, use [Bridge Academy Grade 6 Math Intervention Class Product Contract](BRIDGE_GRADE_6_MATH_INTERVENTION_PRODUCT_CONTRACT.md). For the broader role and classroom capability model, use [School And Classroom Product Plan](school-class-product-plan.md).
 
 ## Suggested Improvements
 

@@ -220,6 +220,29 @@ async function fetchJwks(jwksUrl, fetchImpl = fetch) {
   return keys;
 }
 
+async function resolveSupabaseEmailVerification(claims, token, config, env, fetchImpl) {
+  if (config.provider !== "supabase" || !config.requireEmailVerified || claims.email_verified !== undefined) return claims;
+  const publishableKey = String(
+    env.SUPABASE_PUBLISHABLE_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || env.SUPABASE_ANON_KEY || ""
+  ).trim();
+  if (!config.supabaseUrl || !publishableKey) throw new Error("Supabase email verification requires the project URL and publishable key.");
+
+  const response = await fetchImpl(`${config.supabaseUrl}/auth/v1/user`, {
+    headers: {
+      apikey: publishableKey,
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json"
+    }
+  });
+  if (!response.ok) throw new Error(`Supabase user verification failed with ${response.status}.`);
+  const user = await response.json();
+  return {
+    ...claims,
+    email: claims.email || user.email || "",
+    email_verified: Boolean(user.email_confirmed_at || user.confirmed_at)
+  };
+}
+
 function verifyJwtSignature(token, header, jwk) {
   const [encodedHeader, encodedPayload, encodedSignature] = String(token).split(".");
   if (!encodedHeader || !encodedPayload || !encodedSignature || !jwk) return false;
@@ -247,10 +270,11 @@ export async function getRequestSessionAsync(request, env = process.env, { fetch
       const parts = String(token).split(".");
       if (parts.length !== 3) throw new Error("Auth bearer token is not a JWT.");
       const header = decodeJwtJson(parts[0]);
-      const claims = decodeJwtJson(parts[1]);
+      let claims = decodeJwtJson(parts[1]);
       const keys = await fetchJwks(config.jwksUrl, fetchImpl);
       const jwk = keys.find((key) => !header.kid || key.kid === header.kid);
       if (!verifyJwtSignature(token, header, jwk)) throw new Error("Auth bearer token signature is invalid.");
+      claims = await resolveSupabaseEmailVerification(claims, token, config, env, fetchImpl);
       const verified = createProductionSessionFromVerifiedClaims(claims, env);
       if (verified.accepted) return verified.session;
       return { authenticated: false, devFallback: false, role: "anonymous", scope: "none", authError: verified.reason };

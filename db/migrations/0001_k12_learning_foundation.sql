@@ -4,6 +4,8 @@
 
 create extension if not exists pgcrypto;
 
+grant usage on schema public to anon, authenticated, service_role;
+
 create or replace function public.k12_current_setting(setting_name text)
 returns text
 language plpgsql
@@ -143,6 +145,17 @@ as $$
   );
 $$;
 
+create or replace function public.k12_current_app_school_id()
+returns text
+language sql
+stable
+as $$
+  select coalesce(
+    public.k12_app_claim('schoolId', 'school_id'),
+    public.k12_app_claim('school_id', 'school_id')
+  );
+$$;
+
 create table if not exists public."users" (
   "id" text,
   "role" text,
@@ -252,6 +265,18 @@ create table if not exists public."schools" (
   primary key ("id")
 );
 
+create table if not exists public."school_staff_memberships" (
+  "id" text,
+  "school_id" text,
+  "user_id" text,
+  "role" text,
+  "status" text,
+  "invited_by_user_id" text,
+  "created_at" timestamptz,
+  "revoked_at" timestamptz,
+  primary key ("id")
+);
+
 create table if not exists public."classes" (
   "id" text,
   "school_id" text,
@@ -316,6 +341,19 @@ create table if not exists public."group_missions" (
   "individual_evidence" text,
   "teacher_look_for" text,
   "status" text,
+  "created_at" timestamptz,
+  "updated_at" timestamptz,
+  primary key ("id")
+);
+
+create table if not exists public."attendance_records" (
+  "id" text,
+  "class_session_id" text,
+  "student_id" text,
+  "status" text,
+  "checked_in_at" timestamptz,
+  "recorded_by_user_id" text,
+  "note" text,
   "created_at" timestamptz,
   "updated_at" timestamptz,
   primary key ("id")
@@ -1088,6 +1126,22 @@ alter table public."schools" add column if not exists "created_at" timestamptz;
 
 alter table public."schools" add column if not exists "updated_at" timestamptz;
 
+alter table public."school_staff_memberships" add column if not exists "id" text;
+
+alter table public."school_staff_memberships" add column if not exists "school_id" text;
+
+alter table public."school_staff_memberships" add column if not exists "user_id" text;
+
+alter table public."school_staff_memberships" add column if not exists "role" text;
+
+alter table public."school_staff_memberships" add column if not exists "status" text;
+
+alter table public."school_staff_memberships" add column if not exists "invited_by_user_id" text;
+
+alter table public."school_staff_memberships" add column if not exists "created_at" timestamptz;
+
+alter table public."school_staff_memberships" add column if not exists "revoked_at" timestamptz;
+
 alter table public."classes" add column if not exists "id" text;
 
 alter table public."classes" add column if not exists "school_id" text;
@@ -1185,6 +1239,24 @@ alter table public."group_missions" add column if not exists "status" text;
 alter table public."group_missions" add column if not exists "created_at" timestamptz;
 
 alter table public."group_missions" add column if not exists "updated_at" timestamptz;
+
+alter table public."attendance_records" add column if not exists "id" text;
+
+alter table public."attendance_records" add column if not exists "class_session_id" text;
+
+alter table public."attendance_records" add column if not exists "student_id" text;
+
+alter table public."attendance_records" add column if not exists "status" text;
+
+alter table public."attendance_records" add column if not exists "checked_in_at" timestamptz;
+
+alter table public."attendance_records" add column if not exists "recorded_by_user_id" text;
+
+alter table public."attendance_records" add column if not exists "note" text;
+
+alter table public."attendance_records" add column if not exists "created_at" timestamptz;
+
+alter table public."attendance_records" add column if not exists "updated_at" timestamptz;
 
 alter table public."group_artifacts" add column if not exists "id" text;
 
@@ -2234,6 +2306,20 @@ begin
     select policyname
     from pg_policies
     where schemaname = 'public'
+      and tablename = 'school_staff_memberships'
+  loop
+    execute format('drop policy if exists %I on public.%I', existing_policy.policyname, 'school_staff_memberships');
+  end loop;
+end $$;
+
+do $$
+declare
+  existing_policy record;
+begin
+  for existing_policy in
+    select policyname
+    from pg_policies
+    where schemaname = 'public'
       and tablename = 'classes'
   loop
     execute format('drop policy if exists %I on public.%I', existing_policy.policyname, 'classes');
@@ -2293,6 +2379,20 @@ begin
       and tablename = 'group_missions'
   loop
     execute format('drop policy if exists %I on public.%I', existing_policy.policyname, 'group_missions');
+  end loop;
+end $$;
+
+do $$
+declare
+  existing_policy record;
+begin
+  for existing_policy in
+    select policyname
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'attendance_records'
+  loop
+    execute format('drop policy if exists %I on public.%I', existing_policy.policyname, 'attendance_records');
   end loop;
 end $$;
 
@@ -2836,6 +2936,20 @@ begin
     select conname
     from pg_constraint
     where contype = 'f'
+      and conrelid = to_regclass('public.school_staff_memberships')
+  loop
+    execute format('alter table public.%I drop constraint if exists %I', 'school_staff_memberships', existing_constraint.conname);
+  end loop;
+end $$;
+
+do $$
+declare
+  existing_constraint record;
+begin
+  for existing_constraint in
+    select conname
+    from pg_constraint
+    where contype = 'f'
       and conrelid = to_regclass('public.classes')
   loop
     execute format('alter table public.%I drop constraint if exists %I', 'classes', existing_constraint.conname);
@@ -2895,6 +3009,20 @@ begin
       and conrelid = to_regclass('public.group_missions')
   loop
     execute format('alter table public.%I drop constraint if exists %I', 'group_missions', existing_constraint.conname);
+  end loop;
+end $$;
+
+do $$
+declare
+  existing_constraint record;
+begin
+  for existing_constraint in
+    select conname
+    from pg_constraint
+    where contype = 'f'
+      and conrelid = to_regclass('public.attendance_records')
+  loop
+    execute format('alter table public.%I drop constraint if exists %I', 'attendance_records', existing_constraint.conname);
   end loop;
 end $$;
 
@@ -3657,6 +3785,26 @@ declare
   existing_constraint record;
   row_count bigint;
 begin
+  select count(*) into row_count from public."school_staff_memberships";
+  for existing_constraint in
+    select conname
+    from pg_constraint
+    where contype = 'c'
+      and conrelid = to_regclass('public.school_staff_memberships')
+  loop
+    if row_count = 0 then
+      execute format('alter table public.%I drop constraint if exists %I', 'school_staff_memberships', existing_constraint.conname);
+    else
+      raise exception 'Legacy check constraint public.school_staff_memberships.% cannot be dropped automatically because the table has % rows; repair manually before applying seed data.', existing_constraint.conname, row_count;
+    end if;
+  end loop;
+end $$;
+
+do $$
+declare
+  existing_constraint record;
+  row_count bigint;
+begin
   select count(*) into row_count from public."classes";
   for existing_constraint in
     select conname
@@ -3748,6 +3896,26 @@ begin
       execute format('alter table public.%I drop constraint if exists %I', 'group_missions', existing_constraint.conname);
     else
       raise exception 'Legacy check constraint public.group_missions.% cannot be dropped automatically because the table has % rows; repair manually before applying seed data.', existing_constraint.conname, row_count;
+    end if;
+  end loop;
+end $$;
+
+do $$
+declare
+  existing_constraint record;
+  row_count bigint;
+begin
+  select count(*) into row_count from public."attendance_records";
+  for existing_constraint in
+    select conname
+    from pg_constraint
+    where contype = 'c'
+      and conrelid = to_regclass('public.attendance_records')
+  loop
+    if row_count = 0 then
+      execute format('alter table public.%I drop constraint if exists %I', 'attendance_records', existing_constraint.conname);
+    else
+      raise exception 'Legacy check constraint public.attendance_records.% cannot be dropped automatically because the table has % rows; repair manually before applying seed data.', existing_constraint.conname, row_count;
     end if;
   end loop;
 end $$;
@@ -4705,6 +4873,20 @@ begin
   for existing_trigger in
     select tgname
     from pg_trigger
+    where tgrelid = to_regclass('public.school_staff_memberships')
+      and not tgisinternal
+  loop
+    execute format('drop trigger if exists %I on public.%I', existing_trigger.tgname, 'school_staff_memberships');
+  end loop;
+end $$;
+
+do $$
+declare
+  existing_trigger record;
+begin
+  for existing_trigger in
+    select tgname
+    from pg_trigger
     where tgrelid = to_regclass('public.classes')
       and not tgisinternal
   loop
@@ -4765,6 +4947,20 @@ begin
       and not tgisinternal
   loop
     execute format('drop trigger if exists %I on public.%I', existing_trigger.tgname, 'group_missions');
+  end loop;
+end $$;
+
+do $$
+declare
+  existing_trigger record;
+begin
+  for existing_trigger in
+    select tgname
+    from pg_trigger
+    where tgrelid = to_regclass('public.attendance_records')
+      and not tgisinternal
+  loop
+    execute format('drop trigger if exists %I on public.%I', existing_trigger.tgname, 'attendance_records');
   end loop;
 end $$;
 
@@ -5561,6 +5757,29 @@ begin
     join pg_namespace child_ns on child_ns.oid = child.relnamespace
     where con.contype = 'f'
       and child_ns.nspname = 'public'
+      and con.confrelid = to_regclass('public.school_staff_memberships')
+  loop
+    execute format('select count(*) from %I.%I', existing_constraint.child_schema, existing_constraint.child_table) into child_rows;
+    if child_rows = 0 then
+      execute format('alter table %I.%I drop constraint if exists %I', existing_constraint.child_schema, existing_constraint.child_table, existing_constraint.conname);
+    else
+      raise exception 'Inbound foreign key %.% on public.school_staff_memberships cannot be dropped automatically because the child table has % rows; repair manually before applying type fixes.', existing_constraint.child_table, existing_constraint.conname, child_rows;
+    end if;
+  end loop;
+end $$;
+
+do $$
+declare
+  existing_constraint record;
+  child_rows bigint;
+begin
+  for existing_constraint in
+    select con.conname, child_ns.nspname as child_schema, child.relname as child_table
+    from pg_constraint con
+    join pg_class child on child.oid = con.conrelid
+    join pg_namespace child_ns on child_ns.oid = child.relnamespace
+    where con.contype = 'f'
+      and child_ns.nspname = 'public'
       and con.confrelid = to_regclass('public.classes')
   loop
     execute format('select count(*) from %I.%I', existing_constraint.child_schema, existing_constraint.child_table) into child_rows;
@@ -5660,6 +5879,29 @@ begin
       execute format('alter table %I.%I drop constraint if exists %I', existing_constraint.child_schema, existing_constraint.child_table, existing_constraint.conname);
     else
       raise exception 'Inbound foreign key %.% on public.group_missions cannot be dropped automatically because the child table has % rows; repair manually before applying type fixes.', existing_constraint.child_table, existing_constraint.conname, child_rows;
+    end if;
+  end loop;
+end $$;
+
+do $$
+declare
+  existing_constraint record;
+  child_rows bigint;
+begin
+  for existing_constraint in
+    select con.conname, child_ns.nspname as child_schema, child.relname as child_table
+    from pg_constraint con
+    join pg_class child on child.oid = con.conrelid
+    join pg_namespace child_ns on child_ns.oid = child.relnamespace
+    where con.contype = 'f'
+      and child_ns.nspname = 'public'
+      and con.confrelid = to_regclass('public.attendance_records')
+  loop
+    execute format('select count(*) from %I.%I', existing_constraint.child_schema, existing_constraint.child_table) into child_rows;
+    if child_rows = 0 then
+      execute format('alter table %I.%I drop constraint if exists %I', existing_constraint.child_schema, existing_constraint.child_table, existing_constraint.conname);
+    else
+      raise exception 'Inbound foreign key %.% on public.attendance_records cannot be dropped automatically because the child table has % rows; repair manually before applying type fixes.', existing_constraint.child_table, existing_constraint.conname, child_rows;
     end if;
   end loop;
 end $$;
@@ -6801,6 +7043,27 @@ declare
   legacy_column record;
   row_count bigint;
 begin
+  select count(*) into row_count from public."school_staff_memberships";
+  for legacy_column in
+    select column_name
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'school_staff_memberships'
+      and column_name not in ('id', 'school_id', 'user_id', 'role', 'status', 'invited_by_user_id', 'created_at', 'revoked_at')
+  loop
+    if row_count = 0 then
+      execute format('alter table public.%I drop column if exists %I', 'school_staff_memberships', legacy_column.column_name);
+    else
+      raise exception 'Legacy column public.school_staff_memberships.% cannot be dropped automatically because the table has % rows; repair manually before applying seed data.', legacy_column.column_name, row_count;
+    end if;
+  end loop;
+end $$;
+
+do $$
+declare
+  legacy_column record;
+  row_count bigint;
+begin
   select count(*) into row_count from public."classes";
   for legacy_column in
     select column_name
@@ -6897,6 +7160,27 @@ begin
       execute format('alter table public.%I drop column if exists %I', 'group_missions', legacy_column.column_name);
     else
       raise exception 'Legacy column public.group_missions.% cannot be dropped automatically because the table has % rows; repair manually before applying seed data.', legacy_column.column_name, row_count;
+    end if;
+  end loop;
+end $$;
+
+do $$
+declare
+  legacy_column record;
+  row_count bigint;
+begin
+  select count(*) into row_count from public."attendance_records";
+  for legacy_column in
+    select column_name
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'attendance_records'
+      and column_name not in ('id', 'class_session_id', 'student_id', 'status', 'checked_in_at', 'recorded_by_user_id', 'note', 'created_at', 'updated_at')
+  loop
+    if row_count = 0 then
+      execute format('alter table public.%I drop column if exists %I', 'attendance_records', legacy_column.column_name);
+    else
+      raise exception 'Legacy column public.attendance_records.% cannot be dropped automatically because the table has % rows; repair manually before applying seed data.', legacy_column.column_name, row_count;
     end if;
   end loop;
 end $$;
@@ -9306,6 +9590,174 @@ begin
   select c.udt_name into actual_type
   from information_schema.columns c
   where c.table_schema = 'public'
+    and c.table_name = 'school_staff_memberships'
+    and c.column_name = 'id';
+  if actual_type is not null and actual_type <> 'text' then
+    select count(*) into row_count from public."school_staff_memberships";
+    if row_count = 0 then
+      alter table public."school_staff_memberships" alter column "id" drop default;
+      alter table public."school_staff_memberships" alter column "id" type text using "id"::text;
+    else
+      raise exception 'Column public.school_staff_memberships.id has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'school_staff_memberships'
+    and c.column_name = 'school_id';
+  if actual_type is not null and actual_type <> 'text' then
+    select count(*) into row_count from public."school_staff_memberships";
+    if row_count = 0 then
+      alter table public."school_staff_memberships" alter column "school_id" drop default;
+      alter table public."school_staff_memberships" alter column "school_id" type text using "school_id"::text;
+    else
+      raise exception 'Column public.school_staff_memberships.school_id has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'school_staff_memberships'
+    and c.column_name = 'user_id';
+  if actual_type is not null and actual_type <> 'text' then
+    select count(*) into row_count from public."school_staff_memberships";
+    if row_count = 0 then
+      alter table public."school_staff_memberships" alter column "user_id" drop default;
+      alter table public."school_staff_memberships" alter column "user_id" type text using "user_id"::text;
+    else
+      raise exception 'Column public.school_staff_memberships.user_id has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'school_staff_memberships'
+    and c.column_name = 'role';
+  if actual_type is not null and actual_type <> 'text' then
+    select count(*) into row_count from public."school_staff_memberships";
+    if row_count = 0 then
+      alter table public."school_staff_memberships" alter column "role" drop default;
+      alter table public."school_staff_memberships" alter column "role" type text using "role"::text;
+    else
+      raise exception 'Column public.school_staff_memberships.role has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'school_staff_memberships'
+    and c.column_name = 'status';
+  if actual_type is not null and actual_type <> 'text' then
+    select count(*) into row_count from public."school_staff_memberships";
+    if row_count = 0 then
+      alter table public."school_staff_memberships" alter column "status" drop default;
+      alter table public."school_staff_memberships" alter column "status" type text using "status"::text;
+    else
+      raise exception 'Column public.school_staff_memberships.status has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'school_staff_memberships'
+    and c.column_name = 'invited_by_user_id';
+  if actual_type is not null and actual_type <> 'text' then
+    select count(*) into row_count from public."school_staff_memberships";
+    if row_count = 0 then
+      alter table public."school_staff_memberships" alter column "invited_by_user_id" drop default;
+      alter table public."school_staff_memberships" alter column "invited_by_user_id" type text using "invited_by_user_id"::text;
+    else
+      raise exception 'Column public.school_staff_memberships.invited_by_user_id has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'school_staff_memberships'
+    and c.column_name = 'created_at';
+  if actual_type is not null and actual_type <> 'timestamptz' then
+    select count(*) into row_count from public."school_staff_memberships";
+    if row_count = 0 then
+      alter table public."school_staff_memberships" alter column "created_at" drop default;
+      alter table public."school_staff_memberships" alter column "created_at" type timestamptz using "created_at"::timestamptz;
+    else
+      raise exception 'Column public.school_staff_memberships.created_at has type %, expected timestamptz, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'school_staff_memberships'
+    and c.column_name = 'revoked_at';
+  if actual_type is not null and actual_type <> 'timestamptz' then
+    select count(*) into row_count from public."school_staff_memberships";
+    if row_count = 0 then
+      alter table public."school_staff_memberships" alter column "revoked_at" drop default;
+      alter table public."school_staff_memberships" alter column "revoked_at" type timestamptz using "revoked_at"::timestamptz;
+    else
+      raise exception 'Column public.school_staff_memberships.revoked_at has type %, expected timestamptz, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
     and c.table_name = 'classes'
     and c.column_name = 'id';
   if actual_type is not null and actual_type <> 'text' then
@@ -10325,6 +10777,195 @@ begin
       alter table public."group_missions" alter column "updated_at" type timestamptz using "updated_at"::timestamptz;
     else
       raise exception 'Column public.group_missions.updated_at has type %, expected timestamptz, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'attendance_records'
+    and c.column_name = 'id';
+  if actual_type is not null and actual_type <> 'text' then
+    select count(*) into row_count from public."attendance_records";
+    if row_count = 0 then
+      alter table public."attendance_records" alter column "id" drop default;
+      alter table public."attendance_records" alter column "id" type text using "id"::text;
+    else
+      raise exception 'Column public.attendance_records.id has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'attendance_records'
+    and c.column_name = 'class_session_id';
+  if actual_type is not null and actual_type <> 'text' then
+    select count(*) into row_count from public."attendance_records";
+    if row_count = 0 then
+      alter table public."attendance_records" alter column "class_session_id" drop default;
+      alter table public."attendance_records" alter column "class_session_id" type text using "class_session_id"::text;
+    else
+      raise exception 'Column public.attendance_records.class_session_id has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'attendance_records'
+    and c.column_name = 'student_id';
+  if actual_type is not null and actual_type <> 'text' then
+    select count(*) into row_count from public."attendance_records";
+    if row_count = 0 then
+      alter table public."attendance_records" alter column "student_id" drop default;
+      alter table public."attendance_records" alter column "student_id" type text using "student_id"::text;
+    else
+      raise exception 'Column public.attendance_records.student_id has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'attendance_records'
+    and c.column_name = 'status';
+  if actual_type is not null and actual_type <> 'text' then
+    select count(*) into row_count from public."attendance_records";
+    if row_count = 0 then
+      alter table public."attendance_records" alter column "status" drop default;
+      alter table public."attendance_records" alter column "status" type text using "status"::text;
+    else
+      raise exception 'Column public.attendance_records.status has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'attendance_records'
+    and c.column_name = 'checked_in_at';
+  if actual_type is not null and actual_type <> 'timestamptz' then
+    select count(*) into row_count from public."attendance_records";
+    if row_count = 0 then
+      alter table public."attendance_records" alter column "checked_in_at" drop default;
+      alter table public."attendance_records" alter column "checked_in_at" type timestamptz using "checked_in_at"::timestamptz;
+    else
+      raise exception 'Column public.attendance_records.checked_in_at has type %, expected timestamptz, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'attendance_records'
+    and c.column_name = 'recorded_by_user_id';
+  if actual_type is not null and actual_type <> 'text' then
+    select count(*) into row_count from public."attendance_records";
+    if row_count = 0 then
+      alter table public."attendance_records" alter column "recorded_by_user_id" drop default;
+      alter table public."attendance_records" alter column "recorded_by_user_id" type text using "recorded_by_user_id"::text;
+    else
+      raise exception 'Column public.attendance_records.recorded_by_user_id has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'attendance_records'
+    and c.column_name = 'note';
+  if actual_type is not null and actual_type <> 'text' then
+    select count(*) into row_count from public."attendance_records";
+    if row_count = 0 then
+      alter table public."attendance_records" alter column "note" drop default;
+      alter table public."attendance_records" alter column "note" type text using "note"::text;
+    else
+      raise exception 'Column public.attendance_records.note has type %, expected text, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'attendance_records'
+    and c.column_name = 'created_at';
+  if actual_type is not null and actual_type <> 'timestamptz' then
+    select count(*) into row_count from public."attendance_records";
+    if row_count = 0 then
+      alter table public."attendance_records" alter column "created_at" drop default;
+      alter table public."attendance_records" alter column "created_at" type timestamptz using "created_at"::timestamptz;
+    else
+      raise exception 'Column public.attendance_records.created_at has type %, expected timestamptz, and table is not empty; repair manually before applying constraints.', actual_type;
+    end if;
+  end if;
+end $$;
+
+do $$
+declare
+  row_count bigint;
+  actual_type text;
+begin
+  select c.udt_name into actual_type
+  from information_schema.columns c
+  where c.table_schema = 'public'
+    and c.table_name = 'attendance_records'
+    and c.column_name = 'updated_at';
+  if actual_type is not null and actual_type <> 'timestamptz' then
+    select count(*) into row_count from public."attendance_records";
+    if row_count = 0 then
+      alter table public."attendance_records" alter column "updated_at" drop default;
+      alter table public."attendance_records" alter column "updated_at" type timestamptz using "updated_at"::timestamptz;
+    else
+      raise exception 'Column public.attendance_records.updated_at has type %, expected timestamptz, and table is not empty; repair manually before applying constraints.', actual_type;
     end if;
   end if;
 end $$;
@@ -20064,6 +20705,21 @@ exception when duplicate_object then null;
 end $$;
 
 do $$ begin
+  alter table public."school_staff_memberships" add constraint "fk_school_staff_memberships_school_id" foreign key ("school_id") references public."schools" ("id");
+exception when duplicate_object then null;
+end $$;
+
+do $$ begin
+  alter table public."school_staff_memberships" add constraint "fk_school_staff_memberships_user_id" foreign key ("user_id") references public."users" ("id");
+exception when duplicate_object then null;
+end $$;
+
+do $$ begin
+  alter table public."school_staff_memberships" add constraint "fk_school_staff_memberships_invited_by_user_id" foreign key ("invited_by_user_id") references public."users" ("id");
+exception when duplicate_object then null;
+end $$;
+
+do $$ begin
   alter table public."classes" add constraint "fk_classes_school_id" foreign key ("school_id") references public."schools" ("id");
 exception when duplicate_object then null;
 end $$;
@@ -20125,6 +20781,21 @@ end $$;
 
 do $$ begin
   alter table public."group_missions" add constraint "fk_group_missions_class_session_id" foreign key ("class_session_id") references public."class_sessions" ("id");
+exception when duplicate_object then null;
+end $$;
+
+do $$ begin
+  alter table public."attendance_records" add constraint "fk_attendance_records_class_session_id" foreign key ("class_session_id") references public."class_sessions" ("id");
+exception when duplicate_object then null;
+end $$;
+
+do $$ begin
+  alter table public."attendance_records" add constraint "fk_attendance_records_student_id" foreign key ("student_id") references public."students" ("id");
+exception when duplicate_object then null;
+end $$;
+
+do $$ begin
+  alter table public."attendance_records" add constraint "fk_attendance_records_recorded_by_user_id" foreign key ("recorded_by_user_id") references public."users" ("id");
 exception when duplicate_object then null;
 end $$;
 
@@ -20508,6 +21179,18 @@ create index if not exists "idx_schools_status" on public."schools" ("status");
 
 create index if not exists "idx_schools_created_at" on public."schools" ("created_at");
 
+create index if not exists "idx_school_staff_memberships_school_id" on public."school_staff_memberships" ("school_id");
+
+create index if not exists "idx_school_staff_memberships_user_id" on public."school_staff_memberships" ("user_id");
+
+create index if not exists "idx_school_staff_memberships_invited_by_user_id" on public."school_staff_memberships" ("invited_by_user_id");
+
+create index if not exists "idx_school_staff_memberships_role" on public."school_staff_memberships" ("role");
+
+create index if not exists "idx_school_staff_memberships_status" on public."school_staff_memberships" ("status");
+
+create index if not exists "idx_school_staff_memberships_created_at" on public."school_staff_memberships" ("created_at");
+
 create index if not exists "idx_classes_school_id" on public."classes" ("school_id");
 
 create index if not exists "idx_classes_teacher_id" on public."classes" ("teacher_id");
@@ -20551,6 +21234,16 @@ create index if not exists "idx_group_missions_class_session_id" on public."grou
 create index if not exists "idx_group_missions_status" on public."group_missions" ("status");
 
 create index if not exists "idx_group_missions_created_at" on public."group_missions" ("created_at");
+
+create index if not exists "idx_attendance_records_class_session_id" on public."attendance_records" ("class_session_id");
+
+create index if not exists "idx_attendance_records_student_id" on public."attendance_records" ("student_id");
+
+create index if not exists "idx_attendance_records_recorded_by_user_id" on public."attendance_records" ("recorded_by_user_id");
+
+create index if not exists "idx_attendance_records_status" on public."attendance_records" ("status");
+
+create index if not exists "idx_attendance_records_created_at" on public."attendance_records" ("created_at");
 
 create index if not exists "idx_group_artifacts_group_mission_id" on public."group_artifacts" ("group_mission_id");
 
@@ -20774,6 +21467,8 @@ comment on table public."teachers" is 'Teacher profiles for homeschool co-ops, t
 
 comment on table public."schools" is 'School or organization profile for school-sellable classroom deployments.';
 
+comment on table public."school_staff_memberships" is 'Authoritative school membership and revocation records for teachers and school administrators.';
+
 comment on table public."classes" is 'Class, cohort, household, or study group containers.';
 
 comment on table public."teacher_class_assignments" is 'Teacher-class assignment approvals and revocations for role-scoped classroom access.';
@@ -20783,6 +21478,8 @@ comment on table public."enrollments" is 'Students assigned to classes and cours
 comment on table public."class_sessions" is 'A class-period learning block that students attend inside the app.';
 
 comment on table public."group_missions" is 'Structured collaborative work for Bridge and Scholar class sessions.';
+
+comment on table public."attendance_records" is 'Per-session attendance and check-in state for enrolled learners.';
 
 comment on table public."group_artifacts" is 'Shared group output and each learner''s individual accountability evidence.';
 
@@ -20878,11 +21575,15 @@ create policy "students_platform_admin_all" on public."students" for all to auth
 
 create policy "students_student_self" on public."students" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "id" = (select public.k12_current_app_student_id()));
 
-create policy "students_parent_household" on public."students" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "students"."id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "students_parent_household" on public."students" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "students"."id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "students_school_admin_school" on public."students" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" where e."student_id" = "students"."id" and e."status" = 'active' and exists (select 1 from public."school_staff_memberships" ssm where ssm."school_id" = c."school_id" and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."role" in ('school-admin') and ssm."status" = 'active' and ssm."revoked_at" is null)));
 
 alter table public."guardians" enable row level security;
 
 create policy "guardians_platform_admin_all" on public."guardians" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
+
+create policy "guardians_parent_self" on public."guardians" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and "user_id" = (select public.k12_current_app_user_id()));
 
 alter table public."student_guardians" enable row level security;
 
@@ -20890,9 +21591,11 @@ create policy "student_guardians_platform_admin_all" on public."student_guardian
 
 create policy "student_guardians_student_select_own" on public."student_guardians" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "student_guardians_parent_select_household" on public."student_guardians" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "student_guardians"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "student_guardians_parent_select_household" on public."student_guardians" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "student_guardians"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "student_guardians_teacher_select_assigned" on public."student_guardians" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "student_guardians"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "student_guardians_teacher_select_assigned" on public."student_guardians" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "student_guardians"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "student_guardians_school_admin_select_school" on public."student_guardians" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "student_guardians"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 create policy "student_guardians_parent_guardian_scope" on public."student_guardians" for all to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardians" g where g."id" = "student_guardians"."guardian_id" and g."user_id" = (select public.k12_current_app_user_id()))) with check ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardians" g where g."id" = "student_guardians"."guardian_id" and g."user_id" = (select public.k12_current_app_user_id())));
 
@@ -20906,9 +21609,11 @@ create policy "guardian_student_links_platform_admin_all" on public."guardian_st
 
 create policy "guardian_student_links_student_select_own" on public."guardian_student_links" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "guardian_student_links_parent_select_household" on public."guardian_student_links" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "guardian_student_links"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "guardian_student_links_parent_select_household" on public."guardian_student_links" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardians" g where g."id" = "guardian_student_links"."guardian_id" and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "guardian_student_links_teacher_select_assigned" on public."guardian_student_links" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "guardian_student_links"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "guardian_student_links_teacher_select_assigned" on public."guardian_student_links" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "guardian_student_links"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "guardian_student_links_school_admin_select_school" on public."guardian_student_links" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "guardian_student_links"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 create policy "guardian_student_links_parent_guardian_scope" on public."guardian_student_links" for all to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardians" g where g."id" = "guardian_student_links"."guardian_id" and g."user_id" = (select public.k12_current_app_user_id()))) with check ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardians" g where g."id" = "guardian_student_links"."guardian_id" and g."user_id" = (select public.k12_current_app_user_id())));
 
@@ -20920,9 +21625,21 @@ alter table public."teachers" enable row level security;
 
 create policy "teachers_platform_admin_all" on public."teachers" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
 
+create policy "teachers_teacher_self" on public."teachers" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and "user_id" = (select public.k12_current_app_user_id()));
+
+create policy "teachers_school_admin_teachers" on public."teachers" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."school_staff_memberships" target_membership where target_membership."user_id" = "teachers"."user_id" and target_membership."school_id" = (select public.k12_current_app_school_id()) and target_membership."status" = 'active' and target_membership."revoked_at" is null and exists (select 1 from public."school_staff_memberships" ssm where ssm."school_id" = target_membership."school_id" and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."role" in ('school-admin') and ssm."status" = 'active' and ssm."revoked_at" is null)));
+
 alter table public."schools" enable row level security;
 
 create policy "schools_platform_admin_all" on public."schools" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
+
+create policy "schools_staff_select_school" on public."schools" for select to authenticated using (exists (select 1 from public."school_staff_memberships" ssm where ssm."school_id" = "schools"."id" and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."role" in ('teacher', 'school-admin') and ssm."status" = 'active' and ssm."revoked_at" is null));
+
+alter table public."school_staff_memberships" enable row level security;
+
+create policy "school_staff_memberships_platform_admin_all" on public."school_staff_memberships" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
+
+create policy "school_staff_memberships_self_select" on public."school_staff_memberships" for select to authenticated using ("user_id" = (select public.k12_current_app_user_id()));
 
 alter table public."classes" enable row level security;
 
@@ -20930,11 +21647,15 @@ create policy "classes_platform_admin_all" on public."classes" for all to authen
 
 create policy "classes_teacher_scope" on public."classes" for all to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."teachers" t where t."id" = "classes"."teacher_id" and t."user_id" = (select public.k12_current_app_user_id()))) with check ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."teachers" t where t."id" = "classes"."teacher_id" and t."user_id" = (select public.k12_current_app_user_id())));
 
+create policy "classes_school_admin_scope" on public."classes" for all to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."school_staff_memberships" ssm where ssm."school_id" = "classes"."school_id" and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."role" in ('school-admin') and ssm."status" = 'active' and ssm."revoked_at" is null)) with check ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."school_staff_memberships" ssm where ssm."school_id" = "classes"."school_id" and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."role" in ('school-admin') and ssm."status" = 'active' and ssm."revoked_at" is null));
+
 alter table public."teacher_class_assignments" enable row level security;
 
 create policy "teacher_class_assignments_platform_admin_all" on public."teacher_class_assignments" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
 
 create policy "teacher_class_assignments_teacher_scope" on public."teacher_class_assignments" for all to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."teachers" t where t."id" = "teacher_class_assignments"."teacher_id" and t."user_id" = (select public.k12_current_app_user_id()))) with check ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."teachers" t where t."id" = "teacher_class_assignments"."teacher_id" and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "teacher_class_assignments_school_admin_class_scope" on public."teacher_class_assignments" for all to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."classes" c where c."id" = "teacher_class_assignments"."class_id" and exists (select 1 from public."school_staff_memberships" ssm where ssm."school_id" = c."school_id" and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."role" in ('school-admin') and ssm."status" = 'active' and ssm."revoked_at" is null))) with check ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."classes" c where c."id" = "teacher_class_assignments"."class_id" and exists (select 1 from public."school_staff_memberships" ssm where ssm."school_id" = c."school_id" and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."role" in ('school-admin') and ssm."status" = 'active' and ssm."revoked_at" is null)));
 
 alter table public."enrollments" enable row level security;
 
@@ -20942,17 +21663,35 @@ create policy "enrollments_platform_admin_all" on public."enrollments" for all t
 
 create policy "enrollments_student_select_own" on public."enrollments" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "enrollments_parent_select_household" on public."enrollments" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "enrollments"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "enrollments_parent_select_household" on public."enrollments" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "enrollments"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "enrollments_teacher_select_assigned" on public."enrollments" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "enrollments"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "enrollments_teacher_select_assigned" on public."enrollments" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."teacher_class_assignments" tca join public."teachers" t on t."id" = tca."teacher_id" where tca."class_id" = "enrollments"."class_id" and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "enrollments_school_admin_select_school" on public."enrollments" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."classes" c join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where c."id" = "enrollments"."class_id" and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
+
+create policy "enrollments_school_admin_class_scope" on public."enrollments" for all to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."classes" c where c."id" = "enrollments"."class_id" and exists (select 1 from public."school_staff_memberships" ssm where ssm."school_id" = c."school_id" and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."role" in ('school-admin') and ssm."status" = 'active' and ssm."revoked_at" is null))) with check ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."classes" c where c."id" = "enrollments"."class_id" and exists (select 1 from public."school_staff_memberships" ssm where ssm."school_id" = c."school_id" and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."role" in ('school-admin') and ssm."status" = 'active' and ssm."revoked_at" is null)));
 
 alter table public."class_sessions" enable row level security;
 
 create policy "class_sessions_platform_admin_all" on public."class_sessions" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
 
+create policy "class_sessions_school_admin_class_scope" on public."class_sessions" for all to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."classes" c where c."id" = "class_sessions"."class_id" and exists (select 1 from public."school_staff_memberships" ssm where ssm."school_id" = c."school_id" and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."role" in ('school-admin') and ssm."status" = 'active' and ssm."revoked_at" is null))) with check ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."classes" c where c."id" = "class_sessions"."class_id" and exists (select 1 from public."school_staff_memberships" ssm where ssm."school_id" = c."school_id" and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."role" in ('school-admin') and ssm."status" = 'active' and ssm."revoked_at" is null)));
+
 alter table public."group_missions" enable row level security;
 
 create policy "group_missions_platform_admin_all" on public."group_missions" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
+
+alter table public."attendance_records" enable row level security;
+
+create policy "attendance_records_platform_admin_all" on public."attendance_records" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
+
+create policy "attendance_records_student_select_own" on public."attendance_records" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
+
+create policy "attendance_records_parent_select_household" on public."attendance_records" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "attendance_records"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "attendance_records_teacher_select_assigned" on public."attendance_records" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "attendance_records"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "attendance_records_school_admin_select_school" on public."attendance_records" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "attendance_records"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 alter table public."group_artifacts" enable row level security;
 
@@ -20960,9 +21699,11 @@ create policy "group_artifacts_platform_admin_all" on public."group_artifacts" f
 
 create policy "group_artifacts_student_select_own" on public."group_artifacts" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "group_artifacts_parent_select_household" on public."group_artifacts" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "group_artifacts"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "group_artifacts_parent_select_household" on public."group_artifacts" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "group_artifacts"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "group_artifacts_teacher_select_assigned" on public."group_artifacts" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "group_artifacts"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "group_artifacts_teacher_select_assigned" on public."group_artifacts" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "group_artifacts"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "group_artifacts_school_admin_select_school" on public."group_artifacts" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "group_artifacts"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 alter table public."teacher_interventions" enable row level security;
 
@@ -20970,9 +21711,11 @@ create policy "teacher_interventions_platform_admin_all" on public."teacher_inte
 
 create policy "teacher_interventions_student_select_own" on public."teacher_interventions" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "teacher_interventions_parent_select_household" on public."teacher_interventions" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "teacher_interventions"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "teacher_interventions_parent_select_household" on public."teacher_interventions" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "teacher_interventions"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "teacher_interventions_teacher_select_assigned" on public."teacher_interventions" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "teacher_interventions"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "teacher_interventions_teacher_select_assigned" on public."teacher_interventions" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "teacher_interventions"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "teacher_interventions_school_admin_select_school" on public."teacher_interventions" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "teacher_interventions"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 create policy "teacher_interventions_teacher_scope" on public."teacher_interventions" for all to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."teachers" t where t."id" = "teacher_interventions"."teacher_id" and t."user_id" = (select public.k12_current_app_user_id()))) with check ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."teachers" t where t."id" = "teacher_interventions"."teacher_id" and t."user_id" = (select public.k12_current_app_user_id())));
 
@@ -20980,15 +21723,21 @@ alter table public."school_reports" enable row level security;
 
 create policy "school_reports_platform_admin_all" on public."school_reports" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
 
+create policy "school_reports_school_admin_scope" on public."school_reports" for all to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."school_staff_memberships" ssm where ssm."school_id" = "school_reports"."school_id" and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."role" in ('school-admin') and ssm."status" = 'active' and ssm."revoked_at" is null)) with check ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."school_staff_memberships" ssm where ssm."school_id" = "school_reports"."school_id" and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."role" in ('school-admin') and ssm."status" = 'active' and ssm."revoked_at" is null));
+
+create policy "school_reports_school_admin_class_scope" on public."school_reports" for all to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."classes" c where c."id" = "school_reports"."class_id" and exists (select 1 from public."school_staff_memberships" ssm where ssm."school_id" = c."school_id" and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."role" in ('school-admin') and ssm."status" = 'active' and ssm."revoked_at" is null))) with check ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."classes" c where c."id" = "school_reports"."class_id" and exists (select 1 from public."school_staff_memberships" ssm where ssm."school_id" = c."school_id" and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."role" in ('school-admin') and ssm."status" = 'active' and ssm."revoked_at" is null)));
+
 alter table public."quiz_attempts" enable row level security;
 
 create policy "quiz_attempts_platform_admin_all" on public."quiz_attempts" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
 
 create policy "quiz_attempts_student_select_own" on public."quiz_attempts" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "quiz_attempts_parent_select_household" on public."quiz_attempts" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "quiz_attempts"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "quiz_attempts_parent_select_household" on public."quiz_attempts" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "quiz_attempts"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "quiz_attempts_teacher_select_assigned" on public."quiz_attempts" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "quiz_attempts"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "quiz_attempts_teacher_select_assigned" on public."quiz_attempts" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "quiz_attempts"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "quiz_attempts_school_admin_select_school" on public."quiz_attempts" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "quiz_attempts"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 alter table public."lesson_progress" enable row level security;
 
@@ -20996,9 +21745,11 @@ create policy "lesson_progress_platform_admin_all" on public."lesson_progress" f
 
 create policy "lesson_progress_student_select_own" on public."lesson_progress" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "lesson_progress_parent_select_household" on public."lesson_progress" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "lesson_progress"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "lesson_progress_parent_select_household" on public."lesson_progress" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "lesson_progress"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "lesson_progress_teacher_select_assigned" on public."lesson_progress" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "lesson_progress"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "lesson_progress_teacher_select_assigned" on public."lesson_progress" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "lesson_progress"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "lesson_progress_school_admin_select_school" on public."lesson_progress" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "lesson_progress"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 alter table public."mastery_records" enable row level security;
 
@@ -21006,9 +21757,11 @@ create policy "mastery_records_platform_admin_all" on public."mastery_records" f
 
 create policy "mastery_records_student_select_own" on public."mastery_records" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "mastery_records_parent_select_household" on public."mastery_records" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "mastery_records"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "mastery_records_parent_select_household" on public."mastery_records" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "mastery_records"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "mastery_records_teacher_select_assigned" on public."mastery_records" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "mastery_records"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "mastery_records_teacher_select_assigned" on public."mastery_records" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "mastery_records"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "mastery_records_school_admin_select_school" on public."mastery_records" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "mastery_records"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 alter table public."lesson_scratchpads" enable row level security;
 
@@ -21016,9 +21769,11 @@ create policy "lesson_scratchpads_platform_admin_all" on public."lesson_scratchp
 
 create policy "lesson_scratchpads_student_select_own" on public."lesson_scratchpads" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "lesson_scratchpads_parent_select_household" on public."lesson_scratchpads" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "lesson_scratchpads"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "lesson_scratchpads_parent_select_household" on public."lesson_scratchpads" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "lesson_scratchpads"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "lesson_scratchpads_teacher_select_assigned" on public."lesson_scratchpads" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "lesson_scratchpads"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "lesson_scratchpads_teacher_select_assigned" on public."lesson_scratchpads" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "lesson_scratchpads"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "lesson_scratchpads_school_admin_select_school" on public."lesson_scratchpads" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "lesson_scratchpads"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 alter table public."interactive_skill_evidence" enable row level security;
 
@@ -21026,9 +21781,11 @@ create policy "interactive_skill_evidence_platform_admin_all" on public."interac
 
 create policy "interactive_skill_evidence_student_select_own" on public."interactive_skill_evidence" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "interactive_skill_evidence_parent_select_household" on public."interactive_skill_evidence" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "interactive_skill_evidence"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "interactive_skill_evidence_parent_select_household" on public."interactive_skill_evidence" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "interactive_skill_evidence"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "interactive_skill_evidence_teacher_select_assigned" on public."interactive_skill_evidence" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "interactive_skill_evidence"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "interactive_skill_evidence_teacher_select_assigned" on public."interactive_skill_evidence" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "interactive_skill_evidence"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "interactive_skill_evidence_school_admin_select_school" on public."interactive_skill_evidence" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "interactive_skill_evidence"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 alter table public."assignments" enable row level security;
 
@@ -21036,9 +21793,11 @@ create policy "assignments_platform_admin_all" on public."assignments" for all t
 
 create policy "assignments_student_select_own" on public."assignments" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "assignments_parent_select_household" on public."assignments" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "assignments"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "assignments_parent_select_household" on public."assignments" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "assignments"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "assignments_teacher_select_assigned" on public."assignments" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "assignments"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "assignments_teacher_select_assigned" on public."assignments" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "assignments"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "assignments_school_admin_select_school" on public."assignments" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "assignments"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 alter table public."portfolio_items" enable row level security;
 
@@ -21046,9 +21805,11 @@ create policy "portfolio_items_platform_admin_all" on public."portfolio_items" f
 
 create policy "portfolio_items_student_select_own" on public."portfolio_items" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "portfolio_items_parent_select_household" on public."portfolio_items" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "portfolio_items"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "portfolio_items_parent_select_household" on public."portfolio_items" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "portfolio_items"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "portfolio_items_teacher_select_assigned" on public."portfolio_items" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "portfolio_items"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "portfolio_items_teacher_select_assigned" on public."portfolio_items" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "portfolio_items"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "portfolio_items_school_admin_select_school" on public."portfolio_items" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "portfolio_items"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 alter table public."student_badges" enable row level security;
 
@@ -21056,9 +21817,11 @@ create policy "student_badges_platform_admin_all" on public."student_badges" for
 
 create policy "student_badges_student_select_own" on public."student_badges" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "student_badges_parent_select_household" on public."student_badges" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "student_badges"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "student_badges_parent_select_household" on public."student_badges" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "student_badges"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "student_badges_teacher_select_assigned" on public."student_badges" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "student_badges"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "student_badges_teacher_select_assigned" on public."student_badges" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "student_badges"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "student_badges_school_admin_select_school" on public."student_badges" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "student_badges"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 alter table public."reward_approvals" enable row level security;
 
@@ -21066,9 +21829,11 @@ create policy "reward_approvals_platform_admin_all" on public."reward_approvals"
 
 create policy "reward_approvals_student_select_own" on public."reward_approvals" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "reward_approvals_parent_select_household" on public."reward_approvals" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "reward_approvals"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "reward_approvals_parent_select_household" on public."reward_approvals" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "reward_approvals"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "reward_approvals_teacher_select_assigned" on public."reward_approvals" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "reward_approvals"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "reward_approvals_teacher_select_assigned" on public."reward_approvals" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "reward_approvals"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "reward_approvals_school_admin_select_school" on public."reward_approvals" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "reward_approvals"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 create policy "reward_approvals_parent_guardian_scope" on public."reward_approvals" for all to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardians" g where g."id" = "reward_approvals"."guardian_id" and g."user_id" = (select public.k12_current_app_user_id()))) with check ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardians" g where g."id" = "reward_approvals"."guardian_id" and g."user_id" = (select public.k12_current_app_user_id())));
 
@@ -21076,19 +21841,13 @@ alter table public."content_drafts" enable row level security;
 
 create policy "content_drafts_platform_admin_all" on public."content_drafts" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
 
-create policy "content_drafts_staff_operational_select" on public."content_drafts" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' or (select public.k12_current_app_role()) = 'school-admin' or (select public.k12_current_app_role()) = 'platform-admin');
-
 alter table public."content_batch_reviews" enable row level security;
 
 create policy "content_batch_reviews_platform_admin_all" on public."content_batch_reviews" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
 
-create policy "content_batch_reviews_staff_operational_select" on public."content_batch_reviews" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' or (select public.k12_current_app_role()) = 'school-admin' or (select public.k12_current_app_role()) = 'platform-admin');
-
 alter table public."visual_assets" enable row level security;
 
 create policy "visual_assets_platform_admin_all" on public."visual_assets" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
-
-create policy "visual_assets_staff_operational_select" on public."visual_assets" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' or (select public.k12_current_app_role()) = 'school-admin' or (select public.k12_current_app_role()) = 'platform-admin');
 
 alter table public."ai_tutor_events" enable row level security;
 
@@ -21096,47 +21855,35 @@ create policy "ai_tutor_events_platform_admin_all" on public."ai_tutor_events" f
 
 create policy "ai_tutor_events_student_select_own" on public."ai_tutor_events" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "ai_tutor_events_parent_select_household" on public."ai_tutor_events" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "ai_tutor_events"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "ai_tutor_events_parent_select_household" on public."ai_tutor_events" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "ai_tutor_events"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "ai_tutor_events_teacher_select_assigned" on public."ai_tutor_events" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "ai_tutor_events"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "ai_tutor_events_teacher_select_assigned" on public."ai_tutor_events" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "ai_tutor_events"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "ai_tutor_events_staff_operational_select" on public."ai_tutor_events" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' or (select public.k12_current_app_role()) = 'school-admin' or (select public.k12_current_app_role()) = 'platform-admin');
+create policy "ai_tutor_events_school_admin_select_school" on public."ai_tutor_events" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "ai_tutor_events"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 alter table public."agent_tool_calls" enable row level security;
 
 create policy "agent_tool_calls_platform_admin_all" on public."agent_tool_calls" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
 
-create policy "agent_tool_calls_staff_operational_select" on public."agent_tool_calls" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' or (select public.k12_current_app_role()) = 'school-admin' or (select public.k12_current_app_role()) = 'platform-admin');
-
 alter table public."research_evidence_sources" enable row level security;
 
 create policy "research_evidence_sources_platform_admin_all" on public."research_evidence_sources" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
-
-create policy "research_evidence_sources_staff_operational_select" on public."research_evidence_sources" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' or (select public.k12_current_app_role()) = 'school-admin' or (select public.k12_current_app_role()) = 'platform-admin');
 
 alter table public."lesson_redesign_tasks" enable row level security;
 
 create policy "lesson_redesign_tasks_platform_admin_all" on public."lesson_redesign_tasks" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
 
-create policy "lesson_redesign_tasks_staff_operational_select" on public."lesson_redesign_tasks" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' or (select public.k12_current_app_role()) = 'school-admin' or (select public.k12_current_app_role()) = 'platform-admin');
-
 alter table public."agent_review_items" enable row level security;
 
 create policy "agent_review_items_platform_admin_all" on public."agent_review_items" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
-
-create policy "agent_review_items_staff_operational_select" on public."agent_review_items" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' or (select public.k12_current_app_role()) = 'school-admin' or (select public.k12_current_app_role()) = 'platform-admin');
 
 alter table public."audit_events" enable row level security;
 
 create policy "audit_events_platform_admin_all" on public."audit_events" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
 
-create policy "audit_events_staff_operational_select" on public."audit_events" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' or (select public.k12_current_app_role()) = 'school-admin' or (select public.k12_current_app_role()) = 'platform-admin');
-
 alter table public."auth_audit_events" enable row level security;
 
 create policy "auth_audit_events_platform_admin_all" on public."auth_audit_events" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
-
-create policy "auth_audit_events_staff_operational_select" on public."auth_audit_events" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' or (select public.k12_current_app_role()) = 'school-admin' or (select public.k12_current_app_role()) = 'platform-admin');
 
 alter table public."consent_records" enable row level security;
 
@@ -21144,9 +21891,11 @@ create policy "consent_records_platform_admin_all" on public."consent_records" f
 
 create policy "consent_records_student_select_own" on public."consent_records" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "consent_records_parent_select_household" on public."consent_records" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "consent_records"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "consent_records_parent_select_household" on public."consent_records" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "consent_records"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "consent_records_teacher_select_assigned" on public."consent_records" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "consent_records"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "consent_records_teacher_select_assigned" on public."consent_records" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "consent_records"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "consent_records_school_admin_select_school" on public."consent_records" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "consent_records"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 create policy "consent_records_parent_guardian_scope" on public."consent_records" for all to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardians" g where g."id" = "consent_records"."guardian_id" and g."user_id" = (select public.k12_current_app_user_id()))) with check ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardians" g where g."id" = "consent_records"."guardian_id" and g."user_id" = (select public.k12_current_app_user_id())));
 
@@ -21156,9 +21905,11 @@ create policy "accommodations_platform_admin_all" on public."accommodations" for
 
 create policy "accommodations_student_select_own" on public."accommodations" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "accommodations_parent_select_household" on public."accommodations" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "accommodations"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "accommodations_parent_select_household" on public."accommodations" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "accommodations"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "accommodations_teacher_select_assigned" on public."accommodations" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "accommodations"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "accommodations_teacher_select_assigned" on public."accommodations" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "accommodations"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "accommodations_school_admin_select_school" on public."accommodations" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "accommodations"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 alter table public."retention_schedules" enable row level security;
 
@@ -21166,9 +21917,11 @@ create policy "retention_schedules_platform_admin_all" on public."retention_sche
 
 create policy "retention_schedules_student_select_own" on public."retention_schedules" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "retention_schedules_parent_select_household" on public."retention_schedules" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "retention_schedules"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "retention_schedules_parent_select_household" on public."retention_schedules" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "retention_schedules"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "retention_schedules_teacher_select_assigned" on public."retention_schedules" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "retention_schedules"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "retention_schedules_teacher_select_assigned" on public."retention_schedules" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "retention_schedules"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "retention_schedules_school_admin_select_school" on public."retention_schedules" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "retention_schedules"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 alter table public."learning_events" enable row level security;
 
@@ -21176,9 +21929,11 @@ create policy "learning_events_platform_admin_all" on public."learning_events" f
 
 create policy "learning_events_student_select_own" on public."learning_events" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "learning_events_parent_select_household" on public."learning_events" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "learning_events"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "learning_events_parent_select_household" on public."learning_events" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "learning_events"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "learning_events_teacher_select_assigned" on public."learning_events" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "learning_events"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "learning_events_teacher_select_assigned" on public."learning_events" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "learning_events"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "learning_events_school_admin_select_school" on public."learning_events" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "learning_events"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 alter table public."experiment_runs" enable row level security;
 
@@ -21186,9 +21941,11 @@ create policy "experiment_runs_platform_admin_all" on public."experiment_runs" f
 
 create policy "experiment_runs_student_select_own" on public."experiment_runs" for select to authenticated using ((select public.k12_current_app_role()) = 'student' and "student_id" = (select public.k12_current_app_student_id()));
 
-create policy "experiment_runs_parent_select_household" on public."experiment_runs" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."student_guardians" sg join public."guardians" g on g."id" = sg."guardian_id" where sg."student_id" = "experiment_runs"."student_id" and g."user_id" = (select public.k12_current_app_user_id())));
+create policy "experiment_runs_parent_select_household" on public."experiment_runs" for select to authenticated using ((select public.k12_current_app_role()) = 'parent' and exists (select 1 from public."guardian_student_links" gsl join public."guardians" g on g."id" = gsl."guardian_id" where gsl."student_id" = "experiment_runs"."student_id" and gsl."status" = 'approved' and gsl."revoked_at" is null and g."user_id" = (select public.k12_current_app_user_id())));
 
-create policy "experiment_runs_teacher_select_assigned" on public."experiment_runs" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."teachers" t on t."id" = c."teacher_id" where e."student_id" = "experiment_runs"."student_id" and t."user_id" = (select public.k12_current_app_user_id())));
+create policy "experiment_runs_teacher_select_assigned" on public."experiment_runs" for select to authenticated using ((select public.k12_current_app_role()) = 'teacher' and exists (select 1 from public."enrollments" e join public."teacher_class_assignments" tca on tca."class_id" = e."class_id" join public."teachers" t on t."id" = tca."teacher_id" where e."student_id" = "experiment_runs"."student_id" and e."status" = 'active' and tca."status" = 'active' and tca."revoked_at" is null and t."user_id" = (select public.k12_current_app_user_id())));
+
+create policy "experiment_runs_school_admin_select_school" on public."experiment_runs" for select to authenticated using ((select public.k12_current_app_role()) = 'school-admin' and exists (select 1 from public."enrollments" e join public."classes" c on c."id" = e."class_id" join public."school_staff_memberships" ssm on ssm."school_id" = c."school_id" where e."student_id" = "experiment_runs"."student_id" and e."status" = 'active' and ssm."user_id" = (select public.k12_current_app_user_id()) and ssm."school_id" = (select public.k12_current_app_school_id()) and ssm."role" = 'school-admin' and ssm."status" = 'active' and ssm."revoked_at" is null));
 
 alter table public."reward_settings" enable row level security;
 
@@ -21199,3 +21956,231 @@ create policy "reward_settings_parent_guardian_scope" on public."reward_settings
 alter table public."app_state_snapshots" enable row level security;
 
 create policy "app_state_snapshots_platform_admin_all" on public."app_state_snapshots" for all to authenticated using ((select public.k12_current_app_role()) = 'platform-admin') with check ((select public.k12_current_app_role()) = 'platform-admin');
+
+grant all privileges on table public."users" to service_role;
+
+grant select, insert, update, delete on table public."users" to authenticated;
+
+grant all privileges on table public."students" to service_role;
+
+grant select, insert, update, delete on table public."students" to authenticated;
+
+grant all privileges on table public."guardians" to service_role;
+
+grant select, insert, update, delete on table public."guardians" to authenticated;
+
+grant all privileges on table public."student_guardians" to service_role;
+
+grant select, insert, update, delete on table public."student_guardians" to authenticated;
+
+grant all privileges on table public."account_invitations" to service_role;
+
+grant select, insert, update, delete on table public."account_invitations" to authenticated;
+
+grant all privileges on table public."guardian_student_links" to service_role;
+
+grant select, insert, update, delete on table public."guardian_student_links" to authenticated;
+
+grant all privileges on table public."session_revocations" to service_role;
+
+grant select, insert, update, delete on table public."session_revocations" to authenticated;
+
+grant all privileges on table public."teachers" to service_role;
+
+grant select, insert, update, delete on table public."teachers" to authenticated;
+
+grant all privileges on table public."schools" to service_role;
+
+grant select, insert, update, delete on table public."schools" to authenticated;
+
+grant all privileges on table public."school_staff_memberships" to service_role;
+
+grant select, insert, update, delete on table public."school_staff_memberships" to authenticated;
+
+grant all privileges on table public."classes" to service_role;
+
+grant select, insert, update, delete on table public."classes" to authenticated;
+
+grant all privileges on table public."teacher_class_assignments" to service_role;
+
+grant select, insert, update, delete on table public."teacher_class_assignments" to authenticated;
+
+grant all privileges on table public."enrollments" to service_role;
+
+grant select, insert, update, delete on table public."enrollments" to authenticated;
+
+grant all privileges on table public."class_sessions" to service_role;
+
+grant select, insert, update, delete on table public."class_sessions" to authenticated;
+
+grant all privileges on table public."group_missions" to service_role;
+
+grant select, insert, update, delete on table public."group_missions" to authenticated;
+
+grant all privileges on table public."attendance_records" to service_role;
+
+grant select, insert, update, delete on table public."attendance_records" to authenticated;
+
+grant all privileges on table public."group_artifacts" to service_role;
+
+grant select, insert, update, delete on table public."group_artifacts" to authenticated;
+
+grant all privileges on table public."teacher_interventions" to service_role;
+
+grant select, insert, update, delete on table public."teacher_interventions" to authenticated;
+
+grant all privileges on table public."school_reports" to service_role;
+
+grant select, insert, update, delete on table public."school_reports" to authenticated;
+
+grant all privileges on table public."grade_bands" to service_role;
+
+grant select on table public."grade_bands" to anon, authenticated;
+
+grant all privileges on table public."grade_levels" to service_role;
+
+grant select on table public."grade_levels" to anon, authenticated;
+
+grant all privileges on table public."subjects" to service_role;
+
+grant select on table public."subjects" to anon, authenticated;
+
+grant all privileges on table public."courses" to service_role;
+
+grant select on table public."courses" to anon, authenticated;
+
+grant all privileges on table public."units" to service_role;
+
+grant select on table public."units" to anon, authenticated;
+
+grant all privileges on table public."lessons" to service_role;
+
+grant select on table public."lessons" to anon, authenticated;
+
+grant all privileges on table public."activities" to service_role;
+
+grant select on table public."activities" to anon, authenticated;
+
+grant all privileges on table public."quizzes" to service_role;
+
+grant select on table public."quizzes" to anon, authenticated;
+
+grant all privileges on table public."quiz_questions" to service_role;
+
+grant select on table public."quiz_questions" to anon, authenticated;
+
+grant all privileges on table public."quiz_attempts" to service_role;
+
+grant select, insert, update, delete on table public."quiz_attempts" to authenticated;
+
+grant all privileges on table public."lesson_progress" to service_role;
+
+grant select, insert, update, delete on table public."lesson_progress" to authenticated;
+
+grant all privileges on table public."mastery_records" to service_role;
+
+grant select, insert, update, delete on table public."mastery_records" to authenticated;
+
+grant all privileges on table public."lesson_scratchpads" to service_role;
+
+grant select, insert, update, delete on table public."lesson_scratchpads" to authenticated;
+
+grant all privileges on table public."interactive_skill_evidence" to service_role;
+
+grant select, insert, update, delete on table public."interactive_skill_evidence" to authenticated;
+
+grant all privileges on table public."standards" to service_role;
+
+grant select on table public."standards" to anon, authenticated;
+
+grant all privileges on table public."lesson_standards" to service_role;
+
+grant select on table public."lesson_standards" to anon, authenticated;
+
+grant all privileges on table public."assignments" to service_role;
+
+grant select, insert, update, delete on table public."assignments" to authenticated;
+
+grant all privileges on table public."portfolio_items" to service_role;
+
+grant select, insert, update, delete on table public."portfolio_items" to authenticated;
+
+grant all privileges on table public."badges" to service_role;
+
+grant select on table public."badges" to anon, authenticated;
+
+grant all privileges on table public."student_badges" to service_role;
+
+grant select, insert, update, delete on table public."student_badges" to authenticated;
+
+grant all privileges on table public."reward_approvals" to service_role;
+
+grant select, insert, update, delete on table public."reward_approvals" to authenticated;
+
+grant all privileges on table public."content_drafts" to service_role;
+
+grant select, insert, update, delete on table public."content_drafts" to authenticated;
+
+grant all privileges on table public."content_batch_reviews" to service_role;
+
+grant select, insert, update, delete on table public."content_batch_reviews" to authenticated;
+
+grant all privileges on table public."visual_assets" to service_role;
+
+grant select, insert, update, delete on table public."visual_assets" to authenticated;
+
+grant all privileges on table public."ai_tutor_events" to service_role;
+
+grant select, insert, update, delete on table public."ai_tutor_events" to authenticated;
+
+grant all privileges on table public."agent_tool_calls" to service_role;
+
+grant select, insert, update, delete on table public."agent_tool_calls" to authenticated;
+
+grant all privileges on table public."research_evidence_sources" to service_role;
+
+grant select, insert, update, delete on table public."research_evidence_sources" to authenticated;
+
+grant all privileges on table public."lesson_redesign_tasks" to service_role;
+
+grant select, insert, update, delete on table public."lesson_redesign_tasks" to authenticated;
+
+grant all privileges on table public."agent_review_items" to service_role;
+
+grant select, insert, update, delete on table public."agent_review_items" to authenticated;
+
+grant all privileges on table public."audit_events" to service_role;
+
+grant select, insert, update, delete on table public."audit_events" to authenticated;
+
+grant all privileges on table public."auth_audit_events" to service_role;
+
+grant select, insert, update, delete on table public."auth_audit_events" to authenticated;
+
+grant all privileges on table public."consent_records" to service_role;
+
+grant select, insert, update, delete on table public."consent_records" to authenticated;
+
+grant all privileges on table public."accommodations" to service_role;
+
+grant select, insert, update, delete on table public."accommodations" to authenticated;
+
+grant all privileges on table public."retention_schedules" to service_role;
+
+grant select, insert, update, delete on table public."retention_schedules" to authenticated;
+
+grant all privileges on table public."learning_events" to service_role;
+
+grant select, insert, update, delete on table public."learning_events" to authenticated;
+
+grant all privileges on table public."experiment_runs" to service_role;
+
+grant select, insert, update, delete on table public."experiment_runs" to authenticated;
+
+grant all privileges on table public."reward_settings" to service_role;
+
+grant select, insert, update, delete on table public."reward_settings" to authenticated;
+
+grant all privileges on table public."app_state_snapshots" to service_role;
+
+grant select, insert, update, delete on table public."app_state_snapshots" to authenticated;

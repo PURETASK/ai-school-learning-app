@@ -195,6 +195,21 @@ export const productionDataModel = [
     columns: ["id", "name", "district", "implementation_stage", "pilot_focus", "status", "created_at", "updated_at"]
   },
   {
+    id: "school_staff_memberships",
+    area: "identity",
+    ownerAgentId: "backend",
+    description: "Authoritative school membership and revocation records for teachers and school administrators.",
+    primaryKey: "id",
+    pii: true,
+    rls: true,
+    columns: ["id", "school_id", "user_id", "role", "status", "invited_by_user_id", "created_at", "revoked_at"],
+    foreignKeys: [
+      { column: "school_id", references: "schools.id" },
+      { column: "user_id", references: "users.id" },
+      { column: "invited_by_user_id", references: "users.id" }
+    ]
+  },
+  {
     id: "classes",
     area: "roster",
     ownerAgentId: "backend",
@@ -283,6 +298,21 @@ export const productionDataModel = [
       "updated_at"
     ],
     foreignKeys: [{ column: "class_session_id", references: "class_sessions.id" }]
+  },
+  {
+    id: "attendance_records",
+    area: "roster",
+    ownerAgentId: "backend",
+    description: "Per-session attendance and check-in state for enrolled learners.",
+    primaryKey: "id",
+    pii: true,
+    rls: true,
+    columns: ["id", "class_session_id", "student_id", "status", "checked_in_at", "recorded_by_user_id", "note", "created_at", "updated_at"],
+    foreignKeys: [
+      { column: "class_session_id", references: "class_sessions.id" },
+      { column: "student_id", references: "students.id" },
+      { column: "recorded_by_user_id", references: "users.id" }
+    ]
   },
   {
     id: "group_artifacts",
@@ -1290,6 +1320,17 @@ export function createProductionSeedProjection(state = {}) {
     updated_at: timestamp
   });
 
+  tables.school_staff_memberships.push({
+    id: `school-membership-${schoolId}-${teacherUserId}`,
+    school_id: schoolId,
+    user_id: teacherUserId,
+    role: "teacher",
+    status: "active",
+    invited_by_user_id: adminUserId,
+    created_at: timestamp,
+    revoked_at: ""
+  });
+
   for (const account of state.localAccounts || []) {
     tables.users.push({
       id: account.userId || `user-${account.id}`,
@@ -1304,6 +1345,18 @@ export function createProductionSeedProjection(state = {}) {
       created_at: account.createdAt || timestamp,
       updated_at: account.updatedAt || account.createdAt || timestamp
     });
+    if (["teacher", "school-admin"].includes(account.role) && account.schoolId) {
+      tables.school_staff_memberships.push({
+        id: `school-membership-${account.schoolId}-${account.userId || `user-${account.id}`}`.replace(/[^a-z0-9_-]/gi, "-"),
+        school_id: account.schoolId,
+        user_id: account.userId || `user-${account.id}`,
+        role: account.role,
+        status: account.status === "revoked" ? "revoked" : "active",
+        invited_by_user_id: adminUserId,
+        created_at: account.createdAt || timestamp,
+        revoked_at: account.status === "revoked" ? account.updatedAt || timestamp : ""
+      });
+    }
   }
 
   for (const learner of learners) {
@@ -1838,6 +1891,20 @@ export function createProductionSeedProjection(state = {}) {
       ended_at: session.endedAt || "",
       created_at: session.createdAt || timestamp,
       updated_at: session.updatedAt || session.createdAt || timestamp
+    });
+  }
+
+  for (const attendance of state.attendanceRecords || []) {
+    tables.attendance_records.push({
+      id: attendance.id,
+      class_session_id: attendance.classSessionId || "",
+      student_id: attendance.learnerId || attendance.studentId || "",
+      status: attendance.status || "unmarked",
+      checked_in_at: attendance.checkedInAt || "",
+      recorded_by_user_id: attendance.recordedByUserId || "",
+      note: attendance.note || "",
+      created_at: attendance.createdAt || timestamp,
+      updated_at: attendance.updatedAt || attendance.createdAt || timestamp
     });
   }
 

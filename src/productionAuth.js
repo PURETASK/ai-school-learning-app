@@ -188,15 +188,27 @@ export function createProductionSessionFromVerifiedClaims(claims = {}, env = def
   const nowSeconds = Math.floor(Date.now() / 1000);
   const rawExp = firstClaim(claims, ["exp"]);
   const exp = rawExp === "" ? null : Number(rawExp);
+  const rawIat = firstClaim(claims, ["iat"]);
+  const iat = rawIat === "" ? null : Number(rawIat);
+  const sessionId = String(firstClaim(claims, ["sid", "jti", "session_id"]) || "");
 
-  if (config.issuer && issuer && issuer !== config.issuer) {
+  if (!issuer || (config.issuer && issuer !== config.issuer)) {
     return { accepted: false, reason: "Auth issuer does not match configured AUTH_ISSUER." };
   }
-  if (config.audience && audiences.length && !audiences.includes(config.audience)) {
+  if (!audiences.length || (config.audience && !audiences.includes(config.audience))) {
     return { accepted: false, reason: "Auth audience does not match configured AUTH_AUDIENCE." };
   }
-  if (Number.isFinite(exp) && exp <= nowSeconds) {
+  if (!Number.isFinite(exp) || exp <= nowSeconds) {
     return { accepted: false, reason: "Auth token is expired." };
+  }
+  if (!Number.isFinite(iat) || iat > nowSeconds + 60) {
+    return { accepted: false, reason: "Auth token must include a valid issued-at claim." };
+  }
+  if (!subject) {
+    return { accepted: false, reason: "Verified auth claims must include a provider subject." };
+  }
+  if (!sessionId) {
+    return { accepted: false, reason: "Verified auth claims must include a provider session id." };
   }
   if (!email) {
     return { accepted: false, reason: "Verified auth claims must include an email." };
@@ -219,7 +231,7 @@ export function createProductionSessionFromVerifiedClaims(claims = {}, env = def
     productionAuth: true,
     authProvider: config.provider || "oidc",
     providerSubject: subject,
-    sessionId: String(firstClaim(claims, ["sid", "jti", "session_id"]) || ""),
+    sessionId,
     role,
     scope: String(firstClaim(claims, [config.scopeClaim, "https://k12learning.app/scope", "scope"]) || defaultScope(role)),
     userId,
@@ -229,7 +241,7 @@ export function createProductionSessionFromVerifiedClaims(claims = {}, env = def
     guardianId: String(firstClaim(claims, [config.guardianIdClaim, "https://k12learning.app/guardian_id", "guardianId"]) || ""),
     teacherId: String(firstClaim(claims, [config.teacherIdClaim, "https://k12learning.app/teacher_id", "teacherId"]) || ""),
     schoolId: String(firstClaim(claims, [config.schoolIdClaim, "https://k12learning.app/school_id", "schoolId"]) || ""),
-    issuedAt: jwtTime(firstClaim(claims, ["iat"])) || new Date().toISOString(),
+    issuedAt: jwtTime(iat),
     expiresAt: jwtTime(firstClaim(claims, ["exp"]))
   };
 

@@ -1,160 +1,68 @@
 # Release Roadmap and Milestones
 
-## Purpose
+## Status And Authority
 
-Define staged releases so the project ships in controlled increments.
+This roadmap sequences the first sellable product. It is subordinate to `PROJECT_SOURCE_OF_TRUTH.md` and `docs/BRIDGE_GRADE_6_MATH_INTERVENTION_PRODUCT_CONTRACT.md`.
 
-## Milestone 0 — Documentation Lock
+The Grade 3/6/9 Nexus MVP remains the learning-engine proof defined by the source of truth. The active commercial release is narrower: Bridge Academy Grade 6 Math Intervention Class.
 
-- Product Bible complete
-- Core Pillars complete
-- MVP Scope complete
-- Lesson Template complete
-- Data Model complete
-- AGENTS.md complete
+## Milestone 0 - Product Contract Lock
 
-## Milestone 1 — App Skeleton
+- Product contract approved and linked from supporting plans.
+- Buyer, operator, learner, learning promise, 25-session scope, metrics, acceptance criteria, and deferrals are explicit.
+- Conflicting historical MVP statements are marked as historical or supporting context.
 
-- Next.js app created
-- Tailwind installed
-- Folder structure created
-- Shared types created
-- Sample content loaded
+**Gate:** No new commercial scope enters the active backlog without contract change control.
 
-## Milestone 2 — Learning Loop Demo
+## Milestone 1 - Production Foundation
 
-- One lesson loads
-- Quiz works
-- Feedback displays
-- Mastery calculated
-- Review item scheduled
+- Supabase migrations and seeds pass strict readiness verification.
+- Production identity flows and trusted roles are live-verified.
+- Tenant and family isolation tests pass.
+- Required pilot workflows no longer depend on local JSON or broad snapshot state.
 
-## Milestone 3 — MVP Dashboards
+**Gate:** Production data and identity are credible enough to run a real-user vertical slice.
 
-- Student dashboard works
-- Parent dashboard works
-- Progress summaries show
-- Review due items show
+## Milestone 2 - Golden Class Session
 
-## Milestone 4 — Three-Academy Demo
+- School admin provisions school, teacher, class, and roster.
+- Teacher launches one Grade 6 Math session and monitors learners.
+- Student completes app-led teaching, tutor help, practice, group/individual evidence, mastery check, and exit ticket.
+- Mastery, XP, Memory Vault, tutor, intervention, teacher, and parent readbacks persist correctly.
 
-- Grade 3 sample lesson
-- Grade 6 sample lesson
-- Grade 9 sample lesson
-- Academy styling differences visible
+**Gate:** The full workflow passes automated end-to-end and manual classroom QA.
 
-## Milestone 5 — Thinking Features MVP
+## Milestone 3 - Classroom Operations
 
-- Problem-Solving Lab basic version
-- Evidence Room basic version
-- Mistake Journal basic version
+- Attendance, phase timing, live status, intervention history, group roles, artifact review, and session closeout are database-backed.
+- Student, teacher, parent, and school-admin experiences enforce role and tenant scope.
+- Empty, loading, error, retry, and accessibility states are complete.
 
-## Milestone 6 — Private Alpha
+**Gate:** One teacher can operate the product for an entire class period without developer assistance.
 
-- Controlled demo users
-- QA checklist complete
-- Content review pipeline active
-- Safety/privacy review complete
+## Milestone 4 - Twenty-Five Session Track
 
----
+- The Grade 6 Math scope and sequence contains exactly 25 pilot sessions.
+- Every session meets the V3 learning, visual, tutor, assessment, reteach/challenge, and delayed-recall contract.
+- Every session earns at least grade B, targets grade A, and is manager-approved and published.
 
-## Definition of Done
+**Gate:** The teacher can schedule and run the complete 6-8 week intervention track.
 
-This document is usable when:
+## Milestone 5 - Launch Gates
 
-- The purpose is clear.
-- MVP requirements are separated from later-phase requirements.
-- Required screens, data, permissions, and edge cases are identified.
-- Codex can implement from it without inventing product rules.
-- Safety, accessibility, and learning-pillar impacts are considered.
+- Browser end-to-end, permission, accessibility, responsive, keyboard, and failure-state tests pass.
+- Monitoring, audit logs, backups, recovery, rate limits, AI cost controls, export/deletion, and incident procedures are ready.
+- Teacher, school-admin, student, parent, and pilot-support materials are complete.
 
+**Gate:** Every release acceptance criterion in the product contract has evidence.
 
----
+## Milestone 6 - Design-Partner Pilot
 
-# V2 Implementation Expansion
+- One school and 1-3 classes complete the agreed pilot period.
+- Pilot metrics are collected without unsupported efficacy claims.
+- Product, learning, teacher-operability, safety, and commercial findings are reviewed.
+- Leadership records a proceed, revise, or stop decision before expanding scope.
 
-## Document Status
+## Deferred Roadmap
 
-- **Version:** 2.0
-- **Readiness Target:** Codex-ready implementation guidance
-- **Primary Dependency:** AGENTS.md, Product Bible, Core Pillars, MVP Scope
-- **Core Learning Loop:** Teach → Break Down → Think → Discuss → Interpret → Prove → Practice → Retrieve → Space → Reflect → Adapt → Apply
-
-## V2 Improvements Added
-
-- Adds MVP versus later-phase boundary.
-- Adds user-role implications.
-- Adds data dependencies.
-- Adds accessibility and safety checks.
-- Adds empty/error state expectations.
-- Adds acceptance criteria Codex can execute against.
-
-## What This Document Must Lock
-
-- Must align with the saved product loop and core pillars.
-- Must not introduce features that bypass child safety or role permissions.
-- Must support Grade 3/6/9 MVP before expansion.
-
-## Implementation Requirements
-
-- State screens/components needed.
-- List data required and source of truth.
-- Define permissions and user states.
-- Add validation and QA criteria.
-- Define milestones from docs to vertical slice to MVP alpha to beta.
-
-## Data, Permission, and UX Considerations
-
-| Concern | Required Treatment |
-|---|---|
-| Student data | Collect only what the feature needs; avoid sensitive logs. |
-| Role access | Student, parent, teacher, and admin access must be explicit. |
-| Accessibility | Use semantic UI, visible focus states, readable language, and non-color-only signals. |
-| Empty states | Define what users see when no lessons, reviews, progress, or linked users exist. |
-| Error states | Explain what failed and give a safe next action; never expose private internals. |
-| Analytics | Track learning events by IDs/tags, not unnecessary personal text. |
-
-## Codex Implementation Instructions
-
-- Use this document before implementing related feature code.
-- Create typed models/components based on the requirements.
-- Add TODOs for later-phase items rather than mixing them into MVP.
-
-## Acceptance Criteria
-
-- Codex can implement from the document without inventing missing product rules.
-- MVP requirements are separated from later-phase expansion.
-- User roles, data needs, permissions, empty states, errors, and accessibility are considered.
-- The document connects back to the core learning loop and locked pillars.
-- A reviewer can tell whether a feature is done, incomplete, or out of scope.
-
-## Review Checklist
-
-- [ ] The document separates MVP from later-phase work.
-- [ ] The document identifies required data and relationships.
-- [ ] The document identifies permissions and safety constraints.
-- [ ] The document includes accessibility expectations.
-- [ ] The document provides acceptance criteria or completion checks.
-- [ ] The document aligns with the 15 locked core pillars.
-- [ ] The document avoids passive learning patterns.
-- [ ] The document helps Codex build without inventing missing rules.
-
-## Pillar Coverage Reminder
-
-This document should continue to support the locked core pillars:
-
-- Standards-Aligned Curriculum
-- First-Principles Problem Solving
-- Critical Thinking
-- Discussion & Academic Dialogue
-- Interpretation
-- Evidence-Based Reasoning
-- Metacognition
-- Retrieval + Spaced Retention
-- Inquiry-Based Learning
-- Computational + Systems Thinking
-- Project-Based Application
-- Adaptive Mastery + Feedback
-- Fun + Motivation
-- Accessibility + Inclusive Learning
-- Safe Child-Centered Design
+Additional grades, subjects, K-12 scale, billing, gift cards, mobile apps, district integrations, and unrelated agent expansion remain deferred until the product contract's pilot gates pass.

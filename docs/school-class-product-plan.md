@@ -1,15 +1,17 @@
 # School And Classroom Product Plan
 
+> **Commercial scope:** `docs/BRIDGE_GRADE_6_MATH_INTERVENTION_PRODUCT_CONTRACT.md` controls the first sellable pilot. This plan supplies the broader classroom capability model and must not expand the active pilot beyond that contract.
+
 ## Product Position
 
 K-12 Learning Academies should become a school-sellable learning academy where a student can attend a class inside the app. The product should help schools run engaging middle-school and K-12 learning blocks with direct instruction, visual explanations, tutor support, active tasks, group projects, mastery checks, and teacher dashboards.
 
-The first commercial wedge should be:
+The first commercial wedge is:
 
 ```txt
-Bridge Academy Class Mode
-Grades 6-8
-Middle-school math, ELA, science, social studies, digital literacy, and study skills
+Bridge Academy Grade 6 Math Intervention Class
+Grade 6 Math only for the first pilot
+25 reviewed sessions delivered over 6-8 weeks
 Designed for a 35-55 minute class period
 ```
 
@@ -161,19 +163,20 @@ To sell to schools, plan for:
 
 ## First Sellable Pilot
 
-The first sellable pilot should be a Bridge Academy 6-8 class product:
+The controlling pilot definition is `docs/BRIDGE_GRADE_6_MATH_INTERVENTION_PRODUCT_CONTRACT.md`:
 
-- One subject track to start, preferably middle-school math or study skills/math intervention.
-- 25 reviewed class-session lessons.
-- Each lesson supports a 35-55 minute class period.
-- Every lesson includes a visual mini-lesson, guided practice, tutor confusion check, active task, group mission, mastery check, reteach path, challenge path, and exit ticket.
-- Teacher dashboard supports launch, monitor, assign, and review.
-- Student dashboard supports level, subject progress, XP, rewards, and today class.
-- Admin dashboard supports roster, class setup, usage, and exportable progress.
+- Bridge Academy Grade 6 Math Intervention Class.
+- One Grade 6 Math track with exactly 25 reviewed sessions.
+- A 6-8 week pilot using 35-55 minute class periods.
+- App-led visual teaching, guided and active practice, plain-text confusion diagnosis, guardrailed tutor help, group and individual evidence, mastery proofs, adaptive routes, delayed recall, and exit tickets.
+- Teacher launch, live monitoring, intervention, and evidence review.
+- School setup, roster, scoped reporting, and linked-parent progress visibility.
+
+Additional Bridge Academy grades and subjects remain architecture goals, not active pilot scope.
 
 ## Production Acceptance Criteria
 
-The school product is not sellable until:
+The following capabilities remain required. The complete release gate and measurable targets are controlled by the product contract. The school product is not eligible for a design-partner pilot until:
 
 - A teacher can create or receive a class roster.
 - Students can log in with student-scoped accounts.
@@ -191,14 +194,4 @@ The school product is not sellable until:
 
 ## Implementation Order
 
-1. Convert school setup, class section creation, enrollment, and group mission authoring into editable database-backed routes.
-2. Replace remaining prototype role dropdown behavior with trusted session claims.
-3. Expand the Bridge Academy student class home with attendance state, class join flow, and current-period lesson state.
-4. Expand the teacher launch/live monitor with persisted step timing, intervention queue filters, and class-session history.
-5. Build one complete Bridge Academy class-session lesson flow with attendance, app-led teaching, exit ticket, group evidence review, and intervention writes.
-6. Add confusion heatmap, tutor feedback, and teacher intervention queue as persisted records with staff review.
-7. Expand group mission workflow with role assignment, artifact review, and individual evidence feedback.
-8. Expand the school-admin roster and reporting screens into CSV import/export and report downloads.
-9. Package the first 25-lesson Bridge Academy pilot track.
-10. Add onboarding guides and implementation materials.
-11. Validate with tests, accessibility checks, and school-pilot QA.
+Use the ordered backlog in `docs/55_MVP_BACKLOG_AND_TASK_BREAKDOWN.md`. It establishes production data and identity before the golden session, classroom operations, 25-session content package, launch gates, and pilot.
