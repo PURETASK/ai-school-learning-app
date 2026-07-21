@@ -1,641 +1,88 @@
 {
-  "schemaVersion": "2.0",
+  "schemaVersion": "3",
   "id": "BA-G6-SS-U2-L1",
-  "title": "Ancient Civilizations and Geography",
+  "title": "Civilization Detectives: Geography Shapes Choices",
   "academy": "bridge",
   "academyName": "Bridge Academy",
   "gradeLevel": "6",
-  "subject": "Social Studies",
-  "course": "Grade 6 Social Studies",
-  "unit": "Unit 2: Ancient Civilizations",
-  "lessonType": [
-    "concept lesson",
-    "skill lesson",
-    "thinking lesson",
-    "retrieval lesson"
+  "subject": "social-studies",
+  "course": "Grade 6 World History and Geography",
+  "unitId": "ancient-civilizations-geography",
+  "unitTitle": "Unit 2: Ancient Civilizations and Geography",
+  "lessonNumber": 1,
+  "estimatedMinutes": 45,
+  "lessonFamily": "inquiry_investigation",
+  "secondaryLessonFamily": "reasoning_lab",
+  "activePhases": ["orient", "model", "deconstruct", "practice", "reason", "prove", "remember", "transfer", "adapt"],
+  "targetLearningStates": ["acquiring", "developing", "accurate", "secure"],
+  "learningObjective": "Use geographic evidence to explain how rivers, landforms, climate, and resources influenced an ancient civilization's choices.",
+  "successCriteria": [
+    "I can locate the key physical features on a map.",
+    "I can distinguish a geographic fact from an inference.",
+    "I can explain one way geography created an opportunity or constraint.",
+    "I can support a historical claim with at least two connected pieces of evidence."
   ],
-  "estimatedMinutes": "40–45",
-  "developmentNotes": "Middle school students should move beyond memorizing river names into causal reasoning: how geography shapes settlement, agriculture, trade, and power.",
-  "learningObjective": "Students will explain how geography influenced the development of early civilizations and support claims using map evidence.",
-  "essentialQuestion": "How did geography shape where early civilizations grew?",
-  "standardsTags": [
-    "SS.G6.GEOGRAPHY.HUMAN_ENVIRONMENT_INTERACTION",
-    "SS.G6.HISTORY.EARLY_CIVILIZATIONS",
-    "SS.G6.EVIDENCE.MAPS",
-    "SS.G6.CAUSE_EFFECT"
-  ],
-  "thinkingSkillTags": [
-    "systems thinking",
-    "evidence-based reasoning",
-    "interpretation",
-    "critical thinking",
-    "discussion"
-  ],
-  "vocabularyTerms": [
-    {
-      "term": "civilization",
-      "definition": "a complex society with cities, government, specialized jobs, culture, and systems of record keeping"
-    },
-    {
-      "term": "geography",
-      "definition": "the study of places and the relationships between people and environments"
-    },
-    {
-      "term": "settlement",
-      "definition": "a place where people establish a community"
-    },
-    {
-      "term": "irrigation",
-      "definition": "moving water to crops using human-made systems"
-    },
-    {
-      "term": "surplus",
-      "definition": "extra food or goods beyond immediate need"
-    },
-    {
-      "term": "trade",
-      "definition": "exchange of goods or services"
-    }
-  ],
-  "prerequisites": [
-    "Read a basic map",
-    "Know cardinal directions",
-    "Understand rivers, deserts, mountains, and farming"
-  ],
-  "lessonFlow": {
-    "hook": {
-      "time": "3–5 min",
-      "content": "Students compare two maps: one settlement near a river and one deep in a desert. They predict which location would support a larger ancient city and why.",
-      "studentAction": "Predict, notice, or explain initial thinking before direct instruction.",
-      "teacherOrAppAction": "Capture initial response as non-graded diagnostic evidence."
-    },
-    "learningGoal": {
-      "time": "1 min",
-      "content": "I can students will explain how geography influenced the development of early civilizations and support claims using map evidence.",
-      "successCriteria": [
-        "I can explain the core concept in my own words.",
-        "I can show evidence or reasoning, not only an answer.",
-        "I can correct a common mistake."
-      ]
-    },
-    "miniTeach": {
-      "time": "6–8 min",
-      "content": "Many early civilizations developed near rivers because water supported farming, transportation, trade, and food surplus. Geography did not determine everything, but it created opportunities and constraints that people responded to with technology, cooperation, and government.",
-      "cognitiveLoadNotes": "Use short chunks, one example at a time, and reveal labels only after students observe the model."
-    },
-    "firstPrinciplesBreakdown": {
-      "coreConcept": "Civilizations grow from interactions between environment, resources, technology, and human organization.",
-      "parts": [
-        "water access",
-        "fertile soil",
-        "transportation routes",
-        "natural barriers",
-        "food surplus",
-        "labor organization",
-        "government",
-        "trade"
-      ],
-      "known": [
-        "Rivers provide water and fertile soil.",
-        "Farming can produce surplus.",
-        "Surplus can support specialized jobs and cities.",
-        "Barriers can protect or isolate communities."
-      ],
-      "unknown": [
-        "Which geographic features mattered most in a specific civilization."
-      ],
-      "rules": [
-        "Geographic features create advantages and challenges.",
-        "Humans adapt to environments with tools, systems, and cooperation.",
-        "Claims about civilization need map or source evidence."
-      ],
-      "avoid": [
-        "Do not say geography causes everything by itself.",
-        "Do not ignore human choices and technology.",
-        "Do not make a claim without evidence from a map or source."
-      ],
-      "steps": [
-        "Identify key geographic features.",
-        "Connect features to needs such as food, water, safety, or trade.",
-        "Explain human adaptation.",
-        "Support the claim with map evidence.",
-        "Consider limits or tradeoffs."
-      ],
-      "check": "A strong explanation names both the geographic feature and the human response."
-    },
-    "workedExample": {
-      "time": "5–7 min",
-      "content": "Claim: Rivers helped early cities grow. Evidence: A map shows settlements along a river. Reasoning: Rivers provided water for crops and transportation, which supported food surplus, trade, and larger populations.",
-      "teacherOrAppAction": "Highlight each reasoning step and connect it to the first-principles breakdown."
-    },
-    "guidedPractice": {
-      "time": "8–10 min",
-      "items": [
-        "Read a map and identify rivers, deserts, mountains, and coastlines.",
-        "Match geographic features to possible benefits and challenges.",
-        "Write a cause/effect sentence about rivers and farming.",
-        "Evaluate whether “rivers created civilization by themselves” is too simple."
-      ],
-      "scaffolding": "Start with high support, then remove hints. Require explanation on the final item."
-    },
-    "criticalThinkingCheckpoint": {
-      "time": "3–5 min",
-      "prompt": "Why is it incomplete to say “rivers caused civilization”? What else had to happen?",
-      "lookFor": "Student identifies assumption, evaluates reasoning, and explains why one answer or model is stronger."
-    },
-    "evidenceBasedReasoningTask": {
-      "time": "5–7 min",
-      "prompt": "Claim: Geography influenced settlement patterns. Use two map features as evidence.",
-      "requiredStructure": "Claim → Evidence → Reasoning",
-      "rubric": "Evidence and reasoning rubric, 1–4 scale."
-    },
-    "interpretationOrDiscussionTask": {
-      "time": "5–7 min",
-      "prompt": "Interpret a map showing cities near rivers. What pattern do you notice, and what might explain it?",
-      "safety": "Use private response or moderated classroom mode only. No unrestricted student chat."
-    },
-    "activePractice": {
-      "time": "8–10 min",
-      "content": "Students place settlement markers on a map and justify each location using water, soil, trade, and defense factors.",
-      "dataCaptured": [
-        "completion",
-        "attempts",
-        "hint usage",
-        "mistake type",
-        "confidence"
-      ]
-    },
-    "retrievalCheck": {
-      "time": "5 min",
-      "items": [
-        {
-          "id": "BA-G6-SS-U2-L1-R01",
-          "prompt": "Why did many early civilizations form near rivers?",
-          "expectedAnswer": "Water, fertile soil, transportation, farming, trade.",
-          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-        },
-        {
-          "id": "BA-G6-SS-U2-L1-R02",
-          "prompt": "What is surplus?",
-          "expectedAnswer": "Extra food or goods beyond immediate need.",
-          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-        },
-        {
-          "id": "BA-G6-SS-U2-L1-R03",
-          "prompt": "How can surplus support cities?",
-          "expectedAnswer": "It allows specialized jobs and larger populations.",
-          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-        },
-        {
-          "id": "BA-G6-SS-U2-L1-R04",
-          "prompt": "What is irrigation?",
-          "expectedAnswer": "A system for moving water to crops.",
-          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-        },
-        {
-          "id": "BA-G6-SS-U2-L1-R05",
-          "prompt": "Why must historical claims use evidence?",
-          "expectedAnswer": "Evidence supports and tests the explanation.",
-          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-        }
-      ],
-      "rule": "Closed-note if appropriate; if missed, show feedback after response, not before."
-    },
-    "feedback": {
-      "time": "embedded",
-      "rules": [
-        "Correct: explain why it works, not only mark correct.",
-        "Incorrect: identify misconception, show one hint, then give a similar retry.",
-        "Explain/CER answers: score using rubric and return one specific revision target.",
-        "Do not shame guessing; redirect to strategy and evidence."
-      ]
-    },
-    "reflection": {
-      "time": "2–3 min",
-      "prompt": "What strategy helped you most, what mistake should you watch for, and when will you review this skill again?"
-    }
-  },
+  "essentialQuestion": "How can a map help us explain why people built communities where they did?",
+  "standardsTags": ["SS.G6.GEO.1", "SS.G6.HIST.2", "SS.G6.HIST.4", "SS.G6.EVIDENCE.1"],
+  "thinkingSkillTags": ["map-analysis", "cause-and-effect", "source-evidence", "systems-thinking", "historical-inference"],
+  "vocabularyTerms": ["civilization", "river valley", "resource", "constraint", "opportunity", "inference"],
+  "prerequisiteSkillIds": ["read-map-legend", "identify-cause-effect", "separate-fact-inference"],
   "quiz": [
-    {
-      "id": "BA-G6-SS-U2-L1-Q01",
-      "type": "mc",
-      "question": "Which geographic feature most directly supports farming?",
-      "choices": [
-        "river water and fertile soil",
-        "tall palace walls",
-        "painted pottery",
-        "gold jewelry"
-      ],
-      "correctAnswer": "river water and fertile soil",
-      "explanation": "Farming needs water and fertile soil.",
-      "skillTag": "SS.GEOGRAPHY.FARMING",
-      "difficulty": "easy",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-Q02",
-      "type": "mc",
-      "question": "What is surplus?",
-      "choices": [
-        "not enough food",
-        "extra food or goods",
-        "a mountain barrier",
-        "a writing system"
-      ],
-      "correctAnswer": "extra food or goods",
-      "explanation": "Surplus means more than immediate need.",
-      "skillTag": "SS.VOCAB",
-      "difficulty": "easy",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-Q03",
-      "type": "short",
-      "question": "Explain one way rivers supported trade.",
-      "choices": null,
-      "correctAnswer": "Rivers could be used for transportation and exchange of goods.",
-      "explanation": "Connect river to movement/trade.",
-      "skillTag": "SS.CAUSE_EFFECT",
-      "difficulty": "medium",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-Q04",
-      "type": "error",
-      "question": "A student says geography made civilization happen automatically. What is missing?",
-      "choices": null,
-      "correctAnswer": "Human choices, technology, cooperation, government, and adaptation also mattered.",
-      "explanation": "Avoid geographic determinism.",
-      "skillTag": "CRITICAL.COMPLEXITY",
-      "difficulty": "hard",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-Q05",
-      "type": "mc",
-      "question": "Which evidence best supports “settlements grew near water”?",
-      "choices": [
-        "Map shows cities along river valleys",
-        "A story about a king",
-        "A picture of a pot",
-        "A list of gods"
-      ],
-      "correctAnswer": "Map shows cities along river valleys",
-      "explanation": "Map evidence directly supports settlement patterns.",
-      "skillTag": "EVIDENCE.MAP",
-      "difficulty": "medium",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-Q06",
-      "type": "explain",
-      "question": "How could irrigation change a community?",
-      "choices": null,
-      "correctAnswer": "It could bring water to crops, increase food production, support surplus, and help larger settlements.",
-      "explanation": "Requires cause/effect chain.",
-      "skillTag": "SS.IRRIGATION",
-      "difficulty": "medium",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-Q07",
-      "type": "mc",
-      "question": "Which is a possible challenge of mountains?",
-      "choices": [
-        "protection and isolation",
-        "easy river farming",
-        "unlimited flat land",
-        "guaranteed trade"
-      ],
-      "correctAnswer": "protection and isolation",
-      "explanation": "Mountains can protect but make movement harder.",
-      "skillTag": "GEOGRAPHY.TRADEOFF",
-      "difficulty": "medium",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-Q08",
-      "type": "apply",
-      "question": "Choose the better settlement: near a river with fertile soil or far from water. Explain.",
-      "choices": null,
-      "correctAnswer": "Near river, because water and fertile soil support farming and settlement.",
-      "explanation": "Must cite geographic evidence.",
-      "skillTag": "APPLY.SETTLEMENT",
-      "difficulty": "medium",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-Q09",
-      "type": "short",
-      "question": "What is a civilization?",
-      "choices": null,
-      "correctAnswer": "A complex society with cities, government, specialized jobs, culture, and record keeping.",
-      "explanation": "Definition may vary but needs complexity.",
-      "skillTag": "SS.VOCAB",
-      "difficulty": "medium",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-Q10",
-      "type": "evidence",
-      "question": "Use map evidence to support why a river valley might attract people.",
-      "choices": null,
-      "correctAnswer": "Map shows water source/fertile land/transport route; these meet needs.",
-      "explanation": "Evidence and reasoning required.",
-      "skillTag": "EVIDENCE.REASONING",
-      "difficulty": "medium",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-Q11",
-      "type": "discussion",
-      "question": "Use frame: “The most important geographic feature was ___ because ___.”",
-      "choices": null,
-      "correctAnswer": null,
-      "explanation": "A feature plus evidence-based reason.",
-      "skillTag": "DISCUSSION.FRAME",
-      "difficulty": "medium",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-Q12",
-      "type": "challenge",
-      "question": "Explain one benefit and one problem of settling near a river.",
-      "choices": null,
-      "correctAnswer": "Benefit: water/farming/trade. Problem: flooding/conflict/limited land.",
-      "explanation": "Tradeoff reasoning.",
-      "skillTag": "CRITICAL.TRADEOFF",
-      "difficulty": "hard",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    }
+    {"id": "ss-geography-01", "type": "mc", "question": "Which statement is a map fact?", "choices": ["A river appears along the eastern edge of the map.", "The river made every decision for the people.", "The settlement was definitely peaceful.", "The people chose the best possible site."], "correctAnswer": "A river appears along the eastern edge of the map.", "explanation": "A map fact describes evidence directly visible in the source.", "difficulty": "developing", "skillTag": "map-reading", "standardTag": "SS.G6.GEO.1"},
+    {"id": "ss-geography-02", "type": "mc", "question": "How can a river be both an opportunity and a constraint?", "choices": ["It can support farming but also flood nearby land.", "It has only benefits.", "It has only problems.", "It cannot affect people."], "correctAnswer": "It can support farming but also flood nearby land.", "explanation": "Historical reasoning considers connected benefits and tradeoffs.", "difficulty": "developing", "skillTag": "opportunity-constraint", "standardTag": "SS.G6.GEO.2"},
+    {"id": "ss-geography-03", "type": "mc", "question": "What is a historical inference?", "choices": ["A conclusion supported by evidence and reasoning.", "A map symbol copied without explanation.", "A guess that needs no evidence.", "A list of directions."], "correctAnswer": "A conclusion supported by evidence and reasoning.", "explanation": "An inference goes beyond the visible fact but must still be grounded in evidence.", "difficulty": "developing", "skillTag": "fact-inference", "standardTag": "SS.G6.HIST.1"},
+    {"id": "ss-geography-04", "type": "mc", "question": "Why should a settlement-site claim use more than one map clue?", "choices": ["Multiple connected clues make the explanation more defensible.", "Maps always require exactly two clues.", "One clue is never true.", "More clues make an answer automatically correct."], "correctAnswer": "Multiple connected clues make the explanation more defensible.", "explanation": "Two or more relevant clues can show a stronger cause-and-effect explanation.", "difficulty": "secure", "skillTag": "evidence", "standardTag": "SS.G6.HIST.1"},
+    {"id": "ss-geography-05", "type": "mc", "question": "A student says a civilization formed beside a river only because the river was nearby. What is missing?", "choices": ["An explanation of what the river enabled or made difficult.", "A new map title.", "A longer sentence with no evidence.", "A list of unrelated cities."], "correctAnswer": "An explanation of what the river enabled or made difficult.", "explanation": "The learner must connect the feature to a human opportunity, constraint, or choice.", "difficulty": "secure", "skillTag": "cause-and-effect", "standardTag": "SS.G6.GEO.2"},
+    {"id": "ss-geography-06", "type": "mc", "question": "What should you inspect first when a map symbol is confusing?", "choices": ["The map legend or key.", "The map border only.", "A random location.", "The answer choices before the map."], "correctAnswer": "The map legend or key.", "explanation": "The legend explains what symbols and patterns represent.", "difficulty": "developing", "skillTag": "map-reading", "standardTag": "SS.G6.GEO.1"},
+    {"id": "ss-geography-07", "type": "mc", "question": "Which claim is most defensible?", "choices": ["The river guaranteed that the civilization would become powerful.", "The river may have supported farming and travel, while flooding created a risk.", "The river caused every cultural belief.", "The map proves what every person thought."], "correctAnswer": "The river may have supported farming and travel, while flooding created a risk.", "explanation": "A careful claim connects evidence to likely effects without pretending one factor explains everything.", "difficulty": "secure", "skillTag": "historical-reasoning", "standardTag": "SS.G6.HIST.1"},
+    {"id": "ss-geography-08", "type": "short-response", "question": "Explain one way a landform could shape a settlement choice.", "correctAnswer": "A response names a landform and explains a supported opportunity or constraint it created.", "explanation": "The answer should connect a physical feature to a human choice with evidence.", "difficulty": "secure", "skillTag": "cause-and-effect", "standardTag": "SS.G6.GEO.2"},
+    {"id": "ss-geography-09", "type": "mc", "question": "Which statement is an unsupported inference?", "choices": ["The map shows a road near the settlement.", "The road may have helped movement because it connects the settlement to other areas.", "The people who used the road were happier than everyone else.", "The settlement is near a water source shown in the legend."], "correctAnswer": "The people who used the road were happier than everyone else.", "explanation": "The map does not provide evidence for a claim about people’s feelings.", "difficulty": "secure", "skillTag": "fact-inference", "standardTag": "SS.G6.HIST.1"},
+    {"id": "ss-geography-10", "type": "mc", "question": "When comparing two settlement sites, what should a historian do?", "choices": ["Name evidence, explain tradeoffs, and defend a conclusion.", "Choose the site with the most attractive name.", "Count only the map colors.", "Assume the larger site is always better."], "correctAnswer": "Name evidence, explain tradeoffs, and defend a conclusion.", "explanation": "Comparison requires evidence-based judgment rather than a surface preference.", "difficulty": "secure", "skillTag": "transfer", "standardTag": "SS.G6.HIST.1"}
   ],
-  "retrievalCheck": [
-    {
-      "id": "BA-G6-SS-U2-L1-R01",
-      "prompt": "Why did many early civilizations form near rivers?",
-      "expectedAnswer": "Water, fertile soil, transportation, farming, trade.",
-      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-R02",
-      "prompt": "What is surplus?",
-      "expectedAnswer": "Extra food or goods beyond immediate need.",
-      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-R03",
-      "prompt": "How can surplus support cities?",
-      "expectedAnswer": "It allows specialized jobs and larger populations.",
-      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-R04",
-      "prompt": "What is irrigation?",
-      "expectedAnswer": "A system for moving water to crops.",
-      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-R05",
-      "prompt": "Why must historical claims use evidence?",
-      "expectedAnswer": "Evidence supports and tests the explanation.",
-      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-    }
-  ],
-  "memoryVaultItems": [
-    {
-      "id": "BA-G6-SS-U2-L1-MV01",
-      "type": "concept",
-      "prompt": "Why did civilizations often grow near rivers?",
-      "expectedAnswer": "Water, fertile soil, farming, transportation, and trade.",
-      "scheduleDays": [
-        1,
-        3,
-        7,
-        14,
-        30
-      ],
-      "skillTag": "SS.G6.GEOGRAPHY.HUMAN_ENVIRONMENT_INTERACTION",
-      "retentionStrengthStart": "developing",
-      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
-      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-MV02",
-      "type": "vocab",
-      "prompt": "What is surplus?",
-      "expectedAnswer": "Extra food or goods.",
-      "scheduleDays": [
-        1,
-        3,
-        7,
-        14,
-        30
-      ],
-      "skillTag": "SS.G6.HISTORY.EARLY_CIVILIZATIONS",
-      "retentionStrengthStart": "developing",
-      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
-      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-MV03",
-      "type": "process",
-      "prompt": "How can surplus lead to specialization?",
-      "expectedAnswer": "Not everyone has to farm, so people can do other jobs.",
-      "scheduleDays": [
-        1,
-        3,
-        7,
-        14,
-        30
-      ],
-      "skillTag": "SS.G6.EVIDENCE.MAPS",
-      "retentionStrengthStart": "developing",
-      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
-      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-MV04",
-      "type": "evidence",
-      "prompt": "What kind of source helps prove settlement patterns?",
-      "expectedAnswer": "Maps and geographic evidence.",
-      "scheduleDays": [
-        1,
-        3,
-        7,
-        14,
-        30
-      ],
-      "skillTag": "SS.G6.CAUSE_EFFECT",
-      "retentionStrengthStart": "developing",
-      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
-      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-MV05",
-      "type": "mistake",
-      "prompt": "Why is geography not the only cause of civilization?",
-      "expectedAnswer": "Human choices and technology matter too.",
-      "scheduleDays": [
-        1,
-        3,
-        7,
-        14,
-        30
-      ],
-      "skillTag": "SS.G6.CAUSE_EFFECT",
-      "retentionStrengthStart": "developing",
-      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
-      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
-    },
-    {
-      "id": "BA-G6-SS-U2-L1-MV06",
-      "type": "apply",
-      "prompt": "Name one challenge of living near a river.",
-      "expectedAnswer": "Flooding, conflict, disease, etc.",
-      "scheduleDays": [
-        1,
-        3,
-        7,
-        14,
-        30
-      ],
-      "skillTag": "SS.G6.CAUSE_EFFECT",
-      "retentionStrengthStart": "developing",
-      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
-      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
-    }
-  ],
-  "reteachPath": {
-    "misconception": "Student gives one-cause explanations and ignores human adaptation or evidence.",
-    "simpleExplanation": "Geography creates opportunities and problems; people respond with tools, rules, and cooperation.",
-    "steps": [
-      "Identify the geographic feature.",
-      "Name the human need it affects.",
-      "Explain the opportunity or challenge.",
-      "Name a human response.",
-      "Support with evidence."
-    ],
-    "practice": [
-      {
-        "prompt": "Feature supporting farming",
-        "answer": "River/fertile soil"
-      },
-      {
-        "prompt": "Extra food = ?",
-        "answer": "Surplus"
-      },
-      {
-        "prompt": "Human response to dry land",
-        "answer": "Irrigation"
-      },
-      {
-        "prompt": "Evidence for settlement pattern",
-        "answer": "Map showing cities near rivers"
-      },
-      {
-        "prompt": "Fix: geography caused everything",
-        "answer": "Geography influenced development, but people adapted and organized."
-      }
-    ],
-    "exitCriteria": "Student completes at least 4 of 5 reteach items and explains the corrected misconception."
+  "outcomes": {
+    "knowledge": ["Physical geography includes features and resources that shape the choices available to communities."],
+    "capability": ["Read a map and construct a geography-to-choice explanation."],
+    "reasoning": ["Weigh multiple geographic factors instead of treating one feature as a complete explanation."],
+    "retention": ["Retrieve the fact-versus-inference distinction and opportunity-constraint pair after a delay."],
+    "transfer": ["Apply the map-evidence method to a different ancient or modern settlement."]
   },
-  "challengePath": {
-    "tasks": [
-      "Compare two river valley civilizations and identify shared geographic patterns.",
-      "Create a settlement proposal using map evidence.",
-      "Argue whether geography or technology mattered more, using evidence."
-    ],
-    "extensionRule": "Unlock at 90+ mastery or teacher/parent assignment; still schedule Memory Vault review."
-  },
-  "mastery": {
-    "bands": [
-      {
-        "range": "0-39",
-        "label": "Needs Intervention",
-        "action": "Assign intervention path, parent/teacher alert if repeated twice."
-      },
-      {
-        "range": "40-64",
-        "label": "Needs Reteach",
-        "action": "Assign reteach path and review tomorrow."
-      },
-      {
-        "range": "65-79",
-        "label": "Almost Mastered",
-        "action": "Assign guided practice and schedule review in 1 day."
-      },
-      {
-        "range": "80-89",
-        "label": "Mastered",
-        "action": "Schedule Memory Vault review on Day 1, 3, 7, 14, 30."
-      },
-      {
-        "range": "90-100",
-        "label": "Advanced",
-        "action": "Unlock challenge task and still schedule spaced review."
-      }
-    ],
-    "weights": {
-      "retrievalCheck": 0.2,
-      "quizAccuracy": 0.3,
-      "firstPrinciplesProcess": 0.15,
-      "evidenceOrReasoningQuality": 0.15,
-      "activePracticeCompletion": 0.1,
-      "reflectionQuality": 0.1
-    },
-    "masteryThreshold": 80,
-    "advancedThreshold": 90,
-    "minimumEvidence": [
-      "retrieval check completed",
-      "quiz completed",
-      "one reasoning/explanation artifact saved",
-      "Memory Vault items generated"
-    ]
-  },
-  "parentTeacherNotes": "When looking at maps, ask: “Where would you build a town? What evidence from the map supports your choice?”",
-  "accessibilityNotes": [
-    "Use plain, grade-appropriate language and define academic vocabulary before using it in prompts.",
-    "Provide alt text or text-equivalent descriptions for every image, diagram, array, chart, map, or model.",
-    "Make all interactive elements keyboard accessible with visible focus states and screen-reader labels.",
-    "Never rely only on color to communicate correct/incorrect, categories, or importance.",
-    "Provide read-aloud support for Foundation Academy and optional read-aloud for all grade bands.",
-    "Chunk instructions into short steps and provide examples before independent work."
+  "visual": {"type":"geography-choice-map","title":"Civilization map lab","caption":"Physical feature -> opportunity or constraint -> community choice","altText":"A map evidence model connects a river valley, landform, climate, or resource to an opportunity or constraint and then to a settlement choice."},
+  "visualSupports": [
+    {"placement": "lesson-hero", "title": "The civilization map lab", "description": "A layered map shows a river, floodplain, mountains, desert, and settlement sites.", "altText": "A map with a river valley, mountains, desert, resources, and a settlement marked."},
+    {"placement": "teaching-diagram", "title": "Feature to choice chain", "description": "An arrow diagram connects a physical feature to an opportunity or constraint and then to a human choice.", "altText": "Physical feature leads to opportunity or constraint, which leads to a community choice."},
+    {"placement": "misconception-repair", "title": "Map fact or historical inference?", "description": "Cards distinguish what the map directly shows from what a historian cautiously infers.", "altText": "Two labeled columns compare map facts and historical inferences."}
   ],
-  "safetyNotes": [
-    "No public student posting, random direct messages, or unrestricted discussion.",
-    "Discussion prompts must use sentence frames and moderation/teacher controls when implemented.",
-    "Student-generated work should be visible only to the student and authorized parent/teacher roles unless explicitly assigned in a safe classroom workflow.",
-    "Do not collect unnecessary personal information in lesson responses."
+  "phaseModules": [
+    {"phase": "orient", "title": "Open the map lab", "studentAction": "Study the settlement map and predict one reason the community formed there. Mark the evidence that made you think it.", "successCheck": "I can separate my first idea from the evidence I noticed."},
+    {"phase": "model", "title": "Trace geography to a choice", "studentAction": "Follow one example from river access to farming opportunity, then to a community decision.", "visualSupport": "Feature to choice chain", "successCheck": "The explanation names the feature, its effect, and the choice."},
+    {"phase": "deconstruct", "title": "Fact, inference, or guess?", "studentAction": "Sort map statements into directly shown facts, reasonable inferences, and unsupported guesses.", "successCheck": "I can explain what evidence an inference still needs."},
+    {"phase": "practice", "title": "Build a geography evidence card", "studentAction": "Choose two map features, label each as an opportunity or constraint, and connect them to a likely community choice.", "visualSupport": "The civilization map lab", "successCheck": "Both features connect to the choice without inventing evidence."},
+    {"phase": "reason", "title": "Debate the best site", "studentAction": "Compare two possible settlement sites and defend which is stronger using a river, landform, climate, or resource claim.", "successCheck": "I can acknowledge a tradeoff and still defend my conclusion."},
+    {"phase": "prove", "title": "Explain a civilization choice", "studentAction": "Write a claim explaining why a community formed where it did, then cite two map clues and connect each clue to the claim.", "successCheck": "The explanation distinguishes evidence from inference."},
+    {"phase": "remember", "title": "Retrieve the map reasoning loop", "studentAction": "After a delay, recall feature -> opportunity or constraint -> choice, and classify one fact and one inference.", "successCheck": "I can use the loop without seeing the original map."},
+    {"phase": "transfer", "title": "Investigate a new settlement", "studentAction": "Use a new map of an ancient or modern settlement to make and revise a geography-based explanation.", "successCheck": "The reasoning method survives a different place and time."},
+    {"phase": "adapt", "title": "Choose the next historian move", "studentAction": "If the map reading is weak, return to the legend; if the cause is weak, trace the arrow; if evidence is weak, find a second connected feature.", "successCheck": "I can identify the exact part of my historical explanation to repair."}
   ],
-  "implementationNotes": [
-    "Render lessonFlow sections in order with progress state.",
-    "Persist quiz attempts and item-level skill tags.",
-    "Generate Memory Vault records after lesson completion.",
-    "Use mastery bands to branch to reteach, guided practice, review, or challenge.",
-    "Store open responses privately with role-based access.",
-    "Use answer keys and rubrics for review; do not expose hidden answer keys in student mode."
+  "proofTasks": [
+    {"proof": "recall", "prompt": "Explain the difference between a map fact and a historical inference.", "independentRequired": true},
+    {"proof": "explain", "prompt": "Explain how one physical feature can create both an opportunity and a constraint.", "independentRequired": true},
+    {"proof": "perform", "prompt": "Defend a settlement-site claim from a new map using two evidence points.", "independentRequired": true},
+    {"proof": "retain", "prompt": "Complete a delayed feature-to-choice retrieval check.", "independentRequired": true},
+    {"proof": "transfer", "prompt": "Apply map evidence to explain a different settlement pattern.", "independentRequired": true}
   ],
-  "reviewStatus": {
-    "contentStatus": "v2 polished",
-    "reviewedAgainst": [
-      "curriculum inventory v2",
-      "universal lesson flow",
-      "Memory Vault requirements",
-      "mastery model",
-      "child safety and accessibility rules"
-    ],
-    "knownLimitations": "Standards tags are platform-internal placeholders until state-specific mappings are added."
-  }
+  "requiredMasteryProofs": ["recall", "explain", "perform", "retain", "transfer"],
+  "feedbackRules": [
+    {"diagnosisCode": "map_fact_as_cause", "result": "The learner names what the map shows but does not explain its effect.", "hint": "Ask: What did this feature make easier or harder?", "action": "Route to feature-to-choice chain."},
+    {"diagnosisCode": "single_factor_story", "result": "One geographic feature is treated as the entire explanation.", "hint": "Find a second feature and identify a tradeoff.", "action": "Route to two-evidence site comparison."},
+    {"diagnosisCode": "unsupported_inference", "result": "The conclusion goes beyond what the evidence can support.", "hint": "Label the statement as a guess, then name the missing evidence.", "action": "Route to fact-inference sorting and revise."}
+  ],
+  "reteachPaths": [{"id": "BA-G6-SS-U2-L1-reteach", "trigger": "The learner cannot connect a map feature to a human choice.", "action": "Use one labeled map feature, one opportunity-or-constraint card, and one sentence frame before returning to the full site comparison."}],
+  "prerequisiteRepairPaths": [{"id": "BA-G6-SS-U2-L1-prerequisite", "trigger": "The learner cannot read the legend or identify map features.", "action": "Repair legend, direction, and symbol reading with a short map scavenger hunt."}],
+  "challengePaths": [{"id": "BA-G6-SS-U2-L1-challenge", "trigger": "The learner supports a site claim with connected evidence.", "action": "Compare two civilizations and explain how similar geographic features produced different choices."}],
+  "commonMisunderstandings": ["Geography determines every human choice.", "A map fact automatically proves a cause.", "Ancient people chose sites for only one reason."],
+  "parentTeacherNotes": "Keep the distinction between evidence and inference explicit. Historical explanations should be cautious and multi-causal.",
+  "accessibilityNotes": ["Provide a text description and tactile or keyboard version of the map.", "Use labels and patterns in addition to color.", "Accept spoken, typed, or annotated-map evidence."] ,
+  "safetyNotes": [],
+  "contentStatus": "reviewed",
+  "version": "3.0.0-bridge-social-studies-geography"
 }

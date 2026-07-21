@@ -1,0 +1,392 @@
+{
+  "id": "g6-ela-theme-text-evidence",
+  "academyId": "bridge",
+  "grade": "6",
+  "subject": "ela",
+  "courseTitle": "Grade 6 English Language Arts",
+  "unitTitle": "Close Reading and Text Evidence",
+  "title": "Theme Signal: Prove What the Story Means",
+  "objective": "Determine a theme and support it with relevant text evidence and reasoning.",
+  "standards": [
+    "ccss-ela"
+  ],
+  "estimatedMinutes": 34,
+  "masteryThreshold": 80,
+  "xp": 160,
+  "visual": {
+    "type": "theme-evidence-board",
+    "title": "Theme evidence signal board",
+    "caption": "A story map connects a character choice, a consequence, two short evidence cards, and a theme statement.",
+    "altText": "A story map connects a character choice to a consequence, two labeled evidence cards, and a complete theme statement.",
+    "generationPrompt": "Create a bold cyber-neon Grade 6 ELA teaching diagram showing a character choice, consequence, two short evidence cards, and a theme statement. Use readable labels, high contrast, no copyrighted characters, and classroom-safe visual metaphors."
+  },
+  "teachingSupport": {
+    "summary": "A theme is a message about life, not a one-word topic. Evidence shows what happened, and reasoning explains how it supports the message.",
+    "description": "The app turns close reading into a signal hunt: notice a repeated choice or consequence, collect precise evidence, then explain the pattern in a complete sentence.",
+    "diagramCallouts": [
+      {
+        "title": "Choice",
+        "body": "Name the decision or action the character makes."
+      },
+      {
+        "title": "Consequence",
+        "body": "Track what changes because of that decision."
+      },
+      {
+        "title": "Theme message",
+        "body": "Write what the pattern suggests about life, people, or choices."
+      }
+    ],
+    "helperNotes": [
+      "Start with what the character does before naming a theme.",
+      "Use two short evidence moments that show the same pattern, not two random quotes.",
+      "Add because: the evidence matters only when the reader explains the connection."
+    ],
+    "commonMisunderstandings": [
+      {
+        "mistake": "Writing a topic such as friendship instead of a complete message.",
+        "fix": "Finish the sentence: The story suggests that friendship means ___ when ___."
+      },
+      {
+        "mistake": "Listing a quote without explaining it.",
+        "fix": "After the evidence, explain what the character's choice reveals."
+      },
+      {
+        "mistake": "Choosing a theme that does not match the character's actions.",
+        "fix": "Trace the same choice-consequence pattern in at least two places."
+      }
+    ],
+    "confusionPrompt": "Write whether you are stuck on finding the pattern, choosing evidence, turning a topic into a message, or explaining the evidence."
+  },
+  "funTasks": [
+    "Run a theme signal hunt: highlight repeated choices and consequences in a short story.",
+    "Build a two-card evidence board and challenge a teammate to find the missing reasoning.",
+    "Rewrite a one-word topic into three possible theme messages, then defend the strongest one."
+  ],
+  "groupHomework": {
+    "title": "Theme signal crew",
+    "groupSize": "3-5 learners",
+    "roles": [
+      "Pattern scout",
+      "Evidence curator",
+      "Reasoning builder",
+      "Skeptic",
+      "Presenter"
+    ],
+    "sharedOutcome": "Submit a theme board with a message, two evidence cards, and a because explanation for each card.",
+    "parentRole": "Ask the student what the character learned or changed, then let the student point to the evidence."
+  },
+  "retentionChecks": [
+    "Next-day topic-versus-theme sort",
+    "Three-day evidence-reasoning repair",
+    "Seven-day new-story theme transfer"
+  ],
+  "reward": "Unlock the Theme Decoder badge after an independent evidence explanation and delayed recall.",
+  "evidenceMoves": {
+    "priorKnowledgeCheck": "Ask the learner to describe a character choice and its consequence in a familiar story before introducing theme language.",
+    "misconceptionCheck": "Check for topic-only answers, quote dumping, and evidence that does not match the proposed message.",
+    "manipulativeRationale": "Use choice cards, consequence arrows, and evidence cards so the abstract theme message grows from visible story relationships.",
+    "representations": [
+      "Choice-consequence map",
+      "Evidence cards",
+      "Theme sentence frame",
+      "Topic versus theme sort",
+      "Student-created counterexample"
+    ],
+    "problemSolvingStrategy": "Trace the pattern, select precise evidence, explain the connection, then test the message against the whole story.",
+    "workedExample": "Model how a character repeatedly avoids asking for help, then show how the consequences support a message about courage and trust.",
+    "examplesAndNonExamples": "Compare a complete theme message with the topic friendship and with a quote that has no explanation.",
+    "knowledgeConnections": "Connect theme to cause and effect, character development, summary, evidence, discussion, and argumentative writing.",
+    "metacognitivePrompt": "Plan the pattern you will trace, monitor whether each evidence card fits, and evaluate whether your message is transferable.",
+    "interventionTrigger": "If the learner gives a topic, mismatched evidence, or no reasoning, route to the corresponding repair path before another quiz.",
+    "transitionBridge": "Theme evidence work prepares learners for literary analysis, claims, commentary, and research writing.",
+    "feedbackFrame": "Name the pattern, point to the first matching evidence card, and ask the learner to complete one because sentence."
+  },
+  "sections": {
+    "warmup": "Look at a character choice and predict what consequence might reveal a bigger message.",
+    "teach": "A theme is a complete message about life. Readers find it by tracing repeated choices and consequences, then explaining evidence.",
+    "guidedPractice": "Sort story moments into choice, consequence, evidence, and theme-message cards.",
+    "independentPractice": "Write one theme message, cite two brief evidence moments, and explain how each supports the message.",
+    "activity": "Build the interactive theme signal board and move evidence cards until the pattern is coherent.",
+    "reteach": "Return to one choice and one consequence, then complete the sentence: This suggests that ___.",
+    "challenge": "Test two possible themes against the whole story and explain which one has stronger evidence."
+  },
+  "quiz": [
+    {
+      "id": "g6-ela-theme-q1",
+      "prompt": "Which is a theme rather than a topic?",
+      "choices": [
+        "Friendship",
+        "The story suggests that honest friendship requires difficult conversations",
+        "A forest",
+        "Courage"
+      ],
+      "answerIndex": 1,
+      "explanation": "A theme is a complete message, not a single topic word."
+    },
+    {
+      "id": "g6-ela-theme-q2",
+      "prompt": "What should you add after a quotation or story detail?",
+      "choices": [
+        "A new unrelated topic",
+        "Reasoning that explains how it supports the theme",
+        "Only a longer quotation",
+        "A guess about the author"
+      ],
+      "answerIndex": 1,
+      "explanation": "Reasoning connects the evidence to the message."
+    },
+    {
+      "id": "g6-ela-theme-q3",
+      "prompt": "Which evidence best supports a theme about asking for help?",
+      "choices": [
+        "The character's jacket is blue",
+        "The character refuses help twice, then succeeds after trusting a teammate",
+        "The story has ten pages",
+        "The setting is a city"
+      ],
+      "answerIndex": 1,
+      "explanation": "The repeated choice and changed consequence directly support the theme pattern."
+    }
+  ],
+  "parentTeacherNotes": "Use this as the Grade 6 ELA native V3 exemplar. Require a theme message, two relevant evidence cards, and reasoning before awarding mastery.",
+  "accessibilityNotes": [
+    "Provide text and audio versions of the short passage.",
+    "Keep evidence cards keyboard sortable and label every connector.",
+    "Do not rely on color alone for choice, consequence, or evidence categories."
+  ],
+  "safetyNotes": [
+    "Use school-safe, age-appropriate excerpts and avoid collecting student writing beyond the learning record."
+  ],
+  "studentFacing": {
+    "mission": "Use a visual model to master Theme Signal: Prove What the Story Means.",
+    "whyItMatters": "Determine a theme and support it with relevant text evidence and reasoning.",
+    "bigIdea": "A theme is a message about life, not a one-word topic. Evidence shows what happened, and reasoning explains how it supports the message.",
+    "modelSteps": [
+      "Choice: Name the decision or action the character makes.",
+      "Consequence: Track what changes because of that decision.",
+      "Theme message: Write what the pattern suggests about life, people, or choices."
+    ],
+    "example": "Sort story moments into choice, consequence, evidence, and theme-message cards.",
+    "nonExample": "Writing a topic such as friendship instead of a complete message.",
+    "quickCheck": "Test two possible themes against the whole story and explain which one has stronger evidence.",
+    "studentSummary": "A theme is a message about life, not a one-word topic. Evidence shows what happened, and reasoning explains how it supports the message.",
+    "tutorHandoff": "Write whether you are stuck on finding the pattern, choosing evidence, turning a topic into a message, or explaining the evidence."
+  },
+  "schemaVersion": "3",
+  "academy": "bridge",
+  "gradeLevel": "6",
+  "course": "Grade 6 English Language Arts",
+  "unitId": "g6-ela-theme-text-evidence",
+  "lessonNumber": 1,
+  "lessonFamily": "reasoning_lab",
+  "secondaryLessonFamily": "reasoning_lab",
+  "activePhases": [
+    "orient",
+    "model",
+    "deconstruct",
+    "practice",
+    "reason",
+    "prove",
+    "remember",
+    "transfer",
+    "adapt"
+  ],
+  "targetLearningStates": [
+    "not_diagnosed",
+    "acquiring",
+    "developing",
+    "accurate",
+    "secure",
+    "durable",
+    "transferable"
+  ],
+  "learningObjective": "Determine a theme and support it with relevant text evidence and reasoning.",
+  "successCriteria": [
+    "I can describe the big idea in Theme Signal: Prove What the Story Means.",
+    "I can use a visual model or example to solve a new problem.",
+    "I can explain my reasoning and repair a misunderstanding.",
+    "I can retrieve and transfer the idea after a delay."
+  ],
+  "essentialQuestion": "How can evidence help us identify the big idea?",
+  "standardsTags": [
+    "ccss-ela"
+  ],
+  "thinkingSkillTags": [
+    "main-idea",
+    "evidence",
+    "text-structure",
+    "transfer"
+  ],
+  "vocabularyTerms": [
+    "main idea",
+    "detail",
+    "evidence",
+    "distractor",
+    "nonfiction"
+  ],
+  "prerequisiteSkillIds": [
+    "identify-topic",
+    "read-supporting-detail"
+  ],
+  "outcomes": {
+    "knowledge": [
+      "A theme is a message about life, not a one-word topic. Evidence shows what happened, and reasoning explains how it supports the message."
+    ],
+    "capability": [
+      "Determine a theme and support it with relevant text evidence and reasoning.",
+      "Use a model, example, or explanation to demonstrate the idea."
+    ],
+    "reasoning": [
+      "Use evidence from the model or task to justify a choice."
+    ],
+    "retention": [
+      "Retrieve the core idea after the original lesson context is removed."
+    ],
+    "transfer": [
+      "Apply the idea to a new example, context, or problem."
+    ]
+  },
+  "phaseModules": [
+    {
+      "phase": "orient",
+      "title": "Notice the challenge",
+      "studentAction": "Look at the model and describe what you notice about Theme Signal: Prove What the Story Means.",
+      "visualSupport": "Use a visual model to master Theme Signal: Prove What the Story Means.",
+      "successCheck": "I can say what I am trying to figure out before I choose an answer."
+    },
+    {
+      "phase": "model",
+      "title": "Build a model",
+      "studentAction": "A theme is a complete message about life. Readers find it by tracing repeated choices and consequences, then explaining evidence.",
+      "visualSupport": "Choice: Name the decision or action the character makes.",
+      "successCheck": "My model shows the important parts and how they connect."
+    },
+    {
+      "phase": "deconstruct",
+      "title": "Spot the parts",
+      "studentAction": "Sort the examples, evidence, or steps that belong to Theme Signal: Prove What the Story Means.",
+      "visualSupport": "Consequence: Track what changes because of that decision. Theme message: Write what the pattern suggests about life, people, or choices.",
+      "successCheck": "I can explain why one choice fits and another choice does not."
+    },
+    {
+      "phase": "practice",
+      "title": "Try the method",
+      "studentAction": "Sort story moments into choice, consequence, evidence, and theme-message cards.",
+      "visualSupport": "Sort story moments into choice, consequence, evidence, and theme-message cards.",
+      "successCheck": "I can use the model to complete a new example."
+    },
+    {
+      "phase": "reason",
+      "title": "Explain the why",
+      "studentAction": "Test two possible themes against the whole story and explain which one has stronger evidence.",
+      "visualSupport": "Writing a topic such as friendship instead of a complete message.",
+      "successCheck": "My explanation names evidence or a rule, not only an answer."
+    },
+    {
+      "phase": "prove",
+      "title": "Show your thinking",
+      "studentAction": "Write one theme message, cite two brief evidence moments, and explain how each supports the message.",
+      "visualSupport": "Choose a drawing, spoken explanation, labeled model, or written response.",
+      "successCheck": "Another learner could understand my reasoning from my proof."
+    },
+    {
+      "phase": "remember",
+      "title": "Retrieve it later",
+      "studentAction": "After a short delay, recall the key idea from Theme Signal: Prove What the Story Means without copying the original example.",
+      "visualSupport": "A theme is a message about life, not a one-word topic. Evidence shows what happened, and reasoning explains how it supports the message.",
+      "successCheck": "I can retrieve the idea when the order and example change."
+    },
+    {
+      "phase": "transfer",
+      "title": "Use it somewhere new",
+      "studentAction": "Test two possible themes against the whole story and explain which one has stronger evidence.",
+      "visualSupport": "A new context, example, or problem that keeps the same underlying idea.",
+      "successCheck": "I can recognize when this idea is useful outside the original example."
+    },
+    {
+      "phase": "adapt",
+      "title": "Choose your next move",
+      "studentAction": "Write whether you are stuck on finding the pattern, choosing evidence, turning a topic into a message, or explaining the evidence.",
+      "visualSupport": "Pick a helper note, alternate model, reteach path, or challenge path based on your evidence.",
+      "successCheck": "I can name what is still confusing and choose a productive next step."
+    }
+  ],
+  "proofTasks": [
+    {
+      "proof": "recall",
+      "prompt": "After a delay, retrieve the key idea from Theme Signal: Prove What the Story Means.",
+      "independentRequired": true
+    },
+    {
+      "proof": "explain",
+      "prompt": "Test two possible themes against the whole story and explain which one has stronger evidence.",
+      "independentRequired": true
+    },
+    {
+      "proof": "perform",
+      "prompt": "Write one theme message, cite two brief evidence moments, and explain how each supports the message.",
+      "independentRequired": true
+    },
+    {
+      "proof": "retain",
+      "prompt": "Complete a delayed Memory Vault check for Theme Signal: Prove What the Story Means.",
+      "independentRequired": true
+    },
+    {
+      "proof": "transfer",
+      "prompt": "Test two possible themes against the whole story and explain which one has stronger evidence.",
+      "independentRequired": true
+    }
+  ],
+  "requiredMasteryProofs": [
+    "recall",
+    "explain",
+    "perform",
+    "retain",
+    "transfer"
+  ],
+  "feedbackRules": [
+    {
+      "diagnosisCode": "g6-ela-theme-text-evidence-misconception-1",
+      "result": "Writing a topic such as friendship instead of a complete message.",
+      "hint": "Finish the sentence: The story suggests that friendship means ___ when ___.",
+      "action": "Route to the alternate representation before retrying."
+    },
+    {
+      "diagnosisCode": "g6-ela-theme-text-evidence-misconception-2",
+      "result": "Listing a quote without explaining it.",
+      "hint": "After the evidence, explain what the character's choice reveals.",
+      "action": "Route to the alternate representation before retrying."
+    },
+    {
+      "diagnosisCode": "g6-ela-theme-text-evidence-misconception-3",
+      "result": "Choosing a theme that does not match the character's actions.",
+      "hint": "Trace the same choice-consequence pattern in at least two places.",
+      "action": "Route to the alternate representation before retrying."
+    }
+  ],
+  "reteachPaths": [
+    {
+      "id": "g6-ela-theme-text-evidence-reteach",
+      "trigger": "The learner misses the model or cannot explain the key relationship.",
+      "action": "Return to one choice and one consequence, then complete the sentence: This suggests that ___."
+    }
+  ],
+  "prerequisiteRepairPaths": [
+    {
+      "id": "g6-ela-theme-text-evidence-prerequisite-repair",
+      "trigger": "The learner cannot identify the basic parts needed for the lesson.",
+      "action": "Use a short sort, match, or vocabulary check before returning to the main task."
+    }
+  ],
+  "challengePaths": [
+    {
+      "id": "g6-ela-theme-text-evidence-challenge",
+      "trigger": "The learner completes the proof independently.",
+      "action": "Test two possible themes against the whole story and explain which one has stronger evidence."
+    }
+  ],
+  "contentStatus": "pilot_ready",
+  "version": "3.0.0-g6-ela-theme-text-evidence-native-exemplar"
+}

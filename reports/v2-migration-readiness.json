@@ -1,0 +1,339 @@
+{
+  "generatedAt": "2026-07-19T15:30:27.886Z",
+  "root": "C:\\Users\\onlyw\\Documents\\ai school",
+  "status": "ready",
+  "passed": true,
+  "summary": {
+    "pilotLessons": 10,
+    "nativeV3Pilots": 10,
+    "validNativeV3Pilots": 10,
+    "adaptedPilots": 0,
+    "contentFiles": 27,
+    "seedLessonFiles": 16,
+    "contentVersions": {
+      "3": 27
+    }
+  },
+  "checks": [
+    {
+      "id": "v3-contracts",
+      "label": "V3 schemas and validators are present",
+      "passed": true,
+      "detail": "5 V3 schemas are registered.",
+      "blocking": true
+    },
+    {
+      "id": "native-v3-exemplars",
+      "label": "At least three native V3 exemplars validate",
+      "passed": true,
+      "detail": "10/10 pilot records are native V3 and valid.",
+      "blocking": true
+    },
+    {
+      "id": "v2-compatibility-adapter",
+      "label": "V2 lessons remain explicitly adapted",
+      "passed": true,
+      "detail": "0 pilot records still require the V2 adapter.",
+      "blocking": true
+    },
+    {
+      "id": "active-phase-rendering",
+      "label": "The player renders active phases in authored order",
+      "passed": true,
+      "detail": "Student player references the V3 render model and active phase sequence.",
+      "blocking": true
+    },
+    {
+      "id": "empty-phase-omission",
+      "label": "Empty V3 phases are omitted",
+      "passed": true,
+      "detail": "Renderable phase modules require a non-empty student action.",
+      "blocking": true
+    },
+    {
+      "id": "legacy-content-inventory",
+      "label": "On-disk legacy content is accounted for",
+      "passed": true,
+      "detail": "No on-disk legacy content remains; all content files declare schemaVersion 3.",
+      "blocking": true
+    },
+    {
+      "id": "native-content-files",
+      "label": "All on-disk content is native V3",
+      "passed": true,
+      "detail": "27/27 on-disk content files currently declare schemaVersion 3.",
+      "blocking": true
+    },
+    {
+      "id": "production-data-gate",
+      "label": "Runtime keeps production fail-closed until database mode is ready",
+      "passed": true,
+      "detail": "Production mode must not silently use JSON fallback.",
+      "blocking": true
+    }
+  ],
+  "nativePilotResults": [
+    {
+      "id": "g3-fractions-number-line",
+      "title": "Fractions on a Number Line",
+      "academy": "foundation",
+      "gradeLevel": "3",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g3-ela-main-idea-evidence",
+      "title": "Main Idea Detective",
+      "academy": "foundation",
+      "gradeLevel": "3",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g3-science-mini-ecosystem",
+      "title": "Build a Mini Ecosystem",
+      "academy": "foundation",
+      "gradeLevel": "3",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g3-social-regions-community-map",
+      "title": "Map a Community Region",
+      "academy": "foundation",
+      "gradeLevel": "3",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g6-math-ratios-unit-rates",
+      "title": "Ratio Quest: Build a Better Deal",
+      "academy": "bridge",
+      "gradeLevel": "6",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g6-earth-systems-weather",
+      "title": "Reading Weather Patterns",
+      "academy": "bridge",
+      "gradeLevel": "6",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g9-biology-cells",
+      "title": "Cell Structure and Function",
+      "academy": "scholar",
+      "gradeLevel": "9",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g6-ela-theme-text-evidence",
+      "title": "Theme Signal: Prove What the Story Means",
+      "academy": "bridge",
+      "gradeLevel": "6",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g6-social-geography-early-humans",
+      "title": "Map the Move: Why Communities Settle",
+      "academy": "bridge",
+      "gradeLevel": "6",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    },
+    {
+      "id": "g6-learning-ai-build-test",
+      "title": "Learning AI",
+      "academy": "bridge",
+      "gradeLevel": "6",
+      "passed": true,
+      "errors": [],
+      "activePhases": [
+        "orient",
+        "model",
+        "deconstruct",
+        "practice",
+        "reason",
+        "prove",
+        "remember",
+        "transfer",
+        "adapt"
+      ],
+      "requiredMasteryProofs": [
+        "recall",
+        "explain",
+        "perform",
+        "retain",
+        "transfer"
+      ]
+    }
+  ],
+  "nextActions": [],
+  "releaseRule": "Do not expand student-facing content production until the V3 exemplars, adapter/player checks, review gate, and on-disk content migration are verified."
+}

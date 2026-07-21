@@ -1,0 +1,356 @@
+{
+  "id": "g3-fractions-number-line",
+  "academyId": "foundation",
+  "grade": "3",
+  "subject": "math",
+  "courseTitle": "Math",
+  "unitTitle": "Fractions",
+  "title": "Fractions on a Number Line",
+  "objective": "Place unit fractions and equivalent fractions on a number line.",
+  "standards": [
+    "ccss-math"
+  ],
+  "estimatedMinutes": 22,
+  "masteryThreshold": 80,
+  "xp": 120,
+  "visual": {
+    "type": "number-line",
+    "title": "Fraction path image",
+    "caption": "A number line from 0 to 1 with equal jumps for halves, thirds, and fourths."
+  },
+  "teachingSupport": {
+    "summary": "Fractions on a number line are about equal spaces between 0 and 1, not just marks on the line.",
+    "description": "Learners start with a physical strip, move to a floor path, then draw the same equal spaces on paper before using symbols.",
+    "diagramCallouts": [
+      {
+        "title": "Whole interval",
+        "body": "Mark 0 and 1 first so the child sees the whole before naming the parts."
+      },
+      {
+        "title": "Equal spaces",
+        "body": "Count the spaces between tick marks; the denominator names the number of equal spaces."
+      },
+      {
+        "title": "Same point",
+        "body": "Use 1/2 and 2/4 on the same line to show equivalent fractions visually."
+      }
+    ],
+    "helperNotes": [
+      "Use tape on the floor or paper strips before asking for a written answer.",
+      "Ask the learner to point to the whole, then the equal spaces, then the target fraction.",
+      "Have the child say: I counted spaces, not tick marks."
+    ],
+    "commonMisunderstandings": [
+      {
+        "mistake": "Counting tick marks instead of spaces.",
+        "fix": "Cover the tick marks and ask the learner to hop only the spaces between 0 and 1."
+      },
+      {
+        "mistake": "Thinking fourths are always bigger than halves because 4 is bigger than 2.",
+        "fix": "Compare same-size strips and show that more pieces means smaller pieces."
+      }
+    ],
+    "confusionPrompt": "Write which part is confusing: finding the whole, making equal spaces, or placing the fraction."
+  },
+  "funTasks": [
+    "Hop the fraction path on the floor using tape marks.",
+    "Build a snack-strip model, then transfer the same spacing to a number line.",
+    "Teach a stuffed animal why 2/4 lands on the same point as 1/2."
+  ],
+  "retentionChecks": [
+    "10-minute mini recall",
+    "Next-day fraction hop",
+    "Three-day mixed fraction review"
+  ],
+  "reward": "Unlock the Fraction Trail badge after a next-day recall win.",
+  "evidenceMoves": {
+    "priorKnowledgeCheck": "Ask learners to place 1/2 on a blank 0 to 1 line and explain what the denominator tells them before instruction starts.",
+    "misconceptionCheck": "Watch for learners counting tick marks instead of spaces or treating larger denominators as larger pieces.",
+    "manipulativeRationale": "Use fraction strips because they make equal spacing visible before learners move to the number line.",
+    "representations": [
+      "Fraction strip",
+      "Floor number line",
+      "Drawn number line",
+      "Symbolic fractions",
+      "Student explanation sentence"
+    ],
+    "problemSolvingStrategy": "Use the problem-solving routine: mark 0 and 1, count equal spaces, place the fraction, then compare with a second representation.",
+    "workedExample": "Model why 2/4 lands at the same point as 1/2, then ask learners to critique a wrong example where 2/4 is placed after 1/2.",
+    "examplesAndNonExamples": "Compare 2/4 as an equivalent example with 2/3 as a non-example for 1/2 on the same 0 to 1 line.",
+    "knowledgeConnections": "Connect equal sharing, skip counting spaces, equivalent fractions, and the idea that fractions extend the number system between whole numbers.",
+    "metacognitivePrompt": "Plan where the whole starts and ends, monitor whether spaces are equal, evaluate whether the answer matches the strip, and explain the strategy.",
+    "interventionTrigger": "If the learner misses either quiz item or cannot explain equal spaces, assign the strip-to-line reteach and a next-day recall check.",
+    "transitionBridge": "Grade 3 number-line fractions prepare learners for Grade 4 equivalent fractions, Grade 5 fraction operations, and Grade 6 ratios.",
+    "feedbackFrame": "Name the accurate part of the model, identify the first spacing error, and ask for one corrected placement before scoring again."
+  },
+  "sections": {
+    "warmup": "Compare halves, thirds, and fourths using equal-size visual parts.",
+    "teach": "Fractions show equal parts of a whole. On a number line, the denominator tells how many equal spaces fit between 0 and 1.",
+    "guidedPractice": "Drag 1/2, 1/3, and 3/4 to the correct tick marks.",
+    "independentPractice": "Solve 10 placement problems with unit fractions and equivalent fractions.",
+    "activity": "Build a paper strip number line and mark equal jumps.",
+    "reteach": "Use fraction strips first, then transfer the same spacing to the number line.",
+    "challenge": "Explain why 2/4 and 1/2 land on the same point."
+  },
+  "quiz": [
+    {
+      "id": "g3-fractions-q1",
+      "prompt": "Where does 1/2 belong on a number line from 0 to 1?",
+      "choices": [
+        "At the middle point",
+        "At 0",
+        "At the first of three spaces",
+        "Past 1"
+      ],
+      "answerIndex": 0,
+      "explanation": "One half divides the space from 0 to 1 into two equal parts and lands in the middle."
+    },
+    {
+      "id": "g3-fractions-q2",
+      "prompt": "Which fraction is equivalent to 1/2?",
+      "choices": [
+        "1/3",
+        "2/4",
+        "3/3",
+        "4/2"
+      ],
+      "answerIndex": 1,
+      "explanation": "Two fourths covers the same amount as one half."
+    }
+  ],
+  "studentFacing": {
+    "mission": "Rescue the fraction path by proving every jump is the same size.",
+    "whyItMatters": "Fractions stop feeling like two random numbers when you can see them as places on a path.",
+    "bigIdea": "The denominator tells how many equal spaces split the whole from 0 to 1.",
+    "modelSteps": [
+      "Mark the whole first: 0 at the start and 1 at the end.",
+      "Split the whole into equal spaces, not just tick marks.",
+      "Place the fraction by counting spaces from 0."
+    ],
+    "example": "For 2/4, split 0 to 1 into four equal spaces, then move two spaces. You land at the same place as 1/2.",
+    "nonExample": "If the spaces are not equal, the point is not a fair fraction even if the label looks right.",
+    "quickCheck": "Before you answer, point to the whole, count the equal spaces, then name the landing point.",
+    "studentSummary": "A fraction on a number line is a location made from equal spaces.",
+    "tutorHandoff": "Tell the tutor whether you are counting tick marks, making equal spaces, or finding the whole."
+  },
+  "schemaVersion": "3",
+  "academy": "foundation",
+  "gradeLevel": "3",
+  "course": "Grade 3 Mathematics",
+  "unitId": "fractions-as-numbers",
+  "lessonNumber": 1,
+  "lessonFamily": "concept_launch",
+  "secondaryLessonFamily": "skill_workshop",
+  "activePhases": [
+    "orient",
+    "model",
+    "deconstruct",
+    "practice",
+    "reason",
+    "prove",
+    "remember",
+    "transfer",
+    "adapt"
+  ],
+  "targetLearningStates": [
+    "acquiring",
+    "developing",
+    "accurate",
+    "secure"
+  ],
+  "learningObjective": "Place unit fractions and equivalent fractions on a number line.",
+  "successCriteria": [
+    "I can mark 0 and 1 before I split the whole into equal spaces.",
+    "I can place a fraction by counting equal spaces, not just tick marks.",
+    "I can show why two equivalent fractions land on the same point.",
+    "I can explain my placement with a drawing, words, or a fraction strip."
+  ],
+  "essentialQuestion": "How can a number line show that a fraction is a number and not just a piece of a shape?",
+  "standardsTags": [
+    "ccss-math"
+  ],
+  "thinkingSkillTags": [
+    "equal-part-reasoning",
+    "number-line-model",
+    "equivalence",
+    "explain-with-a-model"
+  ],
+  "vocabularyTerms": [
+    "whole",
+    "equal spaces",
+    "numerator",
+    "denominator",
+    "unit fraction",
+    "equivalent"
+  ],
+  "prerequisiteSkillIds": [
+    "count-equal-groups",
+    "compare-whole-numbers",
+    "describe-position"
+  ],
+  "outcomes": {
+    "knowledge": [
+      "The denominator tells how many equal spaces make the whole interval from 0 to 1.",
+      "The numerator tells how many of those equal spaces to move from 0.",
+      "Equivalent fractions name the same location when their equal spaces line up."
+    ],
+    "capability": [
+      "Build a fraction number line with a strip, drawing, or interactive model.",
+      "Place unit and equivalent fractions and defend the location."
+    ],
+    "reasoning": [
+      "Use equal spaces and a shared whole as evidence instead of guessing from the size of the denominator."
+    ],
+    "retention": [
+      "Retrieve the whole, equal spaces, and movement rule after a delay."
+    ],
+    "transfer": [
+      "Use a number line to explain a fraction in a recipe, measurement, or game path."
+    ]
+  },
+  "phaseModules": [
+    {
+      "phase": "orient",
+      "title": "Find the whole",
+      "studentAction": "Point to 0 and 1 on the path, then say what the whole interval represents.",
+      "visualSupport": "A bright floor path from 0 to 1 with a large whole marker.",
+      "successCheck": "I can identify the whole before naming parts."
+    },
+    {
+      "phase": "model",
+      "title": "Build equal spaces",
+      "studentAction": "Fold or split a strip into equal spaces, then copy those spaces onto the number line.",
+      "visualSupport": "Fraction strip lined up with a number line.",
+      "successCheck": "All spaces are the same size."
+    },
+    {
+      "phase": "deconstruct",
+      "title": "Read the fraction",
+      "studentAction": "Use the denominator to name the number of spaces and the numerator to count the jumps.",
+      "visualSupport": "Callouts for denominator, numerator, spaces, and jumps.",
+      "successCheck": "I can explain both numbers without using a memorized trick."
+    },
+    {
+      "phase": "practice",
+      "title": "Place and check",
+      "studentAction": "Place halves, thirds, and fourths, then check each location against the strip.",
+      "visualSupport": "Drag-and-check fraction path.",
+      "successCheck": "I can correct a placement using the model."
+    },
+    {
+      "phase": "reason",
+      "title": "Explain the same point",
+      "studentAction": "Compare 1/2 and 2/4 and explain why both names can point to one location.",
+      "visualSupport": "Two fraction strips aligned to one number line point.",
+      "successCheck": "My explanation names the shared whole and equal location."
+    },
+    {
+      "phase": "prove",
+      "title": "Show your thinking",
+      "studentAction": "Place a new fraction and explain the spaces and jumps using a drawing or sentence.",
+      "successCheck": "The proof is independently understandable."
+    },
+    {
+      "phase": "remember",
+      "title": "Fraction hop recall",
+      "studentAction": "After a delay, rebuild a small 0-to-1 path and retrieve one fraction location.",
+      "successCheck": "I can retrieve the rule without seeing the original example."
+    },
+    {
+      "phase": "transfer",
+      "title": "Use a measurement",
+      "studentAction": "Use a number line to show a fraction of a meter, cup, or game path and explain the choice.",
+      "successCheck": "The model still works when the context changes."
+    },
+    {
+      "phase": "adapt",
+      "title": "Choose the next move",
+      "studentAction": "Decide whether to use a strip, draw equal spaces, retry, or explain an equivalent fraction.",
+      "successCheck": "I can name the support that helps me learn next."
+    }
+  ],
+  "proofTasks": [
+    {
+      "proof": "recall",
+      "prompt": "Place 1/3 on a 0-to-1 line after a delay.",
+      "independentRequired": true
+    },
+    {
+      "proof": "explain",
+      "prompt": "Explain what the numerator and denominator tell you on the line.",
+      "independentRequired": true
+    },
+    {
+      "proof": "perform",
+      "prompt": "Build and use a number line to place 3/4.",
+      "independentRequired": true
+    },
+    {
+      "proof": "retain",
+      "prompt": "Complete a delayed Memory Vault fraction-hop check.",
+      "independentRequired": true
+    },
+    {
+      "proof": "transfer",
+      "prompt": "Use the model to show a fraction of a real measurement.",
+      "independentRequired": true
+    }
+  ],
+  "requiredMasteryProofs": [
+    "recall",
+    "explain",
+    "perform",
+    "retain",
+    "transfer"
+  ],
+  "feedbackRules": [
+    {
+      "diagnosisCode": "tick_mark_trap",
+      "result": "The learner counted marks instead of spaces.",
+      "hint": "Cover the marks and count only the equal hops between 0 and 1.",
+      "action": "Route to a floor-path or fraction-strip repair."
+    },
+    {
+      "diagnosisCode": "denominator_size_trap",
+      "result": "The learner thinks a larger denominator makes a larger piece.",
+      "hint": "Compare one strip split into 2 parts with the same strip split into 4 parts.",
+      "action": "Route to a concrete equal-parts comparison before retry."
+    },
+    {
+      "diagnosisCode": "whole_missing",
+      "result": "The learner started naming parts without identifying the whole.",
+      "hint": "Point to 0 and 1 first and say what distance is being divided.",
+      "action": "Return to orient and model phases."
+    }
+  ],
+  "reteachPaths": [
+    {
+      "id": "g3-fractions-number-line-reteach",
+      "trigger": "Placement or explanation misses the equal-space rule.",
+      "action": "Use a physical strip, then transfer the same folds to a number line."
+    }
+  ],
+  "prerequisiteRepairPaths": [
+    {
+      "id": "g3-fractions-number-line-prerequisite",
+      "trigger": "The learner cannot identify a whole or compare equal groups.",
+      "action": "Repair whole-versus-part language with sorting and matching before fractions."
+    }
+  ],
+  "challengePaths": [
+    {
+      "id": "g3-fractions-number-line-challenge",
+      "trigger": "The learner explains equivalent fractions independently.",
+      "action": "Compare two new equivalent fractions and create a measurement example."
+    }
+  ],
+  "parentTeacherNotes": "Use concrete strips, movement, drawing, and oral explanation before requiring symbols. Treat a correct placement with heavy prompting as developing evidence, not durable mastery.",
+  "accessibilityNotes": [
+    "Provide a tactile strip and a spoken description of each number-line move.",
+    "Do not use color alone to distinguish numerator, denominator, or spaces.",
+    "Accept pointing, drawing, oral explanation, or keyboard interaction as evidence."
+  ],
+  "safetyNotes": [],
+  "contentStatus": "pilot_ready",
+  "version": "3.0.0-foundation-fractions-exemplar"
+}

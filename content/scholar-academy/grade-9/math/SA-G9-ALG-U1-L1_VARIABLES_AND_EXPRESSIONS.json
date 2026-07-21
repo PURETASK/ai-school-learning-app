@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "2.0",
+  "schemaVersion": "3",
   "id": "SA-G9-ALG-U1-L1",
   "title": "Variables and Expressions",
   "academy": "scholar",
@@ -8,6 +8,7 @@
   "subject": "Math",
   "course": "Algebra I",
   "unit": "Unit 1: Expressions, Variables, and Structure",
+  "unitTitle": "Unit 1: Expressions, Variables, and Structure",
   "lessonType": [
     "concept lesson",
     "skill lesson",
@@ -559,6 +560,66 @@
     ],
     "extensionRule": "Unlock at 90+ mastery or teacher/parent assignment; still schedule Memory Vault review."
   },
+  "lessonFamily": "skill_workshop",
+  "secondaryLessonFamily": "reasoning_lab",
+  "activePhases": ["orient", "model", "deconstruct", "practice", "reason", "prove", "remember", "transfer", "adapt"],
+  "targetLearningStates": ["acquiring", "developing", "accurate", "secure"],
+  "successCriteria": [
+    "I can explain what a variable represents in context.",
+    "I can translate a situation into an algebraic expression.",
+    "I can identify terms, coefficients, constants, and operations.",
+    "I can evaluate an expression and explain why the result makes sense."
+  ],
+  "outcomes": {
+    "knowledge": ["An expression represents a quantity or relationship without an equals sign.", "Structure reveals how operations and quantities are connected."],
+    "capability": ["Write and evaluate expressions from contexts.", "Use tables, diagrams, and symbolic notation together."],
+    "reasoning": ["Decide whether a variable represents an unknown, a changing quantity, or a general value."],
+    "retention": ["Retrieve expression vocabulary and structure after a delay."],
+    "transfer": ["Model a new cost, score, growth, or constraint situation with an expression."]
+  },
+  "phaseModules": [
+    {"phase": "orient", "title": "Enter the rule lab", "studentAction": "Inspect a changing cost or score pattern and identify what is known and what can change.", "successCheck": "I can name the quantity the variable represents."},
+    {"phase": "model", "title": "See context become structure", "studentAction": "Watch a situation become a table, diagram, words, and an algebraic expression.", "successCheck": "I can connect each symbol to a context quantity."},
+    {"phase": "deconstruct", "title": "Read the expression", "studentAction": "Label terms, coefficients, constants, operations, and grouping in several expressions.", "successCheck": "I can explain the structure before calculating."},
+    {"phase": "practice", "title": "Build the rule", "studentAction": "Write expressions for changing fees, scores, and savings, then evaluate them for chosen values.", "successCheck": "The expression and table agree for more than one value."},
+    {"phase": "reason", "title": "Defend the representation", "studentAction": "Compare two expressions for the same situation and explain which structure matches the story.", "successCheck": "I can use context and structure as evidence."},
+    {"phase": "prove", "title": "Complete the algebra checkpoint", "studentAction": "Translate, label, and evaluate a new expression independently.", "successCheck": "I can show the reasoning without copying a worked answer."},
+    {"phase": "remember", "title": "Retrieve structure", "studentAction": "Return later and recall the difference among variable, coefficient, constant, term, and expression.", "successCheck": "I can retrieve the vocabulary in a new expression."},
+    {"phase": "transfer", "title": "Model a new system", "studentAction": "Create an expression for a new pricing, game, growth, or measurement rule and explain its domain.", "successCheck": "The representation works beyond the original example."},
+    {"phase": "adapt", "title": "Choose the next algebra move", "studentAction": "Repair a translation or evaluation error, or extend a correct expression with a constraint and table.", "successCheck": "The next move matches the reasoning gap."
+    }
+  ],
+  "proofTasks": [
+    {"proof": "recall", "prompt": "Define variable, coefficient, constant, term, and expression.", "independentRequired": true},
+    {"proof": "explain", "prompt": "Explain why an expression can represent a changing quantity.", "independentRequired": true},
+    {"proof": "perform", "prompt": "Write and evaluate an expression from a new context.", "independentRequired": true},
+    {"proof": "retain", "prompt": "Identify expression structure after a delay.", "independentRequired": true},
+    {"proof": "transfer", "prompt": "Build an expression for a different pricing, score, or growth system.", "independentRequired": true}
+  ],
+  "requiredMasteryProofs": ["recall", "explain", "perform", "retain", "transfer"],
+  "feedbackRules": [
+    {"diagnosisCode": "variable-role-confusion", "result": "The learner treats a variable as a fixed label instead of a quantity with a defined role.", "hint": "Ask what changes and what the symbol stands for in the situation.", "action": "Return to the context-table bridge."},
+    {"diagnosisCode": "operation-translation", "result": "The learner chooses an operation without using the relationship in the words.", "hint": "Underline the quantities and connection words before writing symbols.", "action": "Use the words-to-expression sentence frame."},
+    {"diagnosisCode": "structure-blindness", "result": "The learner calculates without identifying terms or grouping.", "hint": "Label the expression first, then evaluate one operation at a time.", "action": "Return to the structure annotation model."}
+  ],
+  "reteachPaths": [{"id": "g9-algebra-context-reteach", "trigger": "The learner cannot connect a variable to a context quantity.", "action": "Use a two-column table of changing inputs and outputs before writing the expression."}],
+  "prerequisiteRepairPaths": [{"id": "g9-algebra-operation-repair", "trigger": "The learner cannot interpret operation words or order of operations.", "action": "Repair operation vocabulary and evaluate short numerical expressions before adding variables."}],
+  "challengePaths": [{"id": "g9-algebra-rule-challenge", "trigger": "The learner independently models and evaluates expressions.", "action": "Design two different-looking expressions, test them across values, and determine whether they are equivalent in context."}],
+  "visualSupports": [
+    {"placement": "lesson-hero", "title": "Variable control panel", "description": "A contextual system shows inputs changing while a symbolic rule produces outputs.", "altText": "A labeled input changes and a rule produces a corresponding output."},
+    {"placement": "teaching-diagram", "title": "Context to expression bridge", "description": "A flow connects story quantities to a table, diagram, and algebraic expression.", "altText": "Arrows connect context, table, diagram, and expression."},
+    {"placement": "interactive-widget", "title": "Expression evaluator", "description": "The learner changes a variable value and watches the expression evaluation update step by step.", "altText": "A labeled variable input changes and a text panel shows each evaluation step."},
+    {"placement": "misconception-repair", "title": "Expression or equation?", "description": "A comparison distinguishes an expression from an equation and shows how the equal sign changes the claim.", "altText": "Two labeled panels compare an expression without an equal sign and an equation with one."},
+    {"placement": "memory-vault", "title": "Structure retrieval cue", "description": "A cue asks what changes, what is fixed, which operations connect the quantities, and what the symbols mean.", "altText": "Four questions cue variable role, constants, operations, and symbols."}
+  ],
+  "groupHomework": {
+    "title": "Rule-machine design studio",
+    "roles": ["Context designer", "Expression writer", "Table tester", "Skeptic", "Presenter"],
+    "sharedArtifact": "A rule-machine poster with context, expression, table, domain assumptions, and a test case.",
+    "individualAccountability": "Each learner submits one independently evaluated value and explains one structure choice."
+  },
+  "contentStatus": "pilot_ready",
+  "version": "3.0.0-scholar-grade9-algebra",
   "mastery": {
     "bands": [
       {

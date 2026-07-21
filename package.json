@@ -1,32 +1,31 @@
 {
-  "name": "k12-learning-app-suite",
+  "name": "k12-learning-academies",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "validate:lessons": "node scripts/validate-lessons.mjs",
-    "audit": "node scripts/audit-foundation.mjs",
-    "test": "node scripts/static-smoke-tests.mjs",
-    "check": "npm run validate:lessons && npm run audit && npm run test"
-  },
-  "dependencies": {
-    "@next/font": "latest",
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest"
-  },
-  "devDependencies": {
-    "@types/node": "latest",
-    "@types/react": "latest",
-    "@types/react-dom": "latest",
-    "autoprefixer": "latest",
-    "eslint": "latest",
-    "eslint-config-next": "latest",
-    "postcss": "latest",
-    "tailwindcss": "latest",
-    "typescript": "latest"
+    "start": "node scripts/serve.mjs",
+    "db:apply": "node scripts/apply-migration.mjs",
+    "db:verify": "node scripts/verify-database.mjs",
+    "db:seed": "node scripts/apply-seed.mjs",
+    "export:migration": "node scripts/export-migration.mjs",
+    "export:seed": "node scripts/export-normalized-seed.mjs",
+    "storage:setup": "node scripts/setup-visual-storage.mjs",
+    "visual:generate-one": "node scripts/generate-production-visual.mjs",
+    "visual:verify": "node scripts/verify-production-visual.mjs",
+    "content:import:bridge6": "node scripts/import-bridge-grade6.mjs",
+    "content:gate:native": "node scripts/verify-native-content-batch.mjs",
+    "content:export:v3": "node scripts/export-native-v3-exemplars.mjs",
+    "content:validate": "node scripts/validate-lessons.mjs",
+    "content:gate": "node scripts/verify-content-quality-gate.mjs",
+    "migration:report": "node scripts/report-v2-migration-readiness.mjs",
+    "supabase:check": "node scripts/check-supabase-connection.mjs",
+    "readiness:audit": "node scripts/readiness-audit.mjs",
+    "readiness:strict": "node scripts/readiness-audit.mjs --strict",
+    "graph:extract": "python -m graphify update . --force --no-cluster",
+    "graph:tree": "graphify tree --graph graphify-out/graph.json --output graphify-out/GRAPH_TREE.html --root . --label \"Nexus Learning OS\"",
+    "graph:query": "graphify query \"show the student lesson-to-mastery workflow\" --graph graphify-out/graph.json --budget 1200",
+    "graph:validate": "npm run graph:extract && node scripts/validate-graphify.mjs . graphify-out/graph.json graphify-out/graphify-validation.json --strict",
+    "test": "node tests/run-tests.mjs"
   }
 }

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus-learning-os.local/schemas/lesson-v3/memory-vault.schema.json",
+  "title": "Nexus Learning OS Memory Vault Item V3",
+  "type": "object",
+  "required": ["id", "learnerId", "skillId", "lessonId", "reviewMode", "currentLearningState", "nextReviewAt"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "learnerId": { "type": "string", "minLength": 1 },
+    "skillId": { "type": "string", "minLength": 1 },
+    "lessonId": { "type": "string", "minLength": 1 },
+    "reviewMode": { "enum": ["recall", "recognize_discriminate", "explain", "correct", "connect", "apply", "mix"] },
+    "lastReviewedAt": { "type": ["string", "null"] },
+    "nextReviewAt": { "type": "string", "minLength": 1 },
+    "intervalDays": { "type": "number", "minimum": 0 },
+    "accuracyHistory": { "type": "array", "items": { "type": "number", "minimum": 0, "maximum": 100 } },
+    "responseLatencyMs": { "type": ["number", "null"], "minimum": 0 },
+    "confidence": { "type": ["number", "null"], "minimum": 1, "maximum": 5 },
+    "hintUsage": { "type": "number", "minimum": 0 },
+    "diagnosisCode": { "type": "string" },
+    "currentLearningState": { "enum": ["not_diagnosed", "prerequisite_gap", "acquiring", "developing", "accurate", "secure", "durable", "transferable"] },
+    "proofStatus": { "type": "object" },
+    "transferEvidence": { "type": "array", "items": { "type": "string" } },
+    "retentionStrength": { "type": ["number", "null"], "minimum": 0, "maximum": 100 }
+  },
+  "additionalProperties": true
+}

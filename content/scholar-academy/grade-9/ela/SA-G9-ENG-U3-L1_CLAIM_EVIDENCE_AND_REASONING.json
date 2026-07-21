@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "2.0",
+  "schemaVersion": "3",
   "id": "SA-G9-ENG-U3-L1",
   "title": "Claim, Evidence, and Reasoning",
   "academy": "scholar",
@@ -560,6 +560,22 @@
     ],
     "extensionRule": "Unlock at 90+ mastery or teacher/parent assignment; still schedule Memory Vault review."
   },
+  "lessonFamily":"reasoning_lab",
+  "secondaryLessonFamily":"seminar_discussion",
+  "activePhases":["orient","model","deconstruct","practice","reason","prove","remember","transfer","adapt"],
+  "targetLearningStates":["acquiring","developing","accurate","secure"],
+  "successCriteria":["I can make a precise claim.","I can choose credible evidence.","I can explain how evidence supports the claim.","I can address a counterclaim or limitation."],
+  "outcomes":{"knowledge":["A defensible argument connects claim, evidence, reasoning, and limits."],"capability":["Build and revise a claim-evidence-reasoning response."],"reasoning":["Evaluate whether evidence actually supports a claim."],"retention":["Recall the argument architecture after a delay."],"transfer":["Use the architecture in a new text, debate, or research question."]},
+  "phaseModules":[{"phase":"orient","title":"Enter the claim lab","studentAction":"Read a contested statement and identify what would need to be proved.","successCheck":"I can state the question behind the claim."},{"phase":"model","title":"Watch evidence do work","studentAction":"Follow a model that connects claim, source evidence, reasoning, and limitation.","successCheck":"I can point to the connection, not just the quote."},{"phase":"deconstruct","title":"Audit an argument","studentAction":"Label claims, evidence, reasoning, counterclaims, and unsupported leaps.","successCheck":"I can name the first reasoning gap."},{"phase":"practice","title":"Build the evidence chain","studentAction":"Select source cards and write the reasoning that links them to a claim.","successCheck":"Each evidence point has an explicit connection."},{"phase":"reason","title":"Test strength and limits","studentAction":"Compare two arguments and explain which has stronger evidence and why.","successCheck":"I can name a strength and a limitation."},{"phase":"prove","title":"Write the argument","studentAction":"Produce a concise claim-evidence-reasoning response to a new prompt.","successCheck":"The response is defensible and sourced."},{"phase":"remember","title":"Retrieve the architecture","studentAction":"Reconstruct claim, evidence, reasoning, and limitation after a delay.","successCheck":"I can retrieve the structure independently."},{"phase":"transfer","title":"Use it in research","studentAction":"Apply the structure to a new article, data set, or civic question.","successCheck":"The argument method transfers."},{"phase":"adapt","title":"Revise with evidence","studentAction":"Repair a weak source or reasoning link, or add a counterclaim when secure.","successCheck":"My revision responds to the actual weakness."}],
+  "proofTasks":[{"proof":"recall","prompt":"Define claim, evidence, reasoning, and counterclaim.","independentRequired":true},{"proof":"explain","prompt":"Explain how evidence supports a claim.","independentRequired":true},{"proof":"perform","prompt":"Write a new claim-evidence-reasoning response.","independentRequired":true},{"proof":"retain","prompt":"Retrieve the argument architecture after a delay.","independentRequired":true},{"proof":"transfer","prompt":"Use the method on a new research or civic question.","independentRequired":true}],
+  "requiredMasteryProofs":["recall","explain","perform","retain","transfer"],
+  "feedbackRules":[{"diagnosisCode":"quote-without-link","result":"The learner includes evidence but does not explain its relevance.","hint":"Add a because sentence that connects source detail to claim.","action":"Return to the evidence-chain builder."},{"diagnosisCode":"claim-too-broad","result":"The claim says more than the evidence can support.","hint":"Narrow the claim or add a relevant source.","action":"Use the scope-and-limits repair."}],
+  "reteachPaths":[{"id":"g9-argument-link-reteach","trigger":"The learner cannot connect evidence to claim.","action":"Use one source card and complete a sentence frame before adding a second source."}],
+  "prerequisiteRepairPaths":[{"id":"g9-argument-reading-repair","trigger":"The learner cannot distinguish a claim from a fact.","action":"Sort statements into observation, claim, evidence, and inference."}],
+  "challengePaths":[{"id":"g9-argument-counterclaim-challenge","trigger":"The learner builds a supported argument.","action":"Add a fair counterclaim and explain why the evidence still supports the conclusion."}],
+  "visualSupports":[{"placement":"lesson-hero","title":"Argument architecture","description":"A visual structure connects claim, evidence, reasoning, and limits.","altText":"Four labeled parts connect to form a defensible argument."},{"placement":"teaching-diagram","title":"Evidence bridge","description":"Arrows show how a source detail becomes support through reasoning.","altText":"A source detail connects through reasoning to a claim."},{"placement":"interactive-widget","title":"Source-card builder","description":"The learner assembles source cards and writes the connection sentence.","altText":"Keyboard-selectable source cards connect to a claim and reasoning field."},{"placement":"misconception-repair","title":"Quote or proof?","description":"A comparison shows a quote without reasoning beside a fully explained evidence link.","altText":"An unexplained quote is contrasted with evidence and reasoning."},{"placement":"memory-vault","title":"Argument retrieval cue","description":"A cue asks what is claimed, what proves it, why it matters, and what limits it.","altText":"Four questions cue claim, evidence, reasoning, and limits."}],
+  "contentStatus":"pilot_ready",
+  "version":"3.0.0-scholar-grade9-argument",
   "mastery": {
     "bands": [
       {

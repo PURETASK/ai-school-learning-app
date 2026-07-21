@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus-learning-os.local/schemas/lesson-v3/unit.schema.json",
+  "title": "Nexus Learning OS Unit V3",
+  "type": "object",
+  "required": ["schemaVersion", "id", "title", "academy", "gradeLevel", "subject", "lessonIds", "unitObjectives", "assessment"],
+  "properties": {
+    "schemaVersion": { "const": "3" },
+    "id": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "academy": { "enum": ["foundation", "bridge", "scholar"] },
+    "gradeLevel": { "type": "string", "minLength": 1 },
+    "subject": { "type": "string", "minLength": 1 },
+    "course": { "type": "string" },
+    "overview": { "type": "string" },
+    "essentialQuestions": { "type": "array", "items": { "type": "string" } },
+    "unitObjectives": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+    "lessonIds": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+    "learningCycle": {
+      "type": "array",
+      "items": { "enum": ["orient", "model", "deconstruct", "practice", "reason", "prove", "remember", "transfer", "adapt"] }
+    },
+    "project": { "type": ["object", "null"] },
+    "assessment": { "type": "object", "required": ["proofs"], "properties": { "proofs": { "type": "array", "minItems": 1, "items": { "enum": ["recall", "explain", "perform", "retain", "transfer"] } } }, "additionalProperties": true },
+    "standardsTags": { "type": "array", "items": { "type": "string" } },
+    "contentStatus": { "enum": ["seed", "draft", "reviewed", "pilot_ready", "approved"] },
+    "version": { "type": "string", "minLength": 1 }
+  },
+  "additionalProperties": true
+}

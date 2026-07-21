@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "2.0",
+  "schemaVersion": "3",
   "id": "FA-G3-WR-U1-L1",
   "title": "Building a Strong Paragraph",
   "academy": "foundation",
@@ -488,6 +488,22 @@
     ],
     "extensionRule": "Unlock when quiz score is 90%+ or evidence score is strong."
   },
+  "lessonFamily": "skill_workshop",
+  "secondaryLessonFamily": "seminar_discussion",
+  "activePhases": ["orient", "model", "deconstruct", "practice", "reason", "prove", "remember", "transfer", "adapt"],
+  "targetLearningStates": ["acquiring", "developing", "accurate", "secure"],
+  "successCriteria":["I can write a clear topic sentence.","I can add details that support the topic.","I can explain one detail.","I can close the paragraph."],
+  "outcomes":{"knowledge":["A paragraph groups sentences around one clear idea."],"capability":["Draft and revise a focused paragraph."],"reasoning":["Choose details that support the topic instead of adding unrelated information."],"retention":["Recall paragraph parts after a delay."],"transfer":["Use the structure in a new subject explanation."]},
+  "phaseModules":[{"phase":"orient","title":"Choose one idea","studentAction":"Say what you want your reader to learn about a small topic.","successCheck":"I can name one focused idea."},{"phase":"model","title":"Watch a paragraph grow","studentAction":"Follow a model from topic sentence to detail, explanation, and closing.","successCheck":"I can point to each sentence job."},{"phase":"deconstruct","title":"Sort sentence jobs","studentAction":"Sort sentences into topic, detail, explanation, and closing.","successCheck":"I can explain each job."},{"phase":"practice","title":"Build with sentence tiles","studentAction":"Arrange sentence tiles and add a detail that makes the idea clearer.","successCheck":"Every sentence supports the same topic."},{"phase":"reason","title":"Revise for focus","studentAction":"Choose which detail belongs and explain why an unrelated sentence should move.","successCheck":"I can use the topic to revise."},{"phase":"prove","title":"Write your paragraph","studentAction":"Draft and revise a paragraph about a new topic.","successCheck":"The paragraph has a clear structure."},{"phase":"remember","title":"Retrieve paragraph jobs","studentAction":"Recall the four paragraph jobs after a delay.","successCheck":"I can name and use the parts."},{"phase":"transfer","title":"Write in a new subject","studentAction":"Use the structure to explain a science, social studies, or personal idea.","successCheck":"The structure transfers."},{"phase":"adapt","title":"Repair or extend","studentAction":"Add support, clarify a sentence, or combine ideas when ready.","successCheck":"My revision improves understanding."}],
+  "proofTasks":[{"proof":"recall","prompt":"Name the jobs of the paragraph parts.","independentRequired":true},{"proof":"explain","prompt":"Explain why a detail must support the topic.","independentRequired":true},{"proof":"perform","prompt":"Write and revise a focused paragraph.","independentRequired":true},{"proof":"retain","prompt":"Retrieve the paragraph structure after a delay.","independentRequired":true},{"proof":"transfer","prompt":"Use the structure in a new subject.","independentRequired":true}],
+  "requiredMasteryProofs":["recall","explain","perform","retain","transfer"],
+  "feedbackRules":[{"diagnosisCode":"topic-too-wide","result":"The paragraph tries to cover too many ideas.","hint":"Say the idea in one focused sentence.","action":"Narrow the topic before adding details."},{"diagnosisCode":"detail-no-link","result":"A detail appears without an explanation.","hint":"Add a sentence telling the reader why it matters.","action":"Use the detail-because frame."}],
+  "reteachPaths":[{"id":"g3-paragraph-parts-reteach","trigger":"The learner cannot identify sentence jobs.","action":"Use four labeled sentence cards and rebuild one paragraph orally."}],
+  "prerequisiteRepairPaths":[{"id":"g3-paragraph-sentence-repair","trigger":"The learner cannot produce a complete sentence.","action":"Practice subject, action, and punctuation before paragraph drafting."}],
+  "challengePaths":[{"id":"g3-paragraph-elaboration-challenge","trigger":"The learner writes a focused paragraph.","action":"Add a second supporting detail and explain how the details work together."}],
+  "visualSupports":[{"placement":"lesson-hero","title":"Paragraph house","description":"A visual house shows topic, support, elaboration, and closing as connected parts.","altText":"A paragraph house labels topic, details, elaboration, and closing."},{"placement":"teaching-diagram","title":"Sentence-job flow","description":"Arrows show how sentences guide a reader.","altText":"A flow diagram connects topic, detail, explanation, and closing."},{"placement":"interactive-widget","title":"Sentence tile builder","description":"The learner arranges and revises sentence tiles.","altText":"Keyboard-operable sentence tiles can be arranged into a paragraph."},{"placement":"misconception-repair","title":"Detail or distraction?","description":"A relevant detail is contrasted with an interesting but unrelated sentence.","altText":"A supporting detail is contrasted with an unrelated sentence."},{"placement":"memory-vault","title":"Paragraph jobs cue","description":"A retrieval cue asks what the paragraph tells, shows, explains, and closes.","altText":"Four questions cue paragraph jobs."}],
+  "contentStatus":"pilot_ready",
+  "version":"3.0.0-foundation-grade3-paragraph",
   "mastery": {
     "bands": {
       "0-39": "Needs Intervention",

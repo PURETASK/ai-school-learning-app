@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
+import { validateNexusLessonV3 } from "../src/nexusV3.js";
 
 const root = process.cwd();
 const contentDir = path.join(root, "content");
@@ -47,6 +48,15 @@ for (const file of files) {
     continue;
   }
   const label = lesson.id || file;
+  if (lesson.schemaVersion === "3") {
+    const result = validateNexusLessonV3(lesson, { requireNative: true });
+    if (!result.passed) {
+      for (const error of result.errors) errors.push(String(label) + ": " + error.path + ": " + error.message);
+    }
+    if (lesson.id && lessonIds.has(lesson.id)) errors.push(String(label) + ": duplicate lesson id " + lesson.id);
+    if (lesson.id) lessonIds.add(lesson.id);
+    continue;
+  }
   for (const field of requiredTopLevel) {
     if (lesson[field] === undefined || lesson[field] === null || lesson[field] === "") {
       errors.push(`${label}: missing required field ${field}`);

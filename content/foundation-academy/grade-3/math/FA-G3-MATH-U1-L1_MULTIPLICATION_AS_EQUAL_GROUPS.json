@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "2.0",
+  "schemaVersion": "3",
   "id": "FA-G3-MATH-U1-L1",
   "title": "Multiplication as Equal Groups",
   "academy": "foundation",
@@ -8,6 +8,7 @@
   "subject": "Math",
   "course": "Grade 3 Math",
   "unit": "Unit 1: Multiplication Foundations",
+  "unitTitle": "Unit 1: Multiplication Foundations",
   "lessonType": [
     "concept lesson",
     "skill lesson",
@@ -555,6 +556,59 @@
     ],
     "extensionRule": "Unlock at 90+ mastery or teacher/parent assignment; still schedule Memory Vault review."
   },
+  "lessonFamily": "concept_launch",
+  "secondaryLessonFamily": "skill_workshop",
+  "activePhases": ["orient", "model", "deconstruct", "practice", "prove", "remember", "transfer", "adapt"],
+  "targetLearningStates": ["acquiring", "developing", "accurate", "secure"],
+  "successCriteria": [
+    "I can build equal groups with objects or drawings.",
+    "I can connect equal groups, repeated addition, and an array.",
+    "I can write a multiplication equation that matches my model.",
+    "I can explain what each factor and the product mean."
+  ],
+  "outcomes": {
+    "knowledge": ["Multiplication describes equal groups.", "An array can show rows, columns, and a total."],
+    "capability": ["Build, draw, and label an equal-group model.", "Solve a one-step equal-group problem."],
+    "reasoning": ["Check whether an equation matches the groups instead of guessing from the numbers."],
+    "retention": ["Recall the meaning of factors and product after a delay."],
+    "transfer": ["Use multiplication to describe a new classroom, toy, or snack grouping."]
+  },
+  "phaseModules": [
+    {"phase": "orient", "title": "Meet the group builder", "studentAction": "Make equal groups with counters and predict how many objects there will be altogether.", "successCheck": "I can tell what is equal about the groups."},
+    {"phase": "model", "title": "See groups become an equation", "studentAction": "Watch objects become a drawing, repeated addition, an array, and a multiplication equation.", "successCheck": "I can match each equation number to the model."},
+    {"phase": "deconstruct", "title": "Name the parts", "studentAction": "Point to the groups, group size, number of groups, factors, and product in a model.", "successCheck": "I can explain what each part means."},
+    {"phase": "practice", "title": "Build and draw", "studentAction": "Create several equal-group models, then write the repeated addition and multiplication sentence.", "successCheck": "The drawing, addition, and equation show the same total."},
+    {"phase": "prove", "title": "Show what you know", "studentAction": "Solve a new equal-group story and explain your model with words or a picture.", "successCheck": "I can prove the answer with a matching model."},
+    {"phase": "remember", "title": "Retrieve the group rule", "studentAction": "Return later and explain what multiplication means without seeing the counters.", "successCheck": "I can recall equal groups and product meaning."},
+    {"phase": "transfer", "title": "Use groups in a new place", "studentAction": "Find or invent equal groups in a classroom, game, snack, or toy situation.", "successCheck": "I can use the idea when the objects change."},
+    {"phase": "adapt", "title": "Choose the next move", "studentAction": "If the groups are unequal, fix them; if the model is secure, create a story for a partner.", "successCheck": "I can choose a helpful repair or challenge."
+    }
+  ],
+  "proofTasks": [
+    {"proof": "recall", "prompt": "Explain what multiplication means.", "independentRequired": true},
+    {"proof": "explain", "prompt": "Explain how an array shows equal groups.", "independentRequired": true},
+    {"proof": "perform", "prompt": "Solve a new equal-group story with a model and equation.", "independentRequired": true},
+    {"proof": "retain", "prompt": "Recall factor and product meaning after a delay.", "independentRequired": true},
+    {"proof": "transfer", "prompt": "Create a multiplication story from a new group situation.", "independentRequired": true}
+  ],
+  "requiredMasteryProofs": ["recall", "explain", "perform", "retain", "transfer"],
+  "feedbackRules": [
+    {"diagnosisCode": "unequal-groups", "result": "The learner counts groups that do not have the same amount.", "hint": "Check each group before writing the equation.", "action": "Return to the counter model."},
+    {"diagnosisCode": "factor-product-confusion", "result": "The learner swaps the group information and total.", "hint": "Say how many groups, how many in each, and how many altogether.", "action": "Use the labeled array."},
+    {"diagnosisCode": "equation-model-mismatch", "result": "The equation does not match the drawing.", "hint": "Point to each number in the picture before rewriting.", "action": "Connect objects, addition, and equation again."}
+  ],
+  "reteachPaths": [{"id": "g3-multiplication-groups-reteach", "trigger": "The learner cannot build equal groups.", "action": "Use three small groups of counters and have the learner check each group aloud before drawing."}],
+  "prerequisiteRepairPaths": [{"id": "g3-multiplication-counting-repair", "trigger": "The learner cannot count each group reliably.", "action": "Practice one-to-one counting and grouping by twos or fives before writing multiplication."}],
+  "challengePaths": [{"id": "g3-multiplication-story-challenge", "trigger": "The learner explains a model independently.", "action": "Create two different stories for the same multiplication equation and compare them."}],
+  "visualSupports": [
+    {"placement": "lesson-hero", "title": "Counter garden", "description": "Bright counters form equal groups that can be counted and rearranged.", "altText": "Counters are arranged in equal groups with labels for groups and objects in each group."},
+    {"placement": "teaching-diagram", "title": "Groups to array", "description": "Objects become repeated addition, an array, and a multiplication equation.", "altText": "Arrows connect equal groups to repeated addition, an array, and multiplication."},
+    {"placement": "interactive-widget", "title": "Build-a-group board", "description": "The learner changes group count and group size while the app updates the array and equation.", "altText": "Two labeled controls change number of groups and objects in each group, with a text equation result."},
+    {"placement": "misconception-repair", "title": "Equal or almost equal?", "description": "A comparison shows equal groups beside an unequal grouping that cannot be represented by one multiplication equation.", "altText": "Equal groups are contrasted with groups of different sizes."},
+    {"placement": "memory-vault", "title": "Group story cue", "description": "A retrieval cue asks how many groups, how many in each, and how many altogether.", "altText": "Three questions cue groups, group size, and total."}
+  ],
+  "contentStatus": "pilot_ready",
+  "version": "3.0.0-foundation-grade3-multiplication",
   "mastery": {
     "bands": [
       {

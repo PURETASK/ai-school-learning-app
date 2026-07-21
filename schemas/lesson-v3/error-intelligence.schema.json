@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus-learning-os.local/schemas/lesson-v3/error-intelligence.schema.json",
+  "title": "Nexus Learning OS Error Intelligence Record V3",
+  "type": "object",
+  "required": ["id", "learnerId", "lessonId", "result", "diagnosis", "hint", "action", "recordedAt"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "learnerId": { "type": "string", "minLength": 1 },
+    "lessonId": { "type": "string", "minLength": 1 },
+    "skillId": { "type": "string" },
+    "result": { "type": "object", "required": ["response", "correctness"], "properties": { "response": {}, "correctness": { "enum": ["correct", "partially_correct", "incorrect", "incomplete", "not_attempted"] } }, "additionalProperties": true },
+    "diagnosis": { "type": "object", "required": ["code", "confidence"], "properties": { "code": { "type": "string", "minLength": 1 }, "confidence": { "type": "number", "minimum": 0, "maximum": 1 } }, "additionalProperties": true },
+    "hint": { "type": "object", "required": ["level", "text"], "properties": { "level": { "type": "number", "minimum": 1, "maximum": 5 }, "text": { "type": "string", "minLength": 1 } }, "additionalProperties": true },
+    "action": { "type": "object", "required": ["type", "target"], "properties": { "type": { "enum": ["retry", "reteach", "prerequisite_repair", "alternate_representation", "challenge", "escalate"] }, "target": { "type": "string", "minLength": 1 } }, "additionalProperties": true },
+    "repeatedErrorCount": { "type": "number", "minimum": 0 },
+    "recordedAt": { "type": "string", "minLength": 1 }
+  },
+  "additionalProperties": true
+}

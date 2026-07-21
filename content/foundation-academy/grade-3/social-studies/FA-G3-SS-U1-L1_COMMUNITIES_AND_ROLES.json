@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "2.0",
+  "schemaVersion": "3",
   "id": "FA-G3-SS-U1-L1",
   "title": "Communities and Roles",
   "academy": "foundation",
@@ -558,6 +558,22 @@
     ],
     "extensionRule": "Unlock at 90+ mastery or teacher/parent assignment; still schedule Memory Vault review."
   },
+  "lessonFamily": "inquiry_investigation",
+  "secondaryLessonFamily": "seminar_discussion",
+  "activePhases": ["orient", "model", "deconstruct", "practice", "reason", "prove", "remember", "transfer", "adapt"],
+  "targetLearningStates": ["acquiring", "developing", "accurate", "secure"],
+  "successCriteria":["I can identify a community need.","I can explain how roles help a community.","I can compare responsibilities.","I can suggest a fair solution."],
+  "outcomes":{"knowledge":["Communities use shared roles and decisions to meet needs."],"capability":["Describe a role and its responsibility."],"reasoning":["Compare how choices affect people in a community."],"retention":["Recall the role-need-responsibility connection after a delay."],"transfer":["Apply the idea to a new classroom, neighborhood, or online community."]},
+  "phaseModules":[{"phase":"orient","title":"Notice a community need","studentAction":"Identify one need people must solve together.","successCheck":"I can name the need and my clue."},{"phase":"model","title":"See roles in action","studentAction":"Follow a model showing how roles cooperate to meet a need.","successCheck":"I can connect a role to a responsibility."},{"phase":"deconstruct","title":"Sort needs and roles","studentAction":"Sort cards into need, role, responsibility, rule, and result.","successCheck":"I can explain each card."},{"phase":"practice","title":"Build a community map","studentAction":"Connect roles to actions that meet a shared need.","successCheck":"The map shows cooperation."},{"phase":"reason","title":"Compare choices","studentAction":"Compare two solutions and explain who is helped or left out.","successCheck":"I use fairness and evidence language."},{"phase":"prove","title":"Propose a solution","studentAction":"Solve a new community scenario with roles and responsibilities.","successCheck":"My proposal is supported by reasons."},{"phase":"remember","title":"Retrieve the role loop","studentAction":"Recall need, role, responsibility, action, and result after a delay.","successCheck":"I can rebuild the loop."},{"phase":"transfer","title":"Use the loop elsewhere","studentAction":"Apply the reasoning to a classroom or neighborhood problem.","successCheck":"I transfer the civic idea."},{"phase":"adapt","title":"Repair or extend","studentAction":"Add a missing voice or explain how a rule could improve fairness.","successCheck":"My next move responds to the scenario."}],
+  "proofTasks":[{"proof":"recall","prompt":"Define community, role, and responsibility.","independentRequired":true},{"proof":"explain","prompt":"Explain how a role helps meet a community need.","independentRequired":true},{"proof":"perform","prompt":"Propose a solution to a new community scenario.","independentRequired":true},{"proof":"retain","prompt":"Retrieve the role-responsibility loop after a delay.","independentRequired":true},{"proof":"transfer","prompt":"Apply the reasoning to a new community.","independentRequired":true}],
+  "requiredMasteryProofs":["recall","explain","perform","retain","transfer"],
+  "feedbackRules":[{"diagnosisCode":"role-label-only","result":"The learner names a role but not its responsibility.","hint":"Ask what the person does and which need it helps meet.","action":"Return to the role-action map."},{"diagnosisCode":"one-voice-solution","result":"The solution ignores who is affected.","hint":"Name another person or group who should be heard.","action":"Use the fairness comparison cards."}],
+  "reteachPaths":[{"id":"g3-community-role-reteach","trigger":"The learner cannot connect roles to needs.","action":"Use one classroom need and match three role cards to actions."}],
+  "prerequisiteRepairPaths":[{"id":"g3-community-observation-repair","trigger":"The learner cannot identify a shared need.","action":"Sort familiar classroom routines into wants, needs, and responsibilities."}],
+  "challengePaths":[{"id":"g3-community-fairness-challenge","trigger":"The learner explains a solution with multiple roles.","action":"Revise the solution so an overlooked group has a voice."}],
+  "visualSupports":[{"placement":"lesson-hero","title":"Community network","description":"A neighborhood scene shows people, needs, roles, and shared spaces.","altText":"People and community places connect to shared needs."},{"placement":"teaching-diagram","title":"Need to role map","description":"Arrows connect a need to responsibilities and results.","altText":"A need connects to roles, actions, and a result."},{"placement":"interactive-widget","title":"Role matcher","description":"The learner matches roles to actions and needs.","altText":"Keyboard-selectable cards match roles to responsibilities."},{"placement":"misconception-repair","title":"Role or title?","description":"A title without action is contrasted with a responsibility that helps a need.","altText":"A role title is contrasted with a specific responsibility."},{"placement":"memory-vault","title":"Civic loop cue","description":"A retrieval cue asks what need, role, action, and result connect.","altText":"Four questions cue the community reasoning loop."}],
+  "contentStatus":"pilot_ready",
+  "version":"3.0.0-foundation-grade3-community",
   "mastery": {
     "bands": [
       {

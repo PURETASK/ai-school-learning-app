@@ -1,636 +1,88 @@
 {
-  "schemaVersion": "2.0",
+  "schemaVersion": "3",
   "id": "BA-G6-ELA-U2-L1",
-  "title": "Theme and Text Evidence",
+  "title": "Theme Detectives: Evidence That Holds Up",
   "academy": "bridge",
   "academyName": "Bridge Academy",
   "gradeLevel": "6",
-  "subject": "ELA",
-  "course": "Grade 6 ELA",
-  "unit": "Unit 2: Literature, Theme, and Evidence",
-  "lessonType": [
-    "concept lesson",
-    "skill lesson",
-    "thinking lesson",
-    "retrieval lesson"
+  "subject": "ela",
+  "course": "Grade 6 English Language Arts",
+  "unitId": "theme-and-text-evidence",
+  "unitTitle": "Unit 2: Theme and Text Evidence",
+  "lessonNumber": 1,
+  "estimatedMinutes": 45,
+  "lessonFamily": "reasoning_lab",
+  "secondaryLessonFamily": "seminar_discussion",
+  "activePhases": ["orient", "model", "deconstruct", "practice", "reason", "prove", "remember", "transfer", "adapt"],
+  "targetLearningStates": ["acquiring", "developing", "accurate", "secure"],
+  "learningObjective": "Identify a theme in a narrative and defend it with specific text evidence and reasoning.",
+  "successCriteria": [
+    "I can state a theme as a message, not a one-word topic.",
+    "I can select two details that support the theme.",
+    "I can explain how each detail supports the message.",
+    "I can revise a theme claim when the evidence does not fit."
   ],
-  "estimatedMinutes": "40–45",
-  "developmentNotes": "Middle-school students often name a topic instead of a theme. Require sentence-level theme statements and evidence-based reasoning.",
-  "learningObjective": "Students will infer a theme from a literary passage and support it using relevant text evidence and reasoning.",
-  "essentialQuestion": "How do readers prove what a story teaches about life?",
-  "standardsTags": [
-    "ELA.G6.RL.THEME",
-    "ELA.G6.RL.TEXT_EVIDENCE",
-    "ELA.G6.REASONING.EXPLAIN",
-    "ELA.G6.DISCUSSION.ACADEMIC"
-  ],
-  "thinkingSkillTags": [
-    "interpretation",
-    "evidence-based reasoning",
-    "critical thinking",
-    "discussion",
-    "metacognition"
-  ],
-  "vocabularyTerms": [
-    {
-      "term": "theme",
-      "definition": "a message or lesson about life in a story"
-    },
-    {
-      "term": "topic",
-      "definition": "a subject a story includes"
-    },
-    {
-      "term": "inference",
-      "definition": "a conclusion based on evidence and reasoning"
-    },
-    {
-      "term": "text evidence",
-      "definition": "words or events from the text that support an idea"
-    },
-    {
-      "term": "reasoning",
-      "definition": "the explanation that connects evidence to a claim"
-    }
-  ],
-  "prerequisites": [
-    "Summarize plot events",
-    "Identify character actions and conflicts",
-    "Quote or paraphrase from a text"
-  ],
-  "lessonFlow": {
-    "hook": {
-      "time": "3–5 min",
-      "content": "Students read a short scene where a character admits a mistake even though it is difficult. They decide whether the theme is “honesty,” “honesty requires courage,” or “the character lied.”",
-      "studentAction": "Predict, notice, or explain initial thinking before direct instruction.",
-      "teacherOrAppAction": "Capture initial response as non-graded diagnostic evidence."
-    },
-    "learningGoal": {
-      "time": "1 min",
-      "content": "I can students will infer a theme from a literary passage and support it using relevant text evidence and reasoning.",
-      "successCriteria": [
-        "I can explain the core concept in my own words.",
-        "I can show evidence or reasoning, not only an answer.",
-        "I can correct a common mistake."
-      ]
-    },
-    "miniTeach": {
-      "time": "6–8 min",
-      "content": "A theme is not just a topic like friendship or courage. A strong theme is a full statement about that topic, such as “Real courage means doing the right thing even when it is difficult.” Readers infer theme from character choices, conflict, consequences, and repeated ideas.",
-      "cognitiveLoadNotes": "Use short chunks, one example at a time, and reveal labels only after students observe the model."
-    },
-    "firstPrinciplesBreakdown": {
-      "coreConcept": "Theme is built from patterns in story evidence.",
-      "parts": [
-        "topic",
-        "character choices",
-        "conflict",
-        "consequences",
-        "repeated ideas",
-        "theme statement",
-        "supporting evidence"
-      ],
-      "known": [
-        "Characters make choices.",
-        "Stories show consequences.",
-        "Repeated ideas often point to meaning."
-      ],
-      "unknown": [
-        "The deeper message about life."
-      ],
-      "rules": [
-        "A theme should be a full sentence.",
-        "A theme should apply beyond one character or event.",
-        "Evidence must come from the text."
-      ],
-      "avoid": [
-        "Do not confuse topic with theme.",
-        "Do not choose evidence that only summarizes plot without supporting the message.",
-        "Do not overstate a theme the text does not support."
-      ],
-      "steps": [
-        "Identify a topic.",
-        "Track character choices and consequences.",
-        "Look for patterns.",
-        "Write a theme statement.",
-        "Choose evidence.",
-        "Explain how the evidence supports the theme."
-      ],
-      "check": "If the theme works only for one tiny event, revise it to be broader but still text-supported."
-    },
-    "workedExample": {
-      "time": "5–7 min",
-      "content": "Topic: courage. Evidence: Maya tells the truth about breaking the model even though she fears punishment. Consequence: her group trusts her again. Theme: Courage can mean telling the truth when it is hard. Reasoning: Maya’s choice shows courage because she risks consequences to repair trust.",
-      "teacherOrAppAction": "Highlight each reasoning step and connect it to the first-principles breakdown."
-    },
-    "guidedPractice": {
-      "time": "8–10 min",
-      "items": [
-        "Sort statements into topic, plot detail, and theme.",
-        "Choose the strongest evidence for a theme about perseverance.",
-        "Rewrite the topic “friendship” as a theme sentence.",
-        "Use because to connect evidence to reasoning."
-      ],
-      "scaffolding": "Start with high support, then remove hints. Require explanation on the final item."
-    },
-    "criticalThinkingCheckpoint": {
-      "time": "3–5 min",
-      "prompt": "Two pieces of evidence are offered. One shows a character being kind; one only describes the setting. Which better supports a theme about kindness? Why?",
-      "lookFor": "Student identifies assumption, evaluates reasoning, and explains why one answer or model is stronger."
-    },
-    "evidenceBasedReasoningTask": {
-      "time": "5–7 min",
-      "prompt": "Claim: The story teaches that honesty can rebuild trust. Choose two events as evidence and explain the connection.",
-      "requiredStructure": "Claim → Evidence → Reasoning",
-      "rubric": "Evidence and reasoning rubric, 1–4 scale."
-    },
-    "interpretationOrDiscussionTask": {
-      "time": "5–7 min",
-      "prompt": "Interpret how the ending changes the reader’s understanding of the character’s choice.",
-      "safety": "Use private response or moderated classroom mode only. No unrestricted student chat."
-    },
-    "activePractice": {
-      "time": "8–10 min",
-      "content": "Students build a Claim → Evidence → Reasoning card stack for a short passage.",
-      "dataCaptured": [
-        "completion",
-        "attempts",
-        "hint usage",
-        "mistake type",
-        "confidence"
-      ]
-    },
-    "retrievalCheck": {
-      "time": "5 min",
-      "items": [
-        {
-          "id": "BA-G6-ELA-U2-L1-R01",
-          "prompt": "What is a theme?",
-          "expectedAnswer": "A message or lesson about life in a story.",
-          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-        },
-        {
-          "id": "BA-G6-ELA-U2-L1-R02",
-          "prompt": "Why is “friendship” not a complete theme?",
-          "expectedAnswer": "It is a topic, not a message about the topic.",
-          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-        },
-        {
-          "id": "BA-G6-ELA-U2-L1-R03",
-          "prompt": "What kinds of evidence help infer theme?",
-          "expectedAnswer": "Character choices, conflict, consequences, repeated ideas.",
-          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-        },
-        {
-          "id": "BA-G6-ELA-U2-L1-R04",
-          "prompt": "What is reasoning?",
-          "expectedAnswer": "The explanation connecting evidence to a claim.",
-          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-        },
-        {
-          "id": "BA-G6-ELA-U2-L1-R05",
-          "prompt": "What should a strong theme apply to?",
-          "expectedAnswer": "The whole story and sometimes life beyond the story.",
-          "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-        }
-      ],
-      "rule": "Closed-note if appropriate; if missed, show feedback after response, not before."
-    },
-    "feedback": {
-      "time": "embedded",
-      "rules": [
-        "Correct: explain why it works, not only mark correct.",
-        "Incorrect: identify misconception, show one hint, then give a similar retry.",
-        "Explain/CER answers: score using rubric and return one specific revision target.",
-        "Do not shame guessing; redirect to strategy and evidence."
-      ]
-    },
-    "reflection": {
-      "time": "2–3 min",
-      "prompt": "What strategy helped you most, what mistake should you watch for, and when will you review this skill again?"
-    }
-  },
+  "essentialQuestion": "How can a reader prove that a theme is supported by the whole story?",
+  "standardsTags": ["ELA.G6.RL.2", "ELA.G6.RL.1", "ELA.G6.W.9", "ELA.G6.SL.1"],
+  "thinkingSkillTags": ["theme-inference", "text-evidence", "claim-evidence-reasoning", "revision", "discussion"],
+  "vocabularyTerms": ["theme", "topic", "claim", "evidence", "reasoning", "inference"],
+  "prerequisiteSkillIds": ["sequence-events", "identify-character-change", "quote-or-paraphrase-details"],
   "quiz": [
-    {
-      "id": "BA-G6-ELA-U2-L1-Q01",
-      "type": "mc",
-      "question": "Which is a theme, not a topic?",
-      "choices": [
-        "courage",
-        "friendship",
-        "Hard work can help people overcome obstacles.",
-        "the forest"
-      ],
-      "correctAnswer": "Hard work can help people overcome obstacles.",
-      "explanation": "It is a full message about life.",
-      "skillTag": "ELA.THEME",
-      "difficulty": "easy",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-Q02",
-      "type": "mc",
-      "question": "Which evidence best supports a theme about perseverance?",
-      "choices": [
-        "The sky was gray.",
-        "Lena practiced every day after failing the first test.",
-        "The room had three windows.",
-        "Lena liked blue shoes."
-      ],
-      "correctAnswer": "Lena practiced every day after failing the first test.",
-      "explanation": "It shows continuing despite difficulty.",
-      "skillTag": "EVIDENCE.RELEVANCE",
-      "difficulty": "easy",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-Q03",
-      "type": "short",
-      "question": "Turn the topic “honesty” into a theme statement.",
-      "choices": null,
-      "correctAnswer": "Example: Honesty can be difficult, but it helps rebuild trust.",
-      "explanation": "Must be a full message about life.",
-      "skillTag": "CREATE.THEME",
-      "difficulty": "medium",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-Q04",
-      "type": "error",
-      "question": "A student says the theme is “the dog ran away.” What is wrong?",
-      "choices": null,
-      "correctAnswer": "That is a plot event, not a life message.",
-      "explanation": "Theme is deeper than plot summary.",
-      "skillTag": "MISTAKE.PLOT_THEME",
-      "difficulty": "medium",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-Q05",
-      "type": "explain",
-      "question": "Why does a theme need text evidence?",
-      "choices": null,
-      "correctAnswer": "Evidence proves the theme is supported by the story instead of guessed.",
-      "explanation": "Claim must be justified.",
-      "skillTag": "EVIDENCE.REASONING",
-      "difficulty": "medium",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-Q06",
-      "type": "mc",
-      "question": "Which detail would help infer theme most?",
-      "choices": [
-        "main character choice",
-        "page number",
-        "font style",
-        "chapter title color"
-      ],
-      "correctAnswer": "main character choice",
-      "explanation": "Character choices reveal meaning.",
-      "skillTag": "INTERPRET.PATTERN",
-      "difficulty": "easy",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-Q07",
-      "type": "cer",
-      "question": "Claim: The story shows that trust must be earned. What evidence would support this claim?",
-      "choices": null,
-      "correctAnswer": "Evidence where a character acts responsibly or repairs harm and others trust them again.",
-      "explanation": "Assess relevance and reasoning.",
-      "skillTag": "CER.EVIDENCE",
-      "difficulty": "medium",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-Q08",
-      "type": "discussion",
-      "question": "Use the frame: “I interpret the theme as ___ because ___.”",
-      "choices": null,
-      "correctAnswer": "Valid theme plus evidence-based reason.",
-      "explanation": "Structured academic dialogue.",
-      "skillTag": "DISCUSSION.FRAME",
-      "difficulty": "medium",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-Q09",
-      "type": "mc",
-      "question": "Which is the weakest evidence for a theme about sacrifice?",
-      "choices": [
-        "A character gives up free time to help someone.",
-        "A character shares food when hungry.",
-        "A character buys a red notebook.",
-        "A character takes a risk for a friend."
-      ],
-      "correctAnswer": "A character buys a red notebook.",
-      "explanation": "It does not show sacrifice.",
-      "skillTag": "CRITICAL.EVIDENCE_QUALITY",
-      "difficulty": "medium",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-Q10",
-      "type": "apply",
-      "question": "A character fails twice but tries a new strategy and finally succeeds. Infer a theme.",
-      "choices": null,
-      "correctAnswer": "Perseverance and learning from failure can lead to success.",
-      "explanation": "Theme should generalize from the evidence.",
-      "skillTag": "INTERPRET.THEME",
-      "difficulty": "medium",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-Q11",
-      "type": "short",
-      "question": "What is the reasoning part of CER?",
-      "choices": null,
-      "correctAnswer": null,
-      "explanation": "The explanation of how the evidence supports the claim.",
-      "skillTag": "CER.REASONING",
-      "difficulty": "easy",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-Q12",
-      "type": "challenge",
-      "question": "Give a counter-theme someone might argue and explain what evidence would be needed.",
-      "choices": null,
-      "correctAnswer": "A valid alternate theme plus necessary supporting evidence.",
-      "explanation": "Advanced interpretation.",
-      "skillTag": "CRITICAL.COUNTERARGUMENT",
-      "difficulty": "hard",
-      "scoringNotes": "Auto-score exact/multiple-choice where possible; route explain/CER/discussion/challenge items to rubric scoring or teacher/AI-assisted review with safety controls.",
-      "misconceptionTarget": "See explanation and feedback rules."
-    }
+    {"id": "ela-theme-01", "type": "mc", "question": "Which statement is a theme rather than a topic?", "choices": ["Courage", "Friendship", "People can become braver when they act even while afraid.", "A character"], "correctAnswer": "People can become braver when they act even while afraid.", "explanation": "A theme is a complete message about life or people, not just a topic word.", "difficulty": "developing", "skillTag": "theme-inference", "standardTag": "ELA.G6.RL.2"},
+    {"id": "ela-theme-02", "type": "mc", "question": "What makes a detail strong evidence for a theme?", "choices": ["It is the first detail in the story.", "It connects clearly to the message and can be explained.", "It contains a difficult word.", "It is the longest sentence."], "correctAnswer": "It connects clearly to the message and can be explained.", "explanation": "Evidence becomes useful when the reader explains how it supports the theme.", "difficulty": "developing", "skillTag": "text-evidence", "standardTag": "ELA.G6.RL.1"},
+    {"id": "ela-theme-03", "type": "mc", "question": "Which sentence best completes the reasoning? The character asks for help, so the story suggests that...", "choices": ["helping others is always easy", "people can solve every problem alone", "asking for support can be a sign of strength", "the character likes questions"], "correctAnswer": "asking for support can be a sign of strength", "explanation": "The reasoning connects the action to a broader message.", "difficulty": "developing", "skillTag": "claim-evidence-reasoning", "standardTag": "ELA.G6.RL.1"},
+    {"id": "ela-theme-04", "type": "mc", "question": "Why is one isolated detail often weaker than a repeated pattern?", "choices": ["A repeated pattern gives more support for an inference.", "One detail is always incorrect.", "Patterns make stories longer.", "A reader should ignore single details."], "correctAnswer": "A repeated pattern gives more support for an inference.", "explanation": "Repeated choices, events, or images can show that a message matters across the story.", "difficulty": "secure", "skillTag": "theme-inference", "standardTag": "ELA.G6.RL.2"},
+    {"id": "ela-theme-05", "type": "mc", "question": "A claim says a story teaches that honesty builds trust, but every important character lies without consequences. What should the reader do?", "choices": ["Keep the claim because it sounds positive.", "Revise the claim because the evidence does not fit.", "Add a topic word.", "Ignore the character choices."], "correctAnswer": "Revise the claim because the evidence does not fit.", "explanation": "Strong readers test a claim against the whole pattern of evidence and revise when needed.", "difficulty": "secure", "skillTag": "revision", "standardTag": "ELA.G6.RL.2"},
+    {"id": "ela-theme-06", "type": "mc", "question": "Which is the best way to cite a story detail in a theme explanation?", "choices": ["Name a detail and explain how it supports the message.", "Copy a random sentence with no explanation.", "List the characters only.", "State the theme again."], "correctAnswer": "Name a detail and explain how it supports the message.", "explanation": "A claim-evidence-reasoning response needs both the detail and the connection.", "difficulty": "developing", "skillTag": "text-evidence", "standardTag": "ELA.G6.RL.1"},
+    {"id": "ela-theme-07", "type": "mc", "question": "What is the difference between a topic and a theme?", "choices": ["A topic is a message; a theme is a character.", "A topic is a subject; a theme is a message about that subject.", "They are exactly the same.", "A topic only appears in nonfiction."], "correctAnswer": "A topic is a subject; a theme is a message about that subject.", "explanation": "The topic names what the story is about, while the theme explains what the story suggests.", "difficulty": "developing", "skillTag": "theme-inference", "standardTag": "ELA.G6.RL.2"},
+    {"id": "ela-theme-08", "type": "short-response", "question": "Write one because sentence explaining how a character choice could support a theme.", "correctAnswer": "A response names a character choice, states a theme message, and connects them with because.", "explanation": "The explanation should make the evidence-to-message connection visible.", "difficulty": "secure", "skillTag": "claim-evidence-reasoning", "standardTag": "ELA.G6.RL.1"},
+    {"id": "ela-theme-09", "type": "mc", "question": "When a theme claim is too broad, what is the best revision move?", "choices": ["Make the message more specific to the story evidence.", "Add more unrelated characters.", "Replace the message with one topic word.", "Delete the evidence."], "correctAnswer": "Make the message more specific to the story evidence.", "explanation": "A precise claim is easier to defend with the details the story actually provides.", "difficulty": "secure", "skillTag": "revision", "standardTag": "ELA.G6.W.9"},
+    {"id": "ela-theme-10", "type": "mc", "question": "What should a reader do when a new scene does not fit the current theme claim?", "choices": ["Pretend the scene is not important.", "Use the new evidence to test and possibly revise the claim.", "Choose the longest theme sentence.", "Stop looking for patterns."], "correctAnswer": "Use the new evidence to test and possibly revise the claim.", "explanation": "Theme reasoning is an evidence-based process that stays open to revision.", "difficulty": "secure", "skillTag": "transfer", "standardTag": "ELA.G6.RL.2"}
   ],
-  "retrievalCheck": [
-    {
-      "id": "BA-G6-ELA-U2-L1-R01",
-      "prompt": "What is a theme?",
-      "expectedAnswer": "A message or lesson about life in a story.",
-      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-R02",
-      "prompt": "Why is “friendship” not a complete theme?",
-      "expectedAnswer": "It is a topic, not a message about the topic.",
-      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-R03",
-      "prompt": "What kinds of evidence help infer theme?",
-      "expectedAnswer": "Character choices, conflict, consequences, repeated ideas.",
-      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-R04",
-      "prompt": "What is reasoning?",
-      "expectedAnswer": "The explanation connecting evidence to a claim.",
-      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-R05",
-      "prompt": "What should a strong theme apply to?",
-      "expectedAnswer": "The whole story and sometimes life beyond the story.",
-      "feedbackIfMissed": "Return to mini teach, worked example, and one guided-practice item before retrying."
-    }
-  ],
-  "memoryVaultItems": [
-    {
-      "id": "BA-G6-ELA-U2-L1-MV01",
-      "type": "concept",
-      "prompt": "What is theme?",
-      "expectedAnswer": "A message or lesson about life in a story.",
-      "scheduleDays": [
-        1,
-        3,
-        7,
-        14,
-        30
-      ],
-      "skillTag": "ELA.G6.RL.THEME",
-      "retentionStrengthStart": "developing",
-      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
-      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-MV02",
-      "type": "contrast",
-      "prompt": "Why is “courage” a topic, not a theme?",
-      "expectedAnswer": "It is only a subject; a theme makes a statement about it.",
-      "scheduleDays": [
-        1,
-        3,
-        7,
-        14,
-        30
-      ],
-      "skillTag": "ELA.G6.RL.TEXT_EVIDENCE",
-      "retentionStrengthStart": "developing",
-      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
-      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-MV03",
-      "type": "process",
-      "prompt": "What evidence helps infer theme?",
-      "expectedAnswer": "Character choices, conflict, consequences, repeated ideas.",
-      "scheduleDays": [
-        1,
-        3,
-        7,
-        14,
-        30
-      ],
-      "skillTag": "ELA.G6.REASONING.EXPLAIN",
-      "retentionStrengthStart": "developing",
-      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
-      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-MV04",
-      "type": "CER",
-      "prompt": "What does reasoning do?",
-      "expectedAnswer": "Connects evidence to the claim.",
-      "scheduleDays": [
-        1,
-        3,
-        7,
-        14,
-        30
-      ],
-      "skillTag": "ELA.G6.DISCUSSION.ACADEMIC",
-      "retentionStrengthStart": "developing",
-      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
-      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-MV05",
-      "type": "apply",
-      "prompt": "Turn “friendship” into a theme.",
-      "expectedAnswer": "Example: True friendship requires loyalty and honesty.",
-      "scheduleDays": [
-        1,
-        3,
-        7,
-        14,
-        30
-      ],
-      "skillTag": "ELA.G6.DISCUSSION.ACADEMIC",
-      "retentionStrengthStart": "developing",
-      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
-      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
-    },
-    {
-      "id": "BA-G6-ELA-U2-L1-MV06",
-      "type": "mistake",
-      "prompt": "Why is a plot event not enough to be a theme?",
-      "expectedAnswer": "A theme is a broader message, not only what happened.",
-      "scheduleDays": [
-        1,
-        3,
-        7,
-        14,
-        30
-      ],
-      "skillTag": "ELA.G6.DISCUSSION.ACADEMIC",
-      "retentionStrengthStart": "developing",
-      "failureAction": "Show explanation, assign related reteach item, and schedule next review for tomorrow.",
-      "successAction": "If correct with confidence twice, increase interval; if slow/low confidence, keep interval short."
-    }
-  ],
-  "reteachPath": {
-    "misconception": "Student names a topic or plot event instead of a theme statement.",
-    "simpleExplanation": "A topic is one word or idea. A theme is what the story says about that idea.",
-    "steps": [
-      "Name a topic.",
-      "Find two character choices or consequences.",
-      "Ask what lesson those events suggest.",
-      "Write a full theme statement.",
-      "Attach evidence and reasoning."
-    ],
-    "practice": [
-      {
-        "prompt": "Topic or theme: friendship",
-        "answer": "Topic"
-      },
-      {
-        "prompt": "Topic or theme: True friends tell each other the truth",
-        "answer": "Theme"
-      },
-      {
-        "prompt": "Best evidence: character apologizes or room is cold?",
-        "answer": "Character apologizes"
-      },
-      {
-        "prompt": "Fix: Theme = “the race”",
-        "answer": "Trying again after failure can lead to growth."
-      },
-      {
-        "prompt": "CER: What comes after evidence?",
-        "answer": "Reasoning"
-      }
-    ],
-    "exitCriteria": "Student completes at least 4 of 5 reteach items and explains the corrected misconception."
+  "outcomes": {
+    "knowledge": ["A theme is a message about life or people that a reader infers from repeated story evidence."],
+    "capability": ["Write a theme claim and connect two story details to it."],
+    "reasoning": ["Compare competing theme claims and reject one that the evidence cannot support."],
+    "retention": ["Retrieve the topic-versus-theme distinction after a delay."],
+    "transfer": ["Use the same evidence test on an unfamiliar short narrative or film scene."]
   },
-  "challengePath": {
-    "tasks": [
-      "Compare two possible themes and defend the stronger one.",
-      "Write a CER paragraph using two pieces of evidence.",
-      "Identify a counterargument and explain why your theme is better supported."
-    ],
-    "extensionRule": "Unlock at 90+ mastery or teacher/parent assignment; still schedule Memory Vault review."
-  },
-  "mastery": {
-    "bands": [
-      {
-        "range": "0-39",
-        "label": "Needs Intervention",
-        "action": "Assign intervention path, parent/teacher alert if repeated twice."
-      },
-      {
-        "range": "40-64",
-        "label": "Needs Reteach",
-        "action": "Assign reteach path and review tomorrow."
-      },
-      {
-        "range": "65-79",
-        "label": "Almost Mastered",
-        "action": "Assign guided practice and schedule review in 1 day."
-      },
-      {
-        "range": "80-89",
-        "label": "Mastered",
-        "action": "Schedule Memory Vault review on Day 1, 3, 7, 14, 30."
-      },
-      {
-        "range": "90-100",
-        "label": "Advanced",
-        "action": "Unlock challenge task and still schedule spaced review."
-      }
-    ],
-    "weights": {
-      "retrievalCheck": 0.2,
-      "quizAccuracy": 0.3,
-      "firstPrinciplesProcess": 0.15,
-      "evidenceOrReasoningQuality": 0.15,
-      "activePracticeCompletion": 0.1,
-      "reflectionQuality": 0.1
-    },
-    "masteryThreshold": 80,
-    "advancedThreshold": 90,
-    "minimumEvidence": [
-      "retrieval check completed",
-      "quiz completed",
-      "one reasoning/explanation artifact saved",
-      "Memory Vault items generated"
-    ]
-  },
-  "parentTeacherNotes": "After a story or movie, ask: “What did the character learn? What scene proves it?”",
-  "accessibilityNotes": [
-    "Use plain, grade-appropriate language and define academic vocabulary before using it in prompts.",
-    "Provide alt text or text-equivalent descriptions for every image, diagram, array, chart, map, or model.",
-    "Make all interactive elements keyboard accessible with visible focus states and screen-reader labels.",
-    "Never rely only on color to communicate correct/incorrect, categories, or importance.",
-    "Provide read-aloud support for Foundation Academy and optional read-aloud for all grade bands.",
-    "Chunk instructions into short steps and provide examples before independent work."
+  "visual": {"type":"claim-evidence-reasoning","title":"Theme evidence board","caption":"Claim -> evidence -> reasoning -> revise","altText":"A theme claim connects to a specific story detail, then to a because sentence that explains the connection and can be revised when evidence does not fit."},
+  "visualSupports": [
+    {"placement": "lesson-hero", "title": "The theme evidence board", "description": "A detective board connects repeated character choices to a message about people.", "altText": "Three story details connect by arrows to one theme message."},
+    {"placement": "teaching-diagram", "title": "Claim to evidence to reasoning", "description": "A three-part chain shows that a detail is not proof until the reader explains the connection.", "altText": "A claim box points to an evidence box, which points to a reasoning box."},
+    {"placement": "misconception-repair", "title": "Topic or message?", "description": "Two cards compare courage as a topic with a complete message about courage.", "altText": "A topic word is contrasted with a full theme sentence."}
   ],
-  "safetyNotes": [
-    "No public student posting, random direct messages, or unrestricted discussion.",
-    "Discussion prompts must use sentence frames and moderation/teacher controls when implemented.",
-    "Student-generated work should be visible only to the student and authorized parent/teacher roles unless explicitly assigned in a safe classroom workflow.",
-    "Do not collect unnecessary personal information in lesson responses."
+  "phaseModules": [
+    {"phase": "orient", "title": "Enter the evidence room", "studentAction": "Read a short scene, predict what message it might teach, and mark the detail that made you think that.", "successCheck": "I can name a first idea and the detail that sparked it."},
+    {"phase": "model", "title": "Watch a reader build a claim", "studentAction": "Follow the visual chain from a repeated character choice to a theme message, then to the exact evidence.", "visualSupport": "The theme evidence board", "successCheck": "The model includes a message, a detail, and a because sentence."},
+    {"phase": "deconstruct", "title": "Separate topic from theme", "studentAction": "Sort cards into topic, theme, evidence, or unsupported opinion. Rewrite one topic into a message.", "successCheck": "I can explain why a one-word topic is not yet a theme."},
+    {"phase": "practice", "title": "Build the evidence chain", "studentAction": "Choose two details from the scene and drag each to the claim it supports. Write one because sentence for each.", "visualSupport": "Claim to evidence to reasoning", "successCheck": "Both details connect to the same message for a clear reason."},
+    {"phase": "reason", "title": "Cross-examine competing themes", "studentAction": "Compare two possible theme claims and use repeated details to decide which claim is stronger.", "successCheck": "I can reject a claim because the story does not provide enough evidence."},
+    {"phase": "prove", "title": "Defend a theme independently", "studentAction": "Write a theme claim, cite or paraphrase two details, and explain how each detail supports the message without tutor answers.", "successCheck": "A reader can follow my claim-evidence-reasoning chain."},
+    {"phase": "remember", "title": "Retrieve the reader test", "studentAction": "After a delay, explain the difference between topic and theme and name the three parts of a strong proof.", "successCheck": "I can retrieve the test without seeing the original board."},
+    {"phase": "transfer", "title": "Use the test on a new scene", "studentAction": "Analyze an unfamiliar scene or film moment and defend a new theme with two details.", "successCheck": "The evidence method still works when the story changes."},
+    {"phase": "adapt", "title": "Choose the next reading move", "studentAction": "If the claim is too broad, narrow it; if the evidence is weak, find a repeated detail; if the reasoning is missing, add a because sentence.", "successCheck": "I can name the exact part of my evidence chain that needs repair."}
   ],
-  "implementationNotes": [
-    "Render lessonFlow sections in order with progress state.",
-    "Persist quiz attempts and item-level skill tags.",
-    "Generate Memory Vault records after lesson completion.",
-    "Use mastery bands to branch to reteach, guided practice, review, or challenge.",
-    "Store open responses privately with role-based access.",
-    "Use answer keys and rubrics for review; do not expose hidden answer keys in student mode."
+  "proofTasks": [
+    {"proof": "recall", "prompt": "Define topic and theme and explain the difference.", "independentRequired": true},
+    {"proof": "explain", "prompt": "Explain why one isolated detail is weaker than a repeated pattern.", "independentRequired": true},
+    {"proof": "perform", "prompt": "Defend a theme in a new short narrative with two details and reasoning.", "independentRequired": true},
+    {"proof": "retain", "prompt": "Complete a delayed topic-theme-evidence retrieval check.", "independentRequired": true},
+    {"proof": "transfer", "prompt": "Apply the evidence chain to a new scene, poem, or film moment.", "independentRequired": true}
   ],
-  "reviewStatus": {
-    "contentStatus": "v2 polished",
-    "reviewedAgainst": [
-      "curriculum inventory v2",
-      "universal lesson flow",
-      "Memory Vault requirements",
-      "mastery model",
-      "child safety and accessibility rules"
-    ],
-    "knownLimitations": "Standards tags are platform-internal placeholders until state-specific mappings are added."
-  }
+  "requiredMasteryProofs": ["recall", "explain", "perform", "retain", "transfer"],
+  "feedbackRules": [
+    {"diagnosisCode": "topic_not_theme", "result": "The response names a topic but not a message.", "hint": "Finish the sentence: The story suggests that people should...", "action": "Route to topic-versus-theme card sort and retry."},
+    {"diagnosisCode": "detail_without_link", "result": "The detail is relevant but the explanation does not connect it to the claim.", "hint": "Add: This supports my theme because...", "action": "Route to the claim-evidence-reasoning scaffold."},
+    {"diagnosisCode": "single_detail_overreach", "result": "One moment is treated as proof of the whole story.", "hint": "Look for a repeated choice, consequence, or change.", "action": "Route to repeated-pattern evidence search."}
+  ],
+  "reteachPaths": [{"id": "BA-G6-ELA-U2-L1-reteach", "trigger": "Theme claim or evidence chain is incomplete.", "action": "Use a short scene, highlight repeated choices, and complete one claim-because-detail frame before returning to the full proof."}],
+  "prerequisiteRepairPaths": [{"id": "BA-G6-ELA-U2-L1-prerequisite", "trigger": "The learner cannot identify a character change or sequence of events.", "action": "Repair event sequencing and character-change notes with a three-panel story map."}],
+  "challengePaths": [{"id": "BA-G6-ELA-U2-L1-challenge", "trigger": "The learner independently defends a theme with relevant evidence.", "action": "Compare two stories with a related theme and explain how each author develops the message differently."}],
+  "commonMisunderstandings": ["A topic word is the same as a theme.", "Any detail from the story proves any theme.", "A theme must be a universal rule or moral."],
+  "parentTeacherNotes": "Require students to explain the evidence link. A correct theme with weak reasoning is developing, not transferable mastery.",
+  "accessibilityNotes": ["Provide a text-to-speech version and a text-only evidence board.", "Allow typed, spoken, or recorded claim-evidence-reasoning responses.", "Use labels and patterns in addition to color."],
+  "safetyNotes": [],
+  "contentStatus": "reviewed",
+  "version": "3.0.0-bridge-ela-theme-evidence"
 }

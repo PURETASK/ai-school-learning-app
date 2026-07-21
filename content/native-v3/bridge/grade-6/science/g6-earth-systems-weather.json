@@ -1,0 +1,379 @@
+{
+  "id": "g6-earth-systems-weather",
+  "academyId": "bridge",
+  "grade": "6",
+  "subject": "science",
+  "courseTitle": "Science",
+  "unitTitle": "Weather and Climate",
+  "title": "Reading Weather Patterns",
+  "objective": "Use weather data to describe patterns and predict short-term changes.",
+  "standards": [
+    "ngss"
+  ],
+  "estimatedMinutes": 28,
+  "masteryThreshold": 80,
+  "xp": 150,
+  "visual": {
+    "type": "weather-map",
+    "title": "Weather systems image",
+    "caption": "A map-style weather visual with pressure zones, wind arrows, clouds, and temperature bands."
+  },
+  "teachingSupport": {
+    "summary": "Weather predictions are evidence claims built from patterns in pressure, temperature, wind, and clouds.",
+    "description": "Learners read a map like a forecast team: gather data, make a claim, test confidence, and revise after actual weather arrives.",
+    "diagramCallouts": [
+      {
+        "title": "Pressure zone",
+        "body": "High and low pressure help explain likely air movement and changing conditions."
+      },
+      {
+        "title": "Wind arrow",
+        "body": "Wind direction helps predict what kind of air may arrive next."
+      },
+      {
+        "title": "Evidence claim",
+        "body": "A forecast should cite at least two pieces of current map or table evidence."
+      }
+    ],
+    "helperNotes": [
+      "Ask students to separate observation, pattern, and prediction.",
+      "Require a confidence rating so teams notice missing or weak evidence.",
+      "After real weather happens, revise the rule instead of only marking right or wrong."
+    ],
+    "commonMisunderstandings": [
+      {
+        "mistake": "Using one symbol as a complete forecast.",
+        "fix": "Ask for two data points before accepting the claim."
+      },
+      {
+        "mistake": "Thinking a wrong forecast means the method failed.",
+        "fix": "Compare prediction to actuals and improve the rule using new evidence."
+      }
+    ],
+    "confusionPrompt": "Write whether you are stuck on pressure, wind arrows, data tables, or turning evidence into a forecast."
+  },
+  "funTasks": [
+    "Run a forecast studio: one student reads the map, one checks evidence, one records the prediction.",
+    "Create a 30-second weather briefing with one claim and two evidence points.",
+    "Compare two forecasts and decide which one deserves the team confidence badge."
+  ],
+  "groupHomework": {
+    "title": "Family weather crew",
+    "groupSize": "3-5 learners or family members",
+    "roles": [
+      "Data lead",
+      "Map reader",
+      "Skeptic",
+      "Reporter",
+      "Reflection captain"
+    ],
+    "sharedOutcome": "Submit a one-week weather board with predictions, actuals, and one improved forecast rule.",
+    "parentRole": "Help gather daily observations, but let students defend the forecast."
+  },
+  "retentionChecks": [
+    "Next-day map symbol recall",
+    "Three-day pressure pattern check",
+    "Seven-day forecast reflection"
+  ],
+  "reward": "Earn the Forecast Crew badge when the team improves its rule after real data.",
+  "sections": {
+    "warmup": "Look at a three-day temperature and cloud-cover chart.",
+    "teach": "Weather patterns form when air pressure, temperature, humidity, and wind interact.",
+    "guidedPractice": "Match symbols on a weather map to observations.",
+    "independentPractice": "Use a data table to write a two-sentence forecast.",
+    "activity": "Build a weather station log for one week.",
+    "reteach": "Review one variable at a time before combining the full forecast.",
+    "challenge": "Compare forecast confidence when one data point is missing."
+  },
+  "quiz": [
+    {
+      "id": "g6-weather-q1",
+      "prompt": "Which evidence best supports a short-term weather forecast?",
+      "choices": [
+        "A current pressure map",
+        "A list of favorite seasons",
+        "A drawing of clouds from last year",
+        "A map with no labels"
+      ],
+      "answerIndex": 0,
+      "explanation": "Current pressure patterns are evidence scientists use to forecast weather."
+    },
+    {
+      "id": "g6-weather-q2",
+      "prompt": "A falling air pressure reading often suggests what kind of change?",
+      "choices": [
+        "Possible stormy weather",
+        "No weather can happen",
+        "The season is over",
+        "All wind stops"
+      ],
+      "answerIndex": 0,
+      "explanation": "Falling pressure can indicate approaching unsettled or stormy weather."
+    }
+  ],
+  "studentFacing": {
+    "mission": "Run a forecast studio: make a claim, cite the map, then revise with real data.",
+    "whyItMatters": "Forecasting teaches evidence reasoning: your claim is only as strong as the data you use.",
+    "bigIdea": "Weather predictions are claims built from patterns in pressure, wind, temperature, and clouds.",
+    "modelSteps": [
+      "Separate observations from predictions.",
+      "Use at least two data points before making a claim.",
+      "Give a confidence rating and name what data is missing."
+    ],
+    "example": "Falling pressure plus changing wind direction can support a claim that unsettled weather may arrive.",
+    "nonExample": "One cloud icon by itself is not enough evidence for a complete forecast.",
+    "quickCheck": "Can your forecast sentence include 'because' followed by two pieces of evidence?",
+    "studentSummary": "A forecast is an evidence claim, not a guess.",
+    "tutorHandoff": "Tell the tutor if pressure, wind arrows, data tables, or evidence sentences are confusing."
+  },
+  "schemaVersion": "3",
+  "academy": "bridge",
+  "gradeLevel": "6",
+  "course": "Grade 6 Science",
+  "unitId": "weather-and-climate",
+  "lessonNumber": 1,
+  "lessonFamily": "inquiry_investigation",
+  "secondaryLessonFamily": "reasoning_lab",
+  "activePhases": [
+    "orient",
+    "model",
+    "deconstruct",
+    "practice",
+    "reason",
+    "prove",
+    "remember",
+    "transfer",
+    "adapt"
+  ],
+  "targetLearningStates": [
+    "acquiring",
+    "developing",
+    "accurate",
+    "secure"
+  ],
+  "learningObjective": "Use weather data to describe patterns and predict short-term changes.",
+  "successCriteria": [
+    "I can separate weather observations from forecast predictions.",
+    "I can use at least two pieces of weather evidence before making a claim.",
+    "I can explain how pressure, wind, temperature, or clouds support a short-term forecast.",
+    "I can revise a forecast rule after comparing it with real weather data."
+  ],
+  "essentialQuestion": "How can weather data support a forecast without turning the forecast into a guess?",
+  "standardsTags": [
+    "ngss"
+  ],
+  "thinkingSkillTags": [
+    "evidence_room",
+    "systems_mapper",
+    "claim-evidence-reasoning",
+    "forecast-revision"
+  ],
+  "vocabularyTerms": [
+    "air pressure",
+    "wind direction",
+    "temperature",
+    "humidity",
+    "forecast",
+    "confidence rating"
+  ],
+  "prerequisiteSkillIds": [
+    "read-simple-data-table",
+    "identify-map-symbols",
+    "write-because-sentence"
+  ],
+  "outcomes": {
+    "knowledge": [
+      "Weather data includes pressure, temperature, humidity, wind, clouds, and recent change over time.",
+      "Forecasts are evidence claims with uncertainty, not guaranteed answers."
+    ],
+    "capability": [
+      "Read a weather map or table and identify at least two useful data points.",
+      "Write a short forecast claim with evidence and confidence."
+    ],
+    "reasoning": [
+      "Compare strong and weak forecast evidence.",
+      "Revise a rule when actual weather does not match the forecast."
+    ],
+    "retention": [
+      "Recall what high/low pressure and wind arrows can indicate after a delay."
+    ],
+    "transfer": [
+      "Use the same evidence logic on a new city, map, or weather table."
+    ]
+  },
+  "phaseModules": [
+    {
+      "phase": "orient",
+      "title": "Join the forecast studio",
+      "studentAction": "Study the mission and write one thing a forecast must prove with evidence.",
+      "successCheck": "The learner can say the lesson is about evidence-based prediction, not guessing."
+    },
+    {
+      "phase": "model",
+      "title": "Read the weather map like data",
+      "studentAction": "Inspect the pressure zones, wind arrows, cloud bands, and temperature clues before making any claim.",
+      "teacherModel": "A strong forecast starts with observations, then uses patterns to make a cautious prediction.",
+      "visualSupport": "A map-style weather visual with pressure zones, wind arrows, clouds, and temperature bands.",
+      "successCheck": "The learner can point to two data clues in the map."
+    },
+    {
+      "phase": "deconstruct",
+      "title": "Break a forecast into parts",
+      "studentAction": "Sort the work into observation, pattern, claim, confidence, and missing data.",
+      "teacherModel": "Observation is what the data shows. Prediction is what may happen next. Confidence depends on how much useful evidence you have.",
+      "successCheck": "The learner can explain why one symbol alone is weak evidence."
+    },
+    {
+      "phase": "practice",
+      "title": "Build a two-evidence forecast",
+      "studentAction": "Use the interactive check and write a first forecast sentence with because plus two data points.",
+      "teacherModel": "Match symbols on a weather map to observations.",
+      "successCheck": "The learner attempts the widget and writes a first evidence sentence."
+    },
+    {
+      "phase": "reason",
+      "title": "Defend the forecast",
+      "studentAction": "Write the claim, evidence, and the exact part that still feels uncertain.",
+      "teacherModel": "Good scientists name uncertainty so they can test and revise the rule later.",
+      "successCheck": "The learner can explain what evidence supports the claim and what data is missing."
+    },
+    {
+      "phase": "prove",
+      "title": "Complete the mission checkpoint",
+      "studentAction": "Answer the weather evidence questions without final-answer help.",
+      "successCheck": "The learner answers the checkpoint and reviews the reasoning notes."
+    },
+    {
+      "phase": "remember",
+      "title": "Save it to Memory Vault",
+      "studentAction": "Return later to recall what pressure and wind clues can show.",
+      "successCheck": "Delayed recall is scheduled before durable mastery is claimed."
+    },
+    {
+      "phase": "transfer",
+      "title": "Forecast a new place",
+      "studentAction": "Use a new weather table or family weather board to make, test, and revise a forecast rule.",
+      "successCheck": "The learner applies evidence reasoning to a changed map, city, or week."
+    },
+    {
+      "phase": "adapt",
+      "title": "Choose the next instructional move",
+      "studentAction": "If the evidence sentence is weak, switch to one-variable reteach; if it is strong, move to a new forecast challenge.",
+      "successCheck": "The next action is based on the evidence, not just the score."
+    }
+  ],
+  "proofTasks": [
+    {
+      "proof": "recall",
+      "prompt": "Name two types of weather data that can support a short-term forecast.",
+      "independentRequired": true
+    },
+    {
+      "proof": "explain",
+      "prompt": "Explain why one weather symbol is weaker than two connected data points.",
+      "independentRequired": true
+    },
+    {
+      "proof": "perform",
+      "prompt": "Write a forecast claim with two evidence points and a confidence rating.",
+      "independentRequired": true
+    },
+    {
+      "proof": "retain",
+      "prompt": "After a delay, recall how pressure or wind evidence can affect a forecast.",
+      "independentRequired": true
+    },
+    {
+      "proof": "transfer",
+      "prompt": "Use a different weather map or one-week family weather board to revise a forecast rule.",
+      "independentRequired": true
+    }
+  ],
+  "requiredMasteryProofs": [
+    "recall",
+    "explain",
+    "perform",
+    "retain",
+    "transfer"
+  ],
+  "feedbackRules": [
+    {
+      "diagnosisCode": "evidence_selection_weakness",
+      "result": "The forecast claim uses too little or weak evidence.",
+      "hint": "Point to two data clues before writing the word because.",
+      "action": "Return to the map and label observation, pattern, and claim."
+    },
+    {
+      "diagnosisCode": "vocabulary_confusion",
+      "result": "The learner is mixing up pressure, wind, temperature, or humidity.",
+      "hint": "Use one variable at a time and say what it can help predict.",
+      "action": "Run the one-variable reteach path before combining data."
+    },
+    {
+      "diagnosisCode": "confidence_mismatch",
+      "result": "The learner sounds too certain when evidence is incomplete.",
+      "hint": "Name what data is missing and lower the confidence rating.",
+      "action": "Revise the forecast with a confidence sentence."
+    }
+  ],
+  "reteachPaths": [
+    {
+      "id": "g6-weather-one-variable-reteach",
+      "trigger": "The learner cannot connect a data clue to a forecast claim.",
+      "action": "Use one variable at a time: pressure first, then wind, then temperature."
+    },
+    {
+      "id": "g6-weather-evidence-sentence-reteach",
+      "trigger": "The learner gives a prediction without because plus evidence.",
+      "action": "Use the sentence frame: I predict ___ because the map shows ___ and ___."
+    }
+  ],
+  "prerequisiteRepairPaths": [
+    {
+      "id": "g6-weather-map-symbol-repair",
+      "trigger": "The learner cannot read the map or table symbols.",
+      "action": "Repair map-symbol reading before asking for a full forecast."
+    }
+  ],
+  "challengePaths": [
+    {
+      "id": "g6-weather-new-city-transfer",
+      "trigger": "The learner can defend a current-context forecast independently.",
+      "action": "Give a new city or one-week family weather board and require a revised forecast rule."
+    }
+  ],
+  "memoryPlan": {
+    "defaultIntervals": [
+      "day-0",
+      "day-1",
+      "day-3",
+      "day-7"
+    ],
+    "reviewModes": [
+      "recall",
+      "explain",
+      "apply"
+    ],
+    "priorityItems": [
+      "pressure clues",
+      "wind direction",
+      "two-evidence forecast sentence"
+    ]
+  },
+  "transferTask": {
+    "title": "Family weather board",
+    "prompt": "Submit a one-week weather board with predictions, actuals, and one improved forecast rule.",
+    "individualAccountability": "Each learner submits one revised forecast rule and explains what changed."
+  },
+  "parentTeacherNotes": "This native V3 exemplar should be used to test the Bridge Academy class-session model, group evidence roles, delayed recall, and transfer before scaling Grade 6 content.",
+  "accessibilityNotes": [
+    "Provide alt text for map visuals and do not rely on color alone for pressure or wind symbols.",
+    "Offer sentence frames for claim-evidence-reasoning responses.",
+    "Allow oral explanation or diagram annotation when writing is not the target skill."
+  ],
+  "safetyNotes": [
+    "Do not represent forecasts as guaranteed weather or emergency guidance."
+  ],
+  "contentStatus": "pilot_ready",
+  "version": "3.0.0-bridge-weather-exemplar"
+}

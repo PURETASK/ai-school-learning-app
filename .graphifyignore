@@ -1,0 +1,12 @@
+# Graphify may inspect source code and approved schema/docs, but never runtime or generated artifacts.
+.env*
+data/app-state.json
+tmp/
+graphify-out/
+node_modules/
+.git/
+# Legacy Next.js V7 source is retained for compatibility but is not the active runtime graph.
+src/features/
+src/types/
+src/lib/
+src/app/

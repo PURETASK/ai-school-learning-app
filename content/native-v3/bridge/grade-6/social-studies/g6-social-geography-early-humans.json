@@ -1,0 +1,392 @@
+{
+  "id": "g6-social-geography-early-humans",
+  "academyId": "bridge",
+  "grade": "6",
+  "subject": "social-studies",
+  "courseTitle": "Grade 6 Social Studies",
+  "unitTitle": "Historical Thinking, Geography, and Early Humans",
+  "title": "Map the Move: Why Communities Settle",
+  "objective": "Use geographic evidence to explain why early communities settled in particular places and how those choices shaped daily life.",
+  "standards": [
+    "c3"
+  ],
+  "estimatedMinutes": 36,
+  "masteryThreshold": 80,
+  "xp": 160,
+  "visual": {
+    "type": "settlement-evidence-map",
+    "title": "Settlement decision map",
+    "caption": "A labeled river-valley map connects water, fertile soil, transportation, hazards, and a community decision.",
+    "altText": "A settlement map labels a river, fertile soil, travel route, flood risk, and a community decision supported by evidence.",
+    "generationPrompt": "Create a bold cyber-neon Grade 6 social studies teaching diagram of an early river-valley settlement decision. Show a river, fertile soil, travel route, flood risk, resource icons, evidence arrows, and a final claim. Use readable labels, high contrast, no real people, no logos, and classroom-safe geography."
+  },
+  "teachingSupport": {
+    "summary": "Geography creates possibilities and constraints. Historical reasoning explains how people used evidence, resources, and tradeoffs to make choices.",
+    "description": "The app turns a map into a decision lab: learners inspect physical features, compare benefits and risks, and defend a settlement choice without pretending geography determines everything.",
+    "diagramCallouts": [
+      {
+        "title": "Resource",
+        "body": "Water, soil, animals, and materials can support daily life."
+      },
+      {
+        "title": "Route",
+        "body": "Rivers and landforms can make travel, trade, or communication easier."
+      },
+      {
+        "title": "Tradeoff",
+        "body": "The same place can offer benefits and hazards, such as fertile soil and flooding."
+      }
+    ],
+    "helperNotes": [
+      "Separate what the map shows from what historians infer.",
+      "Require at least two benefits and one tradeoff before accepting a settlement claim.",
+      "Avoid saying geography makes people act one way; ask what choices and adaptations were possible."
+    ],
+    "commonMisunderstandings": [
+      {
+        "mistake": "Treating a map symbol as proof of a whole historical explanation.",
+        "fix": "Name the visible feature, then explain the reasonable inference and its limit."
+      },
+      {
+        "mistake": "Listing resources without connecting them to daily life.",
+        "fix": "Complete: This resource could support ___ because ___."
+      },
+      {
+        "mistake": "Assuming one location has only benefits or only risks.",
+        "fix": "Add a tradeoff and explain how a community might adapt."
+      }
+    ],
+    "confusionPrompt": "Write whether you are stuck reading the map, connecting a resource to daily life, weighing a tradeoff, or writing the historical claim."
+  },
+  "funTasks": [
+    "Run a settlement strategy game: choose a location, spend evidence tokens, and defend the tradeoffs.",
+    "Annotate a map with resource, route, hazard, and adaptation symbols.",
+    "Create a historical council briefing that argues for one location and answers the strongest objection."
+  ],
+  "groupHomework": {
+    "title": "Settlement council",
+    "groupSize": "3-5 learners",
+    "roles": [
+      "Map analyst",
+      "Resource historian",
+      "Risk checker",
+      "Adaptation designer",
+      "Council speaker"
+    ],
+    "sharedOutcome": "Submit an annotated settlement map and a claim-evidence-reasoning briefing with one tradeoff and adaptation.",
+    "parentRole": "Ask the student to point to map evidence before accepting a claim about why people settled there."
+  },
+  "retentionChecks": [
+    "Next-day map-feature recall",
+    "Three-day benefit-versus-tradeoff sort",
+    "Seven-day new-region settlement transfer"
+  ],
+  "reward": "Unlock the Evidence Cartographer badge after defending a settlement choice and revising it with new map evidence.",
+  "evidenceMoves": {
+    "priorKnowledgeCheck": "Ask the learner to identify water, land, and travel features on a familiar map and connect each to one possible human need.",
+    "misconceptionCheck": "Check for symbol-as-proof reasoning, disconnected resource lists, and one-sided benefit claims.",
+    "manipulativeRationale": "Use map tiles, resource tokens, hazard markers, and tradeoff cards so geographic reasoning becomes a visible decision process.",
+    "representations": [
+      "Settlement map",
+      "Resource tokens",
+      "Benefit-risk matrix",
+      "Claim-evidence-reasoning card",
+      "Adaptation sketch"
+    ],
+    "problemSolvingStrategy": "Observe the map, connect features to needs, weigh benefits and risks, then defend a conditional claim.",
+    "workedExample": "Model how a river can support water and transport while also creating flood risk that requires adaptation.",
+    "examplesAndNonExamples": "Compare a claim that cites two map features with a claim that simply says a place was good.",
+    "knowledgeConnections": "Connect geography to resources, trade, adaptation, civic decisions, map literacy, and historical cause-and-effect.",
+    "metacognitivePrompt": "Plan which map evidence matters, monitor whether the claim overreaches, and evaluate the strongest tradeoff.",
+    "interventionTrigger": "If the learner cannot connect a feature to a need or ignores risk, route to the map-label or tradeoff repair path.",
+    "transitionBridge": "Settlement reasoning prepares learners for early civilizations, geographic systems, historical causation, and evidence-based civics.",
+    "feedbackFrame": "Name the map feature, ask what need it could support, and require one benefit, one risk, and one adaptation."
+  },
+  "sections": {
+    "warmup": "Choose between two map locations and write one question you would need answered before settling.",
+    "teach": "People use geography as one source of evidence. Resources, routes, hazards, choices, and adaptations all shape community life.",
+    "guidedPractice": "Match map features to possible needs, benefits, risks, and adaptations.",
+    "independentPractice": "Write a claim about the best settlement location using two map clues and one tradeoff.",
+    "activity": "Use the interactive settlement board to spend evidence tokens and revise the choice after a new hazard appears.",
+    "reteach": "Label one map feature, connect it to one human need, and add a because sentence.",
+    "challenge": "Defend a less obvious location by showing how technology or adaptation changes the tradeoff."
+  },
+  "quiz": [
+    {
+      "id": "g6-social-settle-q1",
+      "prompt": "Which pair is a geographic benefit and a tradeoff?",
+      "choices": [
+        "River water and possible flooding",
+        "A title and a homework grade",
+        "A symbol and a random guess",
+        "A story character and a theme"
+      ],
+      "answerIndex": 0,
+      "explanation": "A river can support life and travel while also creating flood risk."
+    },
+    {
+      "id": "g6-social-settle-q2",
+      "prompt": "What makes a settlement claim stronger?",
+      "choices": [
+        "It uses at least two map clues and explains the connection",
+        "It uses the longest sentence",
+        "It names only one resource",
+        "It ignores hazards"
+      ],
+      "answerIndex": 0,
+      "explanation": "Evidence plus reasoning makes the historical claim testable and understandable."
+    },
+    {
+      "id": "g6-social-settle-q3",
+      "prompt": "Which statement avoids overclaiming?",
+      "choices": [
+        "The river forced everyone to settle there",
+        "The river may have supported water and travel, while flooding required adaptation",
+        "Maps prove exactly what every person believed",
+        "Resources always create the same society"
+      ],
+      "answerIndex": 1,
+      "explanation": "The statement uses cautious language and includes both opportunity and adaptation."
+    }
+  ],
+  "parentTeacherNotes": "Use this as the Grade 6 Social Studies native V3 exemplar. Students must distinguish map observation, inference, claim, tradeoff, and adaptation.",
+  "accessibilityNotes": [
+    "Provide a text table alongside the map and label every icon.",
+    "Allow spoken or typed claim-evidence-reasoning responses.",
+    "Use patterns and labels as well as color for benefits, risks, and routes."
+  ],
+  "safetyNotes": [
+    "Use historically respectful, age-appropriate examples and avoid presenting simplified geography as a complete explanation of people or cultures."
+  ],
+  "studentFacing": {
+    "mission": "Use a visual model to master Map the Move: Why Communities Settle.",
+    "whyItMatters": "Use geographic evidence to explain why early communities settled in particular places and how those choices shaped daily life.",
+    "bigIdea": "Geography creates possibilities and constraints. Historical reasoning explains how people used evidence, resources, and tradeoffs to make choices.",
+    "modelSteps": [
+      "Resource: Water, soil, animals, and materials can support daily life.",
+      "Route: Rivers and landforms can make travel, trade, or communication easier.",
+      "Tradeoff: The same place can offer benefits and hazards, such as fertile soil and flooding."
+    ],
+    "example": "Match map features to possible needs, benefits, risks, and adaptations.",
+    "nonExample": "Treating a map symbol as proof of a whole historical explanation.",
+    "quickCheck": "Defend a less obvious location by showing how technology or adaptation changes the tradeoff.",
+    "studentSummary": "Geography creates possibilities and constraints. Historical reasoning explains how people used evidence, resources, and tradeoffs to make choices.",
+    "tutorHandoff": "Write whether you are stuck reading the map, connecting a resource to daily life, weighing a tradeoff, or writing the historical claim."
+  },
+  "schemaVersion": "3",
+  "academy": "bridge",
+  "gradeLevel": "6",
+  "course": "Grade 6 Social Studies",
+  "unitId": "g6-social-geography-early-humans",
+  "lessonNumber": 1,
+  "lessonFamily": "reasoning_lab",
+  "secondaryLessonFamily": "reasoning_lab",
+  "activePhases": [
+    "orient",
+    "model",
+    "deconstruct",
+    "practice",
+    "reason",
+    "prove",
+    "remember",
+    "transfer",
+    "adapt"
+  ],
+  "targetLearningStates": [
+    "not_diagnosed",
+    "acquiring",
+    "developing",
+    "accurate",
+    "secure",
+    "durable",
+    "transferable"
+  ],
+  "learningObjective": "Use geographic evidence to explain why early communities settled in particular places and how those choices shaped daily life.",
+  "successCriteria": [
+    "I can describe the big idea in Map the Move: Why Communities Settle.",
+    "I can use a visual model or example to solve a new problem.",
+    "I can explain my reasoning and repair a misunderstanding.",
+    "I can retrieve and transfer the idea after a delay."
+  ],
+  "essentialQuestion": "How can a map help us explain how people use a place?",
+  "standardsTags": [
+    "c3"
+  ],
+  "thinkingSkillTags": [
+    "spatial-reasoning",
+    "map-literacy",
+    "evidence",
+    "transfer"
+  ],
+  "vocabularyTerms": [
+    "region",
+    "symbol",
+    "resource",
+    "compass rose",
+    "direction"
+  ],
+  "prerequisiteSkillIds": [
+    "read-symbols",
+    "use-direction-words"
+  ],
+  "outcomes": {
+    "knowledge": [
+      "Geography creates possibilities and constraints. Historical reasoning explains how people used evidence, resources, and tradeoffs to make choices."
+    ],
+    "capability": [
+      "Use geographic evidence to explain why early communities settled in particular places and how those choices shaped daily life.",
+      "Use a model, example, or explanation to demonstrate the idea."
+    ],
+    "reasoning": [
+      "Use evidence from the model or task to justify a choice."
+    ],
+    "retention": [
+      "Retrieve the core idea after the original lesson context is removed."
+    ],
+    "transfer": [
+      "Apply the idea to a new example, context, or problem."
+    ]
+  },
+  "phaseModules": [
+    {
+      "phase": "orient",
+      "title": "Notice the challenge",
+      "studentAction": "Look at the model and describe what you notice about Map the Move: Why Communities Settle.",
+      "visualSupport": "Use a visual model to master Map the Move: Why Communities Settle.",
+      "successCheck": "I can say what I am trying to figure out before I choose an answer."
+    },
+    {
+      "phase": "model",
+      "title": "Build a model",
+      "studentAction": "People use geography as one source of evidence. Resources, routes, hazards, choices, and adaptations all shape community life.",
+      "visualSupport": "Resource: Water, soil, animals, and materials can support daily life.",
+      "successCheck": "My model shows the important parts and how they connect."
+    },
+    {
+      "phase": "deconstruct",
+      "title": "Spot the parts",
+      "studentAction": "Sort the examples, evidence, or steps that belong to Map the Move: Why Communities Settle.",
+      "visualSupport": "Route: Rivers and landforms can make travel, trade, or communication easier. Tradeoff: The same place can offer benefits and hazards, such as fertile soil and flooding.",
+      "successCheck": "I can explain why one choice fits and another choice does not."
+    },
+    {
+      "phase": "practice",
+      "title": "Try the method",
+      "studentAction": "Match map features to possible needs, benefits, risks, and adaptations.",
+      "visualSupport": "Match map features to possible needs, benefits, risks, and adaptations.",
+      "successCheck": "I can use the model to complete a new example."
+    },
+    {
+      "phase": "reason",
+      "title": "Explain the why",
+      "studentAction": "Defend a less obvious location by showing how technology or adaptation changes the tradeoff.",
+      "visualSupport": "Treating a map symbol as proof of a whole historical explanation.",
+      "successCheck": "My explanation names evidence or a rule, not only an answer."
+    },
+    {
+      "phase": "prove",
+      "title": "Show your thinking",
+      "studentAction": "Write a claim about the best settlement location using two map clues and one tradeoff.",
+      "visualSupport": "Choose a drawing, spoken explanation, labeled model, or written response.",
+      "successCheck": "Another learner could understand my reasoning from my proof."
+    },
+    {
+      "phase": "remember",
+      "title": "Retrieve it later",
+      "studentAction": "After a short delay, recall the key idea from Map the Move: Why Communities Settle without copying the original example.",
+      "visualSupport": "Geography creates possibilities and constraints. Historical reasoning explains how people used evidence, resources, and tradeoffs to make choices.",
+      "successCheck": "I can retrieve the idea when the order and example change."
+    },
+    {
+      "phase": "transfer",
+      "title": "Use it somewhere new",
+      "studentAction": "Defend a less obvious location by showing how technology or adaptation changes the tradeoff.",
+      "visualSupport": "A new context, example, or problem that keeps the same underlying idea.",
+      "successCheck": "I can recognize when this idea is useful outside the original example."
+    },
+    {
+      "phase": "adapt",
+      "title": "Choose your next move",
+      "studentAction": "Write whether you are stuck reading the map, connecting a resource to daily life, weighing a tradeoff, or writing the historical claim.",
+      "visualSupport": "Pick a helper note, alternate model, reteach path, or challenge path based on your evidence.",
+      "successCheck": "I can name what is still confusing and choose a productive next step."
+    }
+  ],
+  "proofTasks": [
+    {
+      "proof": "recall",
+      "prompt": "After a delay, retrieve the key idea from Map the Move: Why Communities Settle.",
+      "independentRequired": true
+    },
+    {
+      "proof": "explain",
+      "prompt": "Defend a less obvious location by showing how technology or adaptation changes the tradeoff.",
+      "independentRequired": true
+    },
+    {
+      "proof": "perform",
+      "prompt": "Write a claim about the best settlement location using two map clues and one tradeoff.",
+      "independentRequired": true
+    },
+    {
+      "proof": "retain",
+      "prompt": "Complete a delayed Memory Vault check for Map the Move: Why Communities Settle.",
+      "independentRequired": true
+    },
+    {
+      "proof": "transfer",
+      "prompt": "Defend a less obvious location by showing how technology or adaptation changes the tradeoff.",
+      "independentRequired": true
+    }
+  ],
+  "requiredMasteryProofs": [
+    "recall",
+    "explain",
+    "perform",
+    "retain",
+    "transfer"
+  ],
+  "feedbackRules": [
+    {
+      "diagnosisCode": "g6-social-geography-early-humans-misconception-1",
+      "result": "Treating a map symbol as proof of a whole historical explanation.",
+      "hint": "Name the visible feature, then explain the reasonable inference and its limit.",
+      "action": "Route to the alternate representation before retrying."
+    },
+    {
+      "diagnosisCode": "g6-social-geography-early-humans-misconception-2",
+      "result": "Listing resources without connecting them to daily life.",
+      "hint": "Complete: This resource could support ___ because ___.",
+      "action": "Route to the alternate representation before retrying."
+    },
+    {
+      "diagnosisCode": "g6-social-geography-early-humans-misconception-3",
+      "result": "Assuming one location has only benefits or only risks.",
+      "hint": "Add a tradeoff and explain how a community might adapt.",
+      "action": "Route to the alternate representation before retrying."
+    }
+  ],
+  "reteachPaths": [
+    {
+      "id": "g6-social-geography-early-humans-reteach",
+      "trigger": "The learner misses the model or cannot explain the key relationship.",
+      "action": "Label one map feature, connect it to one human need, and add a because sentence."
+    }
+  ],
+  "prerequisiteRepairPaths": [
+    {
+      "id": "g6-social-geography-early-humans-prerequisite-repair",
+      "trigger": "The learner cannot identify the basic parts needed for the lesson.",
+      "action": "Use a short sort, match, or vocabulary check before returning to the main task."
+    }
+  ],
+  "challengePaths": [
+    {
+      "id": "g6-social-geography-early-humans-challenge",
+      "trigger": "The learner completes the proof independently.",
+      "action": "Defend a less obvious location by showing how technology or adaptation changes the tradeoff."
+    }
+  ],
+  "contentStatus": "pilot_ready",
+  "version": "3.0.0-g6-social-geography-early-humans-native-exemplar"
+}

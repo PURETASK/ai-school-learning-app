@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "3",
+  "id": "BA-G6-MATH-U1-L2",
+  "title": "Expression Machine: Variables and Rules",
+  "academy": "bridge",
+  "academyName": "Bridge Academy",
+  "gradeLevel": "6",
+  "subject": "math",
+  "course": "Grade 6 Math",
+  "unit": "Unit 1: Expressions and Equations",
+  "unitTitle": "Unit 1: Expressions and Algebraic Thinking",
+  "lessonType": ["concept lesson", "skill lesson", "reasoning lesson", "retrieval lesson"],
+  "estimatedMinutes": "40-45",
+  "developmentNotes": "Students often treat a variable as a label or concatenate numbers instead of applying a rule. Keep the input-output relationship visible before introducing symbolic notation.",
+  "learningObjective": "Students will evaluate one-variable expressions by substituting a value, following operation order, and explaining each step as a machine rule.",
+  "essentialQuestion": "How can a rule turn an unknown input into a predictable output?",
+  "standardsTags": ["MATH.G6.EE.EXPRESSIONS", "MATH.G6.EE.SUBSTITUTION", "MATH.G6.REASONING.REPRESENTATIONS"],
+  "thinkingSkillTags": ["first-principles problem solving", "symbolic reasoning", "pattern recognition", "debugging", "evidence-based reasoning"],
+  "vocabularyTerms": [
+    {"term": "variable", "definition": "a letter or symbol that can stand for a number"},
+    {"term": "expression", "definition": "numbers, variables, and operations without an equals sign"},
+    {"term": "coefficient", "definition": "a number that multiplies a variable"},
+    {"term": "constant", "definition": "a number that stays fixed in an expression"},
+    {"term": "evaluate", "definition": "find the value of an expression when the variable is known"}
+  ],
+  "prerequisites": ["Use multiplication and addition facts", "Read operation symbols", "Explain a procedure in sequence"],
+  "learningObjective": "Students will evaluate one-variable expressions by substituting a value, following operation order, and explaining each step as a machine rule.",
+  "activePhases": ["orient", "model", "deconstruct", "practice", "reason", "prove", "remember", "transfer", "adapt"],
+  "targetLearningStates": ["acquiring", "developing", "accurate", "secure"],
+  "lessonFamily": "skill_workshop",
+  "secondaryLessonFamily": "reasoning_lab",
+  "successCriteria": [
+    "I can explain what the variable represents.",
+    "I can substitute a value without losing the operation.",
+    "I can follow the expression rule in order.",
+    "I can debug a wrong output and explain the correction."
+  ],
+  "outcomes": {
+    "knowledge": ["A variable is a number placeholder, not a label.", "Multiplication and addition rules can be represented by an expression."],
+    "capability": ["Evaluate 3n + 2 when n is known.", "Build and test an input-output table."],
+    "reasoning": ["Explain why the order of operations changes the output.", "Use an expected output to find a broken step."],
+    "retention": ["Retrieve the substitute-then-operate process after a delay."],
+    "transfer": ["Use an expression to model a changed real-world rule."]
+  },
+  "phaseModules": [
+    {"phase": "orient", "title": "Enter the expression machine", "studentAction": "Predict the output of a machine that multiplies an input by 3 and adds 2.", "successCheck": "I can name the input, rule, and output."},
+    {"phase": "model", "title": "Watch the rule run", "studentAction": "Follow n = 4 through 3n + 2: substitute 4, multiply to get 12, then add 2 to get 14.", "visualSupport": "Expression machine diagram with input, multiply, add, and output.", "successCheck": "I can point to each step instead of jumping to the final number."},
+    {"phase": "deconstruct", "title": "Separate the parts", "studentAction": "Sort cards into variable, coefficient, operation, and constant, then explain what each part does.", "successCheck": "I can identify every job in the expression."},
+    {"phase": "practice", "title": "Run the machine", "studentAction": "Test several inputs in 3n + 2 and record each output in an input-output table.", "visualSupport": "Interactive expression machine widget.", "successCheck": "My table follows the same rule for every input."},
+    {"phase": "reason", "title": "Debug a broken output", "studentAction": "Compare a student answer of 3 + 4 + 2 with the machine rule and explain which operation was skipped.", "successCheck": "I can name the error and connect it to the rule."},
+    {"phase": "prove", "title": "Pass the checkpoint", "studentAction": "Evaluate new expressions, explain one step, and correct one deliberately broken solution without final-answer help.", "successCheck": "I can prove the output with a visible chain of steps."},
+    {"phase": "remember", "title": "Store the process", "studentAction": "After a delay, retrieve the sequence: substitute, multiply or divide, then add or subtract as the rule says.", "successCheck": "I can use the process without looking at the model."},
+    {"phase": "transfer", "title": "Design a new rule", "studentAction": "Model a real situation such as a 4-dollar entry fee plus 2 dollars per game, then evaluate it for a chosen number of games.", "successCheck": "I can connect each part of my expression to the situation."},
+    {"phase": "adapt", "title": "Choose the next move", "studentAction": "Choose variable meaning, substitution, operation order, or debugging as your next tutor route based on the exact error.", "successCheck": "My next step matches the evidence from my work."}
+  ],
+  "proofTasks": [
+    {"proof": "recall", "prompt": "State the three-step process for evaluating an expression.", "independentRequired": true},
+    {"proof": "explain", "prompt": "Explain what the variable and coefficient mean in 3n + 2.", "independentRequired": true},
+    {"proof": "perform", "prompt": "Evaluate 4n + 1 when n = 3 and show the steps.", "independentRequired": true},
+    {"proof": "retain", "prompt": "After a delay, evaluate a new expression without reopening the model.", "independentRequired": true},
+    {"proof": "transfer", "prompt": "Write an expression for a changed real-world fee rule and evaluate it.", "independentRequired": true}
+  ],
+  "requiredMasteryProofs": ["recall", "explain", "perform", "retain", "transfer"],
+  "feedbackRules": [
+    {"diagnosisCode": "variable_as_label", "result": "The learner treats the variable as a name instead of a number placeholder.", "hint": "Ask what number the variable stands for in this input.", "action": "Route to input-card reteach."},
+    {"diagnosisCode": "operation_order", "result": "The learner adds before multiplying or skips a rule step.", "hint": "Trace the machine one box at a time and write the intermediate output.", "action": "Route to expression-machine retry."},
+    {"diagnosisCode": "symbol_drop", "result": "The learner substitutes a value but loses the coefficient operation.", "hint": "Keep the multiplication symbol visible before calculating.", "action": "Route to substitution visual repair."},
+    {"diagnosisCode": "unsupported_output", "result": "The learner gives an answer without a rule or intermediate step.", "hint": "Ask which machine box proves the next number.", "action": "Route to explanation proof."}
+  ],
+  "reteachPaths": [{"id": "g6-expressions-substitution-reteach", "trigger": "The learner drops a symbol or skips a machine step.", "action": "Return to a two-box machine with small inputs, keep the coefficient visible, and narrate each intermediate output."}],
+  "prerequisiteRepairPaths": [{"id": "g6-expressions-operation-repair", "trigger": "The learner cannot use multiplication or addition reliably.", "action": "Repair the needed operation with a concrete array or number line before evaluating the expression."}],
+  "challengePaths": [{"id": "g6-expressions-rule-design", "trigger": "The learner evaluates current-context expressions independently.", "action": "Design two different fee or scoring rules, compare their outputs, and explain which rule grows faster."}],
+  "memoryPlan": {"defaultIntervals": ["day-0", "day-1", "day-3", "day-7"], "reviewModes": ["recall", "explain", "correct", "apply"], "priorityItems": ["variable meaning", "substitution", "operation order", "debugging an output"]},
+  "visual": {"type": "expression-machine", "title": "Expression machine", "caption": "Input -> multiply by 3 -> add 2 -> output", "altText": "A labeled machine shows an input n moving through multiply by 3 and add 2 to produce an output."},
+  "visualSupports": [
+    {"placement": "lesson-hero", "title": "Expression machine mission board", "description": "A neon classroom-safe machine with input, multiply, add, and output boxes.", "prompt": "Create a high-contrast Grade 6 math teaching diagram showing an input n moving through multiply by 3, add 2, and output. Include one worked example n=4 -> 14, short readable labels, no logos, no real children.", "altText": "Expression machine with input n, multiply by 3, add 2, and output 14."},
+    {"placement": "teaching-diagram", "title": "Substitute then operate", "description": "Show 3n + 2 with n replaced by 4, then show 3 x 4 = 12 and 12 + 2 = 14.", "prompt": "Create a clean labeled step-by-step diagram for evaluating 3n + 2 when n=4. Use large labels, arrows, high contrast, and one intermediate result.", "altText": "Steps replace n with 4, multiply 3 by 4 to get 12, then add 2 to get 14."},
+    {"placement": "ai-tutor", "title": "Expression tutor repair card", "description": "Ask whether the error is variable meaning, substitution, operation order, or missing evidence.", "prompt": "Create a small tutor hint card with four labeled repair routes for a Grade 6 expression machine: variable, substitution, order, and proof. No tiny text.", "altText": "Tutor repair card with four routes: variable, substitution, order, and proof."}
+  ],
+  "quiz": [
+    {"id": "BA-G6-MATH-U1-L2-Q01", "type": "mc", "question": "If n=4, what is 3n+2?", "choices": ["10", "12", "14", "18"], "correctAnswer": "14", "explanation": "Substitute 4, multiply 3 x 4 to get 12, then add 2.", "skillTag": "MATH.EXPRESSION.EVALUATE", "difficulty": "easy"},
+    {"id": "BA-G6-MATH-U1-L2-Q02", "type": "error", "question": "A learner evaluates 3n+2 with n=4 as 3+4+2. What step was lost?", "choices": null, "correctAnswer": "The coefficient 3 must multiply n before adding 2.", "explanation": "The coefficient is an operation, not a separate number to add.", "skillTag": "MATH.EXPRESSION.DEBUG", "difficulty": "medium"},
+    {"id": "BA-G6-MATH-U1-L2-Q03", "type": "explain", "question": "What does n represent in 3n+2?", "choices": null, "correctAnswer": "The input number that the rule changes.", "explanation": "A variable stands for a number in the situation.", "skillTag": "MATH.VARIABLE.MEANING", "difficulty": "medium"},
+    {"id": "BA-G6-MATH-U1-L2-Q04", "type": "apply", "question": "A game costs 4 dollars to enter plus 2 dollars per round. Write a rule and find the cost for 3 rounds.", "choices": null, "correctAnswer": "4+2r; 10 dollars for 3 rounds.", "explanation": "The fixed fee is 4 and each round adds 2.", "skillTag": "MATH.EXPRESSION.MODEL", "difficulty": "hard"},
+    {"id": "BA-G6-MATH-U1-L2-Q05", "type": "mc", "question": "Which expression means 5 more than twice x?", "choices": ["5x+2", "2x+5", "2(x+5)", "x+10"], "correctAnswer": "2x+5", "explanation": "Twice x is 2x, and 5 more adds 5.", "skillTag": "MATH.EXPRESSION.TRANSLATE", "difficulty": "easy"},
+    {"id": "BA-G6-MATH-U1-L2-Q06", "type": "mc", "question": "What is the coefficient in 7p+1?", "choices": ["1", "7", "p", "8"], "correctAnswer": "7", "explanation": "The coefficient is the number multiplying the variable p.", "skillTag": "MATH.EXPRESSION.PARTS", "difficulty": "easy"},
+    {"id": "BA-G6-MATH-U1-L2-Q07", "type": "error", "question": "A learner says 2(3+1)=7. What should they check first?", "choices": null, "correctAnswer": "Multiply the entire quantity in parentheses: 2 x 4 = 8.", "explanation": "The parentheses group 3+1 before the outside factor is applied.", "skillTag": "MATH.EXPRESSION.ORDER", "difficulty": "medium"},
+    {"id": "BA-G6-MATH-U1-L2-Q08", "type": "explain", "question": "Why can the same expression produce different outputs?", "choices": null, "correctAnswer": "The variable input can change while the rule stays the same.", "explanation": "A variable lets one rule describe many possible inputs.", "skillTag": "MATH.VARIABLE.VARY", "difficulty": "medium"},
+    {"id": "BA-G6-MATH-U1-L2-Q09", "type": "apply", "question": "Evaluate 4a-1 when a=6 and explain the operation order.", "choices": null, "correctAnswer": "23; multiply 4 by 6, then subtract 1.", "explanation": "Substitution gives 4 x 6 - 1, which is 24 - 1 = 23.", "skillTag": "MATH.EXPRESSION.EVALUATE", "difficulty": "medium"},
+    {"id": "BA-G6-MATH-U1-L2-Q10", "type": "transfer", "question": "Create an expression machine with one fixed amount and one changing input. Test two inputs and explain what changes.", "choices": null, "correctAnswer": "Any valid rule with two tested inputs and an explanation of the changing input.", "explanation": "A transfer proof shows that the learner can design and explain a new rule.", "skillTag": "MATH.EXPRESSION.TRANSFER", "difficulty": "hard"}
+  ],
+  "retrievalCheck": [{"id": "BA-G6-MATH-U1-L2-R01", "prompt": "What is the first step when evaluating an expression with a known variable?", "expectedAnswer": "Substitute the known value for the variable.", "feedbackIfMissed": "Show the input card, replace the letter, and retry one small example."}],
+  "memoryVaultItems": [{"id": "BA-G6-MATH-U1-L2-MV01", "type": "process", "prompt": "Retrieve the expression-machine process.", "expectedAnswer": "Substitute, follow the operations, and explain the output.", "scheduleDays": [1, 3, 7, 14], "skillTag": "MATH.EXPRESSION.EVALUATE", "retentionStrengthStart": "developing", "failureAction": "Show the labeled machine and schedule a next-day retry.", "successAction": "Change the input and ask for the process again."}],
+  "groupHomework": {"title": "Rule designers lab", "roles": ["Input tester", "Rule designer", "Error detective", "Evidence presenter"], "sharedOutcome": "Design a fair game or snack rule, map it as an expression machine, and test three inputs.", "individualAccountability": "Each learner explains one part of the rule and debugs one test output."},
+  "accessibilityNotes": ["Provide text equivalents for every machine diagram.", "Do not use color alone to identify machine steps.", "Allow keyboard entry, oral explanation, or a paper input-output table."],
+  "ageFitNotes": "Bridge Academy pacing uses a visible system model, short challenges, and independent explanation before transfer.",
+  "readability": {"band": "bridge", "vocabularyLevel": "Grade 6 algebra vocabulary with definitions", "maxSentenceWords": 20, "supportNotes": "Keep directions short, show one intermediate result, and define each symbol before using it."},
+  "evidenceMoves": ["notice", "model", "explain", "debug", "transfer"],
+  "contentStatus": "pilot_ready",
+  "version": "3.0.0-bridge-expressions-exemplar"
+}
